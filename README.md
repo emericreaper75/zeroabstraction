@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ZeroAbstraction
 
-## Getting Started
+A personal universe / portfolio project built with Next.js 15, Payload CMS 3.x, and PostgreSQL.
 
-First, run the development server:
+## Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Node.js (v18.20.2+ or v20.9.0+)
+- PostgreSQL database
+- npm, yarn, or pnpm
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Local Setup Instructions
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/zeroabstraction.git
+   cd zeroabstraction
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-## Learn More
+3. **Configure Environment Variables**
+   - Copy the example environment file to `.env`:
+     ```bash
+     cp .env.example .env
+     ```
+   - Open `.env` and fill in your actual development secrets (e.g. your local PostgreSQL `DATABASE_URL` and a random `PAYLOAD_SECRET`).
+   - **Important:** Do not commit `.env` to version control. It contains sensitive credentials.
 
-To learn more about Next.js, take a look at the following resources:
+4. **Run the Development Server**
+   Start the Next.js development server (which also powers the Payload CMS):
+   ```bash
+   npm run dev
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+5. **Access the Application**
+   - Website: [http://localhost:3000](http://localhost:3000)
+   - Payload Admin Panel: [http://localhost:3000/admin](http://localhost:3000/admin)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Database Migrations
 
-## Deploy on Vercel
+This project uses Payload's version-controlled database migrations (auto-sync is disabled).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Whenever you modify any Collections or Globals in `src/collections/` or `src/globals/`, you must generate and apply a migration:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **Generate a migration file**
+   ```bash
+   npm run payload:migrate:create -- --file my_new_feature
+   ```
+   This will create a new migration script in `src/migrations/`.
+
+2. **Apply migrations**
+   ```bash
+   npm run payload:migrate
+   ```
+   Run this locally to apply the changes to your local database, and ensure it runs during your deployment process for production.
+
+## Deployment
+
+This project uses a standard Docker + Docker Compose architecture and is optimized for deployment via Coolify or similar self-hosted platforms. 
+For deployment testing and validation, refer to `deploy-validation/DEPLOYMENT_VALIDATION.md`.

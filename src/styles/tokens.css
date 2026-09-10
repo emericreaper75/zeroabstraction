@@ -1,0 +1,39 @@
+:root {
+  --bg: #f3efe7;
+  --text: #17191a;
+  --muted: #65635e;
+  --border: #d5d0c6;
+  --accent: #9b5a26;
+
+  /* Typography Scales */
+  --text-hero: clamp(2.5rem, 6vw, 6rem);
+  --text-heading: clamp(2rem, 4vw, 4.25rem);
+  --text-title: clamp(1.75rem, 3vw, 4.75rem);
+  --text-body: clamp(1.0625rem, 1.2vw, 1.25rem);
+  --text-small: clamp(0.75rem, 0.9vw, 0.875rem);
+  --text-label: clamp(0.625rem, 0.8vw, 0.75rem);
+
+  /* Layout Widths */
+  --content-width: 1400px;
+  --reading-width: 720px;
+
+  /* Spacing Scale (8, 12, 16, 24, 32, 48, 64, 96, 128, 160 px converted to rem) */
+  --space-1: 0.5rem;
+  --space-2: 0.75rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2rem;
+  --space-6: 3rem;
+  --space-7: 4rem;
+  --space-8: 6rem;
+  --space-9: 8rem;
+  --space-10: 10rem;
+}
+
+[data-theme='dark'] {
+  --bg: #0b1114;
+  --text: #f1ece2;
+  --muted: #a7a49d;
+  --border: #2a3032;
+  --accent: #d49a68;
+}
