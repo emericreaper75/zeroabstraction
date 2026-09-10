@@ -44,7 +44,7 @@ export default async function Home() {
         <section className="min-h-[85vh] flex flex-col justify-center py-16" style={{ gap: 'var(--space-8)' }}>
           {/* Text Content */}
           <div className="flex flex-col" style={{ gap: 'var(--space-4)', maxWidth: '800px' }}>
-            <Display>First Last</Display>
+            <Display>Manoj Amavasya</Display>
             <Heading as="h2" className="text-[color:var(--muted)]">
               Exploring the intersections of theoretical physics, electrical engineering, and the cosmos.
             </Heading>
