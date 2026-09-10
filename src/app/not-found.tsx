@@ -1,6 +1,6 @@
-import { Display, Title, Body } from '@/components/typography';
-import { EditorialLink } from '@/components/EditorialLink';
+import { Display, Title, Body, Label } from '@/components/typography';
 import { Reveal } from '@/components/Reveal';
+import Link from 'next/link';
 
 export default function NotFound() {
   return (
@@ -15,7 +15,9 @@ export default function NotFound() {
             </Body>
           </div>
           <div style={{ marginTop: 'var(--space-4)' }}>
-            <EditorialLink href="/">RETURN TO BASE</EditorialLink>
+            <Link href="/" className="hover:text-[color:var(--accent)] transition-colors" style={{ textDecoration: 'none' }}>
+              <Label>RETURN TO BASE</Label>
+            </Link>
           </div>
         </div>
       </Reveal>

@@ -37,7 +37,7 @@ export default async function WritingPage({ params }: { params: { slug: string }
           <div className="flex items-center flex-wrap" style={{ gap: 'var(--space-4)' }}>
             {post.topics && post.topics.length > 0 && (
                <>
-                 <Label className="text-[color:var(--muted)]">{post.topics[0]?.name?.toUpperCase()}</Label>
+                 <Label className="text-[color:var(--muted)]">{typeof post.topics[0] === 'object' && post.topics[0]?.name?.toUpperCase()}</Label>
                  <span className="text-[color:var(--muted)]">•</span>
                </>
             )}

@@ -55,6 +55,7 @@ export default function RootLayout({
                   <Title as="div">Zero Abstraction</Title>
                   <Body className="text-[color:var(--muted)] max-w-sm">
                     {/* Short personal line placeholder (to be filled later) */}
+                    &nbsp;
                   </Body>
                 </div>
                 
