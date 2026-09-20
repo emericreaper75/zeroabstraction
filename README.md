@@ -126,3 +126,4 @@ Comprehensive documentation for architecture, deployment, infrastructure, and di
 - [INFRASTRUCTURE_NOTES.md](INFRASTRUCTURE_NOTES.md): Hosting, database (Neon/Supabase/Aiven), and object storage (Cloudflare R2/B2) comparison, secrets management, and actual free-tier usage tracking.
 - [BACKUP_AND_RESTORE.md](BACKUP_AND_RESTORE.md): Database and media backup and recovery runbooks for both local development and production.
 - [TESTING_LOG.md](TESTING_LOG.md): Comprehensive testing checklists covering auth, collections, relations, media storage, and public page rendering.
+# zeroabstraction
