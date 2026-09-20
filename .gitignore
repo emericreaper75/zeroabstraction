@@ -30,6 +30,9 @@ yarn-error.log*
 .env.*
 !.env.example
 
+# uploaded media (local disk storage)
+/media
+
 # vercel
 .vercel
 

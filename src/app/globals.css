@@ -1,11 +1,28 @@
+@import '../styles/rich-text.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html {
+  color-scheme: light dark;
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+html[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+html[data-theme='light'] {
+  color-scheme: light;
+}
 
 body {
   color: var(--text);
   background-color: var(--bg);
   font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
 }
 
 @layer utilities {
@@ -25,6 +42,12 @@ body {
     max-width: var(--reading-width);
     margin-inline: auto;
     padding-inline: var(--space-4);
+  }
+
+  @media (min-width: 640px) {
+    .container-reading {
+      padding-inline: var(--space-5);
+    }
   }
 
   .ui-border {
@@ -64,4 +87,42 @@ body {
 *:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 4px;
+}
+
+/* Subtle grid line decoration */
+.cosmic-grid {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(42, 48, 50, 0.25) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(42, 48, 50, 0.25) 1px, transparent 1px);
+}
+
+/* Custom checkbox styling strictly to design system */
+input[type="checkbox"].atelier-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border: 1px solid #51443b;
+  background: #0e1417;
+  border-radius: 0px;
+  cursor: pointer;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 150ms ease;
+}
+input[type="checkbox"].atelier-checkbox:checked {
+  background-color: #d49a68;
+  border-color: #d49a68;
+}
+input[type="checkbox"].atelier-checkbox:checked::after {
+  content: '';
+  width: 4px;
+  height: 7px;
+  border: solid #0e1417;
+  border-width: 0 1.5px 1.5px 0;
+  transform: rotate(45deg) translate(-0.5px, -1px);
+  display: block;
 }

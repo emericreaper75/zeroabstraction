@@ -99,8 +99,8 @@ Amazon S3 is the industry standard for object storage but is notorious for its e
 2. **Alternative: Backblaze B2.** If the primary goal becomes long-term archival of RAW files (TB-scale) rather than just web delivery, B2's lower per-GB storage cost ($6/TB vs R2's $15/TB) might win out, though you must monitor the 3x egress limit.
 
 > [!NOTE]  
-> **Storage Provisioning is Pending.** 
-> No object storage bucket has been provisioned yet. The local deployment uses the local filesystem for now. Once confirmed (e.g., Cloudflare R2), we will create the bucket, install `@payloadcms/storage-s3`, and set the credentials in `.env`.
+> **Storage Provisioning Status:** 
+> Local development utilizes containerized **MinIO** via `docker-compose.yml` with `@payloadcms/storage-s3` to emulate S3/R2 endpoints. For production, Cloudflare R2 credentials should be provisioned and supplied via environment variables as documented in secrets management.
 
 ---
 ---
@@ -131,3 +131,71 @@ For the production deployment, ZeroAbstraction is intended to be hosted on **Coo
    - Sensitive backend variables (`DATABASE_URL`, `PAYLOAD_SECRET`) are only needed and injected at *run time*, keeping the built Docker image artifact clean of secrets.
 
 By adhering to this pattern, the Git history remains completely free of credentials, and the production environment is securely managed through the PaaS dashboard.
+
+---
+---
+
+# Infrastructure Notes: Actual Usage vs. Free-Tier Limits Monitoring
+
+This section audits current resource consumption from real content (posts, projects, media assets, and relational metadata) against the free-tier thresholds identified in **BG.3** (PostgreSQL) and **BG.4** (Object Storage), flagging potential bottlenecks and pricing cliffs.
+
+## 1. Actual Resource Usage Snapshot
+
+| Resource Component | Measured Usage | Provider Free-Tier Baseline | Utilization % | Risk Assessment |
+| :--- | :--- | :--- | :--- | :--- |
+| **PostgreSQL Database** | **9.7 MB** (total DB footprint) | **500 MB** (Neon / Supabase)<br>**1,000 MB** (Aiven) | **1.94%** (Neon/Supabase)<br>**0.97%** (Aiven) | 🟢 **Very Safe** (490+ MB headroom) |
+| **Database User Tables** | **~1.0 MB** across all content | 500 MB | **0.20%** | 🟢 **Negligible** |
+| **Object Storage (Media)** | **1.1 MB** (1 active image) | **10,000 MB / 10 GB** (Cloudflare R2 / B2)<br>**5,000 MB / 5 GB** (AWS S3) | **0.011%** (R2 / B2)<br>**0.022%** (S3) | 🟢 **Safe currently** |
+| **Egress (Data Transfer Out)** | ~1.1 MB / session | **Unlimited Free Egress** (Cloudflare R2)<br>3x Stored Data (B2)<br>100 GB/mo (AWS S3) | **~0%** | 🟡 **Needs strict guardrails** |
+
+---
+
+## 2. PostgreSQL Analysis (BG.3 Review)
+
+### Data Growth Trajectory:
+- System catalogs, schema definitions, and migration tracking consume **~8.7 MB** of baseline storage.
+- Individual text documents (Posts, Projects, Topics, Journey, Settings) consume **1–5 KB** per document.
+- Even with **500 full-length articles** and **100 projects**, relational data growth is projected to remain under **25–35 MB** over 12–24 months.
+
+### Flagged Limits & Operational Risks:
+> [!NOTE]
+> **Storage is NOT the bottleneck for PostgreSQL.** At current pace, the 500 MB free tier will last for years without nearing capacity.
+
+1. **Supabase Inactivity Auto-Pause (Flagged Risk):**
+   - Supabase projects auto-pause after **7 days of inactivity** on the free tier. For a personal blog/portfolio that may experience occasional traffic lulls, this would cause unexpected downtime when visitors arrive.
+   - *Recommendation*: Prioritize **Neon** to avoid cold abandonment pauses.
+2. **Neon Compute Hours (100 CU-hours/month):**
+   - Neon's scale-to-zero activates after 5 minutes of idle time. Under typical personal site traffic (~100–1,000 visits/month), compute usage will consume **< 5 CU-hours/month**.
+   - *Watch out*: Do not schedule aggressive polling scripts or cron jobs that ping the database every 2 minutes, as this prevents scale-to-zero and would exhaust the 100 CU-hour limit.
+
+---
+
+## 3. Object Storage & Astrophotography Analysis (BG.4 Review)
+
+### High-Resolution Media Growth Trajectory:
+Unlike text data, media assets for photography and astrophotography present the **primary capacity and cost vulnerability**:
+
+- **Web-optimized images** (WebP/JPEG, resized to ≤ 2400px): **1.0 MB – 3.5 MB** per image.
+  - *Capacity under 10 GB R2 free tier*: **~3,000 to 10,000 images**.
+- **Raw / High-Resolution Astrophotography** (Original full-res captures, FITS, TIFF, or master stacks): **25 MB – 100 MB+** per file.
+  - *Capacity under 10 GB R2 free tier*: **Only 100 to 400 images**.
+
+### Flagged Limits & Pricing Cliffs:
+
+> [!WARNING]
+> **Pricing Cliff & Egress Risk:**
+> 1. **Storage Cap (10 GB):** If raw astrophotography files are uploaded without compression, the 10 GB threshold can be breached within a few extensive observing sessions.
+> 2. **Egress Bandwidth Shock (Non-R2 Providers):** On AWS S3, serving high-resolution astrophotography (e.g. 50 MB images) to 2,000 visitors would consume **100 GB egress** (reaching the free allowance) and incur **$0.09/GB** thereafter.
+
+### Enforcement Strategy & Safe Operating Rules:
+
+1. **Provider Lock: Cloudflare R2 is Non-Negotiable.**
+   - Cloudflare R2 provides **$0.00 egress fees**. Even if an image goes viral on Reddit or Hacker News, bandwidth costs will remain **$0.00**.
+   - R2's overage cost beyond 10 GB is only **$0.015 / GB-month** ($1.50 per 100 GB), which is a predictable, mild linear cost rather than a catastrophic cliff.
+2. **Sharp Image Optimization in Payload:**
+   - Always upload web-optimized derivatives to the public `Media` collection. Keep master raw/FITS stacks in dedicated cold archival storage (e.g., Backblaze B2 archive bucket or offline local NAS), rather than the live web bucket.
+3. **Threshold Alerts:**
+   - **Warning Threshold**: 7.5 GB (75% of R2 free allowance).
+   - **Critical Threshold**: 9.0 GB (90% of R2 free allowance).
+   - Once the critical threshold is reached, either prune legacy drafts/unused assets or acknowledge the nominal $0.015/GB upgrade fee.
+

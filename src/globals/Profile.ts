@@ -1,23 +1,24 @@
 import type { GlobalConfig } from 'payload'
+import { authenticated, publicRead } from '../access'
 
 export const Profile: GlobalConfig = {
   slug: 'profile',
   access: {
-    read: () => true,
+    read: publicRead,
+    update: authenticated,
+  },
+  hooks: {
+    beforeChange: [
+      ({ data }) => {
+        data.updated_at = new Date().toISOString()
+        return data
+      },
+    ],
   },
   fields: [
-    {
-      name: 'introduction',
-      type: 'textarea',
-    },
-    {
-      name: 'story',
-      type: 'richText',
-    },
-    {
-      name: 'current_focus',
-      type: 'textarea',
-    },
+    { name: 'introduction', type: 'textarea' },
+    { name: 'story', type: 'richText' },
+    { name: 'current_focus', type: 'textarea' },
     {
       name: 'photograph',
       type: 'upload',
@@ -26,9 +27,7 @@ export const Profile: GlobalConfig = {
     {
       name: 'updated_at',
       type: 'date',
-      admin: {
-        position: 'sidebar',
-      },
-    }
+      admin: { readOnly: true },
+    },
   ],
 }

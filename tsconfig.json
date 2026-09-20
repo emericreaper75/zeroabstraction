@@ -25,6 +25,9 @@
       "@/*": [
         "./src/*"
       ],
+      "@payload-config": [
+        "./src/payload.config.ts"
+      ],
       "payload/generated-types": [
         "./src/payload-types.ts"
       ]
@@ -39,6 +42,7 @@
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "update-journey.ts"
   ]
 }

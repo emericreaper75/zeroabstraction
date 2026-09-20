@@ -1,15 +1,11 @@
-version: '3.8'
-
 services:
   postgres:
     image: postgres:16-alpine
     restart: unless-stopped
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: zeroabstraction
-    ports:
-      - '5434:5432'
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-zeroabstraction}
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -17,38 +13,35 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+    # Uncomment to expose to host for local GUI clients (e.g. TablePlus / DBeaver):
+    # ports:
+    #   - '5434:5432'
 
-  minio:
-    image: minio/minio
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
     restart: unless-stopped
     ports:
-      - '9000:9000'
-      - '9001:9001'
+      - '3000:3000'
+    env_file:
+      - .env
     environment:
-      MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin
-    command: server /data --console-address ":9001"
+      - DATABASE_URL=${DATABASE_URL:-postgresql://postgres:postgres@postgres:5432/zeroabstraction}
+      - PAYLOAD_SECRET=${PAYLOAD_SECRET}
+      - NEXT_PUBLIC_SERVER_URL=${NEXT_PUBLIC_SERVER_URL:-http://localhost:3000}
+      - ADMIN_EMAIL=${ADMIN_EMAIL}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - PORT=3000
+      - HOSTNAME=0.0.0.0
+      - S3_ENABLED=false
     volumes:
-      - miniodata:/data
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
-
-  createbuckets:
-    image: minio/mc
+      - .:/app
+      - /app/node_modules
+      - /app/.next
     depends_on:
-      minio:
+      postgres:
         condition: service_healthy
-    entrypoint: >
-      /bin/sh -c "
-      /usr/bin/mc config host add myminio http://minio:9000 minioadmin minioadmin;
-      /usr/bin/mc mb myminio/zeroabstraction-media --ignore-existing;
-      /usr/bin/mc anonymous set public myminio/zeroabstraction-media;
-      exit 0;
-      "
 
 volumes:
   pgdata:
-  miniodata:

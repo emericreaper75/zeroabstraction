@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { authenticated, publicRead } from '../access'
 
 export const Topics: CollectionConfig = {
   slug: 'topics',
@@ -6,7 +7,10 @@ export const Topics: CollectionConfig = {
     useAsTitle: 'name',
   },
   access: {
-    read: () => true,
+    read: publicRead,
+    create: authenticated,
+    update: authenticated,
+    delete: authenticated,
   },
   fields: [
     {
@@ -19,6 +23,7 @@ export const Topics: CollectionConfig = {
       type: 'text',
       required: true,
       unique: true,
+      index: true,
     },
     {
       name: 'description',
@@ -33,8 +38,10 @@ export const Topics: CollectionConfig = {
         { label: 'ECE', value: 'ece' },
         { label: 'Programming', value: 'programming' },
         { label: 'Photography', value: 'photography' },
+        { label: 'Books', value: 'books' },
+        { label: 'Experiments', value: 'experiments' },
         { label: 'Other', value: 'other' },
       ],
-    }
+    },
   ],
 }

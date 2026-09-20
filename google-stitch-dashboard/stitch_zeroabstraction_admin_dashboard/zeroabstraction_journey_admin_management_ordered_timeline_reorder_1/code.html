@@ -1,0 +1,783 @@
+<!DOCTYPE html><html lang="en" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"primary-fixed-dim":"#ffb77b","outline":"#847468","surface-variant":"#e2e3df","surface-dim":"#dadad6","on-error":"#ffffff","error-container":"#ffdad6","tertiary":"#595c60","inverse-surface":"#2f312e","tertiary-fixed":"#e0e3e6","on-error-container":"#93000a","paper-surface":"#f4f4f0","accent-amber":"#b3743b","ink-secondary":"#2d3134","on-primary-fixed":"#2e1500","surface":"#faf9f5","on-surface":"#1a1c1a","surface-container":"#eeeeea","on-primary-fixed-variant":"#6c3a03","outline-variant":"#d7c3b5","on-primary":"#ffffff","secondary-fixed":"#ffdcc4","on-secondary":"#ffffff","surface-tint":"#89511b","ink-muted":"#686c6f","paper-base":"#fbfbfa","secondary":"#8a501d","inverse-on-surface":"#f1f1ed","on-tertiary-container":"#fbfcff","ink-primary":"#181c1e","accent-ochre":"#965a26","surface-container-lowest":"#ffffff","secondary-container":"#fdb074","inverse-primary":"#ffb77b","hairline-subtle":"#ecece6","error":"#ba1a1a","paper-container":"#eaeae5","surface-container-high":"#e8e8e4","on-tertiary":"#ffffff","secondary-fixed-dim":"#ffb77f","on-tertiary-fixed":"#181c1f","surface-container-highest":"#e2e3df","hairline-rule":"#e0e0db","amber-wash":"#f6eee3","primary":"#864f18","on-surface-variant":"#52443a","on-secondary-fixed":"#2f1500","on-primary-container":"#fffbff","on-background":"#1a1c1a","primary-fixed":"#ffdcc2","primary-container":"#a3672f","surface-container-low":"#f4f4f0","on-secondary-container":"#77410e","tertiary-container":"#717578","surface-bright":"#faf9f5","tertiary-fixed-dim":"#c4c7ca","on-tertiary-fixed-variant":"#43474a","on-secondary-fixed-variant":"#6d3905","background":"#faf9f5"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"space-md":"1rem","space-sm":"0.5rem","margin":"2.5rem","space-lg":"1.5rem","gutter":"1.5rem","margin-mobile":"1rem","space-xl":"2.5rem","gutter-mobile":"0.75rem","space-xs":"0.25rem"},"fontFamily":{"headline-sm":["Newsreader"],"label-md":["JetBrains Mono"],"body-lg":["IBM Plex Sans"],"body-md":["IBM Plex Sans"],"headline-lg-mobile":["Newsreader"],"label-sm":["JetBrains Mono"],"body-sm":["IBM Plex Sans"],"headline-xl":["Newsreader"],"headline-xl-mobile":["Newsreader"],"headline-md":["Newsreader"],"headline-lg":["Newsreader"],"label-lg":["JetBrains Mono"]},"fontSize":{"headline-sm":["1.25rem",{"lineHeight":"1.75rem","letterSpacing":"0em","fontWeight":"500"}],"label-md":["0.6875rem",{"lineHeight":"1rem","letterSpacing":"0.08em","fontWeight":"500"}],"body-lg":["1.125rem",{"lineHeight":"1.875rem","letterSpacing":"-0.005em","fontWeight":"400"}],"body-md":["0.9375rem",{"lineHeight":"1.5rem","letterSpacing":"0em","fontWeight":"400"}],"headline-lg-mobile":["1.75rem",{"lineHeight":"2.25rem","letterSpacing":"-0.01em","fontWeight":"400"}],"label-sm":["0.625rem",{"lineHeight":"0.875rem","letterSpacing":"0.1em","fontWeight":"400"}],"body-sm":["0.8125rem",{"lineHeight":"1.25rem","letterSpacing":"0em","fontWeight":"400"}],"headline-xl":["3.5rem",{"lineHeight":"4rem","letterSpacing":"-0.02em","fontWeight":"400"}],"headline-xl-mobile":["2.25rem",{"lineHeight":"2.75rem","letterSpacing":"-0.015em","fontWeight":"400"}],"headline-md":["1.75rem",{"lineHeight":"2.25rem","letterSpacing":"-0.01em","fontWeight":"400"}],"headline-lg":["2.5rem",{"lineHeight":"3rem","letterSpacing":"-0.015em","fontWeight":"400"}],"label-lg":["0.8125rem",{"lineHeight":"1.125rem","letterSpacing":"0.06em","fontWeight":"500"}]}}}}</script></head><body class="bg-surface font-body-md text-on-surface"><aside class="fixed left-0 top-0 h-full w-72 bg-paper-surface z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex flex-col"><div class="p-space-lg bg-paper-base"><div class="flex items-center justify-between mb-space-xs"><span class="font-headline-sm text-headline-sm text-ink-primary tracking-tight">ZeroAbstraction</span><span class="px-space-xs py-0.5 bg-amber-wash text-accent-ochre font-label-sm text-label-sm uppercase">OS V3.28</span></div><div class="flex items-center gap-space-xs font-label-sm text-label-sm text-ink-muted"><span class="">Payload Atelier</span><span class="">•</span><span class="text-ink-secondary">PG 16.2 Live</span></div><div class="mt-space-sm"><button class="w-full flex items-center justify-center gap-space-xs py-2 px-space-md bg-accent-amber hover:bg-accent-ochre text-on-primary font-label-md text-label-md uppercase tracking-wider transition-colors shadow-sm"><span class="material-symbols-outlined text-[16px]">add</span><span class="">+ CREATE ENTRY</span></button></div></div><div class="px-space-md py-space-sm"><div class="px-space-sm py-space-xs font-label-md text-label-md uppercase text-ink-muted tracking-wider">Collections</div><nav class="flex flex-col gap-0.5" data-active-classes="bg-amber-wash text-accent-ochre font-medium"><a class="flex items-center justify-between px-space-sm py-space-xs text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="dashboard" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[18px]">grid_view</span><span class="font-body-sm text-body-sm">Dashboard</span></div></a><a class="flex items-center justify-between px-space-sm py-space-xs text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="essays-treatises" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[18px]">auto_stories</span><span class="font-body-sm text-body-sm">Essays &amp; Treatises</span></div><span class="font-label-sm text-label-sm px-1.5 py-0.5 bg-paper-base text-ink-muted">18</span></a><a class="flex items-center justify-between px-space-sm py-space-xs text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="celestial-catalog" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[18px]">flare</span><span class="font-body-sm text-body-sm">Celestial Catalog</span></div><span class="font-label-sm text-label-sm px-1.5 py-0.5 bg-paper-base text-ink-muted">12</span></a><a class="flex items-center justify-between px-space-sm py-space-xs text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="field-observations" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[18px]">biotech</span><span class="font-body-sm text-body-sm">Field Observations</span></div><span class="font-label-sm text-label-sm px-1.5 py-0.5 bg-paper-base text-ink-muted">156</span></a><a class="flex items-center justify-between px-space-sm py-space-xs text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="telemetry-logs" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[18px]">query_stats</span><span class="font-body-sm text-body-sm">Telemetry Logs</span></div><span class="font-label-sm text-label-sm px-1.5 py-0.5 bg-paper-base text-ink-muted">2.4k</span></a><a class="flex items-center justify-between px-space-sm py-space-xs text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="taxonomy-tags" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[18px]">label</span><span class="font-body-sm text-body-sm">Taxonomy &amp; Tags</span></div><span class="font-label-sm text-label-sm px-1.5 py-0.5 bg-paper-base text-ink-muted">84</span></a><a class="flex items-center justify-between px-space-sm py-space-xs text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="media-plates-archive" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[18px]">perm_media</span><span class="font-body-sm text-body-sm">Media &amp; Plates Archive</span></div><span class="font-label-sm text-label-sm px-1.5 py-0.5 bg-paper-base text-ink-muted">156</span></a></nav></div><div class="px-space-md py-space-sm"><div class="px-space-sm py-space-xs font-label-md text-label-md uppercase text-ink-muted tracking-wider">Globals</div><nav class="flex flex-col gap-0.5" data-active-classes="bg-amber-wash text-accent-ochre font-medium"><a class="flex items-center gap-space-sm px-space-sm py-space-xs text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="profile-atelier" href="#"><span class="material-symbols-outlined text-[18px]">account_balance</span><span class="font-body-sm text-body-sm">Profile &amp; Atelier</span></a><a class="flex items-center justify-between px-space-sm py-space-xs text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="current-state" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[18px]">adjust</span><span class="font-body-sm text-body-sm">Current State</span></div><span class="w-1.5 h-1.5 rounded-full bg-accent-amber animate-pulse"></span></a><a aria-current="page" class="flex items-center gap-space-sm px-space-sm py-space-xs transition-colors bg-amber-wash text-accent-ochre font-medium" data-path="journey-archive" href="#"><span class="material-symbols-outlined text-[18px]">history_edu</span><span class="font-body-sm text-body-sm">Journey Archive</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="site-settings" href="#"><span class="material-symbols-outlined text-[18px]">tune</span><span class="font-body-sm text-body-sm">Site Settings</span></a><a class="flex items-center justify-between px-space-sm py-space-xs text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="users-access" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[18px]">group</span><span class="font-body-sm text-body-sm">Users &amp; Access</span></div><span class="font-label-sm text-label-sm px-1.5 py-0.5 bg-paper-base text-ink-muted">01</span></a></nav></div></div><div class="p-space-md bg-paper-container"><div class="flex flex-col gap-space-xs font-label-sm text-label-sm"><div class="flex items-center justify-between text-ink-secondary"><span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-accent-amber animate-pulse"></span><span class="">PostgreSQL Engine</span></span><span class="text-accent-ochre">0ms lag</span></div><div class="flex items-center justify-between text-ink-muted"><span class="">Core Latency</span><span class="">12ms</span></div><div class="flex items-center justify-between text-ink-muted"><span class="">Active Cluster</span><span class="font-medium">node α (primary)</span></div></div></div></aside><div class="pl-72"><header class="fixed top-0 left-72 right-0 h-16 bg-surface/90 backdrop-blur-md z-40 px-space-lg flex items-center justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex items-center gap-space-sm"><nav aria-label="Breadcrumbs" class="flex items-center gap-1.5 font-label-sm text-label-sm text-ink-muted"><span class="hover:text-ink-primary cursor-pointer transition-colors">Observatory</span><span class="">/</span><span class="text-ink-primary font-medium bg-paper-surface px-1.5 py-0.5">Journey</span></nav></div><div class="flex items-center gap-space-sm"><button class="p-2 text-ink-muted hover:text-ink-primary hover:bg-surface-container rounded-full transition-colors" title="Search"><span class="material-symbols-outlined text-[20px]">search</span></button><button class="p-2 text-ink-muted hover:text-ink-primary hover:bg-surface-container rounded-full transition-colors" title="Notifications"><span class="material-symbols-outlined text-[20px]">notifications</span></button><button class="flex items-center justify-center p-2 bg-accent-amber hover:bg-accent-ochre text-on-primary rounded-full shadow-sm transition-colors" title="New Entry"><span class="material-symbols-outlined text-[20px]">add</span></button><div class="h-6 w-px bg-hairline-rule mx-1"></div><div class="flex items-center gap-space-sm pl-1"><div class="flex flex-col items-end"><span class="font-label-sm text-label-sm text-ink-primary font-medium">Manoj Amavasya</span><span class="font-label-sm text-[10px] text-accent-ochre uppercase tracking-wider">Lead Observer</span></div><button class="flex items-center rounded-full hover:ring-2 hover:ring-accent-amber transition-all" title="Profile"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1UKHm3KD6b1hldUVbk2_SiIiLqGXjbCNY5Kr_sHJCHVkgO0Jc4OLN8Pf-r9zUUXiWRtYc6DNu6Xbst98sb0f8t2pB_knfoJqxOun1J3FC3eSVIGHQ9D_qrppP9ApxlVSpnByFUjaCYIKkzyqPA-51ERBjbJrHpldX75uKxMGBeSxEMtZOdD1hd6YPYOlXNyfzduytcXJH8Uvii832bQIMYcAekZ5jE18XtcTG5dZBP6iFpxCqLaKVwrLaQ"></button></div></div></header><main class="relative pt-16 bg-surface w-full min-h-screen"><div class="flex flex-col w-full">
+<!-- Page Header & Action Bar -->
+<div class="bg-paper-surface px-space-lg py-space-md shadow-sm">
+<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-space-md">
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs font-label-sm text-label-sm uppercase text-ink-muted">
+<span class="text-accent-ochre font-medium">Trajectory Engine</span>
+<span class="">•</span>
+<span class="">Sequence Registry</span>
+<span class="">•</span>
+<span class="text-accent-amber">Public Frontispiece Sync</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-ink-primary italic tracking-tight">
+          Journey Archive <span class="font-light not-italic text-ink-muted">/</span> Chronological Trajectory
+        </h1>
+<p class="font-body-md text-body-md text-ink-secondary mt-0.5">Chronological trajectory of intellectual epochs &amp; research milestones.</p>
+</div>
+<!-- Action Cluster -->
+<div class="flex flex-wrap items-center gap-space-sm">
+<div class="flex items-center gap-1.5 px-space-sm py-1.5 bg-paper-base shadow-sm">
+<span class="w-2 h-2 rounded-full bg-accent-amber animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-ink-secondary" id="syncStatus">
+            All 8 milestones synced to sequence index
+          </span>
+</div>
+<button class="px-space-md py-2 bg-surface hover:bg-surface-container text-ink-secondary font-label-md text-label-md uppercase tracking-wider transition-colors shadow-sm" id="discardChangesBtn">
+          Discard
+        </button>
+<button class="flex items-center gap-space-xs px-space-md py-2 bg-accent-amber hover:bg-accent-ochre text-on-primary font-label-md text-label-md uppercase tracking-wider shadow-sm transition-colors" id="saveOrderBtn">
+<span class="material-symbols-outlined text-[16px]">sync_saved_locally</span>
+<span class="">Save Order Changes</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-md py-2 bg-paper-base hover:bg-amber-wash text-accent-ochre font-label-md text-label-md uppercase tracking-wider shadow-sm transition-colors" id="newEntryTopBtn">
+<span class="material-symbols-outlined text-[16px]">add_circle</span>
+<span class="">+ New Milestone</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Reorder Helper Info Ribbon -->
+<div class="px-space-lg py-2 bg-amber-wash flex flex-col md:flex-row md:items-center justify-between gap-space-sm"><div class="flex items-center gap-space-xs font-label-sm text-label-sm text-accent-ochre"><span class="material-symbols-outlined text-[16px]">swap_vert</span><span class="font-medium">Drag or step to reorder</span><span class="text-ink-muted">·</span><span class="text-ink-secondary">Immediate sync</span></div><div class="flex items-center gap-space-sm font-label-sm text-label-sm"><span class="text-ink-secondary font-medium">8 Records</span><span class="bg-surface-container-lowest px-space-xs py-0.5 text-accent-ochre shadow-sm">Monotonic</span></div></div>
+<!-- Main Grid Workspace (Master-Detail) -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-md p-space-lg items-start">
+<!-- LEFT COLUMN: Master Ordered List (7 Cols) -->
+<div class="xl:col-span-7 flex flex-col gap-space-md">
+<!-- Filter and Controller Toolbar -->
+<div class="bg-paper-surface p-space-md shadow-sm flex flex-col md:flex-row items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-xs w-full md:w-auto">
+<div class="relative flex items-center bg-surface-container-lowest px-space-sm py-1.5 shadow-sm w-full md:w-64">
+<span class="material-symbols-outlined text-[18px] text-ink-muted mr-1">search</span>
+<input class="bg-transparent border-none outline-none font-body-sm text-body-sm text-ink-primary placeholder:text-ink-muted w-full" id="filterInput" placeholder="Filter title, period, or tag..." type="text">
+</div>
+<select class="bg-surface-container-lowest text-ink-secondary font-label-sm text-label-sm px-space-sm py-2 outline-none shadow-sm cursor-pointer">
+<option value="all">All Epochs</option>
+<option value="current">2024 — Present</option>
+<option value="postdoc">2020 — 2023</option>
+<option value="academic">2014 — 2019</option>
+<option value="early">2010 — 2013</option>
+</select>
+</div>
+<div class="flex items-center gap-space-xs self-end md:self-auto">
+<button class="flex items-center gap-1 px-space-sm py-1.5 bg-paper-base hover:bg-surface-container text-ink-secondary font-label-sm text-label-sm shadow-sm transition-colors" id="toggleSortDirection">
+<span class="material-symbols-outlined text-[16px] text-accent-amber">sort</span>
+<span class="">Index: <strong id="sortDirectionText">Ascending (01 → 08)</strong></span>
+</button>
+<span class="font-label-sm text-label-sm text-ink-muted bg-paper-base px-2 py-1.5 shadow-sm">1420px · 842 KB</span>
+</div>
+</div>
+<!-- Reorderable Milestone List -->
+<div class="flex flex-col gap-space-sm" id="milestonesContainer">
+<!-- CARD 1: Selected / Active for Edit -->
+<div class="milestone-card group relative bg-amber-wash p-space-md transition-all shadow-sm" data-id="JRN-084" data-index="1">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-accent-amber"></div>
+<div class="flex items-start justify-between gap-space-md">
+<div class="flex items-start gap-space-sm">
+<!-- Reorder controls -->
+<div class="flex flex-col items-center justify-center gap-0.5 pt-0.5">
+<button class="cursor-grab active:cursor-grabbing text-ink-muted hover:text-ink-primary p-0.5" title="Drag to reorder">
+<span class="material-symbols-outlined text-[20px]">drag_indicator</span>
+</button>
+<div class="flex flex-col">
+<button class="move-up-btn text-ink-muted hover:text-accent-amber p-0.5 transition-colors" title="Move Up">
+<span class="material-symbols-outlined text-[16px]">keyboard_arrow_up</span>
+</button>
+<button class="move-down-btn text-ink-muted hover:text-accent-amber p-0.5 transition-colors" title="Move Down">
+<span class="material-symbols-outlined text-[16px]">keyboard_arrow_down</span>
+</button>
+</div>
+</div>
+<!-- Index & Period Metadata -->
+<div class="flex flex-col gap-1">
+<div class="flex flex-wrap items-center gap-space-xs">
+<span class="font-label-md text-label-md px-1.5 py-0.5 bg-surface-container-lowest text-accent-ochre font-bold shadow-sm">
+                    #01
+                  </span>
+<span class="font-label-sm text-label-sm uppercase px-2 py-0.5 bg-accent-amber text-on-primary">
+                    2024 — PRESENT
+                  </span>
+<span class="font-label-sm text-label-sm tracking-wider px-2 py-0.5 bg-surface-container-lowest text-ink-secondary shadow-sm">
+                    LEADERSHIP // ASTROPHYSICS
+                  </span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 bg-paper-base text-accent-ochre flex items-center gap-1 shadow-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-accent-amber"></span>
+                    PUBLIC (ACTIVE)
+                  </span>
+</div>
+<!-- Milestone Content -->
+<h3 class="font-headline-sm text-headline-sm text-ink-primary mt-1 font-medium group-hover:text-accent-ochre transition-colors">
+                  Lead Instrument Scientist &amp; Founder — ZeroAbstraction Atelier
+                </h3>
+<p class="font-body-sm text-body-sm text-ink-secondary mt-0.5 line-clamp-2">Directing computational astrophysics &amp; autonomous telescope reduction suites.</p>
+<div class="flex items-center gap-space-md font-label-sm text-label-sm text-ink-muted mt-2 pt-2 bg-paper-base/50 px-2 py-1"><span class="font-mono text-ink-primary font-medium">JRN-084</span><span class="text-ink-muted">1420px · 842 KB</span><span class="">2 Treatises</span><span class="text-ink-muted">·</span><span class="">Schematic Plate</span></div>
+</div>
+</div>
+<!-- Quick Action Palette -->
+<div class="flex items-center gap-1">
+<button class="p-1.5 bg-surface hover:bg-surface-container text-accent-ochre shadow-sm transition-colors" title="Toggle Visibility">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1.5 bg-accent-amber text-on-primary shadow-sm hover:bg-accent-ochre transition-colors" title="Edit Milestone">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1.5 bg-surface hover:bg-error-container text-ink-muted hover:text-error shadow-sm transition-colors" title="Remove Milestone">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+</div>
+<!-- CARD 2 -->
+<div class="milestone-card group relative bg-paper-surface p-space-md transition-all shadow-sm hover:bg-paper-base" data-id="JRN-083" data-index="2">
+<div class="flex items-start justify-between gap-space-md">
+<div class="flex items-start gap-space-sm">
+<div class="flex flex-col items-center justify-center gap-0.5 pt-0.5">
+<button class="cursor-grab active:cursor-grabbing text-ink-muted hover:text-ink-primary p-0.5" title="Drag to reorder">
+<span class="material-symbols-outlined text-[20px]">drag_indicator</span>
+</button>
+<div class="flex flex-col">
+<button class="move-up-btn text-ink-muted hover:text-accent-amber p-0.5 transition-colors" title="Move Up">
+<span class="material-symbols-outlined text-[16px]">keyboard_arrow_up</span>
+</button>
+<button class="move-down-btn text-ink-muted hover:text-accent-amber p-0.5 transition-colors" title="Move Down">
+<span class="material-symbols-outlined text-[16px]">keyboard_arrow_down</span>
+</button>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex flex-wrap items-center gap-space-xs">
+<span class="font-label-md text-label-md px-1.5 py-0.5 bg-surface-container-lowest text-ink-muted font-bold shadow-sm">
+                    #02
+                  </span>
+<span class="font-label-sm text-label-sm uppercase px-2 py-0.5 bg-paper-container text-ink-secondary">
+                    2022 — 2024
+                  </span>
+<span class="font-label-sm text-label-sm tracking-wider px-2 py-0.5 bg-surface-container-lowest text-ink-secondary shadow-sm">
+                    RESEARCH // HARDWARE
+                  </span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 bg-paper-base text-ink-muted flex items-center gap-1 shadow-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+                    PUBLIC
+                  </span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-ink-primary mt-1 font-medium group-hover:text-accent-ochre transition-colors">
+                  Staff Research Fellow — Mount Graham Astrometric Guild
+                </h3>
+<p class="font-body-sm text-body-sm text-ink-secondary mt-0.5 line-clamp-2">ASCOM Alpaca multi-sensor controllers &amp; wide-field gravitational lensing pipelines.</p>
+<div class="flex items-center gap-space-md font-label-sm text-label-sm text-ink-muted mt-2 pt-2 bg-paper-base/50 px-2 py-1"><span class="font-mono text-ink-primary font-medium">JRN-083</span><span class="text-ink-muted">1420px · 842 KB</span><span class="">1 Telemetry Suite</span><span class="text-ink-muted">·</span><span class="">Sensor Blueprint</span></div>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<button class="p-1.5 bg-surface hover:bg-surface-container text-ink-secondary shadow-sm transition-colors" title="Toggle Visibility">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1.5 bg-surface hover:bg-surface-container text-ink-secondary shadow-sm transition-colors" title="Edit Milestone">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1.5 bg-surface hover:bg-error-container text-ink-muted hover:text-error shadow-sm transition-colors" title="Remove Milestone">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+</div>
+<!-- CARD 3 -->
+<div class="milestone-card group relative bg-paper-surface p-space-md transition-all shadow-sm hover:bg-paper-base" data-id="JRN-082" data-index="3">
+<div class="flex items-start justify-between gap-space-md">
+<div class="flex items-start gap-space-sm">
+<div class="flex flex-col items-center justify-center gap-0.5 pt-0.5">
+<button class="cursor-grab active:cursor-grabbing text-ink-muted hover:text-ink-primary p-0.5" title="Drag to reorder">
+<span class="material-symbols-outlined text-[20px]">drag_indicator</span>
+</button>
+<div class="flex flex-col">
+<button class="move-up-btn text-ink-muted hover:text-accent-amber p-0.5 transition-colors" title="Move Up">
+<span class="material-symbols-outlined text-[16px]">keyboard_arrow_up</span>
+</button>
+<button class="move-down-btn text-ink-muted hover:text-accent-amber p-0.5 transition-colors" title="Move Down">
+<span class="material-symbols-outlined text-[16px]">keyboard_arrow_down</span>
+</button>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex flex-wrap items-center gap-space-xs">
+<span class="font-label-md text-label-md px-1.5 py-0.5 bg-surface-container-lowest text-ink-muted font-bold shadow-sm">
+                    #03
+                  </span>
+<span class="font-label-sm text-label-sm uppercase px-2 py-0.5 bg-paper-container text-ink-secondary">
+                    2020 — 2022
+                  </span>
+<span class="font-label-sm text-label-sm tracking-wider px-2 py-0.5 bg-surface-container-lowest text-ink-secondary shadow-sm">
+                    COMPUTATION // ML
+                  </span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 bg-paper-base text-ink-muted flex items-center gap-1 shadow-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+                    PUBLIC
+                  </span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-ink-primary mt-1 font-medium group-hover:text-accent-ochre transition-colors">
+                  Principal Algorithms Architect — DeepSpace Neural Systems
+                </h3>
+<p class="font-body-sm text-body-sm text-ink-secondary mt-0.5 line-clamp-2">PyTorch ResNet models for real-time deconvolution of atmospheric dispersion.</p>
+<div class="flex items-center gap-space-md font-label-sm text-label-sm text-ink-muted mt-2 pt-2 bg-paper-base/50 px-2 py-1"><span class="font-mono text-ink-primary font-medium">JRN-082</span><span class="text-ink-muted">1420px · 842 KB</span><span class="">GitHub Repo</span><span class="text-ink-muted">·</span><span class="">Weight Checkpoint</span></div>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<button class="p-1.5 bg-surface hover:bg-surface-container text-ink-secondary shadow-sm transition-colors" title="Toggle Visibility">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1.5 bg-surface hover:bg-surface-container text-ink-secondary shadow-sm transition-colors" title="Edit Milestone">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1.5 bg-surface hover:bg-error-container text-ink-muted hover:text-error shadow-sm transition-colors" title="Remove Milestone">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+</div>
+<!-- CARD 4 -->
+<div class="milestone-card group relative bg-paper-surface p-space-md transition-all shadow-sm hover:bg-paper-base" data-id="JRN-081" data-index="4">
+<div class="flex items-start justify-between gap-space-md">
+<div class="flex items-start gap-space-sm">
+<div class="flex flex-col items-center justify-center gap-0.5 pt-0.5">
+<button class="cursor-grab active:cursor-grabbing text-ink-muted hover:text-ink-primary p-0.5" title="Drag to reorder">
+<span class="material-symbols-outlined text-[20px]">drag_indicator</span>
+</button>
+<div class="flex flex-col">
+<button class="move-up-btn text-ink-muted hover:text-accent-amber p-0.5 transition-colors" title="Move Up">
+<span class="material-symbols-outlined text-[16px]">keyboard_arrow_up</span>
+</button>
+<button class="move-down-btn text-ink-muted hover:text-accent-amber p-0.5 transition-colors" title="Move Down">
+<span class="material-symbols-outlined text-[16px]">keyboard_arrow_down</span>
+</button>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex flex-wrap items-center gap-space-xs">
+<span class="font-label-md text-label-md px-1.5 py-0.5 bg-surface-container-lowest text-ink-muted font-bold shadow-sm">
+                    #04
+                  </span>
+<span class="font-label-sm text-label-sm uppercase px-2 py-0.5 bg-paper-container text-ink-secondary">
+                    2018 — 2020
+                  </span>
+<span class="font-label-sm text-label-sm tracking-wider px-2 py-0.5 bg-surface-container-lowest text-ink-secondary shadow-sm">
+                    ACADEMIC POST
+                  </span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 bg-paper-base text-ink-muted flex items-center gap-1 shadow-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+                    PUBLIC
+                  </span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-ink-primary mt-1 font-medium group-hover:text-accent-ochre transition-colors">
+                  Postdoctoral Researcher in Cosmology — Max Planck Institute for Radio Astronomy
+                </h3>
+<p class="font-body-sm text-body-sm text-ink-secondary mt-0.5 line-clamp-2">Sub-millimeter VLBI baselines and relativistic MHD modeling for active galactic nuclei.</p>
+<div class="flex items-center gap-space-md font-label-sm text-label-sm text-ink-muted mt-2 pt-2 bg-paper-base/50 px-2 py-1"><span class="font-mono text-ink-primary font-medium">JRN-081</span><span class="text-ink-muted">1420px · 842 KB</span><span class="">MPIfR Monograph Archive</span></div>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<button class="p-1.5 bg-surface hover:bg-surface-container text-ink-secondary shadow-sm transition-colors" title="Toggle Visibility">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1.5 bg-surface hover:bg-surface-container text-ink-secondary shadow-sm transition-colors" title="Edit Milestone">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1.5 bg-surface hover:bg-error-container text-ink-muted hover:text-error shadow-sm transition-colors" title="Remove Milestone">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+</div>
+<!-- CARD 5 -->
+<div class="milestone-card group relative bg-paper-surface p-space-md transition-all shadow-sm hover:bg-paper-base" data-id="JRN-080" data-index="5">
+<div class="flex items-start justify-between gap-space-md">
+<div class="flex items-start gap-space-sm">
+<div class="flex flex-col items-center justify-center gap-0.5 pt-0.5">
+<button class="cursor-grab active:cursor-grabbing text-ink-muted hover:text-ink-primary p-0.5" title="Drag to reorder">
+<span class="material-symbols-outlined text-[20px]">drag_indicator</span>
+</button>
+<div class="flex flex-col">
+<button class="move-up-btn text-ink-muted hover:text-accent-amber p-0.5 transition-colors" title="Move Up">
+<span class="material-symbols-outlined text-[16px]">keyboard_arrow_up</span>
+</button>
+<button class="move-down-btn text-ink-muted hover:text-accent-amber p-0.5 transition-colors" title="Move Down">
+<span class="material-symbols-outlined text-[16px]">keyboard_arrow_down</span>
+</button>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex flex-wrap items-center gap-space-xs">
+<span class="font-label-md text-label-md px-1.5 py-0.5 bg-surface-container-lowest text-ink-muted font-bold shadow-sm">
+                    #05
+                  </span>
+<span class="font-label-sm text-label-sm uppercase px-2 py-0.5 bg-paper-container text-ink-secondary">
+                    2014 — 2018
+                  </span>
+<span class="font-label-sm text-label-sm tracking-wider px-2 py-0.5 bg-surface-container-lowest text-ink-secondary shadow-sm">
+                    DOCTORATE
+                  </span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 bg-paper-base text-ink-muted flex items-center gap-1 shadow-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+                    PUBLIC
+                  </span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-ink-primary mt-1 font-medium group-hover:text-accent-ochre transition-colors">
+                  Ph.D. in Theoretical &amp; Observational Astrophysics — Cambridge Astronomy
+                </h3>
+<p class="font-body-sm text-body-sm text-ink-secondary mt-0.5 line-clamp-2">Dissertation: “Caustic Singularities and Weak Gravitational Shear in Galaxy Clusters”.</p>
+<div class="flex items-center gap-space-md font-label-sm text-label-sm text-ink-muted mt-2 pt-2 bg-paper-base/50 px-2 py-1"><span class="font-mono text-ink-primary font-medium">JRN-080</span><span class="text-ink-muted">1420px · 842 KB</span><span class="">PhD Astrophysics</span><span class="text-ink-muted">·</span><span class="">Apollo Registry</span></div>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<button class="p-1.5 bg-surface hover:bg-surface-container text-ink-secondary shadow-sm transition-colors" title="Toggle Visibility">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1.5 bg-surface hover:bg-surface-container text-ink-secondary shadow-sm transition-colors" title="Edit Milestone">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1.5 bg-surface hover:bg-error-container text-ink-muted hover:text-error shadow-sm transition-colors" title="Remove Milestone">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+</div>
+<!-- CARD 6 -->
+<div class="milestone-card group relative bg-paper-surface p-space-md transition-all shadow-sm hover:bg-paper-base" data-id="JRN-079" data-index="6">
+<div class="flex items-start justify-between gap-space-md">
+<div class="flex items-start gap-space-sm">
+<div class="flex flex-col items-center justify-center gap-0.5 pt-0.5">
+<button class="cursor-grab active:cursor-grabbing text-ink-muted hover:text-ink-primary p-0.5" title="Drag to reorder">
+<span class="material-symbols-outlined text-[20px]">drag_indicator</span>
+</button>
+<div class="flex flex-col">
+<button class="move-up-btn text-ink-muted hover:text-accent-amber p-0.5 transition-colors" title="Move Up">
+<span class="material-symbols-outlined text-[16px]">keyboard_arrow_up</span>
+</button>
+<button class="move-down-btn text-ink-muted hover:text-accent-amber p-0.5 transition-colors" title="Move Down">
+<span class="material-symbols-outlined text-[16px]">keyboard_arrow_down</span>
+</button>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex flex-wrap items-center gap-space-xs">
+<span class="font-label-md text-label-md px-1.5 py-0.5 bg-surface-container-lowest text-ink-muted font-bold shadow-sm">
+                    #06
+                  </span>
+<span class="font-label-sm text-label-sm uppercase px-2 py-0.5 bg-paper-container text-ink-secondary">
+                    2012 — 2014
+                  </span>
+<span class="font-label-sm text-label-sm tracking-wider px-2 py-0.5 bg-surface-container-lowest text-ink-secondary shadow-sm">
+                    GRADUATE DEGREE
+                  </span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 bg-paper-base text-ink-muted flex items-center gap-1 shadow-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+                    PUBLIC
+                  </span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-ink-primary mt-1 font-medium group-hover:text-accent-ochre transition-colors">
+                  M.S. in Electrical &amp; Computer Engineering — ETH Zürich
+                </h3>
+<p class="font-body-sm text-body-sm text-ink-secondary mt-0.5 line-clamp-2">Embedded FPGA hardware for cryogenic CCD readout sensors and low-noise frontends.</p>
+<div class="flex items-center gap-space-md font-label-sm text-label-sm text-ink-muted mt-2 pt-2 bg-paper-base/50 px-2 py-1"><span class="font-mono text-ink-primary font-medium">JRN-079</span><span class="text-ink-muted">1420px · 842 KB</span><span class="">Thesis: Low-Noise CryoReadout</span></div>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<button class="p-1.5 bg-surface hover:bg-surface-container text-ink-secondary shadow-sm transition-colors" title="Toggle Visibility">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1.5 bg-surface hover:bg-surface-container text-ink-secondary shadow-sm transition-colors" title="Edit Milestone">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1.5 bg-surface hover:bg-error-container text-ink-muted hover:text-error shadow-sm transition-colors" title="Remove Milestone">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+</div>
+<!-- CARD 7 -->
+<div class="milestone-card group relative bg-paper-surface p-space-md transition-all shadow-sm hover:bg-paper-base" data-id="JRN-078" data-index="7">
+<div class="flex items-start justify-between gap-space-md">
+<div class="flex items-start gap-space-sm">
+<div class="flex flex-col items-center justify-center gap-0.5 pt-0.5">
+<button class="cursor-grab active:cursor-grabbing text-ink-muted hover:text-ink-primary p-0.5" title="Drag to reorder">
+<span class="material-symbols-outlined text-[20px]">drag_indicator</span>
+</button>
+<div class="flex flex-col">
+<button class="move-up-btn text-ink-muted hover:text-accent-amber p-0.5 transition-colors" title="Move Up">
+<span class="material-symbols-outlined text-[16px]">keyboard_arrow_up</span>
+</button>
+<button class="move-down-btn text-ink-muted hover:text-accent-amber p-0.5 transition-colors" title="Move Down">
+<span class="material-symbols-outlined text-[16px]">keyboard_arrow_down</span>
+</button>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex flex-wrap items-center gap-space-xs">
+<span class="font-label-md text-label-md px-1.5 py-0.5 bg-surface-container-lowest text-ink-muted font-bold shadow-sm">
+                    #07
+                  </span>
+<span class="font-label-sm text-label-sm uppercase px-2 py-0.5 bg-paper-container text-ink-secondary">
+                    2010 — 2012
+                  </span>
+<span class="font-label-sm text-label-sm tracking-wider px-2 py-0.5 bg-surface-container-lowest text-ink-secondary shadow-sm">
+                    APPRENTICESHIP // OPTICS
+                  </span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 bg-paper-base text-ink-muted flex items-center gap-1 shadow-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+                    PUBLIC
+                  </span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-ink-primary mt-1 font-medium group-hover:text-accent-ochre transition-colors">
+                  Junior Optical Metrology Assistant — Carl Zeiss Jena
+                </h3>
+<p class="font-body-sm text-body-sm text-ink-secondary mt-0.5 line-clamp-2">Laser interferometer calibration for aspherical mirror testing &amp; parabolic certifications.</p>
+<div class="flex items-center gap-space-md font-label-sm text-label-sm text-ink-muted mt-2 pt-2 bg-paper-base/50 px-2 py-1"><span class="font-mono text-ink-primary font-medium">JRN-078</span><span class="text-ink-muted">1420px · 842 KB</span><span class="">Optical Metrology Guild</span></div>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<button class="p-1.5 bg-surface hover:bg-surface-container text-ink-secondary shadow-sm transition-colors" title="Toggle Visibility">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1.5 bg-surface hover:bg-surface-container text-ink-secondary shadow-sm transition-colors" title="Edit Milestone">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1.5 bg-surface hover:bg-error-container text-ink-muted hover:text-error shadow-sm transition-colors" title="Remove Milestone">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+</div>
+<!-- CARD 8 -->
+<div class="milestone-card group relative bg-paper-surface p-space-md transition-all shadow-sm hover:bg-paper-base" data-id="JRN-077" data-index="8">
+<div class="flex items-start justify-between gap-space-md">
+<div class="flex items-start gap-space-sm">
+<div class="flex flex-col items-center justify-center gap-0.5 pt-0.5">
+<button class="cursor-grab active:cursor-grabbing text-ink-muted hover:text-ink-primary p-0.5" title="Drag to reorder">
+<span class="material-symbols-outlined text-[20px]">drag_indicator</span>
+</button>
+<div class="flex flex-col">
+<button class="move-up-btn text-ink-muted hover:text-accent-amber p-0.5 transition-colors" title="Move Up">
+<span class="material-symbols-outlined text-[16px]">keyboard_arrow_up</span>
+</button>
+<button class="move-down-btn text-ink-muted hover:text-accent-amber p-0.5 transition-colors" title="Move Down">
+<span class="material-symbols-outlined text-[16px]">keyboard_arrow_down</span>
+</button>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex flex-wrap items-center gap-space-xs">
+<span class="font-label-md text-label-md px-1.5 py-0.5 bg-surface-container-lowest text-ink-muted font-bold shadow-sm">
+                    #08
+                  </span>
+<span class="font-label-sm text-label-sm uppercase px-2 py-0.5 bg-paper-container text-ink-secondary">
+                    2008 — 2012
+                  </span>
+<span class="font-label-sm text-label-sm tracking-wider px-2 py-0.5 bg-surface-container-lowest text-ink-secondary shadow-sm">
+                    UNDERGRADUATE
+                  </span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 bg-paper-base text-ink-muted flex items-center gap-1 shadow-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+                    PUBLIC
+                  </span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-ink-primary mt-1 font-medium group-hover:text-accent-ochre transition-colors">
+                  B.S. in Applied Physics — Technical University of Munich
+                </h3>
+<p class="font-body-sm text-body-sm text-ink-secondary mt-0.5 line-clamp-2">Wave optics, differential geometry, celestial coordinates, and physical photometry.</p>
+<div class="flex items-center gap-space-md font-label-sm text-label-sm text-ink-muted mt-2 pt-2 bg-paper-base/50 px-2 py-1"><span class="font-mono text-ink-primary font-medium">JRN-077</span><span class="text-ink-muted">1420px · 842 KB</span><span class="">Summa Cum Laude</span></div>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<button class="p-1.5 bg-surface hover:bg-surface-container text-ink-secondary shadow-sm transition-colors" title="Toggle Visibility">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1.5 bg-surface hover:bg-surface-container text-ink-secondary shadow-sm transition-colors" title="Edit Milestone">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1.5 bg-surface hover:bg-error-container text-ink-muted hover:text-error shadow-sm transition-colors" title="Remove Milestone">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN: Detail Editor / Formulation Deck (5 Cols) -->
+<div class="xl:col-span-5 sticky top-20 flex flex-col gap-space-md">
+<div class="bg-paper-surface p-space-lg shadow-sm flex flex-col gap-space-md">
+<!-- Deck Header with Record Status -->
+<div class="flex items-center justify-between pb-space-sm bg-paper-base p-space-sm shadow-sm">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm uppercase text-accent-ochre font-bold">Node Formulation Studio</span>
+<h2 class="font-headline-sm text-headline-sm text-ink-primary">Edit Milestone Entry</h2>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-label-md text-label-md px-2 py-0.5 bg-surface-container-lowest text-accent-ochre shadow-sm">
+              ID: JRN-084
+            </span>
+<span class="font-label-sm text-label-sm text-ink-muted mt-0.5">1420px · 842 KB</span>
+</div>
+</div>
+<!-- Form Deck Body -->
+<form class="flex flex-col gap-space-md" onsubmit="event.preventDefault();">
+<!-- Title Input -->
+<div class="flex flex-col gap-1">
+<label class="font-label-md text-label-md text-ink-muted uppercase" for="milestoneTitle">
+              Milestone Title <span class="text-accent-amber">*</span>
+</label>
+<input class="w-full bg-surface-container-lowest px-space-sm py-2 text-body-md font-body-md text-ink-primary outline-none shadow-sm focus:bg-amber-wash transition-colors" id="milestoneTitle" type="text" value="Lead Instrument Scientist &amp; Founder — ZeroAbstraction Atelier">
+
+</div>
+<!-- Dual Field: Period & Category -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-sm">
+<div class="flex flex-col gap-1">
+<label class="font-label-md text-label-md text-ink-muted uppercase" for="milestonePeriod">
+                Year / Period <span class="text-accent-amber">*</span>
+</label>
+<input class="w-full bg-surface-container-lowest px-space-sm py-2 text-body-md font-body-md text-ink-primary outline-none shadow-sm focus:bg-amber-wash transition-colors" id="milestonePeriod" type="text" value="2024 — PRESENT">
+
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-md text-label-md text-ink-muted uppercase" for="milestoneCategory">
+                Epoch Category Tag
+              </label>
+<select class="w-full bg-surface-container-lowest px-space-sm py-2 text-body-md font-body-md text-ink-primary outline-none shadow-sm cursor-pointer" id="milestoneCategory">
+<option selected="">Leadership // Research Atelier</option>
+<option>Academic Post // Faculty</option>
+<option>Engineering // Instrumentation</option>
+<option>Doctorate // Graduate Research</option>
+<option>Fellowship // Observatory</option>
+</select>
+
+</div>
+</div>
+<!-- Narrative / Description with Micro Toolbar -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-ink-muted uppercase">
+                Description / Narrative <span class="text-accent-amber">*</span>
+</label>
+<!-- Editorial Micro Toolbar -->
+<div class="flex items-center gap-0.5 bg-paper-base px-1 py-0.5 shadow-sm">
+<button class="p-1 hover:text-accent-ochre text-ink-muted transition-colors" type="button"><span class="material-symbols-outlined text-[16px]">format_bold</span></button>
+<button class="p-1 hover:text-accent-ochre text-ink-muted transition-colors" type="button"><span class="material-symbols-outlined text-[16px]">format_italic</span></button>
+<button class="p-1 hover:text-accent-ochre text-ink-muted transition-colors" type="button"><span class="material-symbols-outlined text-[16px]">format_quote</span></button>
+<button class="p-1 hover:text-accent-ochre text-ink-muted transition-colors" type="button"><span class="material-symbols-outlined text-[16px]">link</span></button>
+<button class="p-1 hover:text-accent-ochre text-ink-muted transition-colors" type="button"><span class="material-symbols-outlined text-[16px]">code</span></button>
+</div>
+</div>
+<textarea class="w-full bg-surface-container-lowest p-space-sm text-body-md font-body-md text-ink-primary outline-none shadow-sm focus:bg-amber-wash transition-colors" rows="4">Directing computational astrophysics, robotic optical instrumentation, and autonomous telescope reduction suites. Published first-light interferometric monographs on gravitational lens modeling and synthetic aperture aperture syntheses.</textarea>
+
+</div>
+<!-- Key Associated Links / Repositories -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-ink-muted uppercase">Key Associated Links / Treatises</label>
+<button class="font-label-sm text-label-sm text-accent-ochre hover:text-ink-primary transition-colors flex items-center gap-0.5" type="button">
+<span class="material-symbols-outlined text-[14px]">add</span> Add Reference
+              </button>
+</div>
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center gap-space-xs bg-paper-base p-1.5 shadow-sm">
+<span class="material-symbols-outlined text-[16px] text-ink-muted">article</span>
+<input class="text-body-sm font-body-sm bg-transparent outline-none w-1/2 text-ink-primary font-medium" type="text" value="Monograph #TR-088: Robotic Astrometry">
+<input class="text-body-sm font-body-sm bg-transparent outline-none w-1/2 text-accent-ochre" type="text" value="zeroabstraction.org/treatises/088">
+<button class="text-ink-muted hover:text-error p-0.5" type="button"><span class="material-symbols-outlined text-[16px]">close</span></button>
+</div>
+<div class="flex items-center gap-space-xs bg-paper-base p-1.5 shadow-sm">
+<span class="material-symbols-outlined text-[16px] text-ink-muted">terminal</span>
+<input class="text-body-sm font-body-sm bg-transparent outline-none w-1/2 text-ink-primary font-medium" type="text" value="GitHub // alpaca-core-reduction">
+<input class="text-body-sm font-body-sm bg-transparent outline-none w-1/2 text-accent-ochre" type="text" value="github.com/zeroabstraction/alpaca-core">
+<button class="text-ink-muted hover:text-error p-0.5" type="button"><span class="material-symbols-outlined text-[16px]">close</span></button>
+</div>
+</div>
+</div>
+<!-- Associated Cover / Schematic Plate -->
+<div class="flex flex-col gap-1">
+<label class="font-label-md text-label-md text-ink-muted uppercase">
+              Associated Cover / Schematic Plate (Optional)
+            </label>
+<div class="flex items-center gap-space-md p-space-sm bg-paper-base shadow-sm">
+<img class="w-16 h-16 object-cover bg-surface-container-high shadow-sm flex-shrink-0" data-alt="High precision black and sepia technical schematic of an optical astronomical interferometric telescope array on aged archival blueprint parchment with measurement marks and telemetry calipers" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRcb7gpMm0HG1bzTmTTqgYQ3epJSlQA4N8ZcrFRvwyiDQCNAdQMnAo6YbUV75HLsjyVrYJYDKwTs-6aLW8f9a3DeIxsh8UyI-YCMvCZLIJ-X61ieNte5C_v7vr8f3UbvQ9271pfVmmcjQe830ZSygSC3PVze7F1unjJuhWUd0NKoJldFs2iqEOujFzrTEHjxIh6ZdPvdAOMM5xUiLOgNwdPwpv5FVu9Z9WZpRXOHKe3DoD0yC95G5A">
+<div class="flex flex-col flex-grow">
+<span class="font-label-sm text-label-sm text-ink-primary font-medium">PLATE-2024-OPTICAL-01.png</span>
+<span class="font-label-sm text-label-sm text-ink-muted">1420px · 842 KB</span>
+<div class="flex items-center gap-space-sm mt-1">
+<button class="font-label-sm text-label-sm text-accent-ochre hover:text-ink-primary uppercase tracking-wider" type="button">Replace</button>
+<span class="text-ink-muted">1420px · 842 KB</span>
+<button class="font-label-sm text-label-sm text-error hover:underline uppercase tracking-wider" type="button">Remove</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Visibility & Public Broadcast Toggle -->
+<div class="flex items-center justify-between p-space-sm bg-paper-base shadow-sm">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-ink-primary font-medium uppercase">Frontispiece Timeline Broadcast</span>
+<span class="font-body-sm text-body-sm text-ink-secondary">Render as active milestone node on public editorial curriculum.</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox">
+<div class="w-11 h-6 bg-surface-dim peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-surface-container-lowest after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-surface-container-lowest after:border-surface-dim after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-accent-amber"></div>
+</label>
+</div>
+<!-- Bottom Action Deck -->
+<div class="flex items-center justify-between pt-space-xs">
+<button class="px-space-md py-2 bg-surface hover:bg-surface-container text-ink-secondary font-label-md text-label-md uppercase tracking-wider shadow-sm transition-colors" type="button">
+              Reset Edits
+            </button>
+<button class="flex items-center gap-space-xs px-space-lg py-2 bg-accent-amber hover:bg-accent-ochre text-on-primary font-label-md text-label-md uppercase tracking-wider shadow-sm transition-colors" type="submit">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span class="">Commit Entry Updates</span>
+</button>
+</div>
+<!-- Danger Zone Module -->
+<div class="mt-space-sm p-space-sm bg-error-container/20 shadow-sm flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-error-container font-semibold uppercase">Danger Zone</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Irreversible action.</span>
+</div>
+<button class="px-space-sm py-1.5 bg-surface text-error hover:bg-error hover:text-on-error font-label-sm text-label-sm uppercase tracking-wider shadow-sm transition-colors" id="deleteEntryBtn" type="button">
+              Delete Milestone
+            </button>
+</div>
+</form>
+</div>
+<!-- Telemetry Vector Visualization Card -->
+<div class="bg-paper-surface p-space-md shadow-sm flex flex-col gap-space-xs">
+<div class="flex items-center justify-between font-label-sm text-label-sm">
+<span class="text-ink-muted uppercase">Epoch Span Density Distribution</span>
+<span class="text-accent-ochre font-mono">16-Year Trajectory</span>
+</div>
+<!-- Inline SVG Timeline Spark/Density -->
+<div class="w-full h-12 bg-paper-base flex items-center px-space-sm shadow-inner">
+<svg class="w-full h-8 text-accent-amber" fill="none" preserveAspectRatio="none" viewBox="0 0 400 32">
+<!-- Grid baseline -->
+<line stroke="currentColor" stroke-dasharray="2 2" stroke-opacity="0.2" x1="0" x2="400" y1="16" y2="16"></line>
+<!-- Historical Epoch Points -->
+<circle cx="20" cy="16" fill="currentColor" fill-opacity="0.4" r="3"></circle>
+<circle cx="80" cy="16" fill="currentColor" fill-opacity="0.5" r="3.5"></circle>
+<circle cx="150" cy="16" fill="currentColor" fill-opacity="0.6" r="4"></circle>
+<circle cx="220" cy="16" fill="currentColor" fill-opacity="0.7" r="4"></circle>
+<circle cx="290" cy="16" fill="currentColor" fill-opacity="0.8" r="5"></circle>
+<circle cx="340" cy="16" fill="currentColor" r="5.5"></circle>
+<circle cx="380" cy="16" fill="#965A26" r="6"></circle>
+<!-- Connecting Wave Vector -->
+<path d="M20 16 C 50 10, 60 22, 80 16 C 110 8, 130 24, 150 16 C 180 10, 200 20, 220 16 C 250 12, 270 20, 290 16 C 315 14, 325 18, 340 16 C 360 14, 370 16, 380 16" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"></path>
+</svg>
+</div>
+<div class="flex items-center justify-between font-label-sm text-label-sm text-ink-muted"><span class="">2008</span><span class="">16y Density · 2008 — 2024</span><span class="">2024</span></div>
+</div>
+</div>
+</div>
+<!-- Bottom Global Telemetry Diagnostic Bar -->
+<div class="mt-space-lg px-space-lg py-space-sm bg-paper-container flex flex-col md:flex-row md:items-center justify-between gap-space-xs font-label-sm text-label-sm text-ink-secondary shadow-sm"><div class="flex items-center gap-1 font-mono text-accent-ochre font-medium"><span class="w-1.5 h-1.5 rounded-full bg-accent-amber"></span><span class="">PostgreSQL Active · 0ms</span></div><div class="flex items-center gap-space-sm text-ink-muted"><span class="">ALPHA / SYNCED / EPOCH J2025.13</span></div></div>
+</div>
+<script>
+  (function() {
+    // Interactive reordering & card selection simulation
+    const container = document.getElementById('milestonesContainer');
+    const cards = container ? container.querySelectorAll('.milestone-card') : [];
+    const syncStatus = document.getElementById('syncStatus');
+    const saveBtn = document.getElementById('saveOrderBtn');
+    const discardBtn = document.getElementById('discardChangesBtn');
+    const toggleSortBtn = document.getElementById('toggleSortDirection');
+    const sortDirectionText = document.getElementById('sortDirectionText');
+    const filterInput = document.getElementById('filterInput');
+
+    let isAscending = true;
+    let pendingChanges = false;
+
+    function setPendingState() {
+      pendingChanges = true;
+      if (syncStatus) {
+        syncStatus.textContent = "Unsaved Sequence Modifications Pending Commit";
+        syncStatus.parentElement.classList.remove('bg-paper-base');
+        syncStatus.parentElement.classList.add('bg-amber-wash');
+      }
+    }
+
+    function renumberBadges() {
+      const currentCards = container.querySelectorAll('.milestone-card');
+      currentCards.forEach((card, idx) => {
+        const badge = card.querySelector('span[class*="text-accent-ochre"], span[class*="text-ink-muted"]');
+        const num = (idx + 1).toString().padStart(2, '0');
+        card.setAttribute('data-index', idx + 1);
+        if (badge && badge.textContent.includes('#')) {
+          badge.textContent = '#' + num;
+        }
+      });
+      setPendingState();
+    }
+
+    // Move Up / Move Down buttons
+    container.addEventListener('click', (e) => {
+      const upBtn = e.target.closest('.move-up-btn');
+      const downBtn = e.target.closest('.move-down-btn');
+      const card = e.target.closest('.milestone-card');
+
+      if (upBtn && card && card.previousElementSibling) {
+        container.insertBefore(card, card.previousElementSibling);
+        renumberBadges();
+      } else if (downBtn && card && card.nextElementSibling) {
+        container.insertBefore(card.nextElementSibling, card);
+        renumberBadges();
+      }
+    });
+
+    // Toggle Ascending/Descending
+    if (toggleSortBtn) {
+      toggleSortBtn.addEventListener('click', () => {
+        isAscending = !isAscending;
+        const currentCards = Array.from(container.querySelectorAll('.milestone-card'));
+        currentCards.reverse().forEach(c => container.appendChild(c));
+        if (sortDirectionText) {
+          sortDirectionText.textContent = isAscending ? "Ascending (01 → 08)" : "Descending (08 → 01)";
+        }
+        renumberBadges();
+      });
+    }
+
+    // Save action simulation
+    if (saveBtn) {
+      saveBtn.addEventListener('click', () => {
+        pendingChanges = false;
+        if (syncStatus) {
+          syncStatus.textContent = "All 8 milestones synced to sequence index";
+          syncStatus.parentElement.classList.add('bg-paper-base');
+          syncStatus.parentElement.classList.remove('bg-amber-wash');
+        }
+      });
+    }
+
+    // Discard action simulation
+    if (discardBtn) {
+      discardBtn.addEventListener('click', () => {
+        location.reload();
+      });
+    }
+
+    // Quick client filter
+    if (filterInput) {
+      filterInput.addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase().trim();
+        const currentCards = container.querySelectorAll('.milestone-card');
+        currentCards.forEach(c => {
+          const text = c.innerText.toLowerCase();
+          c.style.display = text.includes(term) ? '' : 'none';
+        });
+      });
+    }
+
+    // Delete Confirmation
+    const deleteBtn = document.getElementById('deleteEntryBtn');
+    if (deleteBtn) {
+      deleteBtn.addEventListener('click', () => {
+        if (confirm('Confirm permanent expungement of node JRN-084 from active sequence?')) {
+          alert('Record marked for sequence deletion upon next repository sync.');
+        }
+      });
+    }
+  })();
+</script></main></div>
+
+
+</body></html>

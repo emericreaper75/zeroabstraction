@@ -2,36 +2,33 @@ import { Display, Title, Label, Body } from '@/components/typography';
 import { ProjectImage } from '@/components/ProjectImage';
 import { EditorialLink } from '@/components/EditorialLink';
 import { Divider } from '@/components/Divider';
-import { getPayload } from 'payload';
-import configPromise from '@/payload.config';
+import { RichTextRenderer } from '@/components/RichTextRenderer';
+import { SampleContentBadge } from '@/components/SampleContentBadge';
+import { getAllSlugs, getProjectBySlug, getRelatedContentForProject } from '@/lib/content';
+import { RelatedContent } from '@/components/RelatedContent';
 import { notFound } from 'next/navigation';
-import { Link } from 'next-view-transitions';
 
 export async function generateStaticParams() {
-  const payload = await getPayload({ config: configPromise });
-  const projects = await payload.find({ collection: 'projects', limit: 1000 });
-  return projects.docs.map((doc) => ({ slug: doc.slug }));
+  const slugs = await getAllSlugs('projects');
+  return slugs;
 }
 
-export default async function ProjectPage({ params }: { params: { slug: string } }) {
-  const payload = await getPayload({ config: configPromise });
-  const projects = await payload.find({
-    collection: 'projects',
-    where: { slug: { equals: params.slug } },
-    limit: 1,
-    depth: 1,
-  });
-
-  const project = projects.docs[0];
+export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const project = await getProjectBySlug(slug);
   if (!project) notFound();
+
+  const relatedItems = await getRelatedContentForProject(project);
 
   const imageUrl = typeof project.cover_image === 'object' && project.cover_image?.url ? project.cover_image.url : '/placeholder.svg';
   const imageAlt = typeof project.cover_image === 'object' && project.cover_image?.alt_text ? project.cover_image.alt_text : `MISSING ALT TEXT - ${project.title}`;
 
   return (
-    <article style={{ paddingBottom: 'var(--space-10)' }}>
-      {/* Header - Reading Width */}
-      <header className="container-reading" style={{ paddingBlock: 'var(--space-10)' }}>
+    <>
+      <SampleContentBadge />
+      <article style={{ paddingBottom: 'clamp(var(--space-6), 8vw, var(--space-10))' }}>
+        {/* Header - Reading Width */}
+        <header className="container-reading" style={{ paddingBlock: 'clamp(var(--space-6), 6vw, var(--space-10))' }}>
         <div className="flex flex-col" style={{ gap: 'var(--space-6)' }}>
           <div className="flex items-center flex-wrap" style={{ gap: 'var(--space-4)' }}>
             <Label className="text-[color:var(--muted)]">{project.year || new Date().getFullYear()}</Label>
@@ -43,9 +40,9 @@ export default async function ProjectPage({ params }: { params: { slug: string }
       </header>
 
       {/* Hero Image - Content Width */}
-      <div className="container-wide" style={{ marginBottom: 'var(--space-10)' }}>
+      <div className="container-wide" style={{ marginBottom: 'clamp(var(--space-6), 6vw, var(--space-10))' }}>
         <ProjectImage 
-          transitionName={`project-hero-${params.slug}`}
+          transitionName={`project-hero-${slug}`}
           src={imageUrl} 
           alt={imageAlt} 
           width={1400} 
@@ -60,21 +57,23 @@ export default async function ProjectPage({ params }: { params: { slug: string }
         {project.summary && (
           <section className="flex flex-col" style={{ gap: 'var(--space-4)' }}>
             <Title as="h2">Summary</Title>
-            <Body className="text-[color:var(--muted)]">{project.summary}</Body>
+            <Body className="text-[color:var(--muted)]" style={{ fontSize: '1.125rem', lineHeight: '1.8' }}>
+              {project.summary}
+            </Body>
           </section>
         )}
 
         {project.description && (
           <section className="flex flex-col" style={{ gap: 'var(--space-4)' }}>
             <Title as="h2">Description</Title>
-            <Body className="text-[color:var(--muted)] italic">[Rich text content — configure Lexical renderer]</Body>
+            <RichTextRenderer data={project.description} />
           </section>
         )}
       </div>
 
       {/* Image Gallery - Content Width */}
       {project.gallery && project.gallery.length > 0 && (
-        <div className="container-wide" style={{ marginBlock: 'var(--space-10)' }}>
+        <div className="container-wide" style={{ marginBlock: 'clamp(var(--space-6), 6vw, var(--space-10))' }}>
           <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: 'var(--space-6)' }}>
             {project.gallery.map((item: any, i: number) => {
                const imgUrl = typeof item.image === 'object' && item.image?.url ? item.image.url : '/placeholder.svg';
@@ -105,7 +104,7 @@ export default async function ProjectPage({ params }: { params: { slug: string }
         {project.lessons && (
           <section className="flex flex-col" style={{ gap: 'var(--space-4)' }}>
             <Title as="h2">Lessons Learned</Title>
-            <Body className="text-[color:var(--muted)] italic">[Rich text content — configure Lexical renderer]</Body>
+            <RichTextRenderer data={project.lessons} />
           </section>
         )}
 
@@ -125,19 +124,14 @@ export default async function ProjectPage({ params }: { params: { slug: string }
           </section>
         )}
 
-        {/* Related Posts */}
-        {project.related_posts && project.related_posts.length > 0 && (
-          <section className="flex flex-col" style={{ gap: 'var(--space-5)', marginTop: 'var(--space-4)' }}>
-            <Title as="h2">Related Writing</Title>
-            <div className="flex flex-col items-start" style={{ gap: 'var(--space-4)' }}>
-              {project.related_posts.map((post: any) => (
-                 <EditorialLink key={post.id} href={`/writing/${post.slug}`}>{post.title.toUpperCase()}</EditorialLink>
-              ))}
-            </div>
-          </section>
-        )}
-
       </div>
+
+      {/* Related Content */}
+      {relatedItems.length > 0 && (
+        <RelatedContent items={relatedItems} />
+      )}
+
     </article>
+    </>
   );
 }

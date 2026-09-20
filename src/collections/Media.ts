@@ -1,10 +1,22 @@
+import path from 'path'
+import { fileURLToPath } from 'url'
 import type { CollectionConfig } from 'payload'
+import { authenticated, publicRead } from '../access'
+
+const filename = fileURLToPath(import.meta.url)
+const dirname = path.dirname(filename)
 
 export const Media: CollectionConfig = {
   slug: 'media',
-  upload: true,
   access: {
-    read: () => true,
+    read: publicRead,
+    create: authenticated,
+    update: authenticated,
+    delete: authenticated,
+  },
+  upload: {
+    staticDir: path.resolve(dirname, '../../media'),
+    mimeTypes: ['image/*', 'video/*', 'application/pdf'],
   },
   fields: [
     {
@@ -21,23 +33,20 @@ export const Media: CollectionConfig = {
       type: 'text',
     },
     {
-      name: 'content_relationships',
-      type: 'relationship',
-      relationTo: ['posts', 'projects'],
-      hasMany: true,
-    },
-    {
       name: 'type',
       type: 'select',
+      defaultValue: 'image',
       options: [
         { label: 'Image', value: 'image' },
         { label: 'Video', value: 'video' },
         { label: 'Document', value: 'document' },
       ],
-      defaultValue: 'image',
-      admin: {
-        position: 'sidebar',
-      },
-    }
+    },
+    {
+      name: 'content_relationships',
+      type: 'relationship',
+      relationTo: ['posts', 'projects'],
+      hasMany: true,
+    },
   ],
 }

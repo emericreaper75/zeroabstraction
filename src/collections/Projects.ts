@@ -1,12 +1,22 @@
-import type { CollectionConfig } from 'payload'
+import type { Access, CollectionConfig } from 'payload'
+import { authenticated } from '../access'
+
+const readProjects: Access = ({ req: { user } }) => {
+  if (user) return true
+  return { status: { not_equals: 'archived' } }
+}
 
 export const Projects: CollectionConfig = {
   slug: 'projects',
   admin: {
     useAsTitle: 'title',
+    defaultColumns: ['title', 'status', 'year', 'updatedAt'],
   },
   access: {
-    read: () => true,
+    read: readProjects,
+    create: authenticated,
+    update: authenticated,
+    delete: authenticated,
   },
   fields: [
     {
@@ -19,9 +29,7 @@ export const Projects: CollectionConfig = {
       type: 'text',
       required: true,
       unique: true,
-      admin: {
-        position: 'sidebar',
-      },
+      index: true,
     },
     {
       name: 'summary',
@@ -44,27 +52,22 @@ export const Projects: CollectionConfig = {
           name: 'image',
           type: 'upload',
           relationTo: 'media',
-        }
-      ]
+        },
+      ],
     },
     {
       name: 'year',
       type: 'number',
-      admin: {
-        position: 'sidebar',
-      },
     },
     {
       name: 'status',
       type: 'select',
+      defaultValue: 'in_progress',
       options: [
         { label: 'In Progress', value: 'in_progress' },
         { label: 'Completed', value: 'completed' },
         { label: 'Archived', value: 'archived' },
       ],
-      admin: {
-        position: 'sidebar',
-      },
     },
     {
       name: 'technologies',
@@ -73,31 +76,22 @@ export const Projects: CollectionConfig = {
         {
           name: 'name',
           type: 'text',
-        }
-      ]
+        },
+      ],
     },
     {
       name: 'topics',
       type: 'relationship',
       relationTo: 'topics',
       hasMany: true,
-      admin: {
-        position: 'sidebar',
-      },
     },
     {
       name: 'links',
       type: 'array',
       fields: [
-        {
-          name: 'label',
-          type: 'text',
-        },
-        {
-          name: 'url',
-          type: 'text',
-        }
-      ]
+        { name: 'label', type: 'text' },
+        { name: 'url', type: 'text' },
+      ],
     },
     {
       name: 'lessons',
@@ -113,9 +107,6 @@ export const Projects: CollectionConfig = {
       name: 'featured',
       type: 'checkbox',
       defaultValue: false,
-      admin: {
-        position: 'sidebar',
-      },
-    }
+    },
   ],
 }

@@ -5,6 +5,9 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Title, Label, Display } from '@/components/typography';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { ThemeToggle } from '@/components/ThemeToggle';
+import { SearchModal } from '@/components/SearchModal';
+import type { SearchableItem } from '@/lib/content';
 
 const LINKS = [
   { name: 'HOME', path: '/' },
@@ -13,8 +16,13 @@ const LINKS = [
   { name: 'ABOUT', path: '/about' },
 ];
 
-export function Header() {
+interface HeaderProps {
+  searchableItems?: SearchableItem[];
+}
+
+export function Header({ searchableItems = [] }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const pathname = usePathname();
   const prefersReducedMotion = useReducedMotion();
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -77,11 +85,12 @@ export function Header() {
       focusableElements[0].focus();
     }
 
+    const currentButton = buttonRef.current;
     return () => {
       document.removeEventListener('keydown', handleTabKey);
       // Return focus to button on close so keyboard users aren't lost
-      if (buttonRef.current && document.activeElement !== buttonRef.current) {
-        buttonRef.current.focus();
+      if (currentButton && document.activeElement !== currentButton) {
+        currentButton.focus();
       }
     };
   }, [isOpen]);
@@ -89,70 +98,146 @@ export function Header() {
   // Close menu automatically on route change
   useEffect(() => {
     setIsOpen(false);
+    setIsSearchOpen(false);
   }, [pathname]);
 
+  // Global shortcut listener for ⌘K or '/' to open search
+  useEffect(() => {
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      const activeTag = (document.activeElement as HTMLElement)?.tagName;
+      const isInput = activeTag === 'INPUT' || activeTag === 'TEXTAREA' || (document.activeElement as HTMLElement)?.isContentEditable;
+
+      if ((e.key === 'k' && (e.metaKey || e.ctrlKey)) || (e.key === '/' && !isInput)) {
+        e.preventDefault();
+        setIsSearchOpen((prev) => !prev);
+      }
+    };
+
+    window.addEventListener('keydown', handleGlobalKeyDown);
+    return () => window.removeEventListener('keydown', handleGlobalKeyDown);
+  }, []);
+
+  const searchButton = (
+    <button
+      type="button"
+      onClick={() => setIsSearchOpen(true)}
+      className="p-2 min-h-[44px] min-w-[44px] flex items-center justify-center text-[color:var(--text)] hover:text-[color:var(--accent)] transition-colors"
+      aria-label="Search content (Press ⌘K or /)"
+      title="Search (⌘K or /)"
+    >
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        <circle cx="11" cy="11" r="8" />
+        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+      </svg>
+    </button>
+  );
+
   return (
-    <header className="container-wide py-8 flex items-center justify-between relative z-50">
-      <Link href="/" style={{ textDecoration: 'none' }} className="relative z-[60]">
-        <Title as="div">Zero Abstraction</Title>
-      </Link>
+    <>
+      <header className="container-wide py-8 flex items-center justify-between relative z-50">
+        <Link href="/" style={{ textDecoration: 'none' }} className="relative z-[60]">
+          <Title as="div">Zero Abstraction</Title>
+        </Link>
 
-      {/* Desktop Nav */}
-      <div className="hidden md:flex items-center" style={{ gap: 'var(--space-6)' }}>
-        {LINKS.map(link => (
-          <Link key={link.path} href={link.path} className="text-[color:var(--text)] hover:text-[color:var(--accent)] transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center" style={{ textDecoration: 'none' }}>
-            <Label className={pathname === link.path ? '' : 'text-[color:var(--muted)]'}>
-              {link.name}
-            </Label>
-          </Link>
-        ))}
-      </div>
+        {/* Desktop Nav */}
+        <div className="hidden md:flex items-center" style={{ gap: 'var(--space-6)' }}>
+          {LINKS.map(link => (
+            <Link key={link.path} href={link.path} className="text-[color:var(--text)] hover:text-[color:var(--accent)] transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center" style={{ textDecoration: 'none' }}>
+              <Label className={pathname === link.path ? '' : 'text-[color:var(--muted)]'}>
+                {link.name}
+              </Label>
+            </Link>
+          ))}
+          <div className="h-4 w-px bg-[color:var(--border)]" aria-hidden="true" />
+          <div className="flex items-center gap-1">
+            {searchButton}
+            <ThemeToggle />
+          </div>
+        </div>
 
-      {/* Mobile Toggle Button */}
-      <button 
-        ref={buttonRef}
-        onClick={() => setIsOpen(!isOpen)}
-        className="md:hidden relative z-[60] p-2 -mr-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
-        aria-label={isOpen ? 'Close menu' : 'Open menu'}
-        aria-expanded={isOpen}
-      >
-        <Label>{isOpen ? 'CLOSE' : 'MENU'}</Label>
-      </button>
+        {/* Mobile Controls */}
+        <div className="md:hidden relative z-[60] flex items-center gap-1">
+          {searchButton}
+          <ThemeToggle />
+          <button 
+            ref={buttonRef}
+            onClick={() => setIsOpen(!isOpen)}
+            className="p-2 -mr-2 min-h-[44px] min-w-[44px] flex items-center justify-center text-[color:var(--text)]"
+            aria-label={isOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={isOpen}
+          >
+            <Label>{isOpen ? 'CLOSE' : 'MENU'}</Label>
+          </button>
+        </div>
 
-      {/* Mobile Menu Overlay */}
-      <div 
-        ref={overlayRef}
-        className="fixed inset-0 bg-[color:var(--bg)] z-50 flex flex-col justify-center px-8 md:hidden"
-        role="dialog"
-        aria-modal="true"
-        aria-label="Navigation Menu"
-        style={{
-          opacity: isOpen ? 1 : 0,
-          pointerEvents: isOpen ? 'auto' : 'none',
-          visibility: isOpen ? 'visible' : 'hidden',
-          transform: isOpen ? 'translateY(0)' : 'translateY(-16px)',
-          transition: prefersReducedMotion ? 'none' : 'opacity 300ms ease-out, transform 300ms ease-out, visibility 300ms',
-        }}
-      >
-        <nav className="flex flex-col" style={{ gap: 'var(--space-8)' }}>
-          {LINKS.map(link => {
-            const isActive = pathname === link.path;
-            return (
-              <Link 
-                key={link.path} 
-                href={link.path} 
-                style={{ textDecoration: 'none' }}
-                className="flex items-center gap-4 group min-h-[44px] py-2"
-              >
-                {isActive && <span className="text-[color:var(--text)] text-2xl" aria-hidden="true">→</span>}
-                <Display as="span" className={isActive ? 'text-[color:var(--text)]' : 'text-[color:var(--muted)] group-hover:text-[color:var(--text)] transition-colors'}>
-                  {link.name}
-                </Display>
-              </Link>
-            )
-          })}
-        </nav>
-      </div>
-    </header>
+        {/* Mobile Menu Overlay */}
+        <div 
+          ref={overlayRef}
+          className="fixed inset-0 bg-[color:var(--bg)] z-50 flex flex-col justify-center px-8 md:hidden"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Navigation Menu"
+          style={{
+            opacity: isOpen ? 1 : 0,
+            pointerEvents: isOpen ? 'auto' : 'none',
+            visibility: isOpen ? 'visible' : 'hidden',
+            transform: isOpen ? 'translateY(0)' : 'translateY(-16px)',
+            transition: prefersReducedMotion ? 'none' : 'opacity 300ms ease-out, transform 300ms ease-out, visibility 300ms',
+          }}
+        >
+          <nav className="flex flex-col" style={{ gap: 'var(--space-8)' }}>
+            {LINKS.map(link => {
+              const isActive = pathname === link.path;
+              return (
+                <Link 
+                  key={link.path} 
+                  href={link.path} 
+                  style={{ textDecoration: 'none' }}
+                  className="flex items-center gap-4 group min-h-[44px] py-2"
+                >
+                  {isActive && <span className="text-[color:var(--text)] text-2xl" aria-hidden="true">→</span>}
+                  <Display as="span" className={isActive ? 'text-[color:var(--text)]' : 'text-[color:var(--muted)] group-hover:text-[color:var(--text)] transition-colors'}>
+                    {link.name}
+                  </Display>
+                </Link>
+              )
+            })}
+            <button
+              type="button"
+              onClick={() => {
+                setIsOpen(false);
+                setIsSearchOpen(true);
+              }}
+              className="flex items-center gap-4 group min-h-[44px] py-2 text-left"
+            >
+              <Display as="span" className="text-[color:var(--muted)] group-hover:text-[color:var(--text)] transition-colors">
+                SEARCH
+              </Display>
+            </button>
+            <div className="pt-6 border-t border-[color:var(--border)] flex items-center justify-between">
+              <Label className="text-[color:var(--muted)]">THEME</Label>
+              <ThemeToggle />
+            </div>
+          </nav>
+        </div>
+      </header>
+
+      {/* Client-Side Search Modal */}
+      <SearchModal
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+        items={searchableItems}
+      />
+    </>
   );
 }

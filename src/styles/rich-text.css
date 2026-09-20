@@ -1,0 +1,288 @@
+/* ==========================================================================
+   Rich Text Styles
+   Scoped under .rich-text — applied by RichTextRenderer component.
+   Uses design tokens from tokens.css.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   KaTeX Font Import
+   -------------------------------------------------------------------------- */
+@import 'katex/dist/katex.min.css';
+
+/* --------------------------------------------------------------------------
+   Base Typography
+   -------------------------------------------------------------------------- */
+.rich-text p {
+  margin-block: 1.15em;
+  line-height: 1.8;
+  font-size: var(--text-body);
+  color: var(--text);
+}
+
+.rich-text > :first-child {
+  margin-top: 0;
+}
+.rich-text > :last-child {
+  margin-bottom: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Headings with Anchors
+   -------------------------------------------------------------------------- */
+.rich-text h1,
+.rich-text h2,
+.rich-text h3,
+.rich-text h4,
+.rich-text h5,
+.rich-text h6 {
+  position: relative;
+  scroll-margin-top: 6rem; /* offset for fixed header */
+  margin-top: 2em;
+  margin-bottom: 0.75em;
+  color: var(--text);
+  font-family: var(--font-display);
+}
+
+.rich-text h2 {
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 500;
+}
+.rich-text h3 {
+  font-size: clamp(1.25rem, 2vw, 1.5rem);
+  font-weight: 500;
+}
+.rich-text h4 {
+  font-size: clamp(1.125rem, 1.5vw, 1.25rem);
+  font-weight: 600;
+}
+
+/* Anchor link indicator */
+.rich-text .heading-anchor {
+  color: var(--muted);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  margin-left: 0.4em;
+  font-size: 0.75em;
+  font-family: var(--font-body);
+}
+.rich-text h1:hover .heading-anchor,
+.rich-text h2:hover .heading-anchor,
+.rich-text h3:hover .heading-anchor,
+.rich-text h4:hover .heading-anchor,
+.rich-text h5:hover .heading-anchor,
+.rich-text h6:hover .heading-anchor {
+  opacity: 1;
+}
+.rich-text .heading-anchor:hover {
+  color: var(--accent);
+}
+
+/* --------------------------------------------------------------------------
+   Lists
+   -------------------------------------------------------------------------- */
+.rich-text ul {
+  list-style-type: disc;
+  padding-left: 1.5em;
+  margin-block: 0.75em;
+}
+.rich-text ol {
+  list-style-type: decimal;
+  padding-left: 1.5em;
+  margin-block: 0.75em;
+}
+.rich-text li {
+  margin-block: 0.25em;
+  line-height: 1.7;
+  font-size: var(--text-body);
+}
+.rich-text li > ul,
+.rich-text li > ol {
+  margin-block: 0.25em;
+}
+
+/* --------------------------------------------------------------------------
+   Blockquotes
+   -------------------------------------------------------------------------- */
+.rich-text blockquote {
+  border-left: 3px solid var(--accent);
+  padding-left: 1.5em;
+  margin-inline: 0;
+  margin-block: 2em;
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* --------------------------------------------------------------------------
+   Inline Code
+   -------------------------------------------------------------------------- */
+.rich-text code:not(pre code) {
+  background: var(--border);
+  padding: 0.15em 0.35em;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  color: var(--text);
+}
+
+/* --------------------------------------------------------------------------
+   Code Blocks (Shiki)
+   -------------------------------------------------------------------------- */
+.rich-text .code-block {
+  position: relative;
+  margin-block: 2em;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.rich-text .code-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  background: var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.rich-text .code-block-lang {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  text-transform: uppercase;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+}
+
+.rich-text .code-block pre {
+  margin: 0;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  tab-size: 2;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Override Shiki's inline bg for theming */
+.rich-text .code-block pre code {
+  background: transparent !important;
+}
+
+/* Scrollbar styling */
+.rich-text .code-block pre::-webkit-scrollbar {
+  height: 6px;
+}
+.rich-text .code-block pre::-webkit-scrollbar-track {
+  background: transparent;
+}
+.rich-text .code-block pre::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+/* --------------------------------------------------------------------------
+   Tables
+   -------------------------------------------------------------------------- */
+.rich-text table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-block: 2em;
+  font-size: var(--text-body);
+}
+
+.rich-text thead {
+  border-bottom: 2px solid var(--border);
+}
+
+.rich-text th {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--text-small);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+
+.rich-text td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+  line-height: 1.6;
+}
+
+.rich-text tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Subtle striped rows for readability */
+.rich-text tbody tr:nth-child(even) {
+  background: color-mix(in srgb, var(--border) 20%, transparent);
+}
+
+/* --------------------------------------------------------------------------
+   Math (KaTeX)
+   -------------------------------------------------------------------------- */
+.rich-text .math-inline {
+  display: inline;
+}
+
+.rich-text .math-display {
+  display: block;
+  text-align: center;
+  margin-block: 1.5em;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Ensure KaTeX renders at a readable size */
+.rich-text .katex {
+  font-size: 1.1em;
+}
+.rich-text .math-display .katex {
+  font-size: 1.25em;
+}
+
+/* --------------------------------------------------------------------------
+   Links inside rich text
+   -------------------------------------------------------------------------- */
+.rich-text a:not(.heading-anchor) {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  transition: color 0.2s ease;
+}
+.rich-text a:not(.heading-anchor):hover {
+  color: var(--text);
+}
+
+/* --------------------------------------------------------------------------
+   Horizontal Rules
+   -------------------------------------------------------------------------- */
+.rich-text hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin-block: 2em;
+}
+
+/* --------------------------------------------------------------------------
+   Images inside rich text
+   -------------------------------------------------------------------------- */
+.rich-text img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin-block: 1.5em;
+}
+
+/* --------------------------------------------------------------------------
+   Strong / Emphasis
+   -------------------------------------------------------------------------- */
+.rich-text strong {
+  font-weight: 600;
+  color: var(--text);
+}
+.rich-text em {
+  font-style: italic;
+}

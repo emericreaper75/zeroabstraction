@@ -2,45 +2,23 @@ import { Display, Heading, Title, Label, Body } from '@/components/typography';
 import { ProjectImage } from '@/components/ProjectImage';
 import { EditorialLink } from '@/components/EditorialLink';
 import { Reveal } from '@/components/Reveal';
+import { FeaturedProjectCard } from '@/components/FeaturedProjectCard';
+import { SampleContentBadge } from '@/components/SampleContentBadge';
 import { Link } from 'next-view-transitions';
-import { getPayload } from 'payload';
-import configPromise from '@/payload.config';
+import { getCurrentState, getProfile, getFeaturedProjects, getRecentPosts, getJourney } from '@/lib/content';
 
 export default async function Home() {
-  const payload = await getPayload({ config: configPromise });
-
-  const currentState = await payload.findGlobal({
-    slug: 'current-state',
-  });
-
-  const profile = await payload.findGlobal({
-    slug: 'profile',
-  });
-
-  const featuredProjects = await payload.find({
-    collection: 'projects',
-    where: {
-      featured: {
-        equals: true,
-      },
-    },
-    limit: 2,
-  });
-
-  const recentPosts = await payload.find({
-    collection: 'posts',
-    sort: '-published_at',
-    limit: 3,
-  });
-
-  const journeyEntries = await payload.find({
-    collection: 'journey',
-    sort: 'order',
-  });
+  const currentState = await getCurrentState();
+  const profile = await getProfile();
+  const featuredProjects = await getFeaturedProjects(2);
+  const recentPosts = await getRecentPosts(3);
+  const journeyEntries = await getJourney();
 
   return (
-    <div className="container-wide">
-      <Reveal>
+    <>
+      <SampleContentBadge />
+      <div className="container-wide">
+        <Reveal>
         <section className="min-h-[85vh] flex flex-col justify-center py-16" style={{ gap: 'var(--space-8)' }}>
           {/* Text Content */}
           <div className="flex flex-col" style={{ gap: 'var(--space-4)', maxWidth: '800px' }}>
@@ -121,7 +99,7 @@ export default async function Home() {
       )}
 
       {/* The Path So Far */}
-      {journeyEntries.docs.length > 0 && (
+      {journeyEntries.length > 0 && (
         <Reveal>
           <section className="relative overflow-hidden" style={{ paddingBlock: 'var(--space-10)' }}>
             {/* Orbital Arc Background */}
@@ -134,8 +112,8 @@ export default async function Home() {
             </div>
 
             <div className="relative z-10 flex flex-col md:flex-row flex-wrap justify-center items-center gap-16 md:gap-4 md:px-12">
-              {journeyEntries.docs.map((entry, index) => (
-                <div key={entry.id} className={`bg-[color:var(--bg)] p-4 flex flex-col items-center max-w-[320px] ${index % 2 !== 0 ? 'md:-translate-y-16' : ''}`}>
+              {journeyEntries.map((entry, index) => (
+                <div key={entry.id ?? `${entry.title}-${index}`} className={`bg-[color:var(--bg)] p-4 flex flex-col items-center max-w-[320px] ${index % 2 !== 0 ? 'md:-translate-y-16' : ''}`}>
                   <Title as="h3" className="text-center">{entry.title}</Title>
                 </div>
               ))}
@@ -145,7 +123,7 @@ export default async function Home() {
       )}
 
       {/* Featured Work Section */}
-      {featuredProjects.docs.length > 0 && (
+      {featuredProjects.length > 0 && (
         <Reveal>
           <section style={{ paddingBlock: 'var(--space-10)' }}>
             <div style={{ marginBottom: 'var(--space-8)' }}>
@@ -153,37 +131,9 @@ export default async function Home() {
             </div>
 
             <div className="flex flex-col" style={{ gap: 'var(--space-10)' }}>
-              {featuredProjects.docs.map((project, index) => {
+              {featuredProjects.map((project, index) => {
                 const isEven = index % 2 === 0;
-                // Safely extract URL from media or use placeholder
-                const imageUrl = typeof project.cover_image === 'object' && project.cover_image?.url ? project.cover_image.url : '/placeholder.svg';
-                const imageAlt = typeof project.cover_image === 'object' && project.cover_image?.alt_text ? project.cover_image.alt_text : `MISSING ALT TEXT - ${project.title}`;
-                
-                return (
-                  <div key={project.id} className="grid grid-cols-1 md:grid-cols-12 items-center" style={{ gap: 'var(--space-8)' }}>
-                    <div className={`md:col-span-7 ${!isEven ? 'md:order-2 order-1' : ''}`}>
-                      <Link href={`/projects/${project.slug}`} style={{ display: 'block' }}>
-                        <ProjectImage transitionName={`project-hero-${project.slug}`} src={imageUrl} alt={imageAlt} width={800} height={600} className="w-full h-auto" />
-                      </Link>
-                    </div>
-                    <div className={`md:col-span-5 flex flex-col items-start ${!isEven ? 'md:order-1 order-2' : ''}`} style={{ gap: 'var(--space-4)' }}>
-                      <Title as="h3">{project.title}</Title>
-                      <div className="flex items-center flex-wrap" style={{ gap: 'var(--space-3)' }}>
-                        <Label className="text-[color:var(--muted)]">{project.year || new Date().getFullYear()}</Label>
-                        <span className="text-[color:var(--muted)]">•</span>
-                        {project.technologies && project.technologies.length > 0 && (
-                          <Label className="text-[color:var(--muted)]">
-                            {project.technologies.slice(0, 2).map((t: any) => t.name).join(' & ').toUpperCase()}
-                          </Label>
-                        )}
-                      </div>
-                      <Body className="text-[color:var(--muted)]">
-                        {project.summary}
-                      </Body>
-                      <EditorialLink href={`/projects/${project.slug}`} style={{ marginTop: 'var(--space-2)' }}>VIEW PROJECT</EditorialLink>
-                    </div>
-                  </div>
-                );
+                return <FeaturedProjectCard key={project.id} project={project} isEven={isEven} />;
               })}
             </div>
           </section>
@@ -191,7 +141,7 @@ export default async function Home() {
       )}
 
       {/* Writing Section */}
-      {recentPosts.docs.length > 0 && (
+      {recentPosts.length > 0 && (
         <Reveal>
           <section style={{ paddingBlock: 'var(--space-10)' }}>
             <div style={{ marginBottom: 'var(--space-8)' }}>
@@ -199,7 +149,7 @@ export default async function Home() {
             </div>
 
             <div className="flex flex-col" style={{ gap: 'var(--space-8)' }}>
-              {recentPosts.docs.map((post) => {
+              {recentPosts.map((post) => {
                 const dateStr = post.published_at 
                   ? new Date(post.published_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase()
                   : 'DRAFT';
@@ -267,5 +217,6 @@ export default async function Home() {
         </Reveal>
       )}
     </div>
+    </>
   );
 }

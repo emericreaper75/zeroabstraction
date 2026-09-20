@@ -1,15 +1,10 @@
 import { Display, Title, Label, Body } from '@/components/typography';
 import { EditorialLink } from '@/components/EditorialLink';
-import { getPayload } from 'payload';
-import configPromise from '@/payload.config';
+import { getPosts } from '@/lib/content';
 import { Link } from 'next-view-transitions';
 
 export default async function WritingArchive() {
-  const payload = await getPayload({ config: configPromise });
-  const posts = await payload.find({
-    collection: 'posts',
-    sort: '-published_at',
-  });
+  const { docs: posts } = await getPosts();
 
   return (
     <div className="container-wide pb-32">
@@ -18,7 +13,7 @@ export default async function WritingArchive() {
       </header>
 
       <div className="flex flex-col" style={{ gap: 'var(--space-8)' }}>
-        {posts.docs.map((post) => {
+        {posts.map((post) => {
           const dateStr = post.published_at 
             ? new Date(post.published_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase()
             : 'DRAFT';

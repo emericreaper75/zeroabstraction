@@ -72,7 +72,6 @@ export interface Config {
     posts: Post;
     projects: Project;
     topics: Topic;
-    journey: Journey;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -85,7 +84,6 @@ export interface Config {
     posts: PostsSelect<false> | PostsSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
     topics: TopicsSelect<false> | TopicsSelect<true>;
-    journey: JourneySelect<false> | JourneySelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -98,11 +96,13 @@ export interface Config {
   globals: {
     'current-state': CurrentState;
     profile: Profile;
+    journey: Journey;
     'site-settings': SiteSetting;
   };
   globalsSelect: {
     'current-state': CurrentStateSelect<false> | CurrentStateSelect<true>;
     profile: ProfileSelect<false> | ProfileSelect<true>;
+    journey: JourneySelect<false> | JourneySelect<true>;
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
   };
   locale: null;
@@ -139,6 +139,7 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: number;
+  last_login?: string | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -167,6 +168,7 @@ export interface Media {
   alt_text: string;
   caption?: string | null;
   credit?: string | null;
+  type?: ('image' | 'video' | 'document') | null;
   content_relationships?:
     | (
         | {
@@ -179,7 +181,6 @@ export interface Media {
           }
       )[]
     | null;
-  type?: ('image' | 'video' | 'document') | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -201,7 +202,7 @@ export interface Post {
   title: string;
   slug: string;
   excerpt?: string | null;
-  content: {
+  content?: {
     root: {
       type: string;
       children: {
@@ -215,10 +216,10 @@ export interface Post {
       version: number;
     };
     [k: string]: unknown;
-  };
+  } | null;
   cover_image?: (number | null) | Media;
   published_at?: string | null;
-  status?: ('draft' | 'published') | null;
+  status: 'draft' | 'published' | 'archived';
   reading_time?: number | null;
   topics?: (number | Topic)[] | null;
   related_projects?: (number | Project)[] | null;
@@ -240,7 +241,8 @@ export interface Topic {
   name: string;
   slug: string;
   description?: string | null;
-  type?: ('astrophysics' | 'physics' | 'ece' | 'programming' | 'photography' | 'other') | null;
+  type?:
+    ('astrophysics' | 'physics' | 'ece' | 'programming' | 'photography' | 'books' | 'experiments' | 'other') | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -313,23 +315,6 @@ export interface Project {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "journey".
- */
-export interface Journey {
-  id: number;
-  /**
-   * Order in the trajectory (e.g., 1 for Physics, 2 for ECE, 3 for Astrophysics)
-   */
-  order: number;
-  title: string;
-  date: string;
-  description: string;
-  category: 'physics' | 'ece' | 'astrophysics';
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -371,10 +356,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'topics';
         value: number | Topic;
-      } | null)
-    | ({
-        relationTo: 'journey';
-        value: number | Journey;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -423,6 +404,7 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  last_login?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -448,8 +430,8 @@ export interface MediaSelect<T extends boolean = true> {
   alt_text?: T;
   caption?: T;
   credit?: T;
-  content_relationships?: T;
   type?: T;
+  content_relationships?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -540,19 +522,6 @@ export interface TopicsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "journey_select".
- */
-export interface JourneySelect<T extends boolean = true> {
-  order?: T;
-  title?: T;
-  date?: T;
-  description?: T;
-  category?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -602,7 +571,6 @@ export interface CurrentState {
   reading?: string | null;
   thinking_about?: string | null;
   visibility?: boolean | null;
-  updated_at?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -631,6 +599,26 @@ export interface Profile {
   current_focus?: string | null;
   photograph?: (number | null) | Media;
   updated_at?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "journey".
+ */
+export interface Journey {
+  id: number;
+  entries?:
+    | {
+        order: number;
+        title: string;
+        date?: string | null;
+        description?: string | null;
+        category?: ('physics' | 'ece' | 'astrophysics') | null;
+        milestone?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -674,7 +662,6 @@ export interface CurrentStateSelect<T extends boolean = true> {
   reading?: T;
   thinking_about?: T;
   visibility?: T;
-  updated_at?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -689,6 +676,26 @@ export interface ProfileSelect<T extends boolean = true> {
   current_focus?: T;
   photograph?: T;
   updated_at?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "journey_select".
+ */
+export interface JourneySelect<T extends boolean = true> {
+  entries?:
+    | T
+    | {
+        order?: T;
+        title?: T;
+        date?: T;
+        description?: T;
+        category?: T;
+        milestone?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

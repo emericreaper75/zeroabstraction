@@ -1,0 +1,310 @@
+<!DOCTYPE html><html lang="en" style=""><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+  <style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+      main > :first-child { margin-top: 0 !important; }
+      main > :last-child { margin-bottom: 0 !important; }
+    }
+    ::-webkit-scrollbar { display: none; }
+  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface": "#faf9f5",
+            "background": "#faf9f5",
+            "paper-surface": "#f4f4f0",
+            "paper-container": "#eaeae5",
+            "paper-base": "#fbfbfa",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#f4f4f0",
+            "surface-container": "#eeeeea",
+            "surface-container-high": "#e8e8e4",
+            "surface-container-highest": "#e2e3df",
+            "ink-primary": "#181c1e",
+            "ink-secondary": "#2d3134",
+            "ink-muted": "#686c6f",
+            "accent-amber": "#b3743b",
+            "accent-ochre": "#965a26",
+            "amber-wash": "#f6eee3",
+            "hairline-rule": "#e0e0db",
+            "hairline-subtle": "#ecece6",
+            "primary": "#864f18"
+          },
+          fontFamily: {
+            "headline": ["Newsreader", "serif"],
+            "body": ["IBM Plex Sans", "sans-serif"],
+            "mono": ["JetBrains Mono", "monospace"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-background font-body text-ink-primary min-h-screen selection:bg-amber-wash selection:text-ink-primary flex">
+
+  <!-- ASIDE / NAVIGATION SIDEBAR -->
+  <aside class="fixed left-0 top-0 h-full w-72 bg-paper-surface z-50 flex flex-col justify-between border-r border-hairline-rule">
+    <div class="flex flex-col">
+      <!-- Masthead Branding -->
+      <div class="h-16 px-5 flex items-center justify-between border-b border-hairline-rule bg-paper-surface">
+        <div class="flex items-center gap-2">
+          <span class="font-headline text-xl text-ink-primary tracking-tight font-medium">ZeroAbstraction</span>
+          <span class="font-mono text-[10px] px-1.5 py-0.5 bg-paper-container text-ink-muted uppercase">OS v3.28</span>
+        </div>
+      </div>
+
+      <!-- Nav Items Scroll -->
+      <div class="p-4 flex flex-col gap-6 overflow-y-auto max-h-[calc(100vh-8.5rem)]"><!-- Create Entry Primary Action -->
+        <div class="px-2">
+          <button class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-accent-amber hover:bg-accent-ochre text-surface-container-lowest font-mono text-xs uppercase tracking-wider font-medium shadow-sm transition-colors" type="button">
+            <span class="material-symbols-outlined text-[16px]">add</span>
+            <span class="">+ CREATE ENTRY</span>
+          </button>
+        </div>
+
+        <!-- Collections -->
+        <div class="flex flex-col gap-1">
+          <div class="font-mono text-[10px] uppercase tracking-widest text-ink-muted px-2 mb-1">Collections</div>
+          <nav class="flex flex-col gap-0.5">
+            <a class="flex items-center justify-between px-3 py-2 font-mono text-xs text-ink-secondary hover:bg-paper-container hover:text-ink-primary transition-colors" href="#">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-[18px] text-ink-muted">grid_view</span>
+                <span class="">Dashboard</span>
+              </div>
+            </a>
+            <a class="flex items-center justify-between px-3 py-2 font-mono text-xs text-ink-secondary hover:bg-paper-container hover:text-ink-primary transition-colors" href="#">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-[18px] text-ink-muted">auto_stories</span>
+                <span class="">Essays &amp; Treatises</span>
+              </div>
+              <span class="font-mono text-[10px] px-1.5 py-0.2 bg-paper-container text-ink-muted">18</span>
+            </a>
+            <a class="flex items-center justify-between px-3 py-2 font-mono text-xs text-ink-secondary hover:bg-paper-container hover:text-ink-primary transition-colors" href="#">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-[18px] text-ink-muted">explore</span>
+                <span class="">Celestial Catalog</span>
+              </div>
+              <span class="font-mono text-[10px] px-1.5 py-0.2 bg-paper-container text-ink-muted">12</span>
+            </a>
+            <a class="flex items-center justify-between px-3 py-2 font-mono text-xs text-ink-secondary hover:bg-paper-container hover:text-ink-primary transition-colors" href="#">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-[18px] text-ink-muted">visibility</span>
+                <span class="">Field Observations</span>
+              </div>
+              <span class="font-mono text-[10px] px-1.5 py-0.2 bg-paper-container text-ink-muted">156</span>
+            </a>
+            <a class="flex items-center justify-between px-3 py-2 font-mono text-xs text-ink-secondary hover:bg-paper-container hover:text-ink-primary transition-colors" href="#">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-[18px] text-ink-muted">query_stats</span>
+                <span class="">Telemetry Logs</span>
+              </div>
+              <span class="font-mono text-[10px] px-1.5 py-0.2 bg-paper-container text-ink-muted">2.4k</span>
+            </a>
+            <a class="flex items-center justify-between px-3 py-2 font-mono text-xs text-ink-secondary hover:bg-paper-container hover:text-ink-primary transition-colors" href="#">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-[18px] text-ink-muted">label</span>
+                <span class="">Taxonomy &amp; Tags</span>
+              </div>
+              <span class="font-mono text-[10px] px-1.5 py-0.2 bg-paper-container text-ink-muted">84</span>
+            </a>
+            <a class="flex items-center justify-between px-3 py-2 font-mono text-xs text-ink-secondary hover:bg-paper-container hover:text-ink-primary transition-colors" href="#">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-[18px] text-ink-muted">perm_media</span>
+                <span class="">Media &amp; Plates Archive</span>
+              </div>
+              <span class="font-mono text-[10px] px-1.5 py-0.2 bg-paper-container text-ink-muted">156</span>
+            </a>
+          </nav>
+        </div>
+
+        <!-- Globals -->
+        <div class="flex flex-col gap-1">
+          <div class="font-mono text-[10px] uppercase tracking-widest text-ink-muted px-2 mb-1">Globals</div>
+          <nav class="flex flex-col gap-0.5">
+            <a class="flex items-center justify-between px-3 py-2 font-mono text-xs text-ink-secondary hover:bg-paper-container hover:text-ink-primary transition-colors" href="#">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-[18px] text-ink-muted">history_edu</span>
+                <span class="">Profile &amp; Atelier</span>
+              </div>
+            </a>
+            <a class="flex items-center justify-between px-3 py-2 font-mono text-xs text-ink-secondary hover:bg-paper-container hover:text-ink-primary transition-colors" href="#">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-[18px] text-ink-muted">sensors</span>
+                <span class="">Current State</span>
+              </div>
+            </a>
+            <a class="flex items-center justify-between px-3 py-2 font-mono text-xs text-ink-secondary hover:bg-paper-container hover:text-ink-primary transition-colors" href="#">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-[18px] text-ink-muted">folder_open</span>
+                <span class="">Journey Archive</span>
+              </div>
+            </a>
+            <a class="flex items-center justify-between px-3 py-2 font-mono text-xs text-ink-secondary hover:bg-paper-container hover:text-ink-primary transition-colors" href="#">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-[18px] text-ink-muted">tune</span>
+                <span class="">Site Settings</span>
+              </div>
+            </a>
+            <!-- Active Users Tab -->
+            <a class="flex items-center justify-between px-3 py-2 font-mono text-xs bg-amber-wash text-accent-ochre border-l-2 border-accent-amber pl-[10px] transition-colors" href="#">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-[18px] text-accent-ochre">person</span>
+                <span class="font-medium">Users &amp; Access</span>
+              </div>
+              <span class="font-mono text-[10px] px-1.5 py-0.2 bg-paper-container text-accent-ochre font-semibold">01</span>
+            </a>
+          </nav>
+        </div></div>
+    </div>
+
+    <!-- PostgreSQL Latency Footer -->
+    <div class="p-4 border-t border-hairline-rule bg-paper-base flex items-center justify-between"><div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-[#3d7a5a]"></span>
+        <span class="font-mono text-[10px] text-ink-muted uppercase">PG:OK · POSTGRESQL 16</span>
+      </div>
+      <span class="font-mono text-[10px] text-ink-secondary font-medium">0.8ms</span></div>
+  </aside>
+
+  <!-- MAIN WRAPPER -->
+  <div class="pl-72 flex flex-col min-h-screen w-full">
+    <!-- TOP HEADER -->
+    <header class="fixed top-0 left-72 right-0 h-16 bg-surface/90 backdrop-blur-md border-b border-hairline-rule z-40 px-8 flex items-center justify-between"><!-- Left: Compact Breadcrumbs -->
+      <div class="flex items-center gap-2 font-mono text-xs text-ink-muted"><span class="hover:text-ink-primary transition-colors cursor-pointer uppercase tracking-wider text-[11px]">OBSERVATORY</span><span class="text-hairline-rule font-sans">/</span><span class="font-medium text-accent-ochre uppercase tracking-wider text-[11px]">USERS &amp; ACCESS</span></div>
+
+      <!-- Right: Search, Notifications, New Entry, Avatar Profile Badge -->
+      <div class="flex items-center gap-3"><button aria-label="Search" class="p-2 text-ink-muted hover:text-ink-primary hover:bg-paper-container rounded transition-colors flex items-center justify-center" type="button"><span class="material-symbols-outlined text-[20px]">search</span></button><button aria-label="Notifications" class="p-2 text-ink-muted hover:text-ink-primary hover:bg-paper-container rounded transition-colors flex items-center justify-center relative" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="w-1.5 h-1.5 rounded-full bg-accent-amber absolute top-2 right-2"></span></button><button aria-label="New Entry" class="w-8 h-8 flex items-center justify-center bg-paper-container hover:bg-surface-container-high text-ink-primary border border-hairline-rule transition-colors" type="button"><span class="material-symbols-outlined text-[18px] text-accent-amber">add</span></button><div class="h-5 w-[1px] bg-hairline-rule mx-1"></div><div class="w-8 h-8 rounded-full overflow-hidden border border-accent-amber/50 flex items-center justify-center bg-paper-container shrink-0 cursor-pointer" title="Manoj Amavasya (Admin)"><img src="https://lh3.googleusercontent.com/aida/AEtjO1UKHm3KD6b1hldUVbk2_SiIiLqGXjbCNY5Kr_sHJCHVkgO0Jc4OLN8Pf-r9zUUXiWRtYc6DNu6Xbst98sb0f8t2pB_knfoJqxOun1J3FC3eSVIGHQ9D_qrppP9ApxlVSpnByFUjaCYIKkzyqPA-51ERBjbJrHpldX75uKxMGBeSxEMtZOdD1hd6YPYOlXNyfzduytcXJH8Uvii832bQIMYcAekZ5jE18XtcTG5dZBP6iFpxCqLaKVwrLaQ" alt="Manoj Amavasya" class="w-full h-full object-cover"></div></div></header>
+
+    <!-- CONTENT SURFACE -->
+    <main class="relative pt-20 pb-12 flex-1 bg-background w-full px-8">
+      <div class="w-full flex flex-col gap-6"> <!-- TOP CONTEXT / STATUS BAR --> <div class="flex flex-wrap items-center justify-between gap-4 p-3 bg-surface-container-low rounded-lg border border-hairline-rule"> <div class="flex items-center gap-3"> <span class="font-mono text-xs uppercase tracking-wider text-ink-primary font-semibold">Access Control Register</span> <span class="inline-flex items-center gap-1.5 px-2 py-0.5 bg-amber-wash text-accent-ochre font-mono text-[10px] uppercase rounded border border-accent-amber/30"> <span class="w-1.5 h-1.5 rounded-full bg-[#3d7a5a]"></span>V1 SINGLE TENANT · SOLE OPERATOR </span> </div> <div class="flex items-center gap-2"> <button class="px-3 py-1.5 bg-surface-container hover:bg-surface-container-high text-ink-secondary font-mono text-xs uppercase tracking-wider transition-colors border border-hairline-rule flex items-center gap-1.5" type="button"> <span class="material-symbols-outlined text-[16px]">lock_reset</span> <span class="">Rotate Token</span> </button> <button class="px-3.5 py-1.5 bg-accent-amber hover:bg-accent-ochre text-surface-container-lowest font-mono text-xs uppercase tracking-wider flex items-center gap-1.5 transition-colors shadow-sm font-medium" type="button"> <span class="material-symbols-outlined text-[16px]">verified_user</span> <span class="">Audit Log</span> </button> </div> </div> <!-- MINIMIZED EDITORIAL TITLE & SUBTITLE --> <div class="flex flex-wrap items-baseline justify-between gap-2 border-b border-hairline-rule pb-3"> <div> <div class="font-mono text-[11px] text-accent-amber uppercase tracking-widest">ZeroAbstraction // Identity &amp; System Authorization</div> <h1 class="font-headline text-3xl text-ink-primary font-normal tracking-tight mt-0.5"> Users &amp; Identity <span class="italic font-light text-ink-muted text-xl">— Sole Operator Principal</span> </h1> </div> <div class="font-mono text-[11px] text-ink-muted uppercase"> Ledger ID: usr_01HJ89K2QAZ </div> </div> <!-- MAIN 2-COLUMN GRID STRETCHED ACCROSS AVAILABLE SPACE --> <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start"> <!-- LEFT COLUMN (8 COLS): ADMIN CARD & ROADMAP --> <div class="xl:col-span-8 flex flex-col gap-6"> <!-- SECTION 01: COMPACT PRIMARY ADMINISTRATOR CARD --> <section class="bg-surface-container-low p-5 rounded-lg border border-hairline-rule shadow-sm flex flex-col gap-4"><!-- Header Row -->
+<div class="flex items-center justify-between border-b border-hairline-rule pb-3.5">
+  <div class="flex items-center gap-2.5">
+    <span class="font-mono text-[10px] px-1.5 py-0.5 bg-paper-container text-accent-ochre uppercase tracking-wider font-semibold border border-hairline-rule">V1 Singleton</span>
+    <span class="text-hairline-rule font-mono text-xs">/</span>
+    <h2 class="font-headline text-xl text-ink-primary font-medium tracking-tight">Primary Administrator</h2>
+  </div>
+  <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-amber-wash border border-accent-amber/40 text-accent-ochre font-mono text-[10px] uppercase font-semibold">
+    <span class="w-1.5 h-1.5 rounded-full bg-[#3d7a5a]"></span>
+    <span class="">Active &amp; Verified</span>
+  </div>
+</div>
+
+<!-- User Profile Identity Block -->
+<div class="p-4 bg-surface-container-lowest border border-hairline-rule rounded flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+  <div class="flex items-center gap-4">
+    <div class="relative shrink-0">
+      <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-accent-amber/70 shadow-sm bg-paper-container">
+        <img src="https://lh3.googleusercontent.com/aida/AEtjO1UKHm3KD6b1hldUVbk2_SiIiLqGXjbCNY5Kr_sHJCHVkgO0Jc4OLN8Pf-r9zUUXiWRtYc6DNu6Xbst98sb0f8t2pB_knfoJqxOun1J3FC3eSVIGHQ9D_qrppP9ApxlVSpnByFUjaCYIKkzyqPA-51ERBjbJrHpldX75uKxMGBeSxEMtZOdD1hd6YPYOlXNyfzduytcXJH8Uvii832bQIMYcAekZ5jE18XtcTG5dZBP6iFpxCqLaKVwrLaQ" alt="Manoj Amavasya" class="w-full h-full object-cover">
+      </div>
+      <span class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-[#3d7a5a] border-2 border-surface-container-lowest flex items-center justify-center text-white" title="Online &amp; Authenticated">
+        <span class="material-symbols-outlined text-[9px]">check</span>
+      </span>
+    </div>
+    <div class="flex flex-col gap-1">
+      <div class="flex flex-wrap items-center gap-2">
+        <h3 class="font-headline text-lg text-ink-primary font-medium leading-none">Manoj Amavasya</h3>
+        <span class="px-1.5 py-0.5 bg-paper-container font-mono text-[9px] text-ink-secondary uppercase tracking-wider border border-hairline-rule font-medium">SUPERADMIN</span>
+        <span class="px-1.5 py-0.5 bg-amber-wash text-accent-ochre font-mono text-[9px] uppercase font-semibold border border-accent-amber/30">SOLE OPERATOR</span>
+      </div>
+      <div class="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-xs font-mono text-ink-muted">
+        <div class="flex items-center gap-1 text-ink-secondary hover:text-ink-primary transition-colors">
+          <span class="material-symbols-outlined text-[13px] text-accent-amber">mail</span>
+          <span class="font-mono text-[11px]">manoj@zeroabstraction.org</span>
+        </div>
+        <span class="text-hairline-rule">|</span>
+        <div class="text-[11px]">UID: <span class="text-ink-primary font-medium select-all">0x9A44F-ROOT</span></div>
+        <span class="text-hairline-rule">|</span>
+        <div class="text-[11px]">Schema: <span class="text-[#3d7a5a] font-medium">Strict</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Clean 2x2 Specs Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+  <!-- Email Info -->
+  <div class="p-3.5 bg-surface-container-lowest border border-hairline-rule rounded flex items-center justify-between">
+    <div class="flex flex-col gap-0.5">
+      <span class="font-mono text-[10px] text-ink-muted uppercase tracking-wider">Account Email</span>
+      <span class="font-mono text-xs text-ink-primary font-medium select-all">manoj@zeroabstraction.org</span>
+    </div>
+    <span class="font-mono text-[9px] px-2 py-0.5 bg-paper-surface text-[#3d7a5a] border border-hairline-rule font-semibold tracking-wider">VERIFIED</span>
+  </div>
+
+  <!-- Authorization Role -->
+  <div class="p-3.5 bg-surface-container-lowest border border-hairline-rule rounded flex items-center justify-between">
+    <div class="flex flex-col gap-0.5">
+      <span class="font-mono text-[10px] text-ink-muted uppercase tracking-wider">Authorization Role</span>
+      <span class="font-headline text-sm text-ink-primary font-medium">Administrator (All Privileges)</span>
+    </div>
+    <span class="font-mono text-[9px] px-2 py-0.5 bg-amber-wash text-accent-ochre border border-accent-amber/30 font-semibold tracking-wider">ROOT</span>
+  </div>
+
+  <!-- Last Access -->
+  <div class="p-3.5 bg-surface-container-lowest border border-hairline-rule rounded flex items-center justify-between">
+    <div class="flex flex-col gap-0.5">
+      <span class="font-mono text-[10px] text-ink-muted uppercase tracking-wider">Last Access</span>
+      <div class="flex items-center gap-1.5 font-mono text-xs text-ink-primary">
+        <span class="font-medium">Today, 15:42 UTC</span>
+        <span class="text-ink-muted text-[11px]">(38m ago)</span>
+      </div>
+    </div>
+    <span class="font-mono text-[10px] px-1.5 py-0.5 bg-paper-surface text-ink-muted border border-hairline-rule select-all">192.168.1.104</span>
+  </div>
+
+  <!-- Authentication Protocol -->
+  <div class="p-3.5 bg-surface-container-lowest border border-hairline-rule rounded flex items-center justify-between">
+    <div class="flex flex-col gap-0.5">
+      <span class="font-mono text-[10px] text-ink-muted uppercase tracking-wider">Authentication</span>
+      <span class="font-mono text-xs text-ink-primary font-medium">FIDO2 WebAuthn (YubiKey 5C)</span>
+    </div>
+    <div class="flex items-center gap-1 px-1.5 py-0.5 bg-paper-surface border border-hairline-rule">
+      <span class="w-1.5 h-1.5 rounded-full bg-[#3d7a5a]"></span>
+      <span class="font-mono text-[9px] text-[#3d7a5a] font-semibold uppercase">FIDO2</span>
+    </div>
+  </div>
+</div>
+
+<!-- Streamlined Footer Metadata Strip -->
+<div class="p-2.5 bg-paper-surface border border-hairline-rule rounded flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono text-ink-secondary">
+  <div class="flex items-center gap-3 flex-wrap">
+    <span class="text-ink-muted text-[10px] uppercase tracking-wider">Created: <strong class="text-ink-primary font-medium">2021-08-14</strong></span>
+    <span class="text-hairline-rule">|</span>
+    <span class="text-ink-muted text-[10px] uppercase tracking-wider">Password Rotated: <strong class="text-ink-primary font-medium">18d ago</strong></span>
+    <span class="text-hairline-rule">|</span>
+    <span class="text-ink-muted text-[10px] uppercase tracking-wider">2FA: <strong class="text-[#3d7a5a] font-medium">ACTIVE (STRICT)</strong></span>
+  </div>
+  <div class="text-ink-muted text-[10px] uppercase tracking-wider font-mono">
+    Protocol: <span class="text-ink-primary font-medium">ED25519-FIDO</span>
+  </div>
+</div></section> <!-- SECTION 02: MINIMIZED FUTURE ROADMAP CARD --> <section class="bg-surface-container-low p-5 rounded-lg border border-hairline-rule shadow-sm flex flex-col gap-3"> <div class="flex items-center justify-between border-b border-hairline-rule pb-2.5"> <div class="flex items-center gap-2"> <span class="material-symbols-outlined text-accent-amber text-[18px]">group_work</span> <h3 class="font-headline text-base text-ink-primary font-medium">Multi-User Roadmap</h3> <span class="font-mono text-xs text-ink-muted">— Planned roles &amp; access delegation for v4.x</span> </div> <span class="px-2 py-0.5 bg-paper-container text-ink-muted font-mono text-[10px] uppercase tracking-wider"> Phase 2 </span> </div> <!-- Concise Role Cards --> <div class="grid grid-cols-1 md:grid-cols-3 gap-3"> <div class="p-3 bg-surface-container-lowest border border-hairline-rule rounded flex flex-col gap-1"> <div class="flex items-center justify-between text-ink-muted"> <span class="font-mono text-[10px] uppercase font-semibold text-accent-ochre">v4.0</span> <span class="material-symbols-outlined text-[15px]">person_add</span> </div> <span class="font-headline text-sm text-ink-primary font-medium">Guest Contributors</span> <span class="font-mono text-[10px] text-ink-muted">Drafting access for external research treatises.</span> </div> <div class="p-3 bg-surface-container-lowest border border-hairline-rule rounded flex flex-col gap-1"> <div class="flex items-center justify-between text-ink-muted"> <span class="font-mono text-[10px] uppercase font-semibold text-accent-ochre">v4.0</span> <span class="material-symbols-outlined text-[15px]">rate_review</span> </div> <span class="font-headline text-sm text-ink-primary font-medium">Peer Reviewers</span> <span class="font-mono text-[10px] text-ink-muted">Read-only manuscript &amp; formula validation.</span> </div> <div class="p-3 bg-surface-container-lowest border border-hairline-rule rounded flex flex-col gap-1"> <div class="flex items-center justify-between text-ink-muted"> <span class="font-mono text-[10px] uppercase font-semibold text-accent-ochre">v4.2</span> <span class="material-symbols-outlined text-[15px]">admin_panel_settings</span> </div> <span class="font-headline text-sm text-ink-primary font-medium">Role-Based ACL</span> <span class="font-mono text-[10px] text-ink-muted">Granular permission policies for globals &amp; FITS.</span> </div> </div> <!-- Compact Bottom Note --> <div class="p-2.5 bg-paper-surface border border-hairline-rule flex items-center justify-between"> <div class="flex items-center gap-2"> <span class="material-symbols-outlined text-ink-muted text-[16px]">info</span> <span class="font-mono text-[11px] text-ink-secondary">User invitation actions disabled in current environment version.</span> </div> <button disabled="" class="px-2.5 py-1 bg-paper-container text-ink-muted font-mono text-[10px] uppercase tracking-wider cursor-not-allowed border border-hairline-rule" type="button"> Locked </button> </div> </section> </div> <!-- RIGHT COLUMN (4 COLS): CONCISE SECURITY STATS & ACTIVITY TRACE --> <div class="xl:col-span-4 flex flex-col gap-5 xl:sticky xl:top-20"> <!-- SECURITY AUDIT --> <div class="bg-surface-container-low p-4 rounded-lg border border-hairline-rule shadow-sm flex flex-col gap-3"> <div class="flex items-center justify-between border-b border-hairline-rule pb-2.5"> <div class="flex items-center gap-2"> <span class="material-symbols-outlined text-accent-amber text-[16px]">security</span> <span class="font-mono text-xs text-ink-primary uppercase tracking-wider font-semibold">Security Audit</span> </div> <span class="font-mono text-[10px] px-1.5 py-0.5 bg-amber-wash text-accent-ochre uppercase font-medium">Hardened</span> </div> <div class="flex flex-col gap-1.5 font-mono text-xs"> <div class="flex justify-between items-center py-1 bg-surface-container-lowest px-2.5 border border-hairline-rule"> <span class="text-ink-muted uppercase text-[10px]">Session Storage</span> <span class="text-ink-primary font-medium text-[11px]">HttpOnly + JWT</span> </div> <div class="flex justify-between items-center py-1 bg-surface-container-lowest px-2.5 border border-hairline-rule"> <span class="text-ink-muted uppercase text-[10px]">Token TTL</span> <span class="text-ink-primary font-medium text-[11px]">Sliding 72h / 30d</span> </div> <div class="flex justify-between items-center py-1 bg-surface-container-lowest px-2.5 border border-hairline-rule"> <span class="text-ink-muted uppercase text-[10px]">Password Hash</span> <span class="text-ink-primary font-medium text-[11px]">Argon2id (m=65536)</span> </div> <div class="flex justify-between items-center py-1 bg-surface-container-lowest px-2.5 border border-hairline-rule"> <span class="text-ink-muted uppercase text-[10px]">Active API Keys</span> <span class="text-[#3d7a5a] font-semibold text-[11px]">1 R/W Key</span> </div> <div class="flex justify-between items-center py-1 bg-surface-container-lowest px-2.5 border border-hairline-rule"> <span class="text-ink-muted uppercase text-[10px]">Failed Logins</span> <span class="text-[#3d7a5a] font-semibold text-[11px]">0 in 30d</span> </div> </div> </div> <!-- ACTIVITY TRACE --> <div class="bg-surface-container-low p-4 rounded-lg border border-hairline-rule shadow-sm flex flex-col gap-2.5"> <div class="flex items-center justify-between pb-2 border-b border-hairline-rule"> <span class="font-mono text-xs text-ink-secondary uppercase tracking-wider font-medium">Activity Trace</span> <span class="font-mono text-[10px] text-ink-muted">4 Events</span> </div> <div class="flex flex-col gap-1.5 font-mono text-[11px]"> <div class="p-2 bg-surface-container-lowest border border-hairline-rule flex items-center justify-between"> <div> <div class="text-accent-ochre font-medium text-[9px] uppercase">AUTH_SESSION_RENEWED</div> <div class="text-ink-primary font-medium text-[10px]">Session token refreshed via WebAuthn</div> </div> <span class="text-ink-muted text-[9px] shrink-0">15:42 UTC</span> </div> <div class="p-2 bg-surface-container-lowest border border-hairline-rule flex items-center justify-between"> <div> <div class="text-ink-secondary text-[9px] uppercase">RECORD_MUTATION</div> <div class="text-ink-primary font-medium text-[10px]">Updated Current State singleton</div> </div> <span class="text-ink-muted text-[9px] shrink-0">14:22 UTC</span> </div> <div class="p-2 bg-surface-container-lowest border border-hairline-rule flex items-center justify-between"> <div> <div class="text-ink-secondary text-[9px] uppercase">ASSET_INGESTION</div> <div class="text-ink-primary font-medium text-[10px]">Ingested FITS Plate: NGC 6992 Veil</div> </div> <span class="text-ink-muted text-[9px] shrink-0">Yesterday</span> </div> <div class="p-2 bg-surface-container-lowest border border-hairline-rule flex items-center justify-between"> <div> <div class="text-ink-secondary text-[9px] uppercase">SCHEMA_SYNC</div> <div class="text-ink-primary font-medium text-[10px]">PostgreSQL migration 0x3A9F</div> </div> <span class="text-ink-muted text-[9px] shrink-0">Feb 16</span> </div> </div> </div> <!-- TABLE STATUS WIDGET --> <div class="p-3 bg-paper-surface border border-hairline-rule rounded flex items-center justify-between"> <div class="flex items-center gap-2.5"> <span class="material-symbols-outlined text-accent-amber text-[18px]">database</span> <div class="flex flex-col"> <span class="font-mono text-xs text-ink-primary font-semibold">users_v1</span> <span class="font-mono text-[10px] text-ink-muted">1 row · Schema OK</span> </div> </div> <span class="px-2 py-0.5 bg-paper-container text-[#3d7a5a] font-mono text-[10px] font-semibold uppercase"> HEALTHY </span> </div> </div> </div> </div>
+    </main>
+
+    <!-- STATUS FOOTER -->
+    <footer class="h-8 border-t border-hairline-rule bg-paper-surface px-8 flex items-center justify-between text-ink-muted font-mono text-[11px]"><div class="flex items-center gap-2 font-mono text-[11px] text-ink-secondary"><span class="w-1.5 h-1.5 rounded-full bg-[#3d7a5a]"></span><span class="font-medium">PostgreSQL Active</span><span class="text-hairline-rule">·</span><span class="text-ink-muted">0.8ms</span></div><div class="flex items-center gap-3 font-mono text-[10px] text-ink-muted uppercase tracking-wider"><span class="">HANLE NODE α</span><span class="text-hairline-rule">·</span><span class="">USERS: 1/1</span><span class="text-hairline-rule">·</span><span class="">ARGON2ID + JWT</span><span class="text-hairline-rule">·</span><span class="text-accent-ochre font-medium">SYNCED</span></div></footer>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body></html>

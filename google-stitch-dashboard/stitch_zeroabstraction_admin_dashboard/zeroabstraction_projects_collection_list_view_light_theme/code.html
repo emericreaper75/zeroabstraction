@@ -1,0 +1,611 @@
+<!DOCTYPE html><html lang="en" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"surface-variant":"#e2e3df","tertiary-fixed-dim":"#c4c7ca","primary":"#864f18","accent-amber":"#b3743b","background":"#faf9f5","surface-container-highest":"#e2e3df","paper-surface":"#f4f4f0","on-error":"#ffffff","on-tertiary-fixed-variant":"#43474a","secondary-fixed-dim":"#ffb77f","error-container":"#ffdad6","tertiary-fixed":"#e0e3e6","on-primary":"#ffffff","on-tertiary-fixed":"#181c1f","primary-fixed":"#ffdcc2","surface-container-high":"#e8e8e4","inverse-surface":"#2f312e","on-error-container":"#93000a","tertiary":"#595c60","on-surface-variant":"#52443a","primary-container":"#a3672f","ink-secondary":"#2d3134","amber-wash":"#f6eee3","paper-base":"#fbfbfa","inverse-primary":"#ffb77b","hairline-subtle":"#ecece6","on-secondary-container":"#77410e","surface-container-low":"#f4f4f0","on-primary-container":"#fffbff","on-primary-fixed":"#2e1500","paper-container":"#eaeae5","surface-dim":"#dadad6","inverse-on-surface":"#f1f1ed","secondary-container":"#fdb074","on-secondary-fixed-variant":"#6d3905","surface-container-lowest":"#ffffff","surface":"#faf9f5","secondary-fixed":"#ffdcc4","on-primary-fixed-variant":"#6c3a03","surface-container":"#eeeeea","on-tertiary":"#ffffff","on-surface":"#1a1c1a","on-secondary":"#ffffff","on-secondary-fixed":"#2f1500","hairline-rule":"#e0e0db","on-background":"#1a1c1a","surface-tint":"#89511b","ink-primary":"#181c1e","primary-fixed-dim":"#ffb77b","on-tertiary-container":"#fbfcff","tertiary-container":"#717578","accent-ochre":"#965a26","outline":"#847468","secondary":"#8a501d","surface-bright":"#faf9f5","outline-variant":"#d7c3b5","ink-muted":"#686c6f","error":"#ba1a1a"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"gutter-mobile":"0.75rem","space-lg":"1.5rem","space-xl":"2.5rem","space-xs":"0.25rem","space-sm":"0.5rem","space-md":"1rem","margin":"2.5rem","gutter":"1.5rem","margin-mobile":"1rem"},"fontFamily":{"headline-md":["Newsreader"],"label-sm":["JetBrains Mono"],"headline-xl-mobile":["Newsreader"],"body-lg":["IBM Plex Sans"],"body-sm":["IBM Plex Sans"],"headline-lg-mobile":["Newsreader"],"label-md":["JetBrains Mono"],"headline-lg":["Newsreader"],"label-lg":["JetBrains Mono"],"headline-sm":["Newsreader"],"body-md":["IBM Plex Sans"],"headline-xl":["Newsreader"]},"fontSize":{"headline-md":["1.75rem",{"lineHeight":"2.25rem","letterSpacing":"-0.01em","fontWeight":"400"}],"label-sm":["0.625rem",{"lineHeight":"0.875rem","letterSpacing":"0.1em","fontWeight":"400"}],"headline-xl-mobile":["2.25rem",{"lineHeight":"2.75rem","letterSpacing":"-0.015em","fontWeight":"400"}],"body-lg":["1.125rem",{"lineHeight":"1.875rem","letterSpacing":"-0.005em","fontWeight":"400"}],"body-sm":["0.8125rem",{"lineHeight":"1.25rem","letterSpacing":"0em","fontWeight":"400"}],"headline-lg-mobile":["1.75rem",{"lineHeight":"2.25rem","letterSpacing":"-0.01em","fontWeight":"400"}],"label-md":["0.6875rem",{"lineHeight":"1rem","letterSpacing":"0.08em","fontWeight":"500"}],"headline-lg":["2.5rem",{"lineHeight":"3rem","letterSpacing":"-0.015em","fontWeight":"400"}],"label-lg":["0.8125rem",{"lineHeight":"1.125rem","letterSpacing":"0.06em","fontWeight":"500"}],"headline-sm":["1.25rem",{"lineHeight":"1.75rem","letterSpacing":"0em","fontWeight":"500"}],"body-md":["0.9375rem",{"lineHeight":"1.5rem","letterSpacing":"0em","fontWeight":"400"}],"headline-xl":["3.5rem",{"lineHeight":"4rem","letterSpacing":"-0.02em","fontWeight":"400"}]}}}};</script></head><body class="bg-surface font-body-md text-on-surface antialiased min-h-screen"><aside class="fixed left-0 top-0 h-full w-64 bg-paper-surface z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(24,28,30,0.04)]"><div class="flex flex-col h-full"><div class="px-space-md py-space-sm bg-paper-container flex items-center justify-between"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-accent-amber text-[20px]">radar</span><div class="flex flex-col"><span class="font-label-md text-label-md uppercase text-ink-primary tracking-wider">ZeroAbstraction</span><span class="font-label-sm text-label-sm text-ink-muted uppercase">Observatory OS</span></div></div><span class="px-1.5 py-0.5 font-label-sm text-label-sm bg-paper-surface text-ink-secondary rounded">OS V3.28</span></div><div class="p-space-md"><a class="w-full flex items-center justify-center gap-space-xs py-2 px-3 bg-accent-amber text-surface-container-lowest font-label-md text-label-md uppercase tracking-wider hover:bg-accent-ochre transition-colors" data-path="new-entry" href="#"><span class="material-symbols-outlined text-[16px]">add</span><span class="">Create Entry</span></a></div><div class="flex-1 overflow-y-auto px-space-sm space-y-space-md"><div class="space-y-space-xs"><div class="px-space-sm font-label-sm text-label-sm uppercase tracking-widest text-ink-muted">Collections</div><nav class="space-y-0.5" data-active-classes="bg-amber-wash text-accent-ochre font-medium"><a aria-current="page" class="flex items-center justify-between px-space-sm py-1.5 transition-colors bg-amber-wash text-accent-ochre font-medium" data-path="dashboard" href="#"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[18px]">dashboard</span><span class="">Dashboard</span></div></a><a class="flex items-center justify-between px-space-sm py-1.5 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-sm text-body-sm" data-path="essays-treatises" href="#"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[18px]">article</span><span class="">Essays &amp; Treatises</span></div><span class="font-label-sm text-label-sm text-ink-muted">18</span></a><a class="flex items-center justify-between px-space-sm py-1.5 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-sm text-body-sm" data-path="celestial-catalog" href="#"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[18px]">auto_awesome</span><span class="">Celestial Catalog</span></div><span class="font-label-sm text-label-sm text-ink-muted">12</span></a><a class="flex items-center justify-between px-space-sm py-1.5 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-sm text-body-sm" data-path="field-observations" href="#"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[18px]">perm_media</span><span class="">Field Observations</span></div><span class="font-label-sm text-label-sm text-ink-muted">156</span></a><a class="flex items-center justify-between px-space-sm py-1.5 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-sm text-body-sm" data-path="telemetry-logs" href="#"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[18px]">insights</span><span class="">Telemetry Logs</span></div><span class="font-label-sm text-label-sm text-ink-muted">2.4k</span></a><a class="flex items-center justify-between px-space-sm py-1.5 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-sm text-body-sm" data-path="taxonomy-tags" href="#"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[18px]">tag</span><span class="">Taxonomy &amp; Tags</span></div><span class="font-label-sm text-label-sm text-ink-muted">84</span></a><a class="flex items-center justify-between px-space-sm py-1.5 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-sm text-body-sm" data-path="media-plates-archive" href="#"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[18px]">photo_library</span><span class="">Media &amp; Plates Archive</span></div><span class="font-label-sm text-label-sm text-ink-muted">156</span></a></nav></div><div class="space-y-space-xs"><div class="px-space-sm font-label-sm text-label-sm uppercase tracking-widest text-ink-muted">Globals</div><nav class="space-y-0.5" data-active-classes="bg-amber-wash text-accent-ochre font-medium"><a class="flex items-center justify-between px-space-sm py-1.5 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-sm text-body-sm" data-path="profile-atelier" href="#"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[18px]">account_box</span><span class="">Profile &amp; Atelier</span></div></a><a class="flex items-center justify-between px-space-sm py-1.5 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-sm text-body-sm" data-path="current-state" href="#"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[18px]">broadcast_on_personal</span><span class="">Current State</span></div><span class="w-2 h-2 rounded-full bg-accent-amber animate-pulse"></span></a><a class="flex items-center justify-between px-space-sm py-1.5 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-sm text-body-sm" data-path="journey-archive" href="#"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[18px]">history_edu</span><span class="">Journey Archive</span></div></a><a class="flex items-center justify-between px-space-sm py-1.5 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-sm text-body-sm" data-path="site-settings" href="#"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[18px]">tune</span><span class="">Site Settings</span></div></a><a class="flex items-center justify-between px-space-sm py-1.5 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-sm text-body-sm" data-path="users-access" href="#"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[18px]">group</span><span class="">Users &amp; Access</span></div><span class="font-label-sm text-label-sm text-ink-muted">01</span></a></nav></div></div><div class="p-space-sm bg-paper-container mt-auto space-y-2"><div class="flex items-center justify-between font-label-sm text-label-sm"><span class="text-ink-muted uppercase">Database</span><div class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-accent-amber"></span><span class="text-ink-secondary">PG · 0ms lag</span></div></div><div class="flex items-center justify-between pt-1"><a class="font-label-sm text-label-sm text-ink-muted hover:text-accent-amber uppercase transition-colors" data-path="documentation" href="#">[ Docs ]</a><a class="font-label-sm text-label-sm text-ink-muted hover:text-accent-amber uppercase transition-colors" data-path="system-diagnostics" href="#">[ Telemetry ]</a></div></div></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-16 bg-surface/90 backdrop-blur-md shadow-[0_1px_8px_rgba(24,28,30,0.04)] z-40 px-space-md"><div class="h-16 w-full flex items-center justify-between"><div class="flex items-center gap-space-sm"><span class="font-headline-sm text-headline-sm text-ink-primary tracking-tight font-normal">Observatory</span><span class="text-hairline-rule font-light">/</span><span class="font-label-sm text-label-sm text-ink-muted uppercase tracking-wider">Projects</span></div><div class="flex items-center gap-1 sm:gap-2"><button class="p-2 text-ink-secondary hover:text-ink-primary hover:bg-paper-surface transition-colors rounded" title="Search"><span class="material-symbols-outlined text-[20px]">search</span></button><button class="p-2 text-ink-secondary hover:text-ink-primary hover:bg-paper-surface transition-colors rounded relative" title="Notifications"><span class="material-symbols-outlined text-[20px]">notifications</span></button><a class="flex items-center gap-1 px-3 py-1.5 bg-accent-amber text-surface-container-lowest font-label-md text-label-md uppercase tracking-wider hover:bg-accent-ochre transition-colors shadow-sm rounded" href="#" data-path="new-entry"><span class="material-symbols-outlined text-[16px]">add</span><span class="">New Entry</span></a><div class="h-4 w-px bg-hairline-rule mx-1"></div><button class="flex items-center gap-2 p-1 hover:bg-paper-surface rounded transition-colors" title="Profile: Manoj Amavasya"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary font-medium text-[14px]"><span class="material-symbols-outlined text-[18px]">person</span></div><div class="hidden md:flex flex-col text-left"><span class="font-label-sm text-label-sm font-semibold text-ink-primary leading-tight">Manoj Amavasya</span><span class="font-label-sm text-[10px] text-ink-muted leading-tight">Lead Observer</span></div></button></div></div></header><main class="relative pt-16 bg-surface min-h-[calc(100vh-2rem)] w-full px-space-md py-space-md"><div class="flex flex-col w-full space-y-space-md">
+<!-- Breadcrumbs & Document Authority Bar -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-sm bg-paper-surface p-space-md shadow-sm">
+<div class="flex flex-col space-y-space-xs">
+<div class="flex items-center gap-2 font-label-sm text-label-sm text-ink-muted">
+<span class="">OBSERVATORY</span>
+<span class="">/</span>
+<span class="">COLLECTIONS</span>
+<span class="">/</span>
+<span class="text-accent-amber font-medium">PROJECTS (RESEARCH &amp; ENGINEERING)</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-ink-primary tracking-tight">
+        Projects &amp; Observational Programs
+      </h1>
+<p class="font-body-md text-body-md text-ink-secondary max-w-4xl">
+        Astronomical instrumentation rigs, computational reduction pipelines, telescope telemetry systems, and astrophysics research software indexed across ZeroAbstraction.
+      </p>
+</div>
+<!-- Master Action Strip -->
+<div class="flex items-center gap-space-sm self-start md:self-center">
+<button class="flex items-center gap-1.5 px-3 py-2 bg-surface text-ink-secondary font-label-md text-label-md uppercase tracking-wider hover:bg-amber-wash hover:text-accent-ochre transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[16px]">file_download</span>
+<span class="">Export Catalog [TSV/JSON]</span>
+</button>
+<a class="flex items-center gap-1.5 px-3 py-2 bg-accent-amber text-surface-container-lowest font-label-md text-label-md uppercase tracking-wider hover:bg-accent-ochre transition-colors shadow-sm" data-path="new-entry" href="#">
+<span class="material-symbols-outlined text-[16px]">add_circle</span>
+<span class="">+ New Project</span>
+</a>
+</div>
+</div>
+<!-- Search, Filter & Quick Lifecycle Tabs -->
+<div class="bg-paper-surface p-space-md shadow-sm space-y-space-md">
+<!-- Top Filter Row: Search + Quick Category Pills -->
+<div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-space-md">
+<!-- Monastic Search Field -->
+<div class="relative flex-1 max-w-xl">
+<div class="flex items-center bg-surface-container-lowest px-3 py-2 shadow-sm">
+<span class="material-symbols-outlined text-ink-muted text-[18px] mr-2">search</span>
+<input class="w-full bg-transparent font-body-md text-body-md text-ink-primary placeholder:text-ink-muted focus:outline-none" placeholder="Search projects, repos, instruments, year..." type="text">
+<kbd class="hidden sm:inline-block px-1.5 py-0.5 bg-paper-surface text-ink-muted font-label-sm text-label-sm rounded">⌘K</kbd>
+</div>
+</div>
+<!-- Quick Tab Pills -->
+<div class="flex items-center gap-1 overflow-x-auto pb-1 lg:pb-0">
+<button class="px-3 py-1.5 font-label-sm text-label-sm uppercase tracking-wider bg-surface text-accent-ochre font-semibold shadow-sm">
+          All <span class="ml-1 text-ink-muted">(12)</span>
+</button>
+<button class="px-3 py-1.5 font-label-sm text-label-sm uppercase tracking-wider bg-transparent text-ink-secondary hover:bg-surface-container-high transition-colors">
+          Published <span class="ml-1 text-ink-muted">(8)</span>
+</button>
+<button class="px-3 py-1.5 font-label-sm text-label-sm uppercase tracking-wider bg-transparent text-ink-secondary hover:bg-surface-container-high transition-colors">
+          In Development <span class="ml-1 text-ink-muted">(3)</span>
+</button>
+<button class="px-3 py-1.5 font-label-sm text-label-sm uppercase tracking-wider bg-transparent text-ink-secondary hover:bg-surface-container-high transition-colors">
+          Archived <span class="ml-1 text-ink-muted">(1)</span>
+</button>
+<button class="px-3 py-1.5 font-label-sm text-label-sm uppercase tracking-wider bg-amber-wash text-accent-ochre flex items-center gap-1 hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+          Featured <span class="ml-0.5 text-accent-amber font-semibold">(4)</span>
+</button>
+</div>
+</div>
+<!-- Secondary Filter Bar: Parametric Pickers -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm pt-2 bg-paper-container p-space-sm">
+<div class="flex flex-wrap items-center gap-space-sm">
+<!-- Year Epoch -->
+<div class="flex items-center gap-2 bg-surface-container-lowest px-2.5 py-1.5 shadow-sm">
+<span class="font-label-sm text-label-sm text-ink-muted uppercase">Epoch:</span>
+<select class="bg-transparent font-label-sm text-label-sm text-ink-primary focus:outline-none cursor-pointer">
+<option>All Epochs</option>
+<option>2025 (Current)</option>
+<option>2024</option>
+<option>2023</option>
+<option>2022</option>
+</select>
+</div>
+<!-- Lifecycle Status -->
+<div class="flex items-center gap-2 bg-surface-container-lowest px-2.5 py-1.5 shadow-sm">
+<span class="font-label-sm text-label-sm text-ink-muted uppercase">Lifecycle:</span>
+<select class="bg-transparent font-label-sm text-label-sm text-ink-primary focus:outline-none cursor-pointer">
+<option>All Lifecycles</option>
+<option>Published</option>
+<option>In Development</option>
+<option>Concluded / Archived</option>
+</select>
+</div>
+<!-- Discipline -->
+<div class="flex items-center gap-2 bg-surface-container-lowest px-2.5 py-1.5 shadow-sm">
+<span class="font-label-sm text-label-sm text-ink-muted uppercase">Discipline:</span>
+<select class="bg-transparent font-label-sm text-label-sm text-ink-primary focus:outline-none cursor-pointer">
+<option>All Disciplines</option>
+<option>Astrophysics</option>
+<option>Instrumentation</option>
+<option>Software &amp; Algorithms</option>
+<option>Optics &amp; Ray Tracing</option>
+</select>
+</div>
+<!-- Featured Checkbox Trigger -->
+<label class="flex items-center gap-2 px-2.5 py-1.5 bg-surface-container-lowest cursor-pointer shadow-sm select-none">
+<input checked="" class="accent-accent-amber w-3.5 h-3.5" type="checkbox">
+<span class="font-label-sm text-label-sm uppercase text-ink-primary">Featured Only</span>
+</label>
+</div>
+<!-- Sorting Selector -->
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm uppercase text-ink-muted">Sort By:</span>
+<div class="flex items-center bg-surface-container-lowest px-2.5 py-1.5 shadow-sm">
+<select class="bg-transparent font-label-sm text-label-sm text-ink-primary focus:outline-none cursor-pointer">
+<option>Year / Epoch (Newest First)</option>
+<option>Title (A–Z)</option>
+<option>Status &amp; Verification</option>
+<option>Last Synchronized</option>
+</select>
+</div>
+</div>
+</div>
+</div>
+<!-- Bulk Actions Floating Bar (2 items currently active) -->
+<div class="bg-amber-wash p-space-sm shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-space-sm">
+<div class="flex items-center gap-2">
+<span class="flex items-center justify-center w-5 h-5 bg-accent-amber text-surface-container-lowest font-label-sm text-label-sm font-semibold">2</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-accent-ochre font-medium">Projects Selected:</span>
+<span class="font-body-sm text-body-sm text-ink-primary font-medium truncate max-w-md">
+        JWST NIRCam Deep Field Pipeline, FOCAL Aberration Solver
+      </span>
+</div>
+<div class="flex flex-wrap items-center gap-2">
+<button class="px-2.5 py-1 bg-surface-container-lowest text-ink-primary font-label-sm text-label-sm uppercase tracking-wider hover:bg-surface transition-colors shadow-sm">
+        Set Status ▾
+      </button>
+<button class="px-2.5 py-1 bg-surface-container-lowest text-ink-primary font-label-sm text-label-sm uppercase tracking-wider hover:bg-surface transition-colors shadow-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-accent-amber">star</span>
+<span class="">Toggle Featured</span>
+</button>
+<button class="px-2.5 py-1 bg-surface-container-lowest text-ink-primary font-label-sm text-label-sm uppercase tracking-wider hover:bg-surface transition-colors shadow-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-ink-muted">sync</span>
+<span class="">Reindex Telemetry</span>
+</button>
+<button class="px-2.5 py-1 bg-error-container text-on-error-container font-label-sm text-label-sm uppercase tracking-wider hover:bg-error hover:text-on-error transition-colors shadow-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">delete</span>
+<span class="">Delete (2)</span>
+</button>
+<button class="px-2 py-1 text-ink-muted hover:text-ink-primary font-label-sm text-label-sm uppercase transition-colors">
+        ✕ Clear
+      </button>
+</div>
+</div>
+<!-- Central Broadside Catalog Deck: High Density Table -->
+<div class="bg-paper-surface shadow-sm overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-paper-container text-ink-muted font-label-sm text-label-sm uppercase tracking-wider select-none">
+<th class="py-3 px-4 w-12 text-center">
+<input checked="" class="accent-accent-amber w-3.5 h-3.5" type="checkbox">
+</th>
+<th class="py-3 px-2 w-8 text-center">★</th>
+<th class="py-3 px-4 min-w-[320px]">Project Specification &amp; Source</th>
+<th class="py-3 px-4 w-28 text-center">Epoch</th>
+<th class="py-3 px-4 w-36">Status</th>
+<th class="py-3 px-4 min-w-[180px]">Computation Stack</th>
+<th class="py-3 px-4 min-w-[180px]">Topics</th>
+<th class="py-3 px-4 w-32 text-center">Treatises</th>
+<th class="py-3 px-4 w-24 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y-0 text-ink-primary font-body-sm text-body-sm">
+<!-- Row 1 (Selected + Featured) -->
+<tr class="bg-amber-wash/70 hover:bg-amber-wash transition-colors">
+<td class="py-3.5 px-4 text-center">
+<input checked="" class="accent-accent-amber w-3.5 h-3.5" type="checkbox">
+</td>
+<td class="py-3.5 px-2 text-center">
+<button class="text-accent-amber hover:opacity-80">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</button>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex flex-col space-y-0.5">
+<div class="flex items-center gap-2">
+<a class="font-headline-sm text-headline-sm text-ink-primary hover:text-accent-ochre font-normal tracking-tight" href="#">
+                  JWST NIRCam Deep Field Spiral Calibration (NGC 1365)
+                </a>
+<span class="px-1 py-0.5 bg-paper-surface font-label-sm text-label-sm text-accent-ochre uppercase">Verified Rig</span>
+</div>
+<span class="font-label-sm text-label-sm text-accent-ochre">/projects/jwst-nircam-deep-field</span>
+<div class="flex items-center gap-1.5 font-label-sm text-label-sm text-ink-muted pt-0.5">
+<span class="material-symbols-outlined text-[14px]">terminal</span>
+<span class="">github.com/zeroabstraction/jwst-nircam-reduction</span>
+<span class="text-hairline-rule">|</span>
+<span class="">FITS release v2.4</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-4 text-center">
+<span class="px-2 py-1 bg-surface-container-high text-ink-primary font-label-sm text-label-sm">2025</span>
+</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 bg-surface-container text-accent-ochre font-label-sm text-label-sm font-medium shadow-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-accent-amber"></span>
+              Published
+            </span>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex flex-wrap gap-1">
+<span class="px-1.5 py-0.5 bg-surface text-ink-secondary font-label-sm text-label-sm">Python 3.12</span>
+<span class="px-1.5 py-0.5 bg-surface text-ink-secondary font-label-sm text-label-sm">Astropy</span>
+<span class="px-1.5 py-0.5 bg-surface text-ink-secondary font-label-sm text-label-sm">WebPlot</span>
+</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex flex-wrap gap-1">
+<span class="px-1.5 py-0.5 bg-paper-container text-ink-secondary font-label-sm text-label-sm">#Astrophysics</span>
+<span class="px-1.5 py-0.5 bg-paper-container text-ink-secondary font-label-sm text-label-sm">#NIRCam</span>
+</div>
+</td>
+<td class="py-3.5 px-4 text-center">
+<a class="font-label-sm text-label-sm text-accent-amber hover:underline uppercase" href="#">3 Treatises</a>
+</td>
+<td class="py-3.5 px-4 text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1 text-ink-muted hover:text-accent-amber hover:bg-surface transition-colors" title="Edit">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 text-ink-muted hover:text-ink-primary hover:bg-surface transition-colors" title="Menu">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 (Selected + Aberration Solver schematic inspiration) -->
+<tr class="bg-amber-wash/70 hover:bg-amber-wash transition-colors">
+<td class="py-3.5 px-4 text-center">
+<input checked="" class="accent-accent-amber w-3.5 h-3.5" type="checkbox">
+</td>
+<td class="py-3.5 px-2 text-center">
+<button class="text-accent-amber hover:opacity-80">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</button>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex flex-col space-y-0.5">
+<div class="flex items-center gap-2">
+<a class="font-headline-sm text-headline-sm text-ink-primary hover:text-accent-ochre font-normal tracking-tight" href="#">
+                  FOCAL Schmidt-Cassegrain Ray Tracing Engine
+                </a>
+<span class="px-1 py-0.5 bg-surface-container-high font-label-sm text-label-sm text-ink-secondary uppercase">Hardware In-Loop</span>
+</div>
+<span class="font-label-sm text-label-sm text-accent-ochre">/projects/focal-raytrace-engine</span>
+<div class="flex items-center gap-1.5 font-label-sm text-label-sm text-ink-muted pt-0.5">
+<span class="material-symbols-outlined text-[14px]">tune</span>
+<span class="">Spherical &amp; Astigmatic solver · C++ Optix v2.4</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-4 text-center">
+<span class="px-2 py-1 bg-surface-container-high text-ink-primary font-label-sm text-label-sm">2024</span>
+</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 bg-surface text-ink-secondary font-label-sm text-label-sm font-medium shadow-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-ink-muted"></span>
+              In Development
+            </span>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex flex-wrap gap-1">
+<span class="px-1.5 py-0.5 bg-surface text-ink-secondary font-label-sm text-label-sm">C++ 20</span>
+<span class="px-1.5 py-0.5 bg-surface text-ink-secondary font-label-sm text-label-sm">CUDA</span>
+<span class="px-1.5 py-0.5 bg-surface text-ink-secondary font-label-sm text-label-sm">PyTorch</span>
+</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex flex-wrap gap-1">
+<span class="px-1.5 py-0.5 bg-paper-container text-ink-secondary font-label-sm text-label-sm">#Optics</span>
+<span class="px-1.5 py-0.5 bg-paper-container text-ink-secondary font-label-sm text-label-sm">#RayTracing</span>
+</div>
+</td>
+<td class="py-3.5 px-4 text-center">
+<a class="font-label-sm text-label-sm text-accent-amber hover:underline uppercase" href="#">1 Monograph</a>
+</td>
+<td class="py-3.5 px-4 text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1 text-ink-muted hover:text-accent-amber hover:bg-surface transition-colors" title="Edit">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 text-ink-muted hover:text-ink-primary hover:bg-surface transition-colors" title="Menu">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 (Unselected + Featured) -->
+<tr class="bg-surface hover:bg-surface-container-high transition-colors">
+<td class="py-3.5 px-4 text-center">
+<input class="accent-accent-amber w-3.5 h-3.5" type="checkbox">
+</td>
+<td class="py-3.5 px-2 text-center">
+<button class="text-accent-amber hover:opacity-80">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</button>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex flex-col space-y-0.5">
+<div class="flex items-center gap-2">
+<a class="font-headline-sm text-headline-sm text-ink-primary hover:text-accent-ochre font-normal tracking-tight" href="#">
+                  Interferometric AGN Baseline Correlator
+                </a>
+</div>
+<span class="font-label-sm text-label-sm text-ink-muted">/projects/interferometric-agn-correlator</span>
+<div class="flex items-center gap-1.5 font-label-sm text-label-sm text-ink-muted pt-0.5">
+<span class="material-symbols-outlined text-[14px]">share</span>
+<span class="">EHT &amp; ALMA mm-wave array synthesis pipeline</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-4 text-center">
+<span class="px-2 py-1 bg-surface-container-high text-ink-primary font-label-sm text-label-sm">2024</span>
+</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 bg-surface-container text-accent-ochre font-label-sm text-label-sm font-medium shadow-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-accent-amber"></span>
+              Published
+            </span>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex flex-wrap gap-1">
+<span class="px-1.5 py-0.5 bg-paper-surface text-ink-secondary font-label-sm text-label-sm">Rust</span>
+<span class="px-1.5 py-0.5 bg-paper-surface text-ink-secondary font-label-sm text-label-sm">FFTW3</span>
+<span class="px-1.5 py-0.5 bg-paper-surface text-ink-secondary font-label-sm text-label-sm">HDF5</span>
+</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex flex-wrap gap-1">
+<span class="px-1.5 py-0.5 bg-paper-container text-ink-secondary font-label-sm text-label-sm">#Interferometry</span>
+<span class="px-1.5 py-0.5 bg-paper-container text-ink-secondary font-label-sm text-label-sm">#RadioAstro</span>
+</div>
+</td>
+<td class="py-3.5 px-4 text-center">
+<a class="font-label-sm text-label-sm text-accent-amber hover:underline uppercase" href="#">5 Treatises</a>
+</td>
+<td class="py-3.5 px-4 text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1 text-ink-muted hover:text-accent-amber hover:bg-paper-surface transition-colors" title="Edit">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 text-ink-muted hover:text-ink-primary hover:bg-paper-surface transition-colors" title="Menu">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4 (Unselected + Featured) -->
+<tr class="bg-surface hover:bg-surface-container-high transition-colors">
+<td class="py-3.5 px-4 text-center">
+<input class="accent-accent-amber w-3.5 h-3.5" type="checkbox">
+</td>
+<td class="py-3.5 px-2 text-center">
+<button class="text-accent-amber hover:opacity-80">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</button>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex flex-col space-y-0.5">
+<div class="flex items-center gap-2">
+<a class="font-headline-sm text-headline-sm text-ink-primary hover:text-accent-ochre font-normal tracking-tight" href="#">
+                  DeepSkySpectra PyTorch Neural Classifier v2.1
+                </a>
+</div>
+<span class="font-label-sm text-label-sm text-ink-muted">/projects/deepskyspectra-neural-classifier</span>
+<div class="flex items-center gap-1.5 font-label-sm text-label-sm text-ink-muted pt-0.5">
+<span class="material-symbols-outlined text-[14px]">model_training</span>
+<span class="">SDSS DR18 dataset · ResNet1D transformer backbone</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-4 text-center">
+<span class="px-2 py-1 bg-surface-container-high text-ink-primary font-label-sm text-label-sm">2023</span>
+</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 bg-surface-container text-accent-ochre font-label-sm text-label-sm font-medium shadow-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-accent-amber"></span>
+              Published
+            </span>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex flex-wrap gap-1">
+<span class="px-1.5 py-0.5 bg-paper-surface text-ink-secondary font-label-sm text-label-sm">PyTorch</span>
+<span class="px-1.5 py-0.5 bg-paper-surface text-ink-secondary font-label-sm text-label-sm">ONNX</span>
+<span class="px-1.5 py-0.5 bg-paper-surface text-ink-secondary font-label-sm text-label-sm">W&amp;B</span>
+</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex flex-wrap gap-1">
+<span class="px-1.5 py-0.5 bg-paper-container text-ink-secondary font-label-sm text-label-sm">#Spectroscopy</span>
+<span class="px-1.5 py-0.5 bg-paper-container text-ink-secondary font-label-sm text-label-sm">#DeepLearning</span>
+</div>
+</td>
+<td class="py-3.5 px-4 text-center">
+<a class="font-label-sm text-label-sm text-accent-amber hover:underline uppercase" href="#">2 Treatises</a>
+</td>
+<td class="py-3.5 px-4 text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1 text-ink-muted hover:text-accent-amber hover:bg-paper-surface transition-colors" title="Edit">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 text-ink-muted hover:text-ink-primary hover:bg-paper-surface transition-colors" title="Menu">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 5 (Unselected + Regular) -->
+<tr class="bg-surface hover:bg-surface-container-high transition-colors">
+<td class="py-3.5 px-4 text-center">
+<input class="accent-accent-amber w-3.5 h-3.5" type="checkbox">
+</td>
+<td class="py-3.5 px-2 text-center">
+<button class="text-ink-muted hover:text-accent-amber">
+<span class="material-symbols-outlined text-[18px]">star</span>
+</button>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex flex-col space-y-0.5">
+<div class="flex items-center gap-2">
+<a class="font-headline-sm text-headline-sm text-ink-primary hover:text-accent-ochre font-normal tracking-tight" href="#">
+                  Automated FOCAL Filter Wheel Controller Firmware
+                </a>
+</div>
+<span class="font-label-sm text-label-sm text-ink-muted">/projects/focal-filter-controller-esp32</span>
+<div class="flex items-center gap-1.5 font-label-sm text-label-sm text-ink-muted pt-0.5">
+<span class="material-symbols-outlined text-[14px]">memory</span>
+<span class="">ESP32-S3 FreeRTOS ASCOM Alpaca driver &amp; stepper rig</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-4 text-center">
+<span class="px-2 py-1 bg-surface-container-high text-ink-primary font-label-sm text-label-sm">2023</span>
+</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 bg-surface text-ink-secondary font-label-sm text-label-sm font-medium shadow-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-ink-muted"></span>
+              In Development
+            </span>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex flex-wrap gap-1">
+<span class="px-1.5 py-0.5 bg-paper-surface text-ink-secondary font-label-sm text-label-sm">C / C++</span>
+<span class="px-1.5 py-0.5 bg-paper-surface text-ink-secondary font-label-sm text-label-sm">FreeRTOS</span>
+<span class="px-1.5 py-0.5 bg-paper-surface text-ink-secondary font-label-sm text-label-sm">Alpaca</span>
+</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex flex-wrap gap-1">
+<span class="px-1.5 py-0.5 bg-paper-container text-ink-secondary font-label-sm text-label-sm">#Instrumentation</span>
+<span class="px-1.5 py-0.5 bg-paper-container text-ink-secondary font-label-sm text-label-sm">#Firmware</span>
+</div>
+</td>
+<td class="py-3.5 px-4 text-center">
+<span class="font-label-sm text-label-sm text-ink-muted uppercase">—</span>
+</td>
+<td class="py-3.5 px-4 text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1 text-ink-muted hover:text-accent-amber hover:bg-paper-surface transition-colors" title="Edit">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 text-ink-muted hover:text-ink-primary hover:bg-paper-surface transition-colors" title="Menu">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 6 (Unselected + Archived) -->
+<tr class="bg-surface hover:bg-surface-container-high transition-colors">
+<td class="py-3.5 px-4 text-center">
+<input class="accent-accent-amber w-3.5 h-3.5" type="checkbox">
+</td>
+<td class="py-3.5 px-2 text-center">
+<button class="text-ink-muted hover:text-accent-amber">
+<span class="material-symbols-outlined text-[18px]">star</span>
+</button>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex flex-col space-y-0.5">
+<div class="flex items-center gap-2">
+<a class="font-headline-sm text-headline-sm text-ink-primary hover:text-accent-ochre font-normal tracking-tight" href="#">
+                  Mount Graham Astrometric Guild Catalog Engine
+                </a>
+</div>
+<span class="font-label-sm text-label-sm text-ink-muted">/projects/mount-graham-astrometric-catalog</span>
+<div class="flex items-center gap-1.5 font-label-sm text-label-sm text-ink-muted pt-0.5">
+<span class="material-symbols-outlined text-[14px]">database</span>
+<span class="">SQLite FTS5 + PostgreSQL vector embeddings (Gaia DR3)</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-4 text-center">
+<span class="px-2 py-1 bg-surface-container-high text-ink-primary font-label-sm text-label-sm">2022</span>
+</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 bg-paper-container text-ink-muted font-label-sm text-label-sm font-medium shadow-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-accent-amber"></span>
+              Concluded
+            </span>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex flex-wrap gap-1">
+<span class="px-1.5 py-0.5 bg-paper-surface text-ink-secondary font-label-sm text-label-sm">PostgreSQL</span>
+<span class="px-1.5 py-0.5 bg-paper-surface text-ink-secondary font-label-sm text-label-sm">Rust</span>
+<span class="px-1.5 py-0.5 bg-paper-surface text-ink-secondary font-label-sm text-label-sm">pgvector</span>
+</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex flex-wrap gap-1">
+<span class="px-1.5 py-0.5 bg-paper-container text-ink-secondary font-label-sm text-label-sm">#Astrometry</span>
+<span class="px-1.5 py-0.5 bg-paper-container text-ink-secondary font-label-sm text-label-sm">#Database</span>
+</div>
+</td>
+<td class="py-3.5 px-4 text-center">
+<a class="font-label-sm text-label-sm text-accent-amber hover:underline uppercase" href="#">1 Treatise</a>
+</td>
+<td class="py-3.5 px-4 text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1 text-ink-muted hover:text-accent-amber hover:bg-paper-surface transition-colors" title="Edit">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 text-ink-muted hover:text-ink-primary hover:bg-paper-surface transition-colors" title="Menu">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<!-- Pagination & Deck Count Bar -->
+<div class="p-space-sm bg-paper-container flex flex-col sm:flex-row items-center justify-between gap-space-sm text-ink-muted font-label-sm text-label-sm">
+<div class="flex items-center gap-space-sm">
+<span class="">Showing <strong class="text-ink-primary">1–6</strong> of <strong class="text-ink-primary">12</strong> project records</span>
+<span class="">·</span>
+<span class="text-accent-ochre font-medium">2 rows selected</span>
+</div>
+<div class="flex items-center gap-space-md">
+<!-- Page size selector -->
+<div class="flex items-center gap-1.5">
+<span class="">Rows per page:</span>
+<select class="bg-surface-container-lowest px-2 py-1 text-ink-primary font-label-sm text-label-sm focus:outline-none shadow-sm cursor-pointer">
+<option>6</option>
+<option>12</option>
+<option>24</option>
+<option>All</option>
+</select>
+</div>
+<!-- Navigation Buttons -->
+<div class="flex items-center gap-1">
+<button class="px-2.5 py-1 bg-surface text-ink-muted font-label-sm text-label-sm disabled:opacity-50 cursor-not-allowed shadow-sm" disabled="">
+            Prev
+          </button>
+<button class="px-2.5 py-1 bg-accent-amber text-surface-container-lowest font-label-sm text-label-sm font-semibold shadow-sm">
+            1
+          </button>
+<button class="px-2.5 py-1 bg-surface text-ink-primary font-label-sm text-label-sm hover:bg-amber-wash transition-colors shadow-sm">
+            2
+          </button>
+<button class="px-2.5 py-1 bg-surface text-ink-primary font-label-sm text-label-sm hover:bg-amber-wash transition-colors shadow-sm">
+            Next
+          </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Observational Laboratory Telemetry Strip (Diagnostic Footprint) -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+<!-- Telemetry Metric 1: Source & Git Engine -->
+<div class="bg-paper-surface p-space-md shadow-sm flex items-start gap-3">
+<div class="p-2 bg-paper-container text-accent-amber shadow-sm">
+<span class="material-symbols-outlined text-[20px]">code</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-ink-muted uppercase tracking-widest">Git Workspace Revision</span>
+<span class="font-label-md text-label-md text-ink-primary mt-0.5">branch: main-rigs @ c8f49e1</span>
+<span class="font-body-sm text-body-sm text-ink-secondary mt-1">Autonomous sync completed 12m ago across 6 repos.</span>
+</div>
+</div>
+<!-- Telemetry Metric 2: Hardware Sensor Rig -->
+<div class="bg-paper-surface p-space-md shadow-sm flex items-start gap-3">
+<div class="p-2 bg-paper-container text-accent-amber shadow-sm">
+<span class="material-symbols-outlined text-[20px]">sensors</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-ink-muted uppercase tracking-widest">Hardware Interlock</span>
+<div class="flex items-center gap-1.5 mt-0.5">
+<span class="w-2 h-2 rounded-full bg-accent-amber animate-pulse"></span>
+<span class="font-label-md text-label-md text-ink-primary">4 Active Sensor Arrays Online</span>
+</div>
+<span class="font-body-sm text-body-sm text-ink-secondary mt-1">FLIR cooling -20°C · Alpaca bus responsive 8ms.</span>
+</div>
+</div>
+<!-- Telemetry Metric 3: Artifact Pipeline Verification -->
+<div class="bg-paper-surface p-space-md shadow-sm flex items-start gap-3">
+<div class="p-2 bg-paper-container text-accent-amber shadow-sm">
+<span class="material-symbols-outlined text-[20px]">verified</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-ink-muted uppercase tracking-widest">Artifact Verification</span>
+<span class="font-label-md text-label-md text-ink-primary mt-0.5">12 Builds Validated · S3 Intact</span>
+<span class="font-body-sm text-body-sm text-ink-secondary mt-1">All FITS headers compliant with IAU 2012 standards.</span>
+</div>
+</div>
+</div>
+</div></main><footer class="w-full h-8 bg-paper-surface px-space-md flex items-center justify-between shadow-[0_1px_8px_rgba(24,28,30,0.02)]"><div class="font-label-sm text-label-sm text-ink-muted uppercase tracking-widest">ZeroAbstraction Observatory Monolith // Node α</div><div class="font-label-sm text-label-sm text-ink-muted font-medium flex items-center gap-space-md"><span class="">Commit #8f7d93a</span><span class="">Latency 12ms</span><span class="">State: Synchronized</span></div></footer></div>
+
+</body></html>

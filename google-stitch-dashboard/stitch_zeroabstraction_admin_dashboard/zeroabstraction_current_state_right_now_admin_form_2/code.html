@@ -1,0 +1,467 @@
+<!DOCTYPE html><html lang="en" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-surface":"#1a1c1a","secondary":"#8a501d","surface-variant":"#e2e3df","amber-wash":"#f6eee3","accent-amber":"#b3743b","on-primary-fixed-variant":"#6c3a03","outline":"#847468","error":"#ba1a1a","surface-container-low":"#f4f4f0","on-secondary-container":"#77410e","on-tertiary":"#ffffff","primary":"#864f18","secondary-container":"#fdb074","on-tertiary-fixed-variant":"#43474a","on-tertiary-fixed":"#181c1f","on-error-container":"#93000a","surface-container-highest":"#e2e3df","surface-container-high":"#e8e8e4","outline-variant":"#d7c3b5","primary-container":"#a3672f","primary-fixed":"#ffdcc2","on-error":"#ffffff","on-tertiary-container":"#fbfcff","hairline-subtle":"#ecece6","on-background":"#1a1c1a","on-primary-fixed":"#2e1500","secondary-fixed-dim":"#ffb77f","on-surface-variant":"#52443a","ink-muted":"#686c6f","on-secondary-fixed-variant":"#6d3905","surface-bright":"#faf9f5","background":"#faf9f5","tertiary-fixed":"#e0e3e6","surface":"#faf9f5","error-container":"#ffdad6","tertiary":"#595c60","tertiary-fixed-dim":"#c4c7ca","inverse-on-surface":"#f1f1ed","primary-fixed-dim":"#ffb77b","paper-surface":"#f4f4f0","inverse-primary":"#ffb77b","accent-ochre":"#965a26","on-primary-container":"#fffbff","on-secondary-fixed":"#2f1500","inverse-surface":"#2f312e","surface-tint":"#89511b","ink-primary":"#181c1e","surface-container":"#eeeeea","ink-secondary":"#2d3134","paper-container":"#eaeae5","hairline-rule":"#e0e0db","tertiary-container":"#717578","on-primary":"#ffffff","surface-container-lowest":"#ffffff","surface-dim":"#dadad6","paper-base":"#fbfbfa","secondary-fixed":"#ffdcc4","on-secondary":"#ffffff"},borderRadius:{DEFAULT:"0.25rem",lg:"0.5rem",xl:"0.75rem",full:"9999px"},spacing:{"space-lg":"1.5rem","margin-mobile":"1rem","space-xl":"2.5rem","gutter-mobile":"0.75rem",margin:"2.5rem","space-xs":"0.25rem","space-sm":"0.5rem",gutter:"1.5rem","space-md":"1rem"},fontFamily:{"headline-lg-mobile":["Newsreader"],"label-lg":["JetBrains Mono"],"label-md":["JetBrains Mono"],"headline-md":["Newsreader"],"body-sm":["IBM Plex Sans"],"label-sm":["JetBrains Mono"],"headline-sm":["Newsreader"],"body-lg":["IBM Plex Sans"],"headline-xl-mobile":["Newsreader"],"body-md":["IBM Plex Sans"],"headline-xl":["Newsreader"],"headline-lg":["Newsreader"]},fontSize:{"headline-lg-mobile":["1.75rem",{lineHeight:"2.25rem",letterSpacing:"-0.01em",fontWeight:"400"}],"label-lg":["0.8125rem",{lineHeight:"1.125rem",letterSpacing:"0.06em",fontWeight:"500"}],"label-md":["0.6875rem",{lineHeight:"1rem",letterSpacing:"0.08em",fontWeight:"500"}],"headline-md":["1.75rem",{lineHeight:"2.25rem",letterSpacing:"-0.01em",fontWeight:"400"}],"body-sm":["0.8125rem",{lineHeight:"1.25rem",letterSpacing:"0em",fontWeight:"400"}],"label-sm":["0.625rem",{lineHeight:"0.875rem",letterSpacing:"0.1em",fontWeight:"400"}],"headline-sm":["1.25rem",{lineHeight:"1.75rem",letterSpacing:"0em",fontWeight:"500"}],"body-lg":["1.125rem",{lineHeight:"1.875rem",letterSpacing:"-0.005em",fontWeight:"400"}],"headline-xl-mobile":["2.25rem",{lineHeight:"2.75rem",letterSpacing:"-0.015em",fontWeight:"400"}],"body-md":["0.9375rem",{lineHeight:"1.5rem",letterSpacing:"0em",fontWeight:"400"}],"headline-xl":["3.5rem",{lineHeight:"4rem",letterSpacing:"-0.02em",fontWeight:"400"}],"headline-lg":["2.5rem",{lineHeight:"3rem",letterSpacing:"-0.015em",fontWeight:"400"}]}}}}</script></head><body class="bg-surface font-body-md text-ink-primary antialiased min-h-screen"><aside class="fixed left-0 top-0 bottom-0 w-64 bg-paper-surface z-50 flex flex-col justify-between select-none shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex flex-col flex-1 min-h-0"><div class="px-space-md py-space-md bg-paper-surface flex flex-col gap-space-xs border-b border-hairline-rule"><div class="flex items-center justify-between"><span class="font-headline-sm text-headline-sm text-ink-primary tracking-tight font-serif">ZeroAbstraction</span><span class="font-label-sm text-label-sm px-1.5 py-0.5 bg-amber-wash text-accent-ochre uppercase font-mono">OS V3.28</span></div><div class="font-label-sm text-label-sm text-ink-muted uppercase tracking-wider">Observatory CMS // Core 3.12</div><div class="mt-2"><button class="w-full py-2 px-3 bg-accent-amber hover:bg-accent-ochre text-on-primary font-label-md text-label-md uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors shadow-sm font-medium" type="button"><span class="material-symbols-outlined text-[16px]">add</span><span class="">+ CREATE ENTRY</span></button></div></div><div class="flex-1 overflow-y-auto px-space-sm py-space-sm space-y-space-md"><div class="space-y-space-xs"><div class="px-space-sm py-space-xs font-label-sm text-label-sm text-ink-muted uppercase tracking-wider">Collections</div><nav class="space-y-0.5" data-active-classes="bg-amber-wash text-accent-ochre font-medium"><a class="flex items-center justify-between px-space-sm py-1.5 font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors tracking-wide" data-path="dashboard" href="#"><span class="truncate">Dashboard</span></a><a class="flex items-center justify-between px-space-sm py-1.5 font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors tracking-wide" data-path="essays-treatises" href="#"><span class="truncate">Essays &amp; Treatises</span><span class="font-mono text-label-sm text-ink-muted">18</span></a><a class="flex items-center justify-between px-space-sm py-1.5 font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors tracking-wide" data-path="celestial-catalog" href="#"><span class="truncate">Celestial Catalog</span><span class="font-mono text-label-sm text-ink-muted">12</span></a><a class="flex items-center justify-between px-space-sm py-1.5 font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors tracking-wide" data-path="field-observations" href="#"><span class="truncate">Field Observations</span><span class="font-mono text-label-sm text-ink-muted">156</span></a><a class="flex items-center justify-between px-space-sm py-1.5 font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors tracking-wide" data-path="telemetry-logs" href="#"><span class="truncate">Telemetry Logs</span><span class="font-mono text-label-sm text-ink-muted">2.4k</span></a><a class="flex items-center justify-between px-space-sm py-1.5 font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors tracking-wide" data-path="taxonomy-tags" href="#"><span class="truncate">Taxonomy &amp; Tags</span><span class="font-mono text-label-sm text-ink-muted">84</span></a><a class="flex items-center justify-between px-space-sm py-1.5 font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors tracking-wide" data-path="media-plates-archive" href="#"><span class="truncate">Media &amp; Plates Archive</span><span class="font-mono text-label-sm text-ink-muted">156</span></a></nav></div><div class="space-y-space-xs"><div class="px-space-sm py-space-xs font-label-sm text-label-sm text-ink-muted uppercase tracking-wider">Globals</div><nav class="space-y-0.5" data-active-classes="bg-amber-wash text-accent-ochre font-medium"><a class="flex items-center justify-between px-space-sm py-1.5 font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors tracking-wide" data-path="profile-atelier" href="#"><span class="truncate">Profile &amp; Atelier</span></a><a aria-current="page" class="flex items-center justify-between px-space-sm py-1.5 transition-colors tracking-wide bg-amber-wash text-accent-ochre font-medium" data-path="current-state" href="#"><span class="truncate">Current State</span><span class="w-1.5 h-1.5 bg-accent-ochre rounded-full"></span></a><a class="flex items-center justify-between px-space-sm py-1.5 font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors tracking-wide" data-path="journey-archive" href="#"><span class="truncate">Journey Archive</span></a><a class="flex items-center justify-between px-space-sm py-1.5 font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors tracking-wide" data-path="site-settings" href="#"><span class="truncate">Site Settings</span></a><a class="flex items-center justify-between px-space-sm py-1.5 font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors tracking-wide" data-path="users-access" href="#"><span class="truncate">Users &amp; Access</span><span class="font-mono text-label-sm text-ink-muted">01</span></a></nav></div></div></div><div class="p-space-sm bg-surface-container-low border-t border-hairline-rule"><div class="px-space-sm py-space-xs flex items-center justify-between text-ink-muted"><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-accent-ochre inline-block"></span><span class="font-label-sm text-label-sm uppercase tracking-wider text-ink-secondary">POSTGRESQL 16.2</span></div><span class="font-label-sm text-label-sm text-accent-amber font-mono">ONLINE</span></div></div></aside><div class="pl-64 flex flex-col min-h-screen"><header class="fixed top-0 left-64 right-0 h-14 bg-surface/80 backdrop-blur-xl z-40 flex items-center justify-between px-space-lg shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex items-center gap-2 font-label-sm text-label-sm uppercase tracking-wider"><span class="text-ink-secondary">Globals</span><span class="text-outline-variant select-none">/</span><span class="text-accent-ochre font-medium">Current State</span></div><div class="flex items-center gap-3"><button class="w-8 h-8 flex items-center justify-center text-ink-muted hover:text-ink-primary hover:bg-surface-container transition-colors" title="Search" type="button"><span class="material-symbols-outlined text-[18px]">search</span></button><button class="w-8 h-8 flex items-center justify-center text-ink-muted hover:text-ink-primary hover:bg-surface-container transition-colors relative" title="Notifications" type="button"><span class="material-symbols-outlined text-[18px]">notifications</span><span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-accent-ochre"></span></button><button class="px-2.5 py-1.5 bg-paper-surface hover:bg-surface-container text-ink-secondary hover:text-ink-primary font-label-sm text-label-sm uppercase tracking-wider transition-colors border border-hairline-rule flex items-center gap-1 active:translate-y-px" type="button"><span class="material-symbols-outlined text-[15px]">add</span><span class="font-medium">New</span></button><div class="flex items-center gap-2 pl-2 border-l border-hairline-rule"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary cursor-pointer hover:bg-accent-ochre transition-colors shrink-0" title="Manoj Amavasya"><span class="material-symbols-outlined text-[18px]">person</span></div></div></div></header><main class="w-full pt-14 pb-8 flex-1 bg-surface px-space-lg"><div class="flex flex-col w-full pb-16">
+<!-- Top Context Header & Editorial Title Bar -->
+<header class="w-full mb-8">
+<!-- Breadcrumb Stream & Temporal Stamp -->
+<div class="flex flex-wrap items-center justify-between gap-4 pb-3 border-b border-hairline-rule text-ink-muted">
+<nav aria-label="Breadcrumbs" class="flex items-center gap-2 font-label-sm text-label-sm uppercase tracking-wider">
+<span class="text-ink-secondary">Observatory</span>
+<span class="text-outline-variant select-none">/</span>
+<span class="text-ink-secondary">Globals</span>
+<span class="text-outline-variant select-none">/</span>
+<span class="text-accent-ochre font-medium">Current State (Right Now)</span>
+</nav>
+<div class="flex items-center gap-3 font-label-sm text-label-sm">
+<div class="flex items-center gap-1.5 px-2.5 py-1 bg-amber-wash text-accent-ochre rounded-none border border-accent-amber/30">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-amber opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-accent-ochre"></span>
+</span>
+<span class="font-medium tracking-wide">ACTIVE BROADCAST (PUBLICLY VISIBLE)</span>
+</div>
+<span class="hidden sm:inline text-outline-variant">•</span>
+<span class="hidden sm:inline text-ink-muted font-mono">Last synchronized: Today, 14:22 UTC (38m ago) · PostgreSQL 16.2</span>
+</div>
+</div>
+<!-- Title & Action Bar -->
+<div class="mt-6 w-full flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-6 border-b border-hairline-rule"><div class="flex-1 max-w-4xl"><div class="font-label-sm text-label-sm text-ink-muted uppercase tracking-widest mb-1.5 flex items-center gap-2"><span class="font-mono">SINGLETON REGISTRY</span><span class="text-accent-amber font-mono">•</span><span class="font-mono">SCHEMA REVISION 08.4</span></div><h1 class="font-headline-xl text-headline-xl text-ink-primary leading-tight font-normal tracking-tight">Current State <span class="text-outline-variant select-none mx-1 font-mono font-light">/</span> <em class="italic text-accent-ochre font-serif">Right Now</em></h1><p class="font-body-md text-body-md text-ink-secondary mt-2 max-w-3xl leading-relaxed">Live telemetry and intellectual dispatch broadcasting current cognitive focus, active research vectors, and ongoing observatory instrumentation builds.</p></div><div class="flex flex-wrap items-center justify-start lg:justify-end gap-3 shrink-0 pb-1"><button class="px-3.5 py-2 bg-paper-surface hover:bg-surface-container text-ink-secondary hover:text-ink-primary font-label-md text-label-md uppercase tracking-wider transition-colors border border-hairline-rule flex items-center gap-1.5 active:translate-y-px" type="button"><span class="material-symbols-outlined text-[16px]">history</span><span class="">Revert</span></button><button class="px-3.5 py-2 bg-paper-surface hover:bg-surface-container text-ink-secondary hover:text-ink-primary font-label-md text-label-md uppercase tracking-wider transition-colors border border-hairline-rule flex items-center gap-1.5 active:translate-y-px" type="button"><span class="material-symbols-outlined text-[16px]">close</span><span class="">Discard</span></button><button class="px-5 py-2 bg-accent-amber hover:bg-accent-ochre text-on-primary font-label-md text-label-md uppercase tracking-wider transition-all duration-150 flex items-center gap-2 shadow-[0_2px_10px_rgba(179,116,59,0.25)] active:translate-y-px" id="broadcastBtn" type="button"><span class="material-symbols-outlined text-[17px]">cell_tower</span><span class="font-medium">Save &amp; Broadcast State</span><kbd class="ml-1 px-1.5 py-0.5 bg-black/20 text-on-primary text-[10px] font-mono tracking-normal">⌘S</kbd></button></div></div>
+</header>
+<!-- Two-Column Editorial & Telemetry Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Left Column: Core 4 Singleton Fields (~68% width on 12-col = col-span-8) -->
+<div class="lg:col-span-8 space-y-6">
+<form class="space-y-6" id="currentStateForm" onsubmit="event.preventDefault();">
+<!-- Field 01: STUDYING -->
+<section class="bg-surface-container-lowest border border-hairline-rule p-6 transition-all focus-within:border-accent-amber focus-within:bg-paper-base">
+<div class="flex items-start justify-between gap-4 mb-2">
+<div>
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 bg-accent-amber rounded-none inline-block"></span>
+<span class="font-label-md text-label-md uppercase tracking-wider text-accent-ochre font-semibold">01 // CURRENTLY STUDYING &amp; RESEARCHING</span>
+</div>
+<p class="font-body-sm text-body-sm text-ink-muted mt-1">
+                Theoretical physics, observational papers, cosmology treatises, or mathematical formulations.
+              </p>
+</div>
+<div class="shrink-0 font-label-sm text-label-sm px-2 py-0.5 bg-surface-container text-ink-secondary border border-hairline-subtle">
+<span class="font-mono text-accent-ochre">PHYS-ASTRO</span>
+</div>
+</div>
+<div class="mt-4">
+<textarea class="w-full p-3.5 bg-paper-base border border-hairline-rule font-headline-sm text-headline-sm text-ink-primary leading-relaxed focus:outline-none focus:border-accent-amber focus:bg-surface-container-lowest transition-colors placeholder:text-ink-muted/50 resize-y" id="fieldStudying" placeholder="State the primary theoretical papers or formulations under active review..." rows="3">Relativistic Magnetohydrodynamics &amp; Shock-Capturing Advection Schemes in Supernova Remnants (Rezzolla &amp; Zanotti, 2013)</textarea>
+</div>
+<!-- Metadata Placard Bar -->
+<div class="mt-3 pt-3 border-t border-hairline-subtle flex flex-wrap items-center justify-between gap-3 font-label-sm text-label-sm">
+<div class="flex items-center gap-2 text-ink-muted">
+<span class="material-symbols-outlined text-[15px] text-accent-ochre">link</span>
+<span class="uppercase">DOI / Preprint:</span>
+<a class="font-mono text-ink-primary hover:text-accent-ochre underline underline-offset-2 decoration-accent-amber/40" href="https://arxiv.org/abs/1305.2184" rel="noopener noreferrer" target="_blank">
+                arXiv:1305.2184 [astro-ph.HE]
+              </a>
+</div>
+<div class="flex items-center gap-3 text-ink-muted">
+<span class="font-mono" id="studyingCount">104 / 320 chars</span>
+<span class="px-1.5 py-0.5 bg-amber-wash text-accent-ochre uppercase font-medium">Peer-Reviewed</span>
+</div>
+</div>
+</section>
+<!-- Field 02: BUILDING -->
+<section class="bg-surface-container-lowest border border-hairline-rule p-6 transition-all focus-within:border-accent-amber focus-within:bg-paper-base">
+<div class="flex items-start justify-between gap-4 mb-2">
+<div>
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 bg-accent-amber rounded-none inline-block"></span>
+<span class="font-label-md text-label-md uppercase tracking-wider text-accent-ochre font-semibold">02 // CURRENTLY BUILDING &amp; ENGINEERING</span>
+</div>
+<p class="font-body-sm text-body-sm text-ink-muted mt-1">
+                Telescope hardware, custom instrumentation, ASCOM Alpaca drivers, or machine learning pipelines.
+              </p>
+</div>
+<div class="shrink-0 font-label-sm text-label-sm px-2 py-0.5 bg-surface-container text-ink-secondary border border-hairline-subtle">
+<span class="font-mono text-accent-ochre">HARDWARE / ML</span>
+</div>
+</div>
+<div class="mt-4">
+<textarea class="w-full p-3.5 bg-paper-base border border-hairline-rule font-headline-sm text-headline-sm text-ink-primary leading-relaxed focus:outline-none focus:border-accent-amber focus:bg-surface-container-lowest transition-colors placeholder:text-ink-muted/50 resize-y" id="fieldBuilding" placeholder="State the mechanical, firmware, or software system currently on the workbench..." rows="3">Automated FOCAL filter wheel controller firmware (ESP32-S3 FreeRTOS) &amp; PyTorch spectral deconvolution tensor pipeline v2.1</textarea>
+</div>
+<!-- Metadata Placard Bar -->
+<div class="mt-3 pt-3 border-t border-hairline-subtle flex flex-wrap items-center justify-between gap-3 font-label-sm text-label-sm">
+<div class="flex items-center gap-2 text-ink-muted font-mono">
+<span class="material-symbols-outlined text-[15px] text-accent-ochre">commit</span>
+<span class="text-ink-secondary">feat/esp32-stepper-accel</span>
+<span class="text-outline-variant">•</span>
+<span class="text-ink-muted">ASCOM Alpaca v6.6 Compliant</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-1.5 py-0.5 bg-surface-container-high text-ink-secondary uppercase">Hardware Bench #2</span>
+</div>
+</div>
+</section>
+<!-- Field 03: READING -->
+<section class="bg-surface-container-lowest border border-hairline-rule p-6 transition-all focus-within:border-accent-amber focus-within:bg-paper-base">
+<div class="flex items-start justify-between gap-4 mb-2">
+<div>
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 bg-accent-amber rounded-none inline-block"></span>
+<span class="font-label-md text-label-md uppercase tracking-wider text-accent-ochre font-semibold">03 // CURRENTLY READING &amp; AUDITORY LOG</span>
+</div>
+<p class="font-body-sm text-body-sm text-ink-muted mt-1">
+                Monographs, journals, papers, or philosophical texts currently on the nightstand or observatory desk.
+              </p>
+</div>
+<div class="shrink-0 font-label-sm text-label-sm px-2 py-0.5 bg-surface-container text-ink-secondary border border-hairline-subtle">
+<span class="font-mono text-accent-ochre">EDITORIAL DISPATCH</span>
+</div>
+</div>
+<div class="mt-4">
+<textarea class="w-full p-3.5 bg-paper-base border border-hairline-rule font-headline-sm text-headline-sm text-ink-primary leading-relaxed focus:outline-none focus:border-accent-amber focus:bg-surface-container-lowest transition-colors placeholder:text-ink-muted/50 resize-y" id="fieldReading" placeholder="Record ongoing monographic studies, historical treatises, or acoustic companion works..." rows="3">The Astrophysical Journal, Vol. 948 (Fast Radio Burst localizations &amp; magnetar wind cavities); and 'Stars of the Lid — And Their Refinement of the Decline' (listening log)</textarea>
+</div>
+<!-- Metadata Placard Bar -->
+<div class="mt-3 pt-3 border-t border-hairline-subtle flex flex-wrap items-center justify-between gap-3 font-label-sm text-label-sm">
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-1.5 text-ink-muted">
+<span class="material-symbols-outlined text-[15px] text-accent-ochre">menu_book</span>
+<span class="">Vol 948, Issue 2</span>
+</div>
+<span class="text-outline-variant">•</span>
+<!-- Mini Progress Gauge -->
+<div class="flex items-center gap-2 font-mono text-ink-secondary">
+<div class="w-20 h-1.5 bg-surface-container-high overflow-hidden">
+<div class="bg-accent-ochre h-full w-[84%]"></div>
+</div>
+<span class="">84% read</span>
+</div>
+</div>
+<span class="px-1.5 py-0.5 bg-surface-container-high text-ink-muted font-mono">PRINT &amp; ACOUSTIC</span>
+</div>
+</section>
+<!-- Field 04: THINKING ABOUT -->
+<section class="bg-surface-container-lowest border border-hairline-rule p-6 transition-all focus-within:border-accent-amber focus-within:bg-paper-base">
+<div class="flex items-start justify-between gap-4 mb-2">
+<div>
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 bg-accent-amber rounded-none inline-block"></span>
+<span class="font-label-md text-label-md uppercase tracking-wider text-accent-ochre font-semibold">04 // CURRENTLY CONTEMPLATING &amp; FORMULATING</span>
+</div>
+<p class="font-body-sm text-body-sm text-ink-muted mt-1">
+                Open hypotheses, speculative cosmological models, future essay concepts, or unresolved queries.
+              </p>
+</div>
+<div class="shrink-0 font-label-sm text-label-sm px-2 py-0.5 bg-surface-container text-ink-secondary border border-hairline-subtle">
+<span class="font-mono text-accent-ochre">THEORY // ESSAY</span>
+</div>
+</div>
+<div class="mt-4">
+<textarea class="w-full p-3.5 bg-paper-base border border-hairline-rule font-headline-sm text-headline-sm text-ink-primary leading-relaxed focus:outline-none focus:border-accent-amber focus:bg-surface-container-lowest transition-colors placeholder:text-ink-muted/50 resize-y" id="fieldThinking" placeholder="Outline the open question or speculative premise occupying current contemplation..." rows="4">Whether primordial black hole micro-lensing signatures could explain unexplained caustic anomalies in James Webb deep field cluster Abell 1689 without requiring warm dark matter decay pathways.</textarea>
+</div>
+<!-- Metadata Placard Bar -->
+<div class="mt-3 pt-3 border-t border-hairline-subtle flex flex-wrap items-center justify-between gap-3 font-label-sm text-label-sm">
+<div class="flex items-center gap-2 text-ink-secondary">
+<span class="material-symbols-outlined text-[15px] text-accent-amber">edit_note</span>
+<span class="">Linked to upcoming Treatise: <a class="text-accent-ochre font-mono font-medium underline underline-offset-2" href="#">#TR-088 (Abell Caustic Inferences)</a></span>
+</div>
+<div class="flex items-center gap-1.5 font-mono text-ink-muted">
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-accent-ochre"></span>
+<span class="">Draft Status: Hypothesis Phase</span>
+</div>
+</div>
+</section>
+</form>
+</div>
+<!-- Right Column: Inspector, Frontispiece Live Representation & Revisions (~32% = col-span-4) -->
+<aside class="lg:col-span-4 space-y-6">
+<!-- Card 1: Broadcast Telemetry & Distribution Channels -->
+<section class="bg-surface-container-lowest border border-hairline-rule p-5">
+<div class="flex items-center justify-between pb-3 border-b border-hairline-subtle mb-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-accent-ochre text-[18px]">broadcast_on_personal</span>
+<h2 class="font-label-md text-label-md uppercase tracking-wider text-ink-primary font-semibold">Broadcasting &amp; Distribution</h2>
+</div>
+<span class="font-mono text-[11px] text-ink-muted">SYNC-NODE-01</span>
+</div>
+<!-- Master Switch -->
+<div class="p-3 bg-paper-surface border border-hairline-rule flex items-center justify-between gap-3 mb-4">
+<div>
+<div class="font-label-md text-label-md uppercase tracking-wide text-ink-primary font-medium">Public Broadcast State</div>
+<div class="font-body-sm text-body-sm text-ink-muted text-[12px] leading-tight mt-0.5">Live ticker on ZeroAbstraction.org</div>
+</div>
+<!-- Custom Monastic Toggle -->
+<button aria-checked="true" class="w-12 h-6 bg-accent-amber p-0.5 transition-colors duration-200 ease-in-out focus:outline-none flex items-center cursor-pointer" id="togglePublic" role="switch" type="button">
+<span class="w-5 h-5 bg-white shadow-sm transform translate-x-6 transition-transform duration-200 ease-in-out block"></span>
+</button>
+</div>
+<p class="font-body-sm text-body-sm text-ink-muted leading-relaxed mb-4">
+          When active, this singleton record dispatches to the public frontispiece ticker and the raw JSON endpoint <code class="font-mono text-[11px] px-1 py-0.5 bg-paper-container text-ink-primary">/api/v1/current-state</code> upon publication.
+        </p>
+<!-- Broadcast Channels Checklist -->
+<div class="space-y-2.5 pt-2 border-t border-hairline-subtle">
+<div class="font-label-sm text-label-sm uppercase tracking-wider text-ink-muted mb-1.5">Distribution Outlets</div>
+<label class="flex items-start gap-2.5 cursor-pointer select-none group">
+<input checked="" class="mt-0.5 rounded-none border-hairline-rule text-accent-ochre focus:ring-0 cursor-pointer accent-[#b3743b] w-4 h-4" type="checkbox">
+<div class="text-ink-secondary group-hover:text-ink-primary">
+<span class="font-label-sm text-label-sm uppercase tracking-wide block font-medium">Frontispiece Telemetry Bar</span>
+<span class="text-ink-muted text-[11px] font-body-sm block">Hero ribbon on home page</span>
+</div>
+</label>
+<label class="flex items-start gap-2.5 cursor-pointer select-none group">
+<input checked="" class="mt-0.5 rounded-none border-hairline-rule text-accent-ochre focus:ring-0 cursor-pointer accent-[#b3743b] w-4 h-4" type="checkbox">
+<div class="text-ink-secondary group-hover:text-ink-primary">
+<span class="font-label-sm text-label-sm uppercase tracking-wide block font-medium">Observatory RSS &amp; ActivityPub</span>
+<span class="text-ink-muted text-[11px] font-body-sm block">Subscribers receive ephemeral ping</span>
+</div>
+</label>
+<label class="flex items-start gap-2.5 cursor-pointer select-none group">
+<input checked="" class="mt-0.5 rounded-none border-hairline-rule text-accent-ochre focus:ring-0 cursor-pointer accent-[#b3743b] w-4 h-4" type="checkbox">
+<div class="text-ink-secondary group-hover:text-ink-primary">
+<span class="font-label-sm text-label-sm uppercase tracking-wide block font-medium">Terminal CLI Daemon</span>
+<span class="text-ink-muted text-[11px] font-body-sm block"><code class="font-mono text-[10px]">curl -s zeroabstraction.org/now</code></span>
+</div>
+</label>
+</div>
+<div class="mt-4 pt-3 border-t border-hairline-subtle flex items-center justify-between text-ink-muted font-label-sm text-label-sm">
+<span class="uppercase">Cadence:</span>
+<span class="font-mono text-accent-ochre font-medium">Continuous (Instant)</span>
+</div>
+</section>
+<!-- Card 2: Live Frontispiece Reader Representation (The broadsheet mirror) -->
+<section class="bg-surface-container-lowest border border-hairline-rule p-5 relative overflow-hidden">
+<div class="flex items-center justify-between pb-3 border-b border-hairline-subtle mb-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-accent-ochre text-[18px]">preview</span>
+<h2 class="font-label-md text-label-md uppercase tracking-wider text-ink-primary font-semibold">Reader Frontispiece Preview</h2>
+</div>
+<span class="font-label-sm text-label-sm text-accent-ochre uppercase font-mono">1:1 LIVE MIRROR</span>
+</div>
+<!-- Simulated Public Website Widget -->
+<div class="bg-ink-primary text-paper-base p-4.5 rounded-none border border-ink-secondary/50 shadow-inner">
+<div class="flex items-center justify-between border-b border-ink-secondary/60 pb-2 mb-3">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-accent-amber animate-pulse"></span>
+<span class="font-label-sm text-label-sm tracking-widest text-secondary-fixed uppercase">RIGHT NOW // OBSERVATORY TELEMETRY</span>
+</div>
+<span class="font-mono text-[10px] text-paper-container/60">LIVE</span>
+</div>
+<div class="space-y-3 font-body-sm text-body-sm">
+<!-- P1 -->
+<div>
+<div class="font-label-sm text-label-sm text-secondary-fixed/90 uppercase tracking-widest flex items-center gap-1.5">
+<span class="">📖</span>
+<span class="">Studying</span>
+</div>
+<p class="font-headline-sm text-headline-sm text-paper-surface font-normal line-clamp-2 mt-0.5 leading-snug" id="previewStudying">Relativistic Magnetohydrodynamics in Supernova Remnants (Rezzolla &amp; Zanotti)</p>
+</div>
+<!-- P2 -->
+<div class="pt-2 border-t border-ink-secondary/40">
+<div class="font-label-sm text-label-sm text-secondary-fixed/90 uppercase tracking-widest flex items-center gap-1.5">
+<span class="">⚙️</span>
+<span class="">Building</span>
+</div>
+<p class="font-headline-sm text-headline-sm text-paper-surface font-normal line-clamp-2 mt-0.5 leading-snug" id="previewBuilding">Automated FOCAL Filter Wheel Firmware &amp; PyTorch Tensor Pipeline v2.1</p>
+</div>
+<!-- P3 -->
+<div class="pt-2 border-t border-ink-secondary/40">
+<div class="font-label-sm text-label-sm text-secondary-fixed/90 uppercase tracking-widest flex items-center gap-1.5">
+<span class="">📚</span>
+<span class="">Reading</span>
+</div>
+<p class="font-headline-sm text-headline-sm text-paper-surface font-normal line-clamp-2 mt-0.5 leading-snug" id="previewReading">The Astrophysical Journal, Vol. 948 (Fast Radio Bursts &amp; Magnetar Winds)</p>
+</div>
+<!-- P4 -->
+<div class="pt-2 border-t border-ink-secondary/40">
+<div class="font-label-sm text-label-sm text-secondary-fixed/90 uppercase tracking-widest flex items-center gap-1.5">
+<span class="">💭</span>
+<span class="">Contemplating</span>
+</div>
+<p class="font-headline-sm text-headline-sm text-paper-surface font-normal line-clamp-2 mt-0.5 leading-snug" id="previewThinking">Primordial Black Hole Micro-lensing &amp; Caustic Anomalies in Abell 1689</p>
+</div>
+</div>
+<div class="mt-4 pt-2.5 border-t border-ink-secondary/50 flex items-center justify-between text-[11px] font-mono text-paper-container/70">
+<span class="">zeroabstraction.org/now</span>
+<span class="text-accent-amber">Updated 38m ago</span>
+</div>
+</div>
+<div class="mt-3 text-center">
+<span class="font-label-sm text-label-sm text-ink-muted uppercase tracking-wider">Updates reflect in real-time in this pane</span>
+</div>
+</section>
+<!-- Card 3: Historical Snapshots & Audit Log -->
+<section class="bg-surface-container-lowest border border-hairline-rule p-5">
+<div class="flex items-center justify-between pb-3 border-b border-hairline-subtle mb-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-accent-ochre text-[18px]">receipt_long</span>
+<h2 class="font-label-md text-label-md uppercase tracking-wider text-ink-primary font-semibold">Snapshot Journal</h2>
+</div>
+<span class="font-mono text-label-sm text-ink-muted">14 TOTAL</span>
+</div>
+<ol class="relative border-l border-hairline-rule ml-2.5 space-y-4 my-2">
+<!-- Item 1 (Active) -->
+<li class="ml-4">
+<span class="absolute -left-1.5 mt-1.5 w-3 h-3 bg-accent-amber border-2 border-paper-surface"></span>
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-semibold text-accent-ochre uppercase">Today, 14:22 UTC</span>
+<span class="font-label-sm text-label-sm text-ink-muted px-1.5 py-0.2 bg-amber-wash text-accent-amber border border-accent-amber/20">CURRENT</span>
+</div>
+<div class="font-body-sm text-body-sm text-ink-primary font-medium mt-0.5">Manoj Amavasya</div>
+<p class="font-body-sm text-body-sm text-ink-muted line-clamp-1 mt-0.5">
+              Updated Relativistic Magnetohydrodynamics &amp; ESP32-S3 firmware vector.
+            </p>
+</li>
+<!-- Item 2 -->
+<li class="ml-4">
+<span class="absolute -left-1.5 mt-1.5 w-3 h-3 bg-hairline-rule border-2 border-paper-surface"></span>
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-ink-muted uppercase">Feb 12, 09:30 UTC</span>
+<button class="font-label-sm text-label-sm text-accent-ochre hover:underline uppercase" type="button">Rollback</button>
+</div>
+<div class="font-body-sm text-body-sm text-ink-secondary mt-0.5">Manoj Amavasya</div>
+<p class="font-body-sm text-body-sm text-ink-muted line-clamp-1 mt-0.5">
+              Studying Gravitational Wave ringdowns; calibrating Takahashi FSQ-106ED focal reducer.
+            </p>
+</li>
+<!-- Item 3 -->
+<li class="ml-4">
+<span class="absolute -left-1.5 mt-1.5 w-3 h-3 bg-hairline-rule border-2 border-paper-surface"></span>
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-ink-muted uppercase">Jan 28, 18:14 UTC</span>
+<button class="font-label-sm text-label-sm text-accent-ochre hover:underline uppercase" type="button">Rollback</button>
+</div>
+<div class="font-body-sm text-body-sm text-ink-secondary mt-0.5">Manoj Amavasya</div>
+<p class="font-body-sm text-body-sm text-ink-muted line-clamp-1 mt-0.5">
+              Building ASCOM Alpaca filter wheel v1 prototype &amp; reading Wheeler's Gravitation.
+            </p>
+</li>
+</ol>
+<div class="pt-4 mt-4 border-t border-hairline-subtle text-center">
+<a class="inline-flex items-center gap-1.5 font-label-sm text-label-sm text-accent-ochre hover:text-ink-primary uppercase tracking-wider transition-colors" href="#">
+<span class="">View Full Archive &amp; Diff Engine (14 Revisions)</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+</div>
+</section>
+<!-- System Diagnostic Badge Card -->
+<div class="p-4 bg-surface-container border border-hairline-rule flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-ink-muted text-[20px]">database</span>
+<div>
+<div class="font-label-sm text-label-sm uppercase tracking-wide text-ink-primary font-medium">PostgreSQL Singleton</div>
+<div class="font-mono text-[11px] text-ink-muted">globals_current_state (id: 1)</div>
+</div>
+</div>
+<div class="text-right font-mono text-[11px] text-accent-ochre font-medium">
+          VALIDATED
+        </div>
+</div>
+</aside>
+</div>
+<!-- Notification Toast Container -->
+<div class="fixed bottom-12 right-8 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none" id="saveToast">
+<div class="bg-ink-primary text-paper-surface px-5 py-3 border border-accent-amber shadow-2xl flex items-center gap-3">
+<span class="material-symbols-outlined text-accent-amber text-[20px]">check_circle</span>
+<div>
+<div class="font-label-md text-label-md uppercase tracking-wider font-semibold">State Broadcast Synchronized</div>
+<div class="font-body-sm text-body-sm text-paper-container/70 text-[12px]">All downstream channels &amp; tickers updated at 14:23 UTC.</div>
+</div>
+</div>
+</div>
+<!-- Live Binding & Micro-Interactions Script -->
+<script>
+    (function() {
+      // 1. Live synchronization between textareas and the Frontispiece Reader representation
+      const fields = [
+        { input: 'fieldStudying', preview: 'previewStudying', counter: 'studyingCount' },
+        { input: 'fieldBuilding', preview: 'previewBuilding' },
+        { input: 'fieldReading', preview: 'previewReading' },
+        { input: 'fieldThinking', preview: 'previewThinking' }
+      ];
+
+      fields.forEach(function(item) {
+        const inputEl = document.getElementById(item.input);
+        const previewEl = document.getElementById(item.preview);
+
+        if (inputEl && previewEl) {
+          inputEl.addEventListener('input', function() {
+            previewEl.textContent = this.value || '—';
+            if (item.counter) {
+              const counterEl = document.getElementById(item.counter);
+              if (counterEl) {
+                counterEl.textContent = this.value.length + ' / 320 chars';
+              }
+            }
+          });
+        }
+      });
+
+      // 2. Broadcast Toggle Switch Simulation
+      const toggleBtn = document.getElementById('togglePublic');
+      let isEnabled = true;
+
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', function() {
+          isEnabled = !isEnabled;
+          const thumb = toggleBtn.querySelector('span');
+          if (isEnabled) {
+            toggleBtn.classList.remove('bg-surface-variant');
+            toggleBtn.classList.add('bg-accent-amber');
+            thumb.classList.remove('translate-x-0');
+            thumb.classList.add('translate-x-6');
+            toggleBtn.setAttribute('aria-checked', 'true');
+          } else {
+            toggleBtn.classList.remove('bg-accent-amber');
+            toggleBtn.classList.add('bg-surface-variant');
+            thumb.classList.remove('translate-x-6');
+            thumb.classList.add('translate-x-0');
+            toggleBtn.setAttribute('aria-checked', 'false');
+          }
+        });
+      }
+
+      // 3. Save & Broadcast Toast feedback
+      const broadcastBtn = document.getElementById('broadcastBtn');
+      const toast = document.getElementById('saveToast');
+
+      function triggerSaveAnimation() {
+        if (!broadcastBtn || !toast) return;
+        const originalText = broadcastBtn.innerHTML;
+        
+        broadcastBtn.disabled = true;
+        broadcastBtn.classList.add('opacity-80');
+        broadcastBtn.innerHTML = '<span class="material-symbols-outlined text-[17px] animate-spin">sync</span><span>Broadcasting...</span>';
+
+        setTimeout(function() {
+          broadcastBtn.innerHTML = '<span class="material-symbols-outlined text-[17px]">done</span><span>Broadcasted</span>';
+          
+          // Show Toast
+          toast.classList.remove('translate-y-24', 'opacity-0');
+          toast.classList.add('translate-y-0', 'opacity-100');
+
+          setTimeout(function() {
+            toast.classList.remove('translate-y-0', 'opacity-100');
+            toast.classList.add('translate-y-24', 'opacity-0');
+            broadcastBtn.disabled = false;
+            broadcastBtn.classList.remove('opacity-80');
+            broadcastBtn.innerHTML = originalText;
+          }, 3000);
+        }, 600);
+      }
+
+      if (broadcastBtn) {
+        broadcastBtn.addEventListener('click', triggerSaveAnimation);
+      }
+
+      // 4. Keyboard Shortcut ⌘S / Ctrl+S
+      window.addEventListener('keydown', function(e) {
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 's') {
+          e.preventDefault();
+          triggerSaveAnimation();
+        }
+      });
+    })();
+  </script>
+</div></main><footer class="fixed bottom-0 left-64 right-0 h-8 bg-paper-surface z-40 flex items-center justify-between px-space-lg shadow-[0_1px_8px_rgba(0,0,0,0.04)] font-label-sm text-label-sm text-ink-muted select-none"><div class="flex items-center gap-space-md"><span class="">#7f3a90c</span><span class="text-outline-variant">•</span><span class="">14ms</span></div><div class="flex items-center gap-space-sm"><span class="w-1.5 h-1.5 rounded-full bg-primary inline-block"></span><span class="uppercase tracking-wider text-ink-primary font-medium">SYNCED</span></div></footer></div>
+
+
+
+
+
+
+</body></html>

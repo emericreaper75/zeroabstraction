@@ -1,12 +1,22 @@
-import type { CollectionConfig } from 'payload'
+import type { Access, CollectionConfig } from 'payload'
+import { authenticated } from '../access'
+
+const readPosts: Access = ({ req: { user } }) => {
+  if (user) return true
+  return { status: { equals: 'published' } }
+}
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
   admin: {
     useAsTitle: 'title',
+    defaultColumns: ['title', 'status', 'published_at', 'updatedAt'],
   },
   access: {
-    read: () => true,
+    read: readPosts,
+    create: authenticated,
+    update: authenticated,
+    delete: authenticated,
   },
   fields: [
     {
@@ -19,9 +29,7 @@ export const Posts: CollectionConfig = {
       type: 'text',
       required: true,
       unique: true,
-      admin: {
-        position: 'sidebar',
-      },
+      index: true,
     },
     {
       name: 'excerpt',
@@ -30,7 +38,6 @@ export const Posts: CollectionConfig = {
     {
       name: 'content',
       type: 'richText',
-      required: true,
     },
     {
       name: 'cover_image',
@@ -40,37 +47,28 @@ export const Posts: CollectionConfig = {
     {
       name: 'published_at',
       type: 'date',
-      admin: {
-        position: 'sidebar',
-      },
     },
     {
       name: 'status',
       type: 'select',
+      defaultValue: 'draft',
+      required: true,
       options: [
         { label: 'Draft', value: 'draft' },
         { label: 'Published', value: 'published' },
+        { label: 'Archived', value: 'archived' },
       ],
-      defaultValue: 'draft',
-      admin: {
-        position: 'sidebar',
-      },
     },
     {
       name: 'reading_time',
       type: 'number',
-      admin: {
-        position: 'sidebar',
-      },
+      min: 0,
     },
     {
       name: 'topics',
       type: 'relationship',
       relationTo: 'topics',
       hasMany: true,
-      admin: {
-        position: 'sidebar',
-      },
     },
     {
       name: 'related_projects',
@@ -88,9 +86,6 @@ export const Posts: CollectionConfig = {
       name: 'featured',
       type: 'checkbox',
       defaultValue: false,
-      admin: {
-        position: 'sidebar',
-      },
     },
     {
       name: 'seo_metadata',
@@ -98,7 +93,7 @@ export const Posts: CollectionConfig = {
       fields: [
         { name: 'title', type: 'text' },
         { name: 'description', type: 'textarea' },
-      ]
-    }
+      ],
+    },
   ],
 }

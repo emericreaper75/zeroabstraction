@@ -1,16 +1,11 @@
 import { Display, Title, Label, Body } from '@/components/typography';
 import { ProjectImage } from '@/components/ProjectImage';
 import { EditorialLink } from '@/components/EditorialLink';
-import { getPayload } from 'payload';
-import configPromise from '@/payload.config';
+import { getProjects } from '@/lib/content';
 import { Link } from 'next-view-transitions';
 
 export default async function ProjectsArchive() {
-  const payload = await getPayload({ config: configPromise });
-  const projects = await payload.find({
-    collection: 'projects',
-    sort: '-year',
-  });
+  const { docs: projects } = await getProjects();
 
   return (
     <div className="container-wide pb-32">
@@ -19,7 +14,7 @@ export default async function ProjectsArchive() {
       </header>
 
       <div className="flex flex-col" style={{ gap: 'var(--space-10)' }}>
-        {projects.docs.map((project, index) => {
+        {projects.map((project: any, index: number) => {
           const isEven = index % 2 === 0;
           const imageUrl = typeof project.cover_image === 'object' && project.cover_image?.url ? project.cover_image.url : '/placeholder.svg';
           const imageAlt = typeof project.cover_image === 'object' && project.cover_image?.alt_text ? project.cover_image.alt_text : `MISSING ALT TEXT - ${project.title}`;
