@@ -34,7 +34,7 @@ export default async function AdminDashboard() {
             <span className="text-label-sm font-label-sm text-primary border border-primary/30 px-2 py-0.5 bg-amber-wash rounded">
               OBSERVATORY WORKBENCH
             </span>
-            <span className="text-label-sm font-label-sm text-ink-muted font-normal">// CANONICAL ARCHIVE</span>
+            <span className="text-label-sm font-label-sm text-ink-muted font-normal">{'//'} CANONICAL ARCHIVE</span>
           </div>
           <h1 className="font-headline-md text-headline-xl text-on-surface italic font-normal tracking-tight">
             Good evening, Manoj

@@ -9,18 +9,12 @@ import { ThemeToggle } from '@/components/ThemeToggle';
 import { SearchModal } from '@/components/SearchModal';
 import type { SearchableItem } from '@/lib/content';
 
-const LINKS = [
-  { name: 'HOME', path: '/' },
-  { name: 'PROJECTS', path: '/projects' },
-  { name: 'WRITING', path: '/writing' },
-  { name: 'ABOUT', path: '/about' },
-];
-
 interface HeaderProps {
   searchableItems?: SearchableItem[];
+  navLinks?: { label?: string | null; url?: string | null; id?: string | null }[];
 }
 
-export function Header({ searchableItems = [] }: HeaderProps) {
+export function Header({ searchableItems = [], navLinks = [] }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const pathname = usePathname();
@@ -151,10 +145,15 @@ export function Header({ searchableItems = [] }: HeaderProps) {
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center" style={{ gap: 'var(--space-6)' }}>
-          {LINKS.map(link => (
-            <Link key={link.path} href={link.path} className="text-[color:var(--text)] hover:text-[color:var(--accent)] transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center" style={{ textDecoration: 'none' }}>
-              <Label className={pathname === link.path ? '' : 'text-[color:var(--muted)]'}>
-                {link.name}
+          {(navLinks?.length ? navLinks : [
+            { label: 'HOME', url: '/' },
+            { label: 'PROJECTS', url: '/projects' },
+            { label: 'WRITING', url: '/writing' },
+            { label: 'ABOUT', url: '/about' },
+          ]).map(link => (
+            <Link key={link.url || '#'} href={link.url || '#'} className="text-[color:var(--text)] hover:text-[color:var(--accent)] transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center" style={{ textDecoration: 'none' }}>
+              <Label className={pathname === link.url ? '' : 'text-[color:var(--muted)]'}>
+                {link.label?.toUpperCase()}
               </Label>
             </Link>
           ))}
@@ -196,18 +195,23 @@ export function Header({ searchableItems = [] }: HeaderProps) {
           }}
         >
           <nav className="flex flex-col" style={{ gap: 'var(--space-8)' }}>
-            {LINKS.map(link => {
-              const isActive = pathname === link.path;
+            {(navLinks?.length ? navLinks : [
+              { label: 'HOME', url: '/' },
+              { label: 'PROJECTS', url: '/projects' },
+              { label: 'WRITING', url: '/writing' },
+              { label: 'ABOUT', url: '/about' },
+            ]).map(link => {
+              const isActive = pathname === link.url;
               return (
                 <Link 
-                  key={link.path} 
-                  href={link.path} 
+                  key={link.url || '#'} 
+                  href={link.url || '#'} 
                   style={{ textDecoration: 'none' }}
                   className="flex items-center gap-4 group min-h-[44px] py-2"
                 >
                   {isActive && <span className="text-[color:var(--text)] text-2xl" aria-hidden="true">→</span>}
                   <Display as="span" className={isActive ? 'text-[color:var(--text)]' : 'text-[color:var(--muted)] group-hover:text-[color:var(--text)] transition-colors'}>
-                    {link.name}
+                    {link.label?.toUpperCase()}
                   </Display>
                 </Link>
               )

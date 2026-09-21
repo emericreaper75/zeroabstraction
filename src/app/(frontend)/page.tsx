@@ -5,9 +5,10 @@ import { Reveal } from '@/components/Reveal';
 import { FeaturedProjectCard } from '@/components/FeaturedProjectCard';
 import { SampleContentBadge } from '@/components/SampleContentBadge';
 import { Link } from 'next-view-transitions';
-import { getCurrentState, getProfile, getFeaturedProjects, getRecentPosts, getJourney } from '@/lib/content';
+import { getSiteSettings, getCurrentState, getProfile, getFeaturedProjects, getRecentPosts, getJourney } from '@/lib/content';
 
 export default async function Home() {
+  const siteSettings = await getSiteSettings();
   const currentState = await getCurrentState();
   const profile = await getProfile();
   const featuredProjects = await getFeaturedProjects(2);
@@ -22,9 +23,9 @@ export default async function Home() {
         <section className="min-h-[85vh] flex flex-col justify-center py-16" style={{ gap: 'var(--space-8)' }}>
           {/* Text Content */}
           <div className="flex flex-col" style={{ gap: 'var(--space-4)', maxWidth: '800px' }}>
-            <Display>First Last</Display>
+            <Display>{siteSettings?.name || 'First Last'}</Display>
             <Heading as="h2" className="text-[color:var(--muted)]">
-              Exploring the intersections of theoretical physics, electrical engineering, and the cosmos.
+              {siteSettings?.short_bio || 'Exploring the intersections of theoretical physics, electrical engineering, and the cosmos.'}
             </Heading>
             
             <div className="flex items-center flex-wrap" style={{ gap: 'var(--space-3)', marginTop: 'var(--space-4)' }}>

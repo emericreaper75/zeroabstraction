@@ -1,7 +1,7 @@
 import { getPayloadClient } from './payload'
-import type { Media, Post, Project, CurrentState, Profile, Topic } from '@/payload-types'
+import type { Media, Post, Project, CurrentState, Profile, Topic, SiteSetting } from '@/payload-types'
 
-export type { Post, Project, CurrentState, Profile, Topic }
+export type { Post, Project, CurrentState, Profile, Topic, SiteSetting }
 
 export type JourneyEntry = {
   id?: string | null
@@ -106,6 +106,11 @@ export async function getCurrentState(): Promise<CurrentState | null> {
 export async function getProfile(): Promise<Profile | null> {
   const payload = await getPayloadClient()
   return payload.findGlobal({ slug: 'profile', depth: 1 })
+}
+
+export async function getSiteSettings(): Promise<SiteSetting | null> {
+  const payload = await getPayloadClient()
+  return payload.findGlobal({ slug: 'site-settings', depth: 1 })
 }
 
 export async function getJourney(): Promise<JourneyEntry[]> {

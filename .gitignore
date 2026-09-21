@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# design mockups and scratch
+cookies.txt
+/google-stitch-dashboard/
+*.extracted.html
+
