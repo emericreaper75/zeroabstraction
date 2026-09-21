@@ -48,3 +48,8 @@ cookies.txt
 /.agents/
 *.extracted.html
 
+# root documentation (keep only README.md)
+/*.md
+!/README.md
+
+
