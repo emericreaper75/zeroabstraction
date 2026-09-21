@@ -40,8 +40,11 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# design mockups and scratch
+# design mockups, planning docs, and workspace configuration
 cookies.txt
 /google-stitch-dashboard/
+/back ground work/
+/Visualls/
+/.agents/
 *.extracted.html
 
