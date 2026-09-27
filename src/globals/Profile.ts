@@ -7,14 +7,6 @@ export const Profile: GlobalConfig = {
     read: publicRead,
     update: authenticated,
   },
-  hooks: {
-    beforeChange: [
-      ({ data }) => {
-        data.updated_at = new Date().toISOString()
-        return data
-      },
-    ],
-  },
   fields: [
     { name: 'introduction', type: 'textarea' },
     { name: 'story', type: 'richText' },
@@ -23,11 +15,6 @@ export const Profile: GlobalConfig = {
       name: 'photograph',
       type: 'upload',
       relationTo: 'media',
-    },
-    {
-      name: 'updated_at',
-      type: 'date',
-      admin: { readOnly: true },
     },
   ],
 }

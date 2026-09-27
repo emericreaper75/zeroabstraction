@@ -598,7 +598,6 @@ export interface Profile {
   } | null;
   current_focus?: string | null;
   photograph?: (number | null) | Media;
-  updated_at?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -675,7 +674,6 @@ export interface ProfileSelect<T extends boolean = true> {
   story?: T;
   current_focus?: T;
   photograph?: T;
-  updated_at?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

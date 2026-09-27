@@ -15,12 +15,13 @@ export function SearchModal({ isOpen, onClose, items }: SearchModalProps) {
   const [query, setQuery] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
+  const previousActiveElement = useRef<HTMLElement | null>(null);
 
-  // Auto-focus input and prevent body scroll when modal opens
+  // Auto-focus input, store previous active element, and manage focus return
   useEffect(() => {
     if (isOpen) {
+      previousActiveElement.current = document.activeElement as HTMLElement;
       document.body.style.overflow = 'hidden';
-      // Slight timeout to ensure modal is rendered in DOM
       const timer = setTimeout(() => {
         inputRef.current?.focus();
       }, 50);
@@ -31,21 +32,47 @@ export function SearchModal({ isOpen, onClose, items }: SearchModalProps) {
     } else {
       document.body.style.overflow = '';
       setQuery('');
+      if (previousActiveElement.current && typeof previousActiveElement.current.focus === 'function') {
+        previousActiveElement.current.focus();
+      }
     }
   }, [isOpen]);
 
-  // Handle Escape key to close
+  // Handle Escape key and Tab focus trap
   useEffect(() => {
+    if (!isOpen) return;
+
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) {
+      if (e.key === 'Escape') {
         e.preventDefault();
         onClose();
+        return;
+      }
+
+      if (e.key === 'Tab' && modalRef.current) {
+        const focusableElements = modalRef.current.querySelectorAll<HTMLElement>(
+          'input, button, a[href], [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusableElements.length === 0) return;
+
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement.focus();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement.focus();
+          }
+        }
       }
     };
 
-    if (isOpen) {
-      window.addEventListener('keydown', handleKeyDown);
-    }
+    window.addEventListener('keydown', handleKeyDown);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
@@ -171,7 +198,7 @@ export function SearchModal({ isOpen, onClose, items }: SearchModalProps) {
                     >
                       {/* Meta line */}
                       <div className="flex items-center gap-2.5 text-xs font-mono text-[color:var(--muted)] mb-1 flex-wrap">
-                        <span className="uppercase text-[color:var(--accent)] font-medium tracking-wider">
+                        <span className="uppercase text-[color:var(--accent-ink)] font-medium tracking-wider">
                           {item.type === 'post' ? 'Writing' : 'Project'}
                         </span>
                         {item.date && <span>• {item.date}</span>}

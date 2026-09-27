@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { Display, Label, Body } from '@/components/typography';
 import { Divider } from '@/components/Divider';
 import { RichTextRenderer } from '@/components/RichTextRenderer';
@@ -5,6 +6,32 @@ import { SampleContentBadge } from '@/components/SampleContentBadge';
 import { getAllSlugs, getPostBySlug, getRelatedContentForPost } from '@/lib/content';
 import { RelatedContent } from '@/components/RelatedContent';
 import { notFound } from 'next/navigation';
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await getPostBySlug(slug);
+  if (!post) {
+    return {
+      title: 'Manuscript Not Found | ZeroAbstraction',
+    };
+  }
+
+  return {
+    title: `${post.title} | ZeroAbstraction`,
+    description: post.excerpt || `Manuscript on ${post.title}`,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt || undefined,
+      type: 'article',
+      publishedTime: post.published_at || undefined,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.excerpt || undefined,
+    },
+  };
+}
 
 export async function generateStaticParams() {
   const slugs = await getAllSlugs('posts');

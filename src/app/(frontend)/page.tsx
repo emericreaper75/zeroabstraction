@@ -40,6 +40,7 @@ export default async function Home() {
           {/* Placeholder Image Area */}
           <div 
             className="w-full"
+            role="img"
             style={{ 
               height: 'clamp(300px, 50vh, 600px)', 
               backgroundColor: 'var(--muted)',

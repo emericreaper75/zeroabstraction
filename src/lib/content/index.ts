@@ -44,6 +44,7 @@ export async function getPosts(limit = 10): Promise<{ docs: Post[] }> {
   const payload = await getPayloadClient()
   return payload.find({
     collection: 'posts',
+    overrideAccess: false, // SECURITY: enforce access control — excludes draft/archived from public pages
     limit,
     sort: '-published_at',
     depth: 2,
@@ -59,6 +60,7 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
   const payload = await getPayloadClient()
   const result = await payload.find({
     collection: 'posts',
+    overrideAccess: false, // SECURITY: enforce access control — returns null for drafts/archived on public routes
     where: { slug: { equals: slug } },
     limit: 1,
     depth: 2,
@@ -70,6 +72,7 @@ export async function getProjects(limit = 10): Promise<{ docs: Project[] }> {
   const payload = await getPayloadClient()
   return payload.find({
     collection: 'projects',
+    overrideAccess: false, // SECURITY: enforce access control — excludes archived from public pages
     limit,
     sort: '-year',
     depth: 2,
@@ -80,6 +83,7 @@ export async function getFeaturedProjects(limit = 4): Promise<Project[]> {
   const payload = await getPayloadClient()
   const result = await payload.find({
     collection: 'projects',
+    overrideAccess: false, // SECURITY: enforce access control
     where: { featured: { equals: true } },
     limit,
     depth: 2,
@@ -91,6 +95,7 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
   const payload = await getPayloadClient()
   const result = await payload.find({
     collection: 'projects',
+    overrideAccess: false, // SECURITY: enforce access control — returns null for archived on public routes
     where: { slug: { equals: slug } },
     limit: 1,
     depth: 2,
@@ -100,22 +105,23 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
 
 export async function getCurrentState(): Promise<CurrentState | null> {
   const payload = await getPayloadClient()
-  return payload.findGlobal({ slug: 'current-state' })
+  // Globals have their own read access config; overrideAccess: false defers to it
+  return payload.findGlobal({ slug: 'current-state', overrideAccess: false })
 }
 
 export async function getProfile(): Promise<Profile | null> {
   const payload = await getPayloadClient()
-  return payload.findGlobal({ slug: 'profile', depth: 1 })
+  return payload.findGlobal({ slug: 'profile', overrideAccess: false, depth: 1 })
 }
 
 export async function getSiteSettings(): Promise<SiteSetting | null> {
   const payload = await getPayloadClient()
-  return payload.findGlobal({ slug: 'site-settings', depth: 1 })
+  return payload.findGlobal({ slug: 'site-settings', overrideAccess: false, depth: 1 })
 }
 
 export async function getJourney(): Promise<JourneyEntry[]> {
   const payload = await getPayloadClient()
-  const journey = await payload.findGlobal({ slug: 'journey' })
+  const journey = await payload.findGlobal({ slug: 'journey', overrideAccess: false })
   const entries = journey.entries ?? []
   return [...entries].sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
 }
@@ -124,6 +130,7 @@ export async function getAllSlugs(collection: 'posts' | 'projects'): Promise<{ s
   const payload = await getPayloadClient()
   const result = await payload.find({
     collection,
+    overrideAccess: false, // SECURITY: generateStaticParams only pre-renders publicly accessible slugs
     limit: 1000,
     depth: 0,
     select: { slug: true },
@@ -182,6 +189,7 @@ export async function searchContent(query: string): Promise<SearchableItem[]> {
   const [posts, projects] = await Promise.all([
     payload.find({
       collection: 'posts',
+      overrideAccess: false, // SECURITY: enforce access control in search results
       where: {
         or: [{ title: { contains: q } }, { excerpt: { contains: q } }],
       },
@@ -190,6 +198,7 @@ export async function searchContent(query: string): Promise<SearchableItem[]> {
     }),
     payload.find({
       collection: 'projects',
+      overrideAccess: false, // SECURITY: enforce access control in search results
       where: {
         or: [{ title: { contains: q } }, { summary: { contains: q } }],
       },
@@ -225,8 +234,8 @@ export async function getSearchIndex(): Promise<SearchableItem[]> {
   try {
     const payload = await getPayloadClient()
     const [posts, projects] = await Promise.all([
-      payload.find({ collection: 'posts', limit: 100, depth: 0 }),
-      payload.find({ collection: 'projects', limit: 100, depth: 0 }),
+      payload.find({ collection: 'posts', overrideAccess: false, limit: 100, depth: 0 }), // SECURITY
+      payload.find({ collection: 'projects', overrideAccess: false, limit: 100, depth: 0 }), // SECURITY
     ])
 
     return [

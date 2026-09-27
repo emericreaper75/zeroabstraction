@@ -53,7 +53,7 @@ export function RelatedContent({
 
             {/* Topic / Context Sub-heading */}
             <div style={{ marginBottom: 'var(--space-5)' }}>
-              <Label className="text-[color:var(--accent)] text-xs font-mono tracking-wider uppercase">
+              <Label className="text-[color:var(--accent-ink)] text-xs font-mono tracking-wider uppercase">
                 {groupLabel}
               </Label>
             </div>
@@ -127,7 +127,7 @@ export function RelatedContent({
                       </div>
 
                       {/* Linked Title */}
-                      <Title as="h3" style={{ fontSize: 'var(--text-title)' }}>
+                      <Title as="h2" style={{ fontSize: 'var(--text-title)' }}>
                         <Link
                           href={itemHref}
                           className="transition-colors duration-200 hover:text-[color:var(--accent)]"

@@ -52,4 +52,11 @@ cookies.txt
 /*.md
 !/README.md
 
+# editor and agent workspace files
+/.claude/
+/.zed/
+/src/scripts/audit-*
+/src/scripts/verify-step*
+
+
 

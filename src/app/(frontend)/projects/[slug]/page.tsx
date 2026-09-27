@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { Display, Title, Label, Body } from '@/components/typography';
 import { ProjectImage } from '@/components/ProjectImage';
 import { EditorialLink } from '@/components/EditorialLink';
@@ -7,6 +8,35 @@ import { SampleContentBadge } from '@/components/SampleContentBadge';
 import { getAllSlugs, getProjectBySlug, getRelatedContentForProject } from '@/lib/content';
 import { RelatedContent } from '@/components/RelatedContent';
 import { notFound } from 'next/navigation';
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const project = await getProjectBySlug(slug);
+  if (!project) {
+    return {
+      title: 'Project Not Found | ZeroAbstraction',
+    };
+  }
+
+  const imageUrl = typeof project.cover_image === 'object' && project.cover_image?.url ? project.cover_image.url : undefined;
+
+  return {
+    title: `${project.title} | ZeroAbstraction`,
+    description: project.summary || `Project: ${project.title}`,
+    openGraph: {
+      title: project.title,
+      description: project.summary || undefined,
+      type: 'website',
+      images: imageUrl ? [{ url: imageUrl }] : undefined,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: project.title,
+      description: project.summary || undefined,
+      images: imageUrl ? [imageUrl] : undefined,
+    },
+  };
+}
 
 export async function generateStaticParams() {
   const slugs = await getAllSlugs('projects');

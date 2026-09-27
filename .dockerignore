@@ -4,3 +4,16 @@ node_modules
 .agents
 *.log
 .DS_Store
+
+# Secret and environment files
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.cert
+
+# Documentation and operational notes
+docs/
+*.md
+!README.md

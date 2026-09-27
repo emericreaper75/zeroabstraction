@@ -3,7 +3,10 @@
   --text: #17191a;
   --muted: #65635e;
   --border: #d5d0c6;
-  --accent: #c88a5a;
+  --accent: #ad6832;
+  --focus-ring: #ad6832;
+  /* Accent that meets WCAG AA (4.5:1) when used as small text on --bg */
+  --accent-ink: #9e5a24;
 
   /* Typography Scales */
   --text-hero: clamp(2.5rem, 6vw, 6rem);
@@ -37,6 +40,8 @@
     --muted: #a7a49d;
     --border: #2a3032;
     --accent: #d49a68;
+    --focus-ring: #d49a68;
+    --accent-ink: #d49a68;
   }
 }
 
@@ -46,6 +51,8 @@
   --muted: #a7a49d;
   --border: #2a3032;
   --accent: #d49a68;
+  --focus-ring: #d49a68;
+  --accent-ink: #d49a68;
 }
 
 [data-theme='light'] {
@@ -53,5 +60,7 @@
   --text: #17191a;
   --muted: #65635e;
   --border: #d5d0c6;
-  --accent: #c88a5a;
+  --accent: #ad6832;
+  --focus-ring: #ad6832;
+  --accent-ink: #9e5a24;
 }

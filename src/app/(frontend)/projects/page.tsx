@@ -27,7 +27,7 @@ export default async function ProjectsArchive() {
                 </Link>
               </div>
               <div className={`md:col-span-5 flex flex-col items-start ${!isEven ? 'md:order-1 order-2' : ''}`} style={{ gap: 'var(--space-4)' }}>
-                <Title as="h3">{project.title}</Title>
+                <Title as="h2">{project.title}</Title>
                 <div className="flex items-center flex-wrap" style={{ gap: 'var(--space-3)' }}>
                   <Label className="text-[color:var(--muted)]">{project.year || new Date().getFullYear()}</Label>
                   <span className="text-[color:var(--muted)]">•</span>

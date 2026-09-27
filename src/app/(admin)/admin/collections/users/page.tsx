@@ -4,7 +4,7 @@ import configPromise from '@payload-config'
 
 export default async function UsersCollectionPage() {
   const payload = await getPayload({ config: configPromise })
-  const result = await payload.find({ collection: 'users', limit: 10 })
+  const result = await payload.find({ collection: 'users', limit: 10, overrideAccess: true })
 
   return (
     <div className="flex flex-col w-full pb-12 space-y-8">

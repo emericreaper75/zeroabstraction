@@ -3,11 +3,10 @@ import type { NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
-  
+
   // Extract token from payload's default cookie name
   const token = request.cookies.get('payload-token')?.value
-  console.log('MIDDLEWARE COOKIE HEADER:', request.headers.get('cookie'))
-  console.log('MIDDLEWARE TOKEN:', token)
+  // NOTE: Do NOT log cookie headers or token values here — they contain auth secrets
   let isAuthenticated = false
 
   if (token) {
@@ -19,18 +18,15 @@ export async function middleware(request: NextRequest) {
           'Authorization': `JWT ${token}`
         }
       })
-      console.log('MIDDLEWARE FETCH STATUS:', response.status)
       if (response.ok) {
         const data = await response.json()
-        console.log('MIDDLEWARE FETCH DATA:', data)
         if (data && data.user) {
           isAuthenticated = true
         }
-      } else {
-        console.log('MIDDLEWARE FETCH FAILED TEXT:', await response.text())
       }
+      // Do not log response body — may contain user PII
     } catch (error) {
-      console.log('MIDDLEWARE AUTH FETCH ERROR:', error)
+      // Auth check failed; treat as unauthenticated
       isAuthenticated = false
     }
   }

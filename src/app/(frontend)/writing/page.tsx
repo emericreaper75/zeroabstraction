@@ -25,7 +25,7 @@ export default async function WritingArchive() {
                   <Label className="text-[color:var(--muted)]">{dateStr}</Label>
                 </div>
                 <div className="md:col-span-8 flex flex-col" style={{ gap: 'var(--space-2)' }}>
-                  <Title as="h3">
+                  <Title as="h2">
                     <Link href={`/writing/${post.slug}`} className="hover:text-[color:var(--accent)] transition-colors" style={{ textDecoration: 'none' }}>
                       {post.title}
                     </Link>
