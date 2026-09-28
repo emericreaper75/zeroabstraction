@@ -10,6 +10,8 @@ import { getSearchIndex, getSiteSettings } from "@/lib/content";
 import { ViewTransitions } from 'next-view-transitions';
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic'
+
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-body",
@@ -98,11 +100,20 @@ export default async function RootLayout({
                         <Label>EMAIL</Label>
                       </a>
                     )}
-                    {socialLinks.map((social, i) => (
-                      <a key={i} href={social.url || '#'} target="_blank" rel="noopener noreferrer" className="text-[color:var(--text)] hover:text-[color:var(--accent)] transition-colors" style={{ textDecoration: 'none' }}>
-                        <Label>{social.platform?.toUpperCase()}</Label>
-                      </a>
-                    ))}
+                    {socialLinks
+                      .filter((social) => Boolean(social.url && social.url !== '#'))
+                      .map((social, i) => (
+                        <a
+                          key={i}
+                          href={social.url!}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[color:var(--text)] hover:text-[color:var(--accent)] transition-colors"
+                          style={{ textDecoration: 'none' }}
+                        >
+                          <Label>{social.platform?.toUpperCase()}</Label>
+                        </a>
+                      ))}
                   </div>
                 </div>
 

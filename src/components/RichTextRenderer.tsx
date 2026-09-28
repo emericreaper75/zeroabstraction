@@ -167,6 +167,13 @@ const customConverters: JSXConverters = {
     );
   },
 
+  // ---- Native Lexical Code Block ----
+  code: ({ node }) => {
+    const code = extractText(node.children);
+    const language = (node as any).language || '';
+    return <CodeBlockComponent code={code} language={language} />;
+  },
+
   // ---- Code Block (Payload Block type: "Code") ----
   blocks: {
     Code: ({ node }: { node: any }) => {
@@ -176,6 +183,48 @@ const customConverters: JSXConverters = {
 
       return <CodeBlockComponent code={code} language={language} />;
     },
+  },
+
+  // ---- GFM Tables ----
+  table: ({ node, nodesToJSX }) => {
+    const rows = (node.children || []).filter((r: any) => r.type === 'tablerow');
+    const headerRow = rows[0]?.children?.some(
+      (c: any) => (c.headerState != null && c.headerState > 0) || Boolean(c.header)
+    )
+      ? rows[0]
+      : null;
+    const bodyRows = headerRow ? rows.slice(1) : rows;
+
+    return (
+      <div className="table-container">
+        <table className="editorial-table">
+          {headerRow && (
+            <thead>
+              {nodesToJSX({ nodes: [headerRow] })}
+            </thead>
+          )}
+          <tbody>
+            {nodesToJSX({ nodes: bodyRows })}
+          </tbody>
+        </table>
+      </div>
+    );
+  },
+
+  tablerow: ({ node, nodesToJSX }) => {
+    return <tr>{nodesToJSX({ nodes: node.children })}</tr>;
+  },
+
+  tablecell: ({ node, nodesToJSX }) => {
+    const isHeader = (node.headerState != null && node.headerState > 0) || Boolean(node.header);
+    const Tag = isHeader ? 'th' : 'td';
+    const align = node.align || (node as any).format || undefined;
+
+    return (
+      <Tag style={align ? { textAlign: align } : undefined}>
+        {nodesToJSX({ nodes: node.children })}
+      </Tag>
+    );
   },
 
   // ---- Text with LaTeX Math ----

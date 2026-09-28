@@ -304,6 +304,18 @@ export function RichContentEditor({
             </button>
             <button
               type="button"
+              onClick={() =>
+                insertSyntax(
+                  '\n| Metric | Baseline | Target |\n| :--- | :---: | ---: |\n| Flux | 1.42 Jy | 1.85 Jy |\n| SNR | 12.4 | 18.0 |\n| Efficiency | 84% | 96% |\n\n'
+                )
+              }
+              title="Table (GFM)"
+              className="p-1.5 hover:bg-surface-container hover:text-on-surface rounded"
+            >
+              <span className="material-symbols-outlined text-[17px]">table_chart</span>
+            </button>
+            <button
+              type="button"
               onClick={() => insertSyntax('\n---\n')}
               title="Horizontal Rule"
               className="p-1.5 hover:bg-surface-container hover:text-on-surface rounded"
@@ -561,6 +573,76 @@ function MarkdownPreview({ content }: { content: string }) {
       continue
     }
 
+    // GFM Table
+    if (
+      line.trim().startsWith('|') &&
+      i + 1 < lines.length &&
+      lines[i + 1].trim().startsWith('|') &&
+      /^\|?(\s*:?-+:?\s*\|)+(\s*:?-+:?\s*\|?)?$/.test(lines[i + 1].trim())
+    ) {
+      const headerLine = line
+      const delimiterLine = lines[i + 1]
+      i += 2
+
+      const parseCells = (str: string) => {
+        let s = str.trim()
+        if (s.startsWith('|')) s = s.slice(1)
+        if (s.endsWith('|')) s = s.slice(0, -1)
+        return s.split('|').map((c) => c.trim())
+      }
+
+      const headers = parseCells(headerLine)
+      const aligns = parseCells(delimiterLine).map((c) => {
+        const left = c.startsWith(':')
+        const right = c.endsWith(':')
+        if (left && right) return 'center' as const
+        if (right) return 'right' as const
+        return 'left' as const
+      })
+
+      const rows: string[][] = []
+      while (i < lines.length && lines[i].trim().startsWith('|')) {
+        rows.push(parseCells(lines[i]))
+        i++
+      }
+
+      elements.push(
+        <div key={`table-${i}`} className="my-4 overflow-x-auto border border-hairline-rule rounded">
+          <table className="w-full border-collapse font-body-sm text-on-surface text-left">
+            <thead className="bg-surface-container-high/60 border-b border-hairline-rule">
+              <tr>
+                {headers.map((h, hIdx) => (
+                  <th
+                    key={hIdx}
+                    style={{ textAlign: aligns[hIdx] || 'left' }}
+                    className="p-2.5 font-mono text-label-sm font-semibold uppercase tracking-wider text-ink-muted"
+                  >
+                    {renderInlineContent(h)}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-hairline-rule bg-white">
+              {rows.map((r, rIdx) => (
+                <tr key={rIdx} className={rIdx % 2 === 1 ? 'bg-surface-container-lowest/40' : ''}>
+                  {r.map((c, cIdx) => (
+                    <td
+                      key={cIdx}
+                      style={{ textAlign: aligns[cIdx] || 'left' }}
+                      className="p-2.5 font-body-sm text-on-surface"
+                    >
+                      {renderInlineContent(c)}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )
+      continue
+    }
+
     // Headings (H1 to H6)
     const headingMatch = line.match(/^(#{1,6})\s+(.*)$/)
     if (headingMatch) {
@@ -673,7 +755,13 @@ function MarkdownPreview({ content }: { content: string }) {
       !lines[i].startsWith('>') &&
       !lines[i].match(/^[\*\-]\s+/) &&
       !lines[i].match(/^\d+\.\s+/) &&
-      lines[i].trim() !== '---'
+      lines[i].trim() !== '---' &&
+      !(
+        lines[i].trim().startsWith('|') &&
+        i + 1 < lines.length &&
+        lines[i + 1].trim().startsWith('|') &&
+        /^\|?(\s*:?-+:?\s*\|)+(\s*:?-+:?\s*\|?)?$/.test(lines[i + 1].trim())
+      )
     ) {
       pLines.push(lines[i])
       i++

@@ -1,9 +1,12 @@
+import { requireUser } from '@/lib/auth'
 import React from 'react'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { SiteSettingsEditor } from '@/components/admin/SiteSettingsEditor'
 
 export default async function SiteSettingsPage() {
+  await requireUser();
+
   const payload = await getPayload({ config: configPromise })
 
   let settings: any = null

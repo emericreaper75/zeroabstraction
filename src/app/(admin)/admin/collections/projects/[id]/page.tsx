@@ -1,3 +1,4 @@
+import { requireUser } from '@/lib/auth'
 import React from 'react'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
@@ -10,6 +11,8 @@ export default async function ProjectEditorPage({
 }: {
   params: Promise<{ id: string }>
 }) {
+  await requireUser();
+
   const { id } = await params
   const payload = await getPayload({ config: configPromise })
 

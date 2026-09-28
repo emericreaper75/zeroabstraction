@@ -1,9 +1,12 @@
+import { requireUser } from '@/lib/auth'
 import React from 'react'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { CurrentStateEditor } from '@/components/admin/CurrentStateEditor'
 
 export default async function CurrentStatePage() {
+  await requireUser();
+
   const payload = await getPayload({ config: configPromise })
 
   let currentState: any = null

@@ -1,9 +1,12 @@
+import { requireUser } from '@/lib/auth'
 import React from 'react'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { TopicsManager } from '@/components/admin/TopicsManager'
 
 export default async function TopicsCollectionPage() {
+  await requireUser();
+
   const payload = await getPayload({ config: configPromise })
   const result = await payload.find({ collection: 'topics', limit: 100, sort: 'name' })
 

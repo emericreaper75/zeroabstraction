@@ -17,6 +17,14 @@ import { Journey } from './globals/Journey'
 import { SiteSettings } from './globals/SiteSettings'
 import { migrations } from './migrations'
 
+// Ensure PAYLOAD_SECRET is robust at runtime
+if (process.env.NEXT_BUILD !== 'true') {
+  const secret = process.env.PAYLOAD_SECRET || ''
+  if (secret.length < 32) {
+    throw new Error('FATAL: PAYLOAD_SECRET is missing or must be at least 32 characters long in production.')
+  }
+}
+
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -60,7 +68,12 @@ export default buildConfig({
     ? [
         s3Storage({
           collections: {
-            media: true,
+            media: {
+              generateFileURL: ({ filename, prefix }) => {
+                const baseUrl = process.env.NEXT_PUBLIC_MEDIA_URL || process.env.NEXT_PUBLIC_SERVER_URL || ''
+                return `${baseUrl.replace(/\/$/, '')}/${prefix ? `${prefix}/` : ''}${filename}`
+              }
+            }
           },
           bucket: process.env.S3_BUCKET || '',
           config: {

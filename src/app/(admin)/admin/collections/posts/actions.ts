@@ -17,6 +17,10 @@ export interface SavePostPayload {
   topics?: (number | string)[]
   reading_time?: number
   featured?: boolean
+  cover_image?: number | string | null
+  related_projects?: (string | number)[]
+  related_posts?: (string | number)[]
+  seo_metadata?: any
 }
 
 export async function savePostAction(formData: SavePostPayload) {

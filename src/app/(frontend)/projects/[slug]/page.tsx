@@ -1,3 +1,4 @@
+import React from 'react';
 import type { Metadata } from 'next';
 import { Display, Title, Label, Body } from '@/components/typography';
 import { ProjectImage } from '@/components/ProjectImage';
@@ -61,6 +62,16 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
         <header className="container-reading" style={{ paddingBlock: 'clamp(var(--space-6), 6vw, var(--space-10))' }}>
         <div className="flex flex-col" style={{ gap: 'var(--space-6)' }}>
           <div className="flex items-center flex-wrap" style={{ gap: 'var(--space-4)' }}>
+            {project.topics && project.topics.length > 0 && project.topics.map((t: any, i: number) => {
+              const name = typeof t === 'object' ? t?.name : t;
+              if (!name) return null;
+              return (
+                <React.Fragment key={typeof t === 'object' ? t.id || i : i}>
+                  <Label className="text-[color:var(--muted)]">{name.toUpperCase()}</Label>
+                  <span className="text-[color:var(--muted)]">•</span>
+                </React.Fragment>
+              );
+            })}
             <Label className="text-[color:var(--muted)]">{project.year || new Date().getFullYear()}</Label>
             <span className="text-[color:var(--muted)]">•</span>
             <Label className="text-[color:var(--muted)] uppercase">{project.status?.replace('_', ' ') || 'PROJECT'}</Label>
@@ -79,6 +90,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           height={800} 
           className="w-full h-auto object-cover" 
           style={{ maxHeight: '70vh' }}
+          priority
         />
       </div>
 

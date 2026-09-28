@@ -10,6 +10,9 @@ interface PostEditorProps {
   post: any | null
   topics: any[]
   initialMarkdown: string
+  allMedia?: any[]
+  allProjects?: any[]
+  allPosts?: any[]
 }
 
 function slugify(text: string): string {
@@ -21,7 +24,14 @@ function slugify(text: string): string {
     .replace(/^-+|-+$/g, '')
 }
 
-export function PostEditor({ post, topics, initialMarkdown }: PostEditorProps) {
+export function PostEditor({
+  post,
+  topics,
+  initialMarkdown,
+  allMedia = [],
+  allProjects = [],
+  allPosts = [],
+}: PostEditorProps) {
   const router = useRouter()
   const isNew = !post
 
@@ -38,6 +48,20 @@ export function PostEditor({ post, topics, initialMarkdown }: PostEditorProps) {
     if (!post?.topics) return []
     return post.topics.map((t: any) => (typeof t === 'object' ? t.id : t))
   })
+  const [coverImage, setCoverImage] = useState<string | number | ''>(() => {
+    if (!post?.cover_image) return ''
+    return typeof post.cover_image === 'object' ? post.cover_image.id : post.cover_image
+  })
+  const [relatedProjects, setRelatedProjects] = useState<(string | number)[]>(() => {
+    if (!post?.related_projects) return []
+    return post.related_projects.map((p: any) => (typeof p === 'object' ? p.id : p))
+  })
+  const [relatedPosts, setRelatedPosts] = useState<(string | number)[]>(() => {
+    if (!post?.related_posts) return []
+    return post.related_posts.map((p: any) => (typeof p === 'object' ? p.id : p))
+  })
+  const [seoTitle, setSeoTitle] = useState(post?.seo_metadata?.title || '')
+  const [seoDescription, setSeoDescription] = useState(post?.seo_metadata?.description || '')
   const [featured, setFeatured] = useState(Boolean(post?.featured))
 
   const [isPending, startTransition] = useTransition()
@@ -77,6 +101,13 @@ export function PostEditor({ post, topics, initialMarkdown }: PostEditorProps) {
         published_at: publishedAt ? new Date(publishedAt).toISOString() : null,
         topics: selectedTopics,
         featured,
+        cover_image: coverImage || null,
+        related_projects: relatedProjects,
+        related_posts: relatedPosts,
+        seo_metadata: {
+          title: seoTitle,
+          description: seoDescription,
+        },
       })
 
       if (res.success && res.doc) {
@@ -424,6 +455,132 @@ export function PostEditor({ post, topics, initialMarkdown }: PostEditorProps) {
                     No topics created yet.
                   </p>
                 )}
+              </div>
+            </div>
+          </div>
+
+          {/* Cover Image */}
+          <div className="border border-hairline-rule bg-white p-5 shadow-xs">
+            <h3 className="font-label-sm text-label-sm text-ink-muted uppercase tracking-widest font-semibold mb-4 pb-2 border-b border-hairline-rule">
+              Cover Image
+            </h3>
+            <div className="space-y-3">
+              <select
+                value={coverImage}
+                onChange={(e) => setCoverImage(e.target.value ? (isNaN(Number(e.target.value)) ? e.target.value : Number(e.target.value)) : '')}
+                className="w-full bg-white border border-hairline-rule text-on-surface font-body-sm text-body-sm px-3 py-2 focus:border-primary focus:outline-none rounded-none"
+              >
+                <option value="">No cover image</option>
+                {allMedia.map((m: any) => (
+                  <option key={m.id} value={m.id}>
+                    {m.alt_text || m.filename || `Media #${m.id}`}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* Connected Universe */}
+          <div className="border border-hairline-rule bg-white p-5 shadow-xs">
+            <h3 className="font-label-sm text-label-sm text-ink-muted uppercase tracking-widest font-semibold mb-4 pb-2 border-b border-hairline-rule">
+              Connected Universe
+            </h3>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase mb-2">
+                  Related Projects ({relatedProjects.length})
+                </label>
+                <div className="max-h-40 overflow-y-auto space-y-1.5 border border-hairline-rule p-2 bg-paper-base/30">
+                  {allProjects.map((p: any) => {
+                    const isChecked = relatedProjects.includes(p.id)
+                    return (
+                      <label key={p.id} className="flex items-center gap-2 p-1 text-body-sm cursor-pointer hover:bg-white">
+                        <input
+                          type="checkbox"
+                          checked={isChecked}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setRelatedProjects([...relatedProjects, p.id])
+                            } else {
+                              setRelatedProjects(relatedProjects.filter((id) => id !== p.id))
+                            }
+                          }}
+                          className="w-3.5 h-3.5 accent-primary"
+                        />
+                        <span className="truncate">{p.title}</span>
+                      </label>
+                    )
+                  })}
+                  {allProjects.length === 0 && (
+                    <p className="text-ink-muted text-xs py-1">No projects available.</p>
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase mb-2">
+                  Related Posts ({relatedPosts.length})
+                </label>
+                <div className="max-h-40 overflow-y-auto space-y-1.5 border border-hairline-rule p-2 bg-paper-base/30">
+                  {allPosts
+                    .filter((p: any) => p.id !== post?.id)
+                    .map((p: any) => {
+                      const isChecked = relatedPosts.includes(p.id)
+                      return (
+                        <label key={p.id} className="flex items-center gap-2 p-1 text-body-sm cursor-pointer hover:bg-white">
+                          <input
+                            type="checkbox"
+                            checked={isChecked}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setRelatedPosts([...relatedPosts, p.id])
+                              } else {
+                                setRelatedPosts(relatedPosts.filter((id) => id !== p.id))
+                              }
+                            }}
+                            className="w-3.5 h-3.5 accent-primary"
+                          />
+                          <span className="truncate">{p.title}</span>
+                        </label>
+                      )
+                    })}
+                  {allPosts.filter((p: any) => p.id !== post?.id).length === 0 && (
+                    <p className="text-ink-muted text-xs py-1">No other posts available.</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* SEO Metadata */}
+          <div className="border border-hairline-rule bg-white p-5 shadow-xs">
+            <h3 className="font-label-sm text-label-sm text-ink-muted uppercase tracking-widest font-semibold mb-4 pb-2 border-b border-hairline-rule">
+              SEO Metadata
+            </h3>
+            <div className="space-y-3">
+              <div>
+                <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase mb-1">
+                  Meta Title
+                </label>
+                <input
+                  type="text"
+                  value={seoTitle}
+                  onChange={(e) => setSeoTitle(e.target.value)}
+                  placeholder={title || 'Custom SEO title...'}
+                  className="w-full bg-white border border-hairline-rule text-on-surface font-body-sm text-body-sm px-3 py-2 focus:border-primary focus:outline-none rounded-none"
+                />
+              </div>
+              <div>
+                <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase mb-1">
+                  Meta Description
+                </label>
+                <textarea
+                  value={seoDescription}
+                  onChange={(e) => setSeoDescription(e.target.value)}
+                  placeholder="Custom meta description..."
+                  rows={2}
+                  className="w-full bg-white border border-hairline-rule text-on-surface font-body-sm text-body-sm px-3 py-2 focus:border-primary focus:outline-none rounded-none resize-none"
+                />
               </div>
             </div>
           </div>

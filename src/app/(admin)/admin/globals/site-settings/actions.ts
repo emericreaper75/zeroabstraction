@@ -13,6 +13,7 @@ export interface SiteSettingsPayload {
   theme_settings?: {
     default_mode?: 'light' | 'dark' | 'system'
   }
+  social_links?: any[]
 }
 
 export async function updateSiteSettingsAction(data: SiteSettingsPayload) {

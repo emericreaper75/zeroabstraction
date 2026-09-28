@@ -1,5 +1,7 @@
+import React from 'react';
 import type { Metadata } from 'next';
 import { Display, Label, Body } from '@/components/typography';
+import { ProjectImage } from '@/components/ProjectImage';
 import { Divider } from '@/components/Divider';
 import { RichTextRenderer } from '@/components/RichTextRenderer';
 import { SampleContentBadge } from '@/components/SampleContentBadge';
@@ -16,6 +18,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     };
   }
 
+  const imageUrl = typeof post.cover_image === 'object' && post.cover_image?.url ? post.cover_image.url : undefined;
+
   return {
     title: `${post.title} | ZeroAbstraction`,
     description: post.excerpt || `Manuscript on ${post.title}`,
@@ -24,11 +28,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       description: post.excerpt || undefined,
       type: 'article',
       publishedTime: post.published_at || undefined,
+      images: imageUrl ? [{ url: imageUrl }] : undefined,
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
       description: post.excerpt || undefined,
+      images: imageUrl ? [imageUrl] : undefined,
     },
   };
 }
@@ -45,6 +51,9 @@ export default async function WritingPage({ params }: { params: Promise<{ slug: 
 
   const relatedItems = await getRelatedContentForPost(post);
 
+  const coverImageUrl = typeof post.cover_image === 'object' && post.cover_image?.url ? post.cover_image.url : null;
+  const coverImageAlt = typeof post.cover_image === 'object' && post.cover_image?.alt_text ? post.cover_image.alt_text : post.title;
+
   const dateStr = post.published_at 
     ? new Date(post.published_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase()
     : 'DRAFT';
@@ -57,12 +66,16 @@ export default async function WritingPage({ params }: { params: Promise<{ slug: 
         <header className="container-reading" style={{ paddingBlock: 'clamp(var(--space-6), 6vw, var(--space-10))' }}>
         <div className="flex flex-col" style={{ gap: 'var(--space-6)' }}>
           <div className="flex items-center flex-wrap" style={{ gap: 'var(--space-4)' }}>
-            {post.topics && post.topics.length > 0 && (
-               <>
-                 <Label className="text-[color:var(--muted)]">{typeof post.topics[0] === 'object' && post.topics[0]?.name?.toUpperCase()}</Label>
-                 <span className="text-[color:var(--muted)]">•</span>
-               </>
-            )}
+            {post.topics && post.topics.length > 0 && post.topics.map((t: any, i: number) => {
+              const name = typeof t === 'object' ? t?.name : t;
+              if (!name) return null;
+              return (
+                <React.Fragment key={typeof t === 'object' ? t.id || i : i}>
+                  <Label className="text-[color:var(--muted)]">{name.toUpperCase()}</Label>
+                  <span className="text-[color:var(--muted)]">•</span>
+                </React.Fragment>
+              );
+            })}
             <Label className="text-[color:var(--muted)]">{dateStr}</Label>
             {post.reading_time && (
               <>
@@ -74,6 +87,22 @@ export default async function WritingPage({ params }: { params: Promise<{ slug: 
           <Display>{post.title}</Display>
         </div>
       </header>
+
+      {/* Cover Image - Content Width */}
+      {coverImageUrl && (
+        <div className="container-wide" style={{ marginBottom: 'clamp(var(--space-6), 6vw, var(--space-10))' }}>
+          <ProjectImage
+            transitionName={`post-hero-${slug}`}
+            src={coverImageUrl}
+            alt={coverImageAlt}
+            width={1400}
+            height={800}
+            className="w-full h-auto object-cover"
+            style={{ maxHeight: '70vh' }}
+            priority
+          />
+        </div>
+      )}
 
       {/* Body Content */}
       <div className="container-reading flex flex-col" style={{ gap: 'var(--space-6)' }}>

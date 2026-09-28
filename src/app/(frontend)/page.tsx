@@ -35,6 +35,33 @@ export default async function Home() {
               <span className="text-[color:var(--muted)]">•</span>
               <Label>ASTROPHYSICS</Label>
             </div>
+
+            {/* Direct Connect Links */}
+            {(siteSettings?.email || (siteSettings?.social_links && siteSettings.social_links.length > 0)) && (
+              <div className="flex items-center flex-wrap gap-4 pt-1">
+                {siteSettings?.email && (
+                  <a
+                    href={`mailto:${siteSettings.email}`}
+                    className="inline-flex items-center gap-1 font-mono text-xs uppercase tracking-wider text-[color:var(--muted)] hover:text-[color:var(--accent)] transition-colors"
+                  >
+                    <span>EMAIL ↗</span>
+                  </a>
+                )}
+                {siteSettings?.social_links
+                  ?.filter((s) => Boolean(s.url && s.url !== '#'))
+                  .map((s, idx) => (
+                    <a
+                      key={idx}
+                      href={s.url!}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 font-mono text-xs uppercase tracking-wider text-[color:var(--muted)] hover:text-[color:var(--accent)] transition-colors"
+                    >
+                      <span>{s.platform?.toUpperCase()} ↗</span>
+                    </a>
+                  ))}
+              </div>
+            )}
           </div>
 
           {/* Placeholder Image Area */}

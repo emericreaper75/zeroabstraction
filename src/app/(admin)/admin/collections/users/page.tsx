@@ -1,8 +1,11 @@
+import { requireUser } from '@/lib/auth'
 import React from 'react'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 
 export default async function UsersCollectionPage() {
+  await requireUser();
+
   const payload = await getPayload({ config: configPromise })
   const result = await payload.find({ collection: 'users', limit: 10, overrideAccess: true })
 

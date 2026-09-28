@@ -18,6 +18,10 @@ export interface SaveProjectPayload {
   topics?: (number | string)[]
   technologies?: string[]
   featured?: boolean
+  cover_image?: number | string | null
+  gallery?: any[]
+  related_posts?: (string | number)[]
+  links?: any[]
 }
 
 export async function saveProjectAction(formData: SaveProjectPayload) {

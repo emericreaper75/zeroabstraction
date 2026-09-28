@@ -11,6 +11,8 @@ interface ProjectEditorProps {
   topics: any[]
   initialDescriptionMarkdown: string
   initialLessonsMarkdown: string
+  allMedia?: any[]
+  allPosts?: any[]
 }
 
 function slugify(text: string): string {
@@ -27,6 +29,8 @@ export function ProjectEditor({
   topics,
   initialDescriptionMarkdown,
   initialLessonsMarkdown,
+  allMedia = [],
+  allPosts = [],
 }: ProjectEditorProps) {
   const router = useRouter()
   const isNew = !project
@@ -50,6 +54,24 @@ export function ProjectEditor({
   const [technologiesText, setTechnologiesText] = useState(() => {
     if (!project?.technologies || !Array.isArray(project.technologies)) return ''
     return project.technologies.map((t: any) => (typeof t === 'object' ? t.name : t)).join(', ')
+  })
+  const [coverImage, setCoverImage] = useState<string | number | ''>(() => {
+    if (!project?.cover_image) return ''
+    return typeof project.cover_image === 'object' ? project.cover_image.id : project.cover_image
+  })
+  const [gallery, setGallery] = useState<Array<{ image: string | number }>>(() => {
+    if (!project?.gallery || !Array.isArray(project.gallery)) return []
+    return project.gallery.map((g: any) => ({
+      image: typeof g.image === 'object' ? g.image.id : g.image,
+    }))
+  })
+  const [links, setLinks] = useState<Array<{ label: string; url: string }>>(() => {
+    if (!project?.links || !Array.isArray(project.links)) return []
+    return project.links.map((l: any) => ({ label: l.label || '', url: l.url || '' }))
+  })
+  const [relatedPosts, setRelatedPosts] = useState<(string | number)[]>(() => {
+    if (!project?.related_posts || !Array.isArray(project.related_posts)) return []
+    return project.related_posts.map((p: any) => (typeof p === 'object' ? p.id : p))
   })
   const [featured, setFeatured] = useState(Boolean(project?.featured))
 
@@ -95,6 +117,10 @@ export function ProjectEditor({
         topics: selectedTopics,
         technologies: techArray,
         featured,
+        cover_image: coverImage || null,
+        gallery,
+        related_posts: relatedPosts,
+        links,
       })
 
       if (res.success && res.doc) {
@@ -444,6 +470,174 @@ export function ProjectEditor({
                     </label>
                   )
                 })}
+              </div>
+            </div>
+          </div>
+
+          {/* Cover Image */}
+          <div className="border border-hairline-rule bg-white p-5 shadow-xs">
+            <h3 className="font-label-sm text-label-sm text-ink-muted uppercase tracking-widest font-semibold mb-4 pb-2 border-b border-hairline-rule">
+              Cover Image
+            </h3>
+            <div className="space-y-3">
+              <select
+                value={coverImage}
+                onChange={(e) => setCoverImage(e.target.value ? (isNaN(Number(e.target.value)) ? e.target.value : Number(e.target.value)) : '')}
+                className="w-full bg-white border border-hairline-rule text-on-surface font-body-sm text-body-sm px-3 py-2 focus:border-primary focus:outline-none rounded-none"
+              >
+                <option value="">No cover image</option>
+                {allMedia.map((m: any) => (
+                  <option key={m.id} value={m.id}>
+                    {m.alt_text || m.filename || `Media #${m.id}`}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* Image Gallery */}
+          <div className="border border-hairline-rule bg-white p-5 shadow-xs">
+            <div className="flex items-center justify-between mb-4 pb-2 border-b border-hairline-rule">
+              <h3 className="font-label-sm text-label-sm text-ink-muted uppercase tracking-widest font-semibold">
+                Gallery Images ({gallery.length})
+              </h3>
+              <button
+                type="button"
+                onClick={() => {
+                  if (allMedia.length > 0) {
+                    setGallery([...gallery, { image: allMedia[0].id }])
+                  }
+                }}
+                disabled={allMedia.length === 0}
+                className="text-[11px] font-label-sm text-primary hover:underline uppercase disabled:opacity-50"
+              >
+                + Add Image
+              </button>
+            </div>
+            <div className="space-y-2">
+              {gallery.map((item, idx) => (
+                <div key={idx} className="flex items-center gap-2">
+                  <select
+                    value={item.image}
+                    onChange={(e) => {
+                      const val = isNaN(Number(e.target.value)) ? e.target.value : Number(e.target.value)
+                      const updated = [...gallery]
+                      updated[idx] = { image: val }
+                      setGallery(updated)
+                    }}
+                    className="flex-1 bg-white border border-hairline-rule text-body-sm px-2 py-1.5 focus:border-primary rounded-none"
+                  >
+                    {allMedia.map((m: any) => (
+                      <option key={m.id} value={m.id}>
+                        {m.alt_text || m.filename || `Media #${m.id}`}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    type="button"
+                    onClick={() => setGallery(gallery.filter((_, i) => i !== idx))}
+                    className="text-ink-muted hover:text-rose-600 px-1"
+                  >
+                    <span className="material-symbols-outlined text-[16px]">close</span>
+                  </button>
+                </div>
+              ))}
+              {gallery.length === 0 && (
+                <p className="text-ink-muted text-body-sm py-1 italic">No gallery images added.</p>
+              )}
+            </div>
+          </div>
+
+          {/* External Links */}
+          <div className="border border-hairline-rule bg-white p-5 shadow-xs">
+            <div className="flex items-center justify-between mb-4 pb-2 border-b border-hairline-rule">
+              <h3 className="font-label-sm text-label-sm text-ink-muted uppercase tracking-widest font-semibold">
+                External Links ({links.length})
+              </h3>
+              <button
+                type="button"
+                onClick={() => setLinks([...links, { label: '', url: '' }])}
+                className="text-[11px] font-label-sm text-primary hover:underline uppercase"
+              >
+                + Add Link
+              </button>
+            </div>
+            <div className="space-y-3">
+              {links.map((link, idx) => (
+                <div key={idx} className="p-2 border border-hairline-subtle bg-paper-base/30 space-y-1.5">
+                  <div className="flex justify-between items-center">
+                    <span className="text-[11px] font-label-sm text-ink-muted">LINK #{idx + 1}</span>
+                    <button
+                      type="button"
+                      onClick={() => setLinks(links.filter((_, i) => i !== idx))}
+                      className="text-ink-muted hover:text-rose-600 text-xs"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                  <input
+                    type="text"
+                    value={link.label}
+                    onChange={(e) => {
+                      const updated = [...links]
+                      updated[idx] = { ...updated[idx], label: e.target.value }
+                      setLinks(updated)
+                    }}
+                    placeholder="Label (e.g. GitHub Repository)"
+                    className="w-full bg-white border border-hairline-rule text-body-sm px-2 py-1 focus:border-primary rounded-none"
+                  />
+                  <input
+                    type="text"
+                    value={link.url}
+                    onChange={(e) => {
+                      const updated = [...links]
+                      updated[idx] = { ...updated[idx], url: e.target.value }
+                      setLinks(updated)
+                    }}
+                    placeholder="https://..."
+                    className="w-full bg-white border border-hairline-rule text-body-sm px-2 py-1 focus:border-primary rounded-none font-mono text-[12px]"
+                  />
+                </div>
+              ))}
+              {links.length === 0 && (
+                <p className="text-ink-muted text-body-sm py-1 italic">No links added.</p>
+              )}
+            </div>
+          </div>
+
+          {/* Connected Universe */}
+          <div className="border border-hairline-rule bg-white p-5 shadow-xs">
+            <h3 className="font-label-sm text-label-sm text-ink-muted uppercase tracking-widest font-semibold mb-4 pb-2 border-b border-hairline-rule">
+              Connected Universe
+            </h3>
+            <div className="space-y-3">
+              <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase">
+                Related Posts ({relatedPosts.length})
+              </label>
+              <div className="max-h-40 overflow-y-auto space-y-1.5 border border-hairline-rule p-2 bg-paper-base/30">
+                {allPosts.map((p: any) => {
+                  const isChecked = relatedPosts.includes(p.id)
+                  return (
+                    <label key={p.id} className="flex items-center gap-2 p-1 text-body-sm cursor-pointer hover:bg-white">
+                      <input
+                        type="checkbox"
+                        checked={isChecked}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setRelatedPosts([...relatedPosts, p.id])
+                          } else {
+                            setRelatedPosts(relatedPosts.filter((id) => id !== p.id))
+                          }
+                        }}
+                        className="w-3.5 h-3.5 accent-primary"
+                      />
+                      <span className="truncate">{p.title}</span>
+                    </label>
+                  )
+                })}
+                {allPosts.length === 0 && (
+                  <p className="text-ink-muted text-xs py-1">No posts available.</p>
+                )}
               </div>
             </div>
           </div>

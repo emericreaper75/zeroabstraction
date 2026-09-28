@@ -1,3 +1,4 @@
+import { requireUser } from '@/lib/auth'
 import React from 'react'
 import Link from 'next/link'
 import { getPayload } from 'payload'
@@ -8,6 +9,8 @@ export default async function PostsCollectionPage({
 }: {
   searchParams: Promise<{ status?: string; page?: string }>
 }) {
+  await requireUser();
+
   const params = await searchParams
   const payload = await getPayload({ config: configPromise })
   const page = parseInt(params.page || '1', 10)

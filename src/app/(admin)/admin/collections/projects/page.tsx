@@ -1,9 +1,12 @@
+import { requireUser } from '@/lib/auth'
 import React from 'react'
 import Link from 'next/link'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 
 export default async function ProjectsCollectionPage() {
+  await requireUser();
+
   const payload = await getPayload({ config: configPromise })
   const result = await payload.find({ collection: 'projects', limit: 50, sort: '-updatedAt' })
 

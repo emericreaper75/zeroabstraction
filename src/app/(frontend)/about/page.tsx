@@ -3,7 +3,7 @@ import { Display, Heading, Title, Label, Body } from '@/components/typography';
 import { ProjectImage } from '@/components/ProjectImage';
 import { EditorialLink } from '@/components/EditorialLink';
 import { Reveal } from '@/components/Reveal';
-import { getProfile } from '@/lib/content';
+import { getProfile, getSiteSettings } from '@/lib/content';
 import { RichTextRenderer } from '@/components/RichTextRenderer';
 
 export const metadata: Metadata = {
@@ -13,7 +13,10 @@ export const metadata: Metadata = {
 };
 
 export default async function AboutPage() {
-  const profile = await getProfile().catch(() => null);
+  const [profile, siteSettings] = await Promise.all([
+    getProfile().catch(() => null),
+    getSiteSettings().catch(() => null),
+  ]);
 
   const profileImgUrl =
     typeof profile?.photograph === 'object' && profile?.photograph?.url
@@ -49,6 +52,7 @@ export default async function AboutPage() {
                   width={600}
                   height={750}
                   className="w-full h-auto object-cover"
+                  priority
                 />
               </div>
 
@@ -83,6 +87,43 @@ export default async function AboutPage() {
                     </span>
                   </div>
                 </div>
+
+                {/* Direct Communications & Network Links */}
+                {(siteSettings?.email || (siteSettings?.social_links && siteSettings.social_links.length > 0)) && (
+                  <>
+                    <Label className="text-[color:var(--muted)] border-b border-[color:var(--border)] pt-2 pb-2">
+                      COMMUNICATIONS &amp; NETWORKS
+                    </Label>
+                    <div className="flex flex-col gap-3">
+                      {siteSettings?.email && (
+                        <div className="flex justify-between items-baseline text-sm">
+                          <Label className="text-[color:var(--muted)]">EMAIL</Label>
+                          <a
+                            href={`mailto:${siteSettings.email}`}
+                            className="font-mono text-sm text-[color:var(--accent)] hover:underline"
+                          >
+                            {siteSettings.email}
+                          </a>
+                        </div>
+                      )}
+                      {siteSettings?.social_links
+                        ?.filter((s) => Boolean(s.url && s.url !== '#'))
+                        .map((s, idx) => (
+                          <div key={idx} className="flex justify-between items-baseline text-sm">
+                            <Label className="text-[color:var(--muted)]">{s.platform?.toUpperCase()}</Label>
+                            <a
+                              href={s.url!}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="font-mono text-sm text-[color:var(--accent)] hover:underline"
+                            >
+                              {s.platform} ↗
+                            </a>
+                          </div>
+                        ))}
+                    </div>
+                  </>
+                )}
               </div>
             </div>
 

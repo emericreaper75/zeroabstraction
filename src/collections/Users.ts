@@ -22,13 +22,26 @@ export const Users: CollectionConfig = {
     useAsTitle: 'email',
   },
   access: {
-    // Single-admin V1: users are created only by the seed path (overrideAccess).
+    // Single-admin V1: creation and deletion are permanently disabled.
     create: () => false,
     read: ({ req: { user } }) => Boolean(user),
-    update: ({ req: { user } }) => Boolean(user),
+    update: ({ req: { user } }) => (user ? { id: { equals: user.id } } : false),
     delete: () => false,
   },
   hooks: {
+    beforeChange: [
+      async ({ operation, req }) => {
+        if (operation === 'create') {
+          const { totalDocs } = await req.payload.count({
+            collection: 'users',
+            overrideAccess: true,
+          })
+          if (totalDocs >= 1) {
+            throw new Error('Single-owner policy: exactly one account is allowed. Additional accounts cannot be created.')
+          }
+        }
+      },
+    ],
     afterLogin: [recordLastLogin],
   },
   fields: [

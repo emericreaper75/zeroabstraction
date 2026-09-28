@@ -1,9 +1,12 @@
+import { requireUser } from '@/lib/auth'
 import React from 'react'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { MediaManager } from '@/components/admin/MediaManager'
 
 export default async function MediaCollectionPage() {
+  await requireUser();
+
   const payload = await getPayload({ config: configPromise })
   const result = await payload.find({
     collection: 'media',

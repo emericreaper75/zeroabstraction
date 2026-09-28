@@ -127,17 +127,25 @@ export async function getJourney(): Promise<JourneyEntry[]> {
 }
 
 export async function getAllSlugs(collection: 'posts' | 'projects'): Promise<{ slug: string }[]> {
-  const payload = await getPayloadClient()
-  const result = await payload.find({
-    collection,
-    overrideAccess: false, // SECURITY: generateStaticParams only pre-renders publicly accessible slugs
-    limit: 1000,
-    depth: 0,
-    select: { slug: true },
-  })
-  return result.docs
-    .map((doc) => ('slug' in doc && typeof doc.slug === 'string' ? { slug: doc.slug } : null))
-    .filter((value): value is { slug: string } => value !== null)
+  try {
+    const payload = await getPayloadClient()
+    const result = await payload.find({
+      collection,
+      overrideAccess: false, // SECURITY: generateStaticParams only pre-renders publicly accessible slugs
+      limit: 1000,
+      depth: 0,
+      select: { slug: true },
+    })
+    return result.docs
+      .map((doc: any) => ('slug' in doc && typeof doc.slug === 'string' ? { slug: doc.slug } : null))
+      .filter((value: any): value is { slug: string } => value !== null)
+  } catch (error: any) {
+    if (process.env.NEXT_BUILD === 'true' && (error?.message?.includes('ECONNREFUSED') || error?.message?.includes('connect to Postgres') || error?.code === 'ECONNREFUSED')) {
+      console.warn(`[getAllSlugs] Database unreachable during build. Returning empty slugs for ${collection}. Pages will render dynamically on-demand.`)
+      return []
+    }
+    throw error
+  }
 }
 
 function asRelatedPost(item: number | string | Post): RelatedItem | null {
@@ -208,7 +216,7 @@ export async function searchContent(query: string): Promise<SearchableItem[]> {
   ])
 
   return [
-    ...posts.docs.map((post) => ({
+    ...posts.docs.map((post: any) => ({
       id: String(post.id),
       title: post.title,
       slug: post.slug,
@@ -218,7 +226,7 @@ export async function searchContent(query: string): Promise<SearchableItem[]> {
       excerpt: post.excerpt ?? undefined,
       topics: [] as string[],
     })),
-    ...projects.docs.map((project) => ({
+    ...projects.docs.map((project: any) => ({
       id: String(project.id),
       title: project.title,
       slug: project.slug,
@@ -239,7 +247,7 @@ export async function getSearchIndex(): Promise<SearchableItem[]> {
     ])
 
     return [
-      ...posts.docs.map((post) => ({
+      ...posts.docs.map((post: any) => ({
         id: String(post.id),
         title: post.title,
         slug: post.slug,
@@ -249,7 +257,7 @@ export async function getSearchIndex(): Promise<SearchableItem[]> {
         excerpt: post.excerpt ?? undefined,
         topics: [] as string[],
       })),
-      ...projects.docs.map((project) => ({
+      ...projects.docs.map((project: any) => ({
         id: String(project.id),
         title: project.title,
         slug: project.slug,

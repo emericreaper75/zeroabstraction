@@ -178,6 +178,36 @@ function parseInlineMarkdown(text: string): LexicalNode[] {
   return nodes.length > 0 ? nodes : [{ type: 'text', text, version: 1, format: 0, mode: 'normal' }]
 }
 
+function splitTableRow(rowStr: string): string[] {
+  let s = rowStr.trim()
+  if (s.startsWith('|')) s = s.slice(1)
+  if (s.endsWith('|')) s = s.slice(0, -1)
+  return s.split('|').map((c) => c.trim())
+}
+
+function getTableAlignment(cell: string): 'left' | 'center' | 'right' {
+  const c = cell.trim()
+  const left = c.startsWith(':')
+  const right = c.endsWith(':')
+  if (left && right) return 'center'
+  if (right) return 'right'
+  return 'left'
+}
+
+function isTableDelimiterRow(line: string): boolean {
+  const trimmed = line.trim()
+  return (
+    trimmed.startsWith('|') &&
+    /^\|?(\s*:?-+:?\s*\|)+(\s*:?-+:?\s*\|?)?$/.test(trimmed)
+  )
+}
+
+function extractNodeText(node: LexicalNode): string {
+  if (node.text != null) return node.text
+  if (node.children) return node.children.map(extractNodeText).join('')
+  return ''
+}
+
 /**
  * Converts markdown string into Payload CMS Lexical JSON AST.
  */
@@ -231,6 +261,85 @@ export function markdownToLexical(markdown: string): LexicalState {
           language: lang || 'text',
           code: codeLines.join('\n'),
         },
+      })
+      continue
+    }
+
+    // Table block (header line starting with '|' followed by delimiter line)
+    if (
+      line.trim().startsWith('|') &&
+      i + 1 < lines.length &&
+      isTableDelimiterRow(lines[i + 1])
+    ) {
+      const headerRowStr = line
+      const delimiterRowStr = lines[i + 1]
+      i += 2 // Skip header & delimiter lines
+
+      const headers = splitTableRow(headerRowStr)
+      const aligns = splitTableRow(delimiterRowStr).map(getTableAlignment)
+
+      const dataRows: string[][] = []
+      while (i < lines.length && lines[i].trim().startsWith('|')) {
+        dataRows.push(splitTableRow(lines[i]))
+        i++
+      }
+
+      const tableRows: LexicalNode[] = []
+
+      // 1. Header row
+      tableRows.push({
+        type: 'tablerow',
+        version: 1,
+        children: headers.map((h, colIdx) => ({
+          type: 'tablecell',
+          version: 1,
+          headerState: 1,
+          header: true,
+          align: aligns[colIdx] || 'left',
+          format: aligns[colIdx] || 'left',
+          children: [
+            {
+              type: 'paragraph',
+              format: '',
+              indent: 0,
+              version: 1,
+              direction: 'ltr',
+              children: parseInlineMarkdown(h),
+            },
+          ],
+        })),
+      })
+
+      // 2. Data rows
+      for (const row of dataRows) {
+        tableRows.push({
+          type: 'tablerow',
+          version: 1,
+          children: row.map((cell, colIdx) => ({
+            type: 'tablecell',
+            version: 1,
+            headerState: 0,
+            header: false,
+            align: aligns[colIdx] || 'left',
+            format: aligns[colIdx] || 'left',
+            children: [
+              {
+                type: 'paragraph',
+                format: '',
+                indent: 0,
+                version: 1,
+                direction: 'ltr',
+                children: parseInlineMarkdown(cell),
+              },
+            ],
+          })),
+        })
+      }
+
+      children.push({
+        type: 'table',
+        version: 1,
+        children: tableRows,
       })
       continue
     }
@@ -373,7 +482,8 @@ export function markdownToLexical(markdown: string): LexicalState {
       !lines[i].startsWith('>') &&
       !lines[i].match(/^[\*\-]\s+/) &&
       !lines[i].match(/^\d+\.\s+/) &&
-      !lines[i].trim().startsWith('$$')
+      !lines[i].trim().startsWith('$$') &&
+      !(lines[i].trim().startsWith('|') && i + 1 < lines.length && isTableDelimiterRow(lines[i + 1]))
     ) {
       pLines.push(lines[i])
       i++
@@ -513,6 +623,51 @@ export function lexicalToMarkdown(lexical: any): string {
           const lang = node.fields?.language || ''
           const code = node.fields?.code || ''
           chunks.push(`\`\`\`${lang}\n${code}\n\`\`\``)
+        }
+        break
+      }
+      case 'code': {
+        const lang = (node as any).language || ''
+        const code = extractNodeText(node)
+        chunks.push(`\`\`\`${lang}\n${code}\n\`\`\``)
+        break
+      }
+      case 'table': {
+        const rows = (node.children || []).filter((r: any) => r.type === 'tablerow')
+        if (rows.length === 0) break
+
+        const tableLines: string[] = []
+        const aligns: ('left' | 'center' | 'right')[] = []
+
+        const parsedRows: string[][] = rows.map((row: any, rowIdx: number) => {
+          const cells = (row.children || []).filter((c: any) => c.type === 'tablecell')
+          return cells.map((cell: any, colIdx: number) => {
+            if (rowIdx === 0) {
+              const align = cell.align || cell.format || 'left'
+              aligns[colIdx] = align === 'center' ? 'center' : align === 'right' ? 'right' : 'left'
+            }
+            const cellChildren = cell.children?.flatMap((ch: any) => ch.children || ch) || []
+            return serializeInlineNodes(cellChildren).replace(/\|/g, '\\|').trim()
+          })
+        })
+
+        if (parsedRows.length > 0) {
+          const headerRow = parsedRows[0]
+          tableLines.push(`| ${headerRow.join(' | ')} |`)
+
+          const delimiterRow = headerRow.map((_, colIdx) => {
+            const align = aligns[colIdx] || 'left'
+            if (align === 'center') return ':---:'
+            if (align === 'right') return '---:'
+            return ':---'
+          })
+          tableLines.push(`| ${delimiterRow.join(' | ')} |`)
+
+          for (let r = 1; r < parsedRows.length; r++) {
+            tableLines.push(`| ${parsedRows[r].join(' | ')} |`)
+          }
+
+          chunks.push(tableLines.join('\n'))
         }
         break
       }

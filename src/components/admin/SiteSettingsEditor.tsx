@@ -11,9 +11,18 @@ interface SiteSettingsEditorProps {
 
 export function SiteSettingsEditor({ settings }: SiteSettingsEditorProps) {
   const router = useRouter()
+  const initialGithub = settings?.social_links?.find(
+    (s: any) => s.platform?.toLowerCase() === 'github'
+  )?.url || ''
+  const initialLinkedin = settings?.social_links?.find(
+    (s: any) => s.platform?.toLowerCase() === 'linkedin'
+  )?.url || ''
+
   const [name, setName] = useState(settings?.name || 'ZeroAbstraction')
   const [shortBio, setShortBio] = useState(settings?.short_bio || '')
   const [email, setEmail] = useState(settings?.email || '')
+  const [githubUrl, setGithubUrl] = useState(initialGithub)
+  const [linkedinUrl, setLinkedinUrl] = useState(initialLinkedin)
   const [footerText, setFooterText] = useState(settings?.footer_text || '')
   const [defaultMode, setDefaultMode] = useState<'light' | 'dark' | 'system'>(
     settings?.theme_settings?.default_mode || 'system'
@@ -25,11 +34,27 @@ export function SiteSettingsEditor({ settings }: SiteSettingsEditorProps) {
   const handleSave = () => {
     setFeedback(null)
     startTransition(async () => {
+      const social_links: Array<{ platform: string; url: string }> = []
+      if (githubUrl.trim()) {
+        social_links.push({ platform: 'GitHub', url: githubUrl.trim() })
+      }
+      if (linkedinUrl.trim()) {
+        social_links.push({ platform: 'LinkedIn', url: linkedinUrl.trim() })
+      }
+      if (Array.isArray(settings?.social_links)) {
+        for (const item of settings.social_links) {
+          if (!['github', 'linkedin'].includes(item.platform?.toLowerCase()) && item.url) {
+            social_links.push({ platform: item.platform, url: item.url })
+          }
+        }
+      }
+
       const res = await updateSiteSettingsAction({
         name,
         short_bio: shortBio,
         email,
         footer_text: footerText,
+        social_links,
         theme_settings: {
           default_mode: defaultMode,
         },
@@ -157,6 +182,30 @@ export function SiteSettingsEditor({ settings }: SiteSettingsEditorProps) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="hello@zeroabstraction.com"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase">
+                GitHub Profile URL
+              </label>
+              <input
+                type="url"
+                className="w-full bg-surface-container-lowest border border-hairline-rule text-on-surface font-body-md text-body-md px-4 py-2.5 focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none rounded-none"
+                value={githubUrl}
+                onChange={(e) => setGithubUrl(e.target.value)}
+                placeholder="https://github.com/username"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase">
+                LinkedIn Profile URL
+              </label>
+              <input
+                type="url"
+                className="w-full bg-surface-container-lowest border border-hairline-rule text-on-surface font-body-md text-body-md px-4 py-2.5 focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none rounded-none"
+                value={linkedinUrl}
+                onChange={(e) => setLinkedinUrl(e.target.value)}
+                placeholder="https://linkedin.com/in/username"
               />
             </div>
           </div>

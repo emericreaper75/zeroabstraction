@@ -140,22 +140,40 @@
 }
 
 /* --------------------------------------------------------------------------
-   Code Blocks (Shiki)
+   Code Blocks (Shiki Dual-Theme)
    -------------------------------------------------------------------------- */
+html .shiki,
+html .shiki span {
+  color: var(--shiki-light);
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme='light']) .shiki,
+  html:not([data-theme='light']) .shiki span {
+    color: var(--shiki-dark);
+  }
+}
+
+html[data-theme='dark'] .shiki,
+html[data-theme='dark'] .shiki span {
+  color: var(--shiki-dark);
+}
+
 .rich-text .code-block {
   position: relative;
   margin-block: 2em;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 4px;
   overflow: hidden;
+  background: var(--bg);
 }
 
 .rich-text .code-block-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.5rem 1rem;
-  background: var(--border);
+  padding: 0.4rem 1rem;
+  background: color-mix(in srgb, var(--border) 35%, transparent);
   border-bottom: 1px solid var(--border);
 }
 
@@ -165,6 +183,7 @@
   text-transform: uppercase;
   color: var(--muted);
   letter-spacing: 0.05em;
+  font-weight: 500;
 }
 
 .rich-text .code-block pre {
@@ -176,6 +195,7 @@
   line-height: 1.6;
   tab-size: 2;
   -webkit-overflow-scrolling: touch;
+  background: transparent !important;
 }
 
 /* Override Shiki's inline bg for theming */
@@ -184,24 +204,35 @@
 }
 
 /* Scrollbar styling */
-.rich-text .code-block pre::-webkit-scrollbar {
+.rich-text .code-block pre::-webkit-scrollbar,
+.rich-text .table-container::-webkit-scrollbar {
   height: 6px;
 }
-.rich-text .code-block pre::-webkit-scrollbar-track {
+.rich-text .code-block pre::-webkit-scrollbar-track,
+.rich-text .table-container::-webkit-scrollbar-track {
   background: transparent;
 }
-.rich-text .code-block pre::-webkit-scrollbar-thumb {
+.rich-text .code-block pre::-webkit-scrollbar-thumb,
+.rich-text .table-container::-webkit-scrollbar-thumb {
   background: var(--border);
   border-radius: 3px;
 }
 
 /* --------------------------------------------------------------------------
-   Tables
+   Tables (GFM & Editorial Structure)
    -------------------------------------------------------------------------- */
+.rich-text .table-container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-block: 2em;
+}
+
 .rich-text table {
   width: 100%;
   border-collapse: collapse;
-  margin-block: 2em;
+  margin-block: 0;
   font-size: var(--text-body);
 }
 
@@ -212,18 +243,27 @@
 .rich-text th {
   text-align: left;
   padding: 0.75rem 1rem;
-  font-family: var(--font-body);
+  font-family: var(--font-mono);
   font-weight: 600;
-  font-size: var(--text-small);
+  font-size: var(--text-label);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--muted);
+  background: color-mix(in srgb, var(--border) 20%, transparent);
 }
 
 .rich-text td {
   padding: 0.75rem 1rem;
   border-bottom: 1px solid var(--border);
   line-height: 1.6;
+  color: var(--text);
+  font-size: var(--text-body);
+}
+
+.rich-text td p,
+.rich-text th p {
+  margin: 0;
+  display: inline;
 }
 
 .rich-text tbody tr:last-child td {
@@ -232,7 +272,7 @@
 
 /* Subtle striped rows for readability */
 .rich-text tbody tr:nth-child(even) {
-  background: color-mix(in srgb, var(--border) 20%, transparent);
+  background: color-mix(in srgb, var(--border) 15%, transparent);
 }
 
 /* --------------------------------------------------------------------------
