@@ -17,6 +17,10 @@ export const Users: CollectionConfig = {
     tokenExpiration: 60 * 60 * 24 * 7,
     maxLoginAttempts: 8,
     lockTime: 1000 * 60 * 10,
+    cookies: {
+      secure: process.env.NEXT_PUBLIC_SERVER_URL?.startsWith('https://'),
+      sameSite: 'Lax',
+    }
   },
   admin: {
     useAsTitle: 'email',

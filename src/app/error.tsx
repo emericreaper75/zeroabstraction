@@ -1,7 +1,7 @@
 'use client'
 import { useEffect } from 'react'
 
-export default function GlobalError({
+export default function ErrorBoundary({
   error,
   reset,
 }: {
@@ -13,13 +13,9 @@ export default function GlobalError({
   }, [error])
 
   return (
-    <html>
-      <body>
-        <div style={{ padding: '2rem', textAlign: 'center' }}>
-          <h2>500 - Internal Server Error</h2>
-          <p>The server encountered an error (Database connection failed).</p>
-        </div>
-      </body>
-    </html>
+    <div style={{ padding: '2rem', textAlign: 'center' }}>
+      <h2>500 - Internal Server Error</h2>
+      <p>The server encountered an unexpected condition that prevented it from fulfilling the request.</p>
+    </div>
   )
 }

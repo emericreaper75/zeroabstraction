@@ -19,8 +19,26 @@ export default async function PostEditorPage({
   const topicsResult = await payload.find({ collection: 'topics', limit: 100, sort: 'name' })
   const topics = topicsResult.docs
 
+  const mediaResult = await payload.find({ collection: 'media', limit: 100, sort: '-createdAt' })
+  const allMedia = mediaResult.docs
+
+  const projectsResult = await payload.find({ collection: 'projects', limit: 100, sort: 'title' })
+  const allProjects = projectsResult.docs
+
+  const postsResult = await payload.find({ collection: 'posts', limit: 100, sort: 'title' })
+  const allPosts = postsResult.docs
+
   if (id === 'new') {
-    return <PostEditor post={null} topics={topics} initialMarkdown="" />
+    return (
+      <PostEditor
+        post={null}
+        topics={topics}
+        allMedia={allMedia}
+        allProjects={allProjects}
+        allPosts={allPosts}
+        initialMarkdown=""
+      />
+    )
   }
 
   let post: any
@@ -36,5 +54,14 @@ export default async function PostEditorPage({
 
   const initialMarkdown = lexicalToMarkdown(post.content)
 
-  return <PostEditor post={post} topics={topics} initialMarkdown={initialMarkdown} />
+  return (
+    <PostEditor
+      post={post}
+      topics={topics}
+      allMedia={allMedia}
+      allProjects={allProjects}
+      allPosts={allPosts}
+      initialMarkdown={initialMarkdown}
+    />
+  )
 }

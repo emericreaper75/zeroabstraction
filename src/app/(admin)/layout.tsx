@@ -8,6 +8,8 @@ import { AdminSidebar } from '@/components/admin/AdminSidebar'
 import { AdminFooter } from '@/components/admin/AdminFooter'
 import '@/styles/admin-atelier.css'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata = {
   title: 'Payload Atelier // ZeroAbstraction',
   description: 'Observatory Editorial Engine — Custom Admin Dashboard',

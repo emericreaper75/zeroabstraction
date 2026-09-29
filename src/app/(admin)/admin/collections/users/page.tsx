@@ -66,16 +66,15 @@ export default async function UsersCollectionPage() {
                 </div>
               </div>
 
-              {/* Security Actions */}
-              <div className="pt-3 border-t border-hairline-rule flex items-center gap-2">
-                <button className="flex items-center gap-1.5 px-3 py-1.5 bg-surface-container-low text-ink-secondary font-label-sm text-label-sm uppercase tracking-wider hover:bg-surface-container-high transition-colors">
-                  <span className="material-symbols-outlined text-[14px]">vpn_key</span>
-                  Rotate Token
-                </button>
-                <button className="flex items-center gap-1.5 px-3 py-1.5 bg-surface-container-low text-ink-secondary font-label-sm text-label-sm uppercase tracking-wider hover:bg-surface-container-high transition-colors">
-                  <span className="material-symbols-outlined text-[14px]">history</span>
-                  Audit Log
-                </button>
+              {/* Single-Owner Security Policy */}
+              <div className="pt-3 border-t border-hairline-rule flex items-center justify-between text-ink-muted">
+                <span className="font-label-sm text-label-sm uppercase tracking-wider flex items-center gap-1.5">
+                  <span className="material-symbols-outlined text-[15px] text-amber-700">lock</span>
+                  Single-Owner Enforced
+                </span>
+                <span className="font-mono text-xs text-ink-secondary bg-surface-container-low px-2 py-0.5 rounded">
+                  V1 Single Principal
+                </span>
               </div>
             </div>
           </div>

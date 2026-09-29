@@ -19,9 +19,9 @@ export interface SaveProjectPayload {
   technologies?: string[]
   featured?: boolean
   cover_image?: number | string | null
-  gallery?: any[]
-  related_posts?: (string | number)[]
-  links?: any[]
+  gallery?: Array<{ image: number | string }>
+  related_posts?: (number | string)[]
+  links?: Array<{ label: string; url: string }>
 }
 
 export async function saveProjectAction(formData: SaveProjectPayload) {
@@ -62,6 +62,10 @@ export async function saveProjectAction(formData: SaveProjectPayload) {
       topics: formData.topics && formData.topics.length > 0 ? formData.topics : [],
       technologies: techArray,
       featured: Boolean(formData.featured),
+      cover_image: formData.cover_image || null,
+      gallery: formData.gallery || [],
+      related_posts: formData.related_posts && formData.related_posts.length > 0 ? formData.related_posts : [],
+      links: formData.links || [],
     }
 
     if (lessonsLexical) {

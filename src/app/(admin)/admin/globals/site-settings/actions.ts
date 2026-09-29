@@ -10,10 +10,10 @@ export interface SiteSettingsPayload {
   short_bio?: string
   email?: string
   footer_text?: string
+  social_links?: Array<{ platform: string; url: string }>
   theme_settings?: {
     default_mode?: 'light' | 'dark' | 'system'
   }
-  social_links?: any[]
 }
 
 export async function updateSiteSettingsAction(data: SiteSettingsPayload) {
@@ -33,6 +33,7 @@ export async function updateSiteSettingsAction(data: SiteSettingsPayload) {
         short_bio: data.short_bio?.trim() || null,
         email: data.email?.trim() || null,
         footer_text: data.footer_text?.trim() || null,
+        social_links: data.social_links || [],
         theme_settings: {
           default_mode: data.theme_settings?.default_mode || 'system',
         },
@@ -42,6 +43,7 @@ export async function updateSiteSettingsAction(data: SiteSettingsPayload) {
 
     revalidatePath('/admin/globals/site-settings')
     revalidatePath('/')
+    revalidatePath('/about')
 
     return { success: true }
   } catch (err: any) {

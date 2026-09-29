@@ -19,11 +19,19 @@ export default async function ProjectEditorPage({
   const topicsResult = await payload.find({ collection: 'topics', limit: 100, sort: 'name' })
   const topics = topicsResult.docs
 
+  const mediaResult = await payload.find({ collection: 'media', limit: 100, sort: '-createdAt' })
+  const allMedia = mediaResult.docs
+
+  const postsResult = await payload.find({ collection: 'posts', limit: 100, sort: 'title' })
+  const allPosts = postsResult.docs
+
   if (id === 'new') {
     return (
       <ProjectEditor
         project={null}
         topics={topics}
+        allMedia={allMedia}
+        allPosts={allPosts}
         initialDescriptionMarkdown=""
         initialLessonsMarkdown=""
       />
@@ -48,6 +56,8 @@ export default async function ProjectEditorPage({
     <ProjectEditor
       project={project}
       topics={topics}
+      allMedia={allMedia}
+      allPosts={allPosts}
       initialDescriptionMarkdown={initialDescriptionMarkdown}
       initialLessonsMarkdown={initialLessonsMarkdown}
     />

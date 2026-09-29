@@ -18,9 +18,9 @@ export interface SavePostPayload {
   reading_time?: number
   featured?: boolean
   cover_image?: number | string | null
-  related_projects?: (string | number)[]
-  related_posts?: (string | number)[]
-  seo_metadata?: any
+  related_projects?: (number | string)[]
+  related_posts?: (number | string)[]
+  seo_metadata?: { title?: string; description?: string }
 }
 
 export async function savePostAction(formData: SavePostPayload) {
@@ -58,6 +58,10 @@ export async function savePostAction(formData: SavePostPayload) {
       reading_time: readingTime,
       topics: formData.topics && formData.topics.length > 0 ? formData.topics : [],
       featured: Boolean(formData.featured),
+      cover_image: formData.cover_image || null,
+      related_projects: formData.related_projects && formData.related_projects.length > 0 ? formData.related_projects : [],
+      related_posts: formData.related_posts && formData.related_posts.length > 0 ? formData.related_posts : [],
+      seo_metadata: formData.seo_metadata || {},
     }
 
     let savedDoc: any
