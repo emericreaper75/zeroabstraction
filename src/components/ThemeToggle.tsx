@@ -29,7 +29,7 @@ export function ThemeToggle({ className = '' }: ThemeToggleProps) {
     <button
       type="button"
       onClick={toggleTheme}
-      className={`min-h-[44px] min-w-[44px] px-2 flex items-center gap-2 text-[color:var(--muted)] hover:text-[color:var(--text)] transition-colors focus-visible:outline-2 focus-visible:outline-[color:var(--accent)] focus-visible:outline-offset-2 ${className}`}
+      className={`min-h-[44px] min-w-[44px] px-2 flex items-center gap-2 transition-colors focus-visible:outline-2 focus-visible:outline-[color:var(--focus-ring)] focus-visible:outline-offset-2 ${className || 'text-[color:var(--text-muted)] hover:text-[color:var(--text)]'}`}
       aria-label={`Switch to ${targetTheme} mode`}
       title={`Switch to ${targetTheme} mode`}
       suppressHydrationWarning

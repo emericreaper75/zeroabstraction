@@ -1,66 +1,101 @@
 :root {
-  --bg: #f3efe7;
-  --text: #17191a;
-  --muted: #65635e;
-  --border: #d5d0c6;
-  --accent: #ad6832;
-  --focus-ring: #ad6832;
-  /* Accent that meets WCAG AA (4.5:1) when used as small text on --bg */
-  --accent-ink: #9e5a24;
+  color-scheme: light;
 
-  /* Typography Scales */
-  --text-hero: clamp(2.5rem, 6vw, 6rem);
-  --text-heading: clamp(2rem, 4vw, 4.25rem);
-  --text-title: clamp(1.75rem, 3vw, 4.75rem);
-  --text-body: clamp(1.0625rem, 1.2vw, 1.25rem);
-  --text-small: clamp(0.75rem, 0.9vw, 0.875rem);
-  --text-label: clamp(0.625rem, 0.8vw, 0.75rem);
+  /* Neutral scale — light */
+  --n-1:#F3EFE7; --n-2:#EFEADF; --n-3:#E9E3D7; --n-4:#E3DDD0; --n-5:#DCD6C8; --n-6:#D5D0C6;
+  --n-7:#C8C2B7; --n-8:#B1ABA0; --n-9:#8F8A82; --n-10:#7A766F; --n-11:#65635E; --n-12:#17191A;
 
-  /* Layout Widths */
-  --content-width: 1400px;
-  --reading-width: 860px;
+  /* Bronze accent scale — light */
+  --a-1:#F7F0E6; --a-2:#F3E8DA; --a-3:#EEDCC8; --a-4:#E8D0B5; --a-5:#E0C3A3; --a-6:#D6B391;
+  --a-7:#CBA17B; --a-8:#BC8B61; --a-9:#C88A5A; --a-10:#B97C4C; --a-11:#87522F; --a-12:#4A2E17;
 
-  /* Spacing Scale (8, 12, 16, 24, 32, 48, 64, 96, 128, 160 px converted to rem) */
-  --space-1: 0.5rem;
-  --space-2: 0.75rem;
-  --space-3: 1rem;
-  --space-4: 1.5rem;
-  --space-5: 2rem;
-  --space-6: 3rem;
-  --space-7: 4rem;
-  --space-8: 6rem;
-  --space-9: 8rem;
-  --space-10: 10rem;
+  /* Semantic */
+  --bg:var(--n-1); --bg-subtle:var(--n-2);
+  --surface:var(--n-3); --surface-hover:var(--n-4);
+  --border:var(--n-6); --border-strong:var(--n-7);
+  --text:var(--n-12); --text-muted:var(--n-11); --muted:var(--text-muted);
+  --accent:var(--a-9); --accent-hover:var(--a-10); --accent-text:var(--a-11);
+  --accent-subtle:var(--a-3); --accent-border:var(--a-7);
+  --on-accent:#17191A;
+  --focus-ring:var(--a-11);
+
+  /* Status (status use only) */
+  --success:#357050; --warning:#7D5A12; --danger:#B3412F;
+
+  /* Code */
+  --code-bg:var(--n-2); --code-keyword:var(--a-11); --code-string:var(--success);
+  --code-number:var(--n-11); --code-comment:var(--n-10);
+
+  /* Shelf / library spine tints (06, 07) */
+  --spine-1:var(--a-4); --spine-2:var(--n-4); --spine-3:var(--a-6); --spine-4:var(--n-6); --spine-5:var(--a-3);
+  --spine-fg:var(--n-12);
+  --shade:rgba(11,17,20,.28);
+
+  /* Glass — scrolled/compact state follows the theme */
+  --glass-bg:rgba(243,239,231,.78); --glass-border:rgba(23,25,26,.10); --glass-blur:14px;
+
+  /* Hero surface — theme-independent (always over a dark scrim) */
+  --hero-scrim:linear-gradient(180deg,rgba(11,17,20,.35) 0%,rgba(11,17,20,.55) 45%,rgba(11,17,20,.88) 100%);
+  --hero-fg:#F1ECE2; --hero-fg-muted:#C9C4B9; --hero-accent:#D49A68;
+  --hero-glass-bg:rgba(11,17,20,.42); --hero-glass-border:rgba(241,236,226,.18); --hero-glass-blur:16px;
+
+  /* Sidebar (admin) and inverse surfaces (login panel) */
+  --sidebar-bg:#0B1114; --sidebar-fg:#F1ECE2; --sidebar-fg-muted:#A7A49D;
+  --sidebar-border:#2A3032; --sidebar-active-bg:#141C1F; --sidebar-accent:#D49A68;
+  --inverse-bg:#0B1114; --inverse-fg:#F1ECE2; --inverse-border:#2A3032;
+
+  /* Typography */
+  --font-display:"Cormorant Garamond","Instrument Serif",Georgia,serif;
+  --font-sans:"Inter","Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-body:var(--font-sans);
+  --font-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+
+  --text-hero:clamp(3.25rem,8vw,6rem);
+  --text-h1:clamp(2.5rem,5vw,4.25rem);
+  --text-title:clamp(2.4rem,5.5vw,4.5rem);
+  --text-h2:clamp(1.75rem,2.6vw,2.25rem);
+  --text-heading:var(--text-h2);
+  --text-h3:1.5rem;
+  --text-body:clamp(1.0625rem,.4vw + 1rem,1.125rem);
+  --text-body-lg:1.25rem;
+  --text-small:.875rem;
+  --text-ui-sm:.75rem;
+  --text-label:.6875rem;
+  --lh-display:1.08; --lh-heading:1.2; --lh-body:1.7; --lh-ui:1.4;
+  --tracking-label:.08em;
+
+  /* Layout */
+  --measure-reading:48rem;
+  --measure-wide:87.5rem;
+  --gutter:clamp(1.25rem,4vw,3rem);
+
+  /* Spacing (8,12,16,24,32,48,64,96,128,160) */
+  --space-1:8px; --space-2:12px; --space-3:16px; --space-4:24px; --space-5:32px;
+  --space-6:48px; --space-7:64px; --space-8:96px; --space-9:128px; --space-10:160px;
+
+  /* Shape and motion */
+  --radius-s:2px; --radius-m:10px; --radius-bar:14px;
+  --ease-out:cubic-bezier(.22,.61,.36,1);
+  --dur-fast:150ms; --dur-base:220ms; --dur-slow:480ms;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    --bg: #0b1114;
-    --text: #f1ece2;
-    --muted: #a7a49d;
-    --border: #2a3032;
-    --accent: #d49a68;
-    --focus-ring: #d49a68;
-    --accent-ink: #d49a68;
-  }
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --n-1:#0B1114; --n-2:#0F171A; --n-3:#141C1F; --n-4:#192225; --n-5:#1F292C; --n-6:#2A3032;
+  --n-7:#343D40; --n-8:#465054; --n-9:#6B7377; --n-10:#868D90; --n-11:#A7A49D; --n-12:#F1ECE2;
+
+  --a-1:#120E0B; --a-2:#1A1511; --a-3:#261C14; --a-4:#33241A; --a-5:#402E21; --a-6:#50392A;
+  --a-7:#664834; --a-8:#85603F; --a-9:#D49A68; --a-10:#E0A877; --a-11:#E8B98A; --a-12:#F6DDC3;
+
+  --on-accent:#0B1114;
+  --success:#6FB58C; --warning:#D9AE55; --danger:#E27A66;
+
+  --glass-bg:rgba(11,17,20,.72); --glass-border:rgba(241,236,226,.10);
+
+  --sidebar-bg:#0F171A;
 }
 
-[data-theme='dark'] {
-  --bg: #0b1114;
-  --text: #f1ece2;
-  --muted: #a7a49d;
-  --border: #2a3032;
-  --accent: #d49a68;
-  --focus-ring: #d49a68;
-  --accent-ink: #d49a68;
-}
-
-[data-theme='light'] {
-  --bg: #f3efe7;
-  --text: #17191a;
-  --muted: #65635e;
-  --border: #d5d0c6;
-  --accent: #ad6832;
-  --focus-ring: #ad6832;
-  --accent-ink: #9e5a24;
+@media (prefers-reduced-motion:reduce) {
+  :root { --dur-fast:0ms; --dur-base:0ms; --dur-slow:0ms; }
 }

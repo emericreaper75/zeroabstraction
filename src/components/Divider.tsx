@@ -1,7 +1,9 @@
 import React from 'react';
 
-type DividerProps = React.HTMLAttributes<HTMLHRElement>;
+export interface DividerProps extends React.HTMLAttributes<HTMLDivElement> {
+  variant?: 'default' | 'vermillion' | 'hand-drawn';
+}
 
-export function Divider({ className = '', ...props }: DividerProps) {
-  return <hr className={`border-0 ui-border-t ${className}`} {...props} />;
+export function Divider({ variant = 'default', className = '', ...props }: DividerProps) {
+  return <hr className={`border-0 border-t border-[color:var(--border)] my-6 ${className}`} {...(props as React.HTMLAttributes<HTMLHRElement>)} />;
 }

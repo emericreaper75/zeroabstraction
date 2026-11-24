@@ -33,7 +33,7 @@ export function Heading<T extends ElementType = 'h2'>({
   return (
     <Component
       className={className}
-      style={{ fontSize: 'var(--text-heading)', fontFamily: 'var(--font-display)', ...style }}
+      style={{ fontSize: 'var(--text-h2)', fontFamily: 'var(--font-display)', ...style }}
       {...props}
     />
   );
