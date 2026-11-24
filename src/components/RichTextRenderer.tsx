@@ -63,7 +63,7 @@ function renderMathInText(text: string): React.ReactNode[] {
 
       if (isDisplay) {
         parts.push(
-          <div
+          <span
             key={`math-${match.index}`}
             className="math-display"
             dangerouslySetInnerHTML={{ __html: html }}
