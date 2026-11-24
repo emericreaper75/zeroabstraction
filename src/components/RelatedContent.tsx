@@ -1,164 +1,41 @@
-import React from 'react';
-import { Link } from 'next-view-transitions';
-import { Title, Label, Body } from '@/components/typography';
-import { EditorialLink } from '@/components/EditorialLink';
+import Link from 'next/link';
 import type { RelatedItem } from '@/lib/content';
 
-interface RelatedContentProps {
-  items: RelatedItem[];
-  title?: string;
-  className?: string;
-}
-
-export function RelatedContent({
-  items,
-  title = 'RELATED CONTENT',
-  className = '',
-}: RelatedContentProps) {
-  if (!items || items.length === 0) return null;
-
-  // Group items by their contextual label (e.g. "More on Astrophysics", "Connected Project")
-  const grouped = items.reduce<Record<string, RelatedItem[]>>((acc, item) => {
-    const key = item.label || 'Related';
-    if (!acc[key]) acc[key] = [];
-    acc[key].push(item);
-    return acc;
-  }, {});
-
-  const groupEntries = Object.entries(grouped);
-
+export function RelatedContent({ items, className = '' }: { items: RelatedItem[]; className?: string }) {
+  if (!items.length) return null;
   return (
-    <section
-      className={`container-reading ${className}`}
-      aria-label="Related Content"
-      style={{ marginTop: 'var(--space-10)', paddingTop: 'var(--space-8)' }}
-    >
-      {/* Section Header */}
-      <div style={{ marginBottom: 'var(--space-8)' }}>
-        <Label className="text-[color:var(--muted)] tracking-widest text-xs font-mono uppercase">
-          {title}
-        </Label>
-      </div>
-
-      {/* Editorial Grouped Content */}
-      <div className="flex flex-col" style={{ gap: 'var(--space-10)' }}>
-        {groupEntries.map(([groupLabel, groupItems], groupIdx) => (
-          <div key={groupLabel}>
-            {groupIdx > 0 && (
-              <div
-                className="ui-border-t"
-                style={{ marginBottom: 'var(--space-8)', opacity: 0.6 }}
-              />
-            )}
-
-            {/* Topic / Context Sub-heading */}
-            <div style={{ marginBottom: 'var(--space-5)' }}>
-              <Label className="text-[color:var(--accent-ink)] text-xs font-mono tracking-wider uppercase">
-                {groupLabel}
-              </Label>
-            </div>
-
-            {/* List of related editorial items */}
-            <div className="flex flex-col" style={{ gap: 'var(--space-8)' }}>
-              {groupItems.map((item, itemIdx) => {
-                const itemHref =
-                  item.type === 'post' ? `/writing/${item.slug}` : `/projects/${item.slug}`;
-
-                const dateStr = item.publishedAt
-                  ? new Date(item.publishedAt)
-                      .toLocaleDateString('en-US', {
-                        month: 'short',
-                        day: 'numeric',
-                        year: 'numeric',
-                      })
-                      .toUpperCase()
-                  : null;
-
-                return (
-                  <div key={`${item.type}-${item.id}`}>
-                    {itemIdx > 0 && (
-                      <div
-                        className="ui-border-t"
-                        style={{ marginBottom: 'var(--space-8)', opacity: 0.3 }}
-                      />
-                    )}
-
-                    <article className="flex flex-col" style={{ gap: 'var(--space-3)' }}>
-                      {/* Metadata Line */}
-                      <div
-                        className="flex items-center flex-wrap"
-                        style={{ gap: 'var(--space-3)' }}
-                      >
-                        <Label className="text-[color:var(--muted)] text-xs font-mono uppercase">
-                          {item.type === 'post' ? 'Writing' : 'Project'}
-                        </Label>
-                        {item.year && (
-                          <>
-                            <span className="text-[color:var(--muted)]">•</span>
-                            <Label className="text-[color:var(--muted)] text-xs font-mono">
-                              {item.year}
-                            </Label>
-                          </>
-                        )}
-                        {dateStr && (
-                          <>
-                            <span className="text-[color:var(--muted)]">•</span>
-                            <Label className="text-[color:var(--muted)] text-xs font-mono">
-                              {dateStr}
-                            </Label>
-                          </>
-                        )}
-                        {item.readingTime && (
-                          <>
-                            <span className="text-[color:var(--muted)]">•</span>
-                            <Label className="text-[color:var(--muted)] text-xs font-mono">
-                              {item.readingTime} MIN READ
-                            </Label>
-                          </>
-                        )}
-                        {item.status && (
-                          <>
-                            <span className="text-[color:var(--muted)]">•</span>
-                            <Label className="text-[color:var(--muted)] text-xs font-mono uppercase">
-                              {item.status.replace('_', ' ')}
-                            </Label>
-                          </>
-                        )}
-                      </div>
-
-                      {/* Linked Title */}
-                      <Title as="h2" style={{ fontSize: 'var(--text-title)' }}>
-                        <Link
-                          href={itemHref}
-                          className="transition-colors duration-200 hover:text-[color:var(--accent)]"
-                        >
-                          {item.title}
-                        </Link>
-                      </Title>
-
-                      {/* Snippet / Excerpt */}
-                      {(item.excerpt || item.summary) && (
-                        <Body
-                          className="text-[color:var(--muted)] line-clamp-2"
-                          style={{ fontSize: '0.9375rem', lineHeight: '1.6' }}
-                        >
-                          {item.excerpt || item.summary}
-                        </Body>
-                      )}
-
-                      {/* Minimal Editorial Link */}
-                      <div style={{ marginTop: 'var(--space-2)' }}>
-                        <EditorialLink href={itemHref} variant="muted">
-                          {item.type === 'post' ? 'READ ESSAY' : 'VIEW PROJECT'}
-                        </EditorialLink>
-                      </div>
-                    </article>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        ))}
+    <section className={`container-reading ${className}`} style={{ marginTop: 'var(--space-7)', paddingBottom: 'var(--space-7)' }} aria-label="Related content">
+      <h2 className="font-mono text-[var(--text-label)] tracking-[var(--tracking-label)] text-[color:var(--text-muted)]">RELATED</h2>
+      <div className="mt-5 border-t border-[color:var(--border)]">
+        {items.map((item) => {
+          const date = item.publishedAt
+            ? new Date(item.publishedAt).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }).toUpperCase()
+            : null;
+          const provenance = item.provenance?.startsWith('topic:')
+            ? `SAME TOPIC · ${item.provenance.slice(6).toUpperCase()}`
+            : null;
+          return (
+            <Link
+              key={`${item.type}-${item.id}`}
+              href={item.url}
+              className="group grid grid-cols-[9rem_1fr_auto] items-center gap-6 border-b border-[color:var(--border)] py-6 max-md:grid-cols-1 max-md:gap-3"
+            >
+              <span className="font-mono text-[var(--text-label)] text-[color:var(--text-muted)]">
+                {item.type === 'post' ? `POST · ${date}` : `PROJECT · ${item.year ?? ''}`}
+              </span>
+              <span className="min-w-0">
+                <span className="block font-[family-name:var(--font-display)] text-[var(--text-h3)] group-hover:underline">{item.title}</span>
+                {(item.excerpt || item.summary) && (
+                  <span className="mt-1 line-clamp-2 block text-[var(--text-small)] text-[color:var(--text-muted)]">{item.excerpt || item.summary}</span>
+                )}
+                {provenance && <span className="mt-2 block font-mono text-[var(--text-label)] text-[color:var(--accent-text)]">{provenance}</span>}
+              </span>
+              <span className="font-mono text-[var(--text-ui-sm)] text-[color:var(--text)] transition-transform group-hover:translate-x-1">
+                {item.type === 'post' ? 'READ ARTICLE →' : 'VIEW PROJECT →'}
+              </span>
+            </Link>
+          );
+        })}
       </div>
     </section>
   );

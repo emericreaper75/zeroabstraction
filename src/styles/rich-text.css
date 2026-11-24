@@ -13,8 +13,8 @@
    Base Typography
    -------------------------------------------------------------------------- */
 .rich-text p {
-  margin-block: 1.15em;
-  line-height: 1.8;
+  margin-block: 0 1.25em;
+  line-height: var(--lh-body);
   font-size: var(--text-body);
   color: var(--text);
 }
@@ -48,11 +48,13 @@
   font-weight: 500;
 }
 .rich-text h2 {
-  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-size: var(--text-h2);
+  line-height: var(--lh-heading);
   font-weight: 500;
+  margin-top: var(--space-6);
 }
 .rich-text h3 {
-  font-size: clamp(1.25rem, 2vw, 1.5rem);
+  font-size: var(--text-h3);
   font-weight: 500;
 }
 .rich-text h4 {
@@ -72,7 +74,7 @@
 
 /* Anchor link indicator */
 .rich-text .heading-anchor {
-  color: var(--muted);
+  color: var(--text-muted);
   text-decoration: none;
   opacity: 0;
   transition: opacity 0.2s ease;
@@ -119,11 +121,11 @@
    Blockquotes
    -------------------------------------------------------------------------- */
 .rich-text blockquote {
-  border-left: 3px solid var(--accent);
+  border-left: 2px solid var(--accent-border);
   padding-left: 1.5em;
   margin-inline: 0;
   margin-block: 2em;
-  color: var(--muted);
+  color: var(--text-muted);
   font-style: italic;
 }
 
@@ -131,9 +133,9 @@
    Inline Code
    -------------------------------------------------------------------------- */
 .rich-text code:not(pre code) {
-  background: var(--border);
-  padding: 0.15em 0.35em;
-  border-radius: 4px;
+  background: var(--code-bg);
+  padding: 0.1em 0.35em;
+  border-radius: var(--radius-s);
   font-family: var(--font-mono);
   font-size: 0.875em;
   color: var(--text);
@@ -161,18 +163,18 @@ html[data-theme='dark'] .shiki span {
 
 .rich-text .code-block {
   position: relative;
-  margin-block: 2em;
+  margin-block: var(--space-5);
   border: 1px solid var(--border);
-  border-radius: 4px;
+  border-radius: var(--radius-s);
   overflow: hidden;
-  background: var(--bg);
+  background: var(--code-bg);
 }
 
 .rich-text .code-block-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.4rem 1rem;
+  padding: var(--space-2) var(--space-4);
   background: color-mix(in srgb, var(--border) 35%, transparent);
   border-bottom: 1px solid var(--border);
 }
@@ -181,14 +183,14 @@ html[data-theme='dark'] .shiki span {
   font-family: var(--font-mono);
   font-size: var(--text-label);
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--text-muted);
   letter-spacing: 0.05em;
   font-weight: 500;
 }
 
 .rich-text .code-block pre {
   margin: 0;
-  padding: 1rem 1.25rem;
+  padding: var(--space-4);
   overflow-x: auto;
   font-family: var(--font-mono);
   font-size: 0.875rem;
@@ -226,7 +228,7 @@ html[data-theme='dark'] .shiki span {
   max-width: 100%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  margin-block: 2em;
+  margin-block: var(--space-5);
 }
 
 .rich-text table {
@@ -242,18 +244,17 @@ html[data-theme='dark'] .shiki span {
 
 .rich-text th {
   text-align: left;
-  padding: 0.75rem 1rem;
+  padding: var(--space-3) var(--space-4);
   font-family: var(--font-mono);
-  font-weight: 600;
+  font-weight: 500;
   font-size: var(--text-label);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--muted);
-  background: color-mix(in srgb, var(--border) 20%, transparent);
+  color: var(--text-muted);
 }
 
 .rich-text td {
-  padding: 0.75rem 1rem;
+  padding: var(--space-3) var(--space-4);
   border-bottom: 1px solid var(--border);
   line-height: 1.6;
   color: var(--text);
@@ -270,10 +271,6 @@ html[data-theme='dark'] .shiki span {
   border-bottom: none;
 }
 
-/* Subtle striped rows for readability */
-.rich-text tbody tr:nth-child(even) {
-  background: color-mix(in srgb, var(--border) 15%, transparent);
-}
 
 /* --------------------------------------------------------------------------
    Math (KaTeX)
@@ -302,13 +299,13 @@ html[data-theme='dark'] .shiki span {
    Links inside rich text
    -------------------------------------------------------------------------- */
 .rich-text a:not(.heading-anchor) {
-  color: var(--accent);
+  color: var(--accent-text);
   text-decoration: underline;
-  text-underline-offset: 0.2em;
-  transition: color 0.2s ease;
+  text-underline-offset: 3px;
+  transition: color 0.2s ease, text-decoration-thickness 0.2s ease;
 }
 .rich-text a:not(.heading-anchor):hover {
-  color: var(--text);
+  text-decoration-thickness: 2px;
 }
 
 /* --------------------------------------------------------------------------
