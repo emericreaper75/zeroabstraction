@@ -25,7 +25,7 @@ export default function AuthLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="antialiased min-h-screen flex flex-col justify-between font-body-md overflow-x-hidden bg-gradient-to-br from-[#0b1013] via-[#12181c] to-[#080c0e] text-[#a2abb2] selection:bg-amber-wash selection:text-on-surface">
+      <body className="antialiased min-h-screen flex flex-col justify-between overflow-x-hidden bg-[color:var(--inverse-bg)] text-[color:var(--inverse-fg)]">
         {children}
       </body>
     </html>

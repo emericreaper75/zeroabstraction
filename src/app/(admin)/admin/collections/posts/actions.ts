@@ -3,7 +3,7 @@
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { headers } from 'next/headers'
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 import { markdownToLexical } from '@/lib/lexicalConverter'
 
 export interface SavePostPayload {
@@ -84,6 +84,7 @@ export async function savePostAction(formData: SavePostPayload) {
     revalidatePath('/admin/collections/posts')
     revalidatePath(`/admin/collections/posts/${savedDoc.id}`)
     revalidatePath('/writing')
+    revalidateTag('public-search-index', 'max')
     if (savedDoc.slug) {
       revalidatePath(`/writing/${savedDoc.slug}`)
     }
@@ -113,6 +114,7 @@ export async function deletePostAction(id: string | number) {
 
     revalidatePath('/admin/collections/posts')
     revalidatePath('/writing')
+    revalidateTag('public-search-index', 'max')
 
     return { success: true }
   } catch (err: any) {

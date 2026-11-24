@@ -1,10 +1,6 @@
-/* ─────────────────────────────────────────────────────────────
-   ZeroAbstraction Admin — Daylight Atelier Theme
-   Design System: Observatory Editorial Engine (Light Theme)
-   Source: Google Stitch Dashboard Prototypes
-   ───────────────────────────────────────────────────────────── */
+@import './tokens.css';
 
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400;1,6..72,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400;1,6..72,500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap');
 @import 'katex/dist/katex.min.css';
 
@@ -12,113 +8,101 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Material Symbols ───────────────────────────────────────── */
+:root {
+  --theme-bg: var(--bg);
+  --theme-text: var(--text);
+  --theme-elevation-0: color-mix(in oklab, var(--n-12) 0%, var(--n-1));
+  --theme-elevation-50: color-mix(in oklab, var(--n-12) 5%, var(--n-1));
+  --theme-elevation-100: color-mix(in oklab, var(--n-12) 10%, var(--n-1));
+  --theme-elevation-150: color-mix(in oklab, var(--n-12) 15%, var(--n-1));
+  --theme-elevation-200: color-mix(in oklab, var(--n-12) 20%, var(--n-1));
+  --theme-elevation-250: color-mix(in oklab, var(--n-12) 25%, var(--n-1));
+  --theme-elevation-300: color-mix(in oklab, var(--n-12) 30%, var(--n-1));
+  --theme-elevation-350: color-mix(in oklab, var(--n-12) 35%, var(--n-1));
+  --theme-elevation-400: color-mix(in oklab, var(--n-12) 40%, var(--n-1));
+  --theme-elevation-450: color-mix(in oklab, var(--n-12) 45%, var(--n-1));
+  --theme-elevation-500: color-mix(in oklab, var(--n-12) 50%, var(--n-1));
+  --theme-elevation-550: color-mix(in oklab, var(--n-12) 55%, var(--n-1));
+  --theme-elevation-600: color-mix(in oklab, var(--n-12) 60%, var(--n-1));
+  --theme-elevation-650: color-mix(in oklab, var(--n-12) 65%, var(--n-1));
+  --theme-elevation-700: color-mix(in oklab, var(--n-12) 70%, var(--n-1));
+  --theme-elevation-750: color-mix(in oklab, var(--n-12) 75%, var(--n-1));
+  --theme-elevation-800: color-mix(in oklab, var(--n-12) 80%, var(--n-1));
+  --theme-elevation-850: color-mix(in oklab, var(--n-12) 85%, var(--n-1));
+  --theme-elevation-900: color-mix(in oklab, var(--n-12) 90%, var(--n-1));
+  --theme-elevation-950: color-mix(in oklab, var(--n-12) 95%, var(--n-1));
+  --theme-elevation-1000: var(--n-12);
+
+  --theme-success-500: var(--success);
+  --theme-warning-500: var(--warning);
+  --theme-error-500: var(--danger);
+  --theme-success-400: color-mix(in oklab, var(--success) 75%, var(--n-12));
+  --theme-warning-400: color-mix(in oklab, var(--warning) 75%, var(--n-12));
+  --theme-error-400: color-mix(in oklab, var(--danger) 75%, var(--n-12));
+  --theme-success-100: color-mix(in oklab, var(--success) 12%, var(--bg));
+  --theme-warning-100: color-mix(in oklab, var(--warning) 12%, var(--bg));
+  --theme-error-100: color-mix(in oklab, var(--danger) 12%, var(--bg));
+}
+
+html, body {
+  background: var(--bg);
+  color: var(--text);
+}
+
 .material-symbols-outlined {
-  font-family: 'Material Symbols Outlined' !important;
-  font-weight: normal;
-  font-style: normal;
+  font-family: 'Material Symbols Outlined';
   font-size: 24px;
   line-height: 1;
-  letter-spacing: normal;
-  text-transform: none;
-  display: inline-block;
-  white-space: nowrap;
-  word-wrap: normal;
-  direction: ltr;
-  -webkit-font-smoothing: antialiased;
 }
 
-/* ── Scrollbar: Archival Parchment ──────────────────────────── */
-::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
-}
-::-webkit-scrollbar-track {
-  background: #f6f5f0;
-}
-::-webkit-scrollbar-thumb {
-  background: #d8d7d0;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #b3743b;
-}
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
-/* ── Cosmic Grid (Login page only) ──────────────────────────── */
-.cosmic-grid {
-  background-size: 40px 40px;
-  background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-}
-
-/* ── Atelier Checkbox: Bronze Square ────────────────────────── */
-input[type="checkbox"].atelier-checkbox {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 15px;
-  height: 15px;
-  border: 1px solid #c9c3b4;
-  background: #ffffff;
-  border-radius: 2px;
-  cursor: pointer;
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 150ms ease;
-}
-input[type="checkbox"].atelier-checkbox:checked {
-  background-color: #b3743b;
-  border-color: #b3743b;
-}
-input[type="checkbox"].atelier-checkbox:checked::after {
-  content: '';
-  width: 4px;
-  height: 8px;
-  border: solid #ffffff;
-  border-width: 0 1.75px 1.75px 0;
-  transform: rotate(45deg) translate(-0.5px, -1px);
-  display: block;
-}
-
-/* ── Table Checkbox (inline in data tables) ─────────────────── */
+input[type="checkbox"].atelier-checkbox,
 input[type="checkbox"].table-checkbox {
   appearance: none;
-  -webkit-appearance: none;
   width: 16px;
   height: 16px;
-  border: 1px solid #d7c3b5;
-  background: #ffffff;
-  border-radius: 0;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  border-radius: var(--radius-s);
   cursor: pointer;
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 150ms ease;
-  accent-color: #b3743b;
 }
+input[type="checkbox"].atelier-checkbox:checked,
 input[type="checkbox"].table-checkbox:checked {
-  background-color: #b3743b;
-  border-color: #b3743b;
+  background: var(--accent);
+  border-color: var(--accent);
+  accent-color: var(--accent);
 }
+input[type="checkbox"].atelier-checkbox:checked::after,
 input[type="checkbox"].table-checkbox:checked::after {
   content: '';
+  display: block;
   width: 4px;
   height: 8px;
-  border: solid #ffffff;
+  border: solid var(--on-accent);
   border-width: 0 1.75px 1.75px 0;
   transform: rotate(45deg) translate(-0.5px, -1px);
-  display: block;
 }
 
-/* ── Focus / Accessibility ──────────────────────────────────── */
 :focus-visible {
-  outline: 2px solid #b3743b;
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
-/* ── Reduced Motion ─────────────────────────────────────────── */
+.sidebar-link-active {
+  background: var(--sidebar-active-bg);
+  color: var(--sidebar-fg);
+  border-left: 2px solid var(--sidebar-accent);
+  font-weight: 500;
+}
+
+.activity-item:hover .activity-indicator {
+  background: var(--accent);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -126,18 +110,4 @@ input[type="checkbox"].table-checkbox:checked::after {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-}
-
-/* ── Active sidebar link styling ────────────────────────────── */
-.sidebar-link-active {
-  background-color: #ffffff;
-  color: #9c602a;
-  border-left: 2px solid #9c602a;
-  font-weight: 500;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
-}
-
-/* ── Activity item hover indicator ──────────────────────────── */
-.activity-item:hover .activity-indicator {
-  background-color: #9c602a;
 }

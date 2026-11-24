@@ -28,8 +28,9 @@ export default async function AdminLayout({
   }
 
   return (
-    <html lang="en" className="light">
+    <html lang="en" suppressHydrationWarning>
       <head>
+      <script dangerouslySetInnerHTML={{ __html: "(function(){try{var s=localStorage.getItem('payload-admin-theme');var m=window.matchMedia('(prefers-color-scheme: dark)');var t=s==='light'||s==='dark'?s:(m.matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);document.documentElement.style.colorScheme=t;}catch(e){}})();" }} />
         <link href="https://fonts.googleapis.com" rel="preconnect" />
         <link crossOrigin="" href="https://fonts.gstatic.com" rel="preconnect" />
         <link
@@ -41,11 +42,11 @@ export default async function AdminLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="bg-paper-base text-ink-secondary antialiased font-body-sm min-h-screen selection:bg-amber-wash selection:text-primary">
+      <body className="bg-[color:var(--bg)] text-[color:var(--text)] antialiased font-body-sm min-h-screen selection:bg-[color:var(--accent-subtle)] selection:text-[color:var(--accent-text)]">
         <AdminHeader user={user as any} />
         <div className="max-w-[1440px] mx-auto flex w-full min-h-[calc(100vh-5rem)]">
           <AdminSidebar />
-          <main className="flex-1 px-5 sm:px-8 py-8 overflow-y-auto max-w-full pb-16 bg-paper-base">
+          <main className="flex-1 px-5 sm:px-8 py-8 overflow-y-auto max-w-full pb-16 bg-[color:var(--bg)]">
             {children}
           </main>
         </div>

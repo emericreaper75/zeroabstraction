@@ -3,7 +3,7 @@
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { headers } from 'next/headers'
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 import { markdownToLexical } from '@/lib/lexicalConverter'
 
 export interface SaveProjectPayload {
@@ -92,6 +92,7 @@ export async function saveProjectAction(formData: SaveProjectPayload) {
     revalidatePath('/admin/collections/projects')
     revalidatePath(`/admin/collections/projects/${savedDoc.id}`)
     revalidatePath('/projects')
+    revalidateTag('public-search-index', 'max')
     if (savedDoc.slug) {
       revalidatePath(`/projects/${savedDoc.slug}`)
     }
@@ -121,6 +122,7 @@ export async function deleteProjectAction(id: string | number) {
 
     revalidatePath('/admin/collections/projects')
     revalidatePath('/projects')
+    revalidateTag('public-search-index', 'max')
 
     return { success: true }
   } catch (err: any) {
