@@ -36,16 +36,25 @@ export type RelatedItem = {
   year?: number | null
   readingTime?: number | null
   status?: string | null
+  provenance?: 'explicit' | 'reciprocal' | `topic:${string}`
   excerpt?: string | null
   summary?: string | null
 }
 
-export async function getPosts(limit = 10): Promise<{ docs: Post[] }> {
+export type ContentPage<T> = {
+  docs: T[]
+  totalDocs: number
+  totalPages: number
+  page: number
+}
+
+export async function getPosts(limit = 10, page = 1): Promise<ContentPage<Post>> {
   const payload = await getPayloadClient()
   return payload.find({
     collection: 'posts',
     overrideAccess: false, // SECURITY: enforce access control — excludes draft/archived from public pages
     limit,
+    page,
     sort: '-published_at',
     depth: 2,
   })
@@ -68,12 +77,13 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
   return result.docs[0] ?? null
 }
 
-export async function getProjects(limit = 10): Promise<{ docs: Project[] }> {
+export async function getProjects(limit = 10, page = 1): Promise<ContentPage<Project>> {
   const payload = await getPayloadClient()
   return payload.find({
     collection: 'projects',
     overrideAccess: false, // SECURITY: enforce access control — excludes archived from public pages
     limit,
+    page,
     sort: '-year',
     depth: 2,
   })

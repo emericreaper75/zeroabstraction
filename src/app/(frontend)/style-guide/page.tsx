@@ -6,6 +6,8 @@ import { Display, Heading, Title, Body, Label } from '@/components/typography';
 import { EditorialLink } from '@/components/EditorialLink';
 import { Divider } from '@/components/Divider';
 import { ProjectImage } from '@/components/ProjectImage';
+import { CollageFrame } from '@/components/CollageFrame';
+import { CollageShape } from '@/components/CollageShape';
 
 export default function StyleGuide() {
   if (process.env.NODE_ENV !== 'development') {
@@ -48,30 +50,41 @@ export default function StyleGuide() {
             marginBottom: 'var(--space-6)',
           }}
         >
-          Colors
+          Core Palette (Warm Ivory, Emerald Green & Vermillion)
         </h2>
         <div className="flex flex-wrap gap-8">
           {[
-            { name: '--bg', color: 'var(--bg)' },
-            { name: '--text', color: 'var(--text)' },
-            { name: '--muted', color: 'var(--muted)' },
-            { name: '--border', color: 'var(--border)' },
-            { name: '--accent', color: 'var(--accent)' },
+            { name: '--bg', label: 'Warm Ivory Base', color: 'var(--bg)' },
+            { name: '--surface', label: 'Surface', color: 'var(--surface)' },
+            { name: '--surface-hover', label: 'Surface Hover', color: 'var(--surface-hover)' },
+            { name: '--text', label: 'Ultra-dark Green', color: 'var(--text)' },
+            { name: '--muted', label: 'Desaturated Green-gray', color: 'var(--muted)' },
+            { name: '--border', label: 'Ivory-brown Border', color: 'var(--border)' },
+            { name: '--border-strong', label: 'Strong Border', color: 'var(--border-strong)' },
+            { name: '--accent', label: 'Emerald Green (Primary)', color: 'var(--accent)' },
+            { name: '--accent-hover', label: 'Darker Emerald', color: 'var(--accent-hover)' },
+            { name: '--secondary', label: 'Vermillion (Accent/Error)', color: 'var(--secondary)' },
+            { name: '--secondary-hover', label: 'Darker Vermillion', color: 'var(--secondary-hover)' },
+            { name: '--success', label: 'Success (Emerald)', color: 'var(--success)' },
+            { name: '--warning', label: 'Warning (Amber)', color: 'var(--warning)' },
           ].map((token) => (
             <div key={token.name} className="flex flex-col items-center">
               <div
                 style={{
                   backgroundColor: token.color,
-                  width: '100px',
-                  height: '100px',
+                  width: '90px',
+                  height: '90px',
                   borderRadius: '50%',
                   border: '1px solid var(--border)',
                   marginBottom: 'var(--space-3)',
                 }}
               />
-              <code style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-label)' }}>
+              <code style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-label)', fontWeight: 600 }}>
                 {token.name}
               </code>
+              <span style={{ fontSize: '11px', color: 'var(--muted)', textAlign: 'center', maxWidth: '100px', marginTop: '2px' }}>
+                {token.label}
+              </span>
             </div>
           ))}
         </div>
@@ -234,9 +247,23 @@ export default function StyleGuide() {
         <div className="flex flex-col" style={{ gap: 'var(--space-8)' }}>
           <div>
             <code style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-label)', color: 'var(--muted)', display: 'block', marginBottom: 'var(--space-4)' }}>
-              &lt;Divider /&gt;
+              &lt;Divider variant=&quot;default&quot; /&gt;
             </code>
             <Divider />
+          </div>
+
+          <div>
+            <code style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-label)', color: 'var(--muted)', display: 'block', marginBottom: 'var(--space-4)' }}>
+              &lt;Divider variant=&quot;hand-drawn&quot; /&gt; (Vermillion Editorial Wave)
+            </code>
+            <Divider variant="hand-drawn" />
+          </div>
+
+          <div>
+            <code style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-label)', color: 'var(--muted)', display: 'block', marginBottom: 'var(--space-4)' }}>
+              &lt;Divider variant=&quot;vermillion&quot; /&gt; (Vermillion Node Rule)
+            </code>
+            <Divider variant="vermillion" />
           </div>
 
           <div>
@@ -259,6 +286,69 @@ export default function StyleGuide() {
               <div className="ui-border-r flex items-center justify-center" style={{ width: '120px', height: '120px', backgroundColor: 'var(--bg)' }}>
                 <Label>.ui-border-r</Label>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Collage Art Components Section */}
+      <section style={{ marginTop: 'var(--space-9)' }}>
+        <h2
+          style={{
+            fontSize: 'var(--text-heading)',
+            fontFamily: 'var(--font-display)',
+            marginBottom: 'var(--space-6)',
+          }}
+        >
+          Collage Art Components
+        </h2>
+
+        <div className="flex flex-col gap-10">
+          <div>
+            <code style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-label)', color: 'var(--muted)', display: 'block', marginBottom: 'var(--space-4)' }}>
+              &lt;CollageFrame tornEdge rotation={-2} borderAccent=&quot;emerald&quot; /&gt;
+            </code>
+            <div className="flex flex-wrap gap-8 items-center">
+              <CollageFrame
+                rotation={-2}
+                tornEdge={true}
+                shadow="md"
+                borderAccent="emerald"
+                className="p-6 max-w-xs"
+              >
+                <Title as="h3">Torn Emerald Frame</Title>
+                <Body className="text-sm text-[color:var(--muted)] mt-2">
+                  Editorial frame with torn paper clip-path and subtle counter-clockwise rotation.
+                </Body>
+              </CollageFrame>
+
+              <CollageFrame
+                rotation={2}
+                tornEdge={true}
+                shadow="lg"
+                borderAccent="vermillion"
+                className="p-6 max-w-xs"
+              >
+                <Title as="h3">Torn Vermillion Frame</Title>
+                <Body className="text-sm text-[color:var(--muted)] mt-2">
+                  Warm Ivory card substrate with vermillion accent border and clockwise rotation.
+                </Body>
+              </CollageFrame>
+            </div>
+          </div>
+
+          <div>
+            <code style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-label)', color: 'var(--muted)', display: 'block', marginBottom: 'var(--space-4)' }}>
+              &lt;CollageShape /&gt; Decorative Abstract Geometries
+            </code>
+            <div className="relative h-48 border border-dashed border-[color:var(--border)] rounded flex items-center justify-center overflow-hidden bg-[color:var(--surface)]">
+              <CollageShape type="circle" color="emerald" size={160} opacity={0.2} style={{ top: '10px', left: '20px' }} />
+              <CollageShape type="slash" color="vermillion" size={180} opacity={0.35} style={{ top: '40px', left: '220px' }} />
+              <CollageShape type="ring" color="emerald" size={120} opacity={0.4} style={{ top: '20px', right: '140px' }} />
+              <CollageShape type="dots" color="vermillion" size={80} opacity={0.4} style={{ bottom: '15px', right: '30px' }} />
+              <span className="relative z-10 font-mono text-sm text-[color:var(--text)] bg-[color:var(--bg)]/80 px-4 py-2 rounded">
+                Layered Astronomical Collage Layer Demo
+              </span>
             </div>
           </div>
         </div>

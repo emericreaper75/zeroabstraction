@@ -22,8 +22,8 @@ export function EditorialLink({
       href={href}
       className={`group inline-flex items-center gap-2 uppercase tracking-wider transition-colors duration-200 min-h-[44px] py-2 ${
         isMuted
-          ? 'text-[color:var(--muted)] hover:text-[color:var(--text)]'
-          : 'text-[color:var(--text)] hover:text-[color:var(--accent)]'
+          ? 'text-[color:var(--text-muted)] hover:text-[color:var(--text)]'
+          : 'text-[color:var(--text)] hover:text-[color:var(--accent-text)]'
       } ${className}`}
       style={{
         fontFamily: 'var(--font-mono)',

@@ -33,7 +33,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   let postRoutes: MetadataRoute.Sitemap = []
   try {
-    const { docs: posts } = await getPosts(100)
+    const { docs: posts } = await getPosts(1000)
     postRoutes = posts
       .filter((post) => Boolean(post.slug))
       .map((post) => ({
@@ -48,7 +48,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   let projectRoutes: MetadataRoute.Sitemap = []
   try {
-    const { docs: projects } = await getProjects(100)
+    const { docs: projects } = await getProjects(1000)
     projectRoutes = projects
       .filter((project) => Boolean(project.slug))
       .map((project) => ({

@@ -28,24 +28,24 @@ export default async function AboutPage() {
       : 'Manoj Amavasya — Researcher';
 
   return (
-    <div className="container-wide pb-32">
+    <div className="container-wide pb-20">
       {/* 1. Header & Researcher Dossier */}
       <Reveal>
         <section
-          className="pt-16 md:pt-24 pb-16 ui-border-b"
-          style={{ marginBottom: 'var(--space-10)' }}
+          className="pt-16 pb-16 ui-border-b relative overflow-hidden"
+          style={{ marginBottom: 'var(--space-6)' }}
         >
-          <div className="flex flex-col gap-4 mb-10">
-            <Label className="text-[color:var(--muted)] tracking-widest">
+          <div className="flex flex-col gap-4 mb-10 relative z-10">
+            <Label className="text-[color:var(--text-muted)] tracking-widest">
               ABOUT ZEROABSTRACTION
             </Label>
             <Display>Researcher</Display>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start relative z-10">
             {/* Left / Photo column */}
             <div className="lg:col-span-4 flex flex-col gap-6">
-              <div className="w-full ui-border overflow-hidden bg-[color:var(--bg)]">
+              <figure className="w-full overflow-hidden rounded-[var(--radius-s)]">
                 <ProjectImage
                   src={profileImgUrl}
                   alt={profileImgAlt}
@@ -54,34 +54,34 @@ export default async function AboutPage() {
                   className="w-full h-auto object-cover"
                   priority
                 />
-              </div>
+              </figure>
 
               {/* Metadata Card */}
               <div className="ui-border p-6 flex flex-col gap-4 bg-[color:var(--bg)]">
-                <Label className="text-[color:var(--muted)] border-b border-[color:var(--border)] pb-2">
+                <Label className="text-[color:var(--text-muted)] border-b border-[color:var(--border)] pb-2">
                   ACADEMIC AFFILIATION
                 </Label>
                 <div className="flex flex-col gap-3">
                   <div className="flex justify-between items-baseline text-sm">
-                    <Label className="text-[color:var(--muted)]">INSTITUTION</Label>
+                    <Label className="text-[color:var(--text-muted)]">INSTITUTION</Label>
                     <span className="font-mono text-sm text-[color:var(--text)]">
                       JNTU Anantapur
                     </span>
                   </div>
                   <div className="flex justify-between items-baseline text-sm">
-                    <Label className="text-[color:var(--muted)]">GRADUATION</Label>
+                    <Label className="text-[color:var(--text-muted)]">GRADUATION</Label>
                     <span className="font-mono text-sm text-[color:var(--text)]">
                       2027
                     </span>
                   </div>
                   <div className="flex justify-between items-baseline text-sm">
-                    <Label className="text-[color:var(--muted)]">LOCATION</Label>
+                    <Label className="text-[color:var(--text-muted)]">LOCATION</Label>
                     <span className="font-mono text-sm text-[color:var(--text)]">
                       India
                     </span>
                   </div>
                   <div className="flex justify-between items-baseline text-sm">
-                    <Label className="text-[color:var(--muted)]">PRIMARY FOCUS</Label>
+                    <Label className="text-[color:var(--text-muted)]">PRIMARY FOCUS</Label>
                     <span className="font-mono text-sm text-right text-[color:var(--text)]">
                       ECE → Physics & Astrophysics
                     </span>
@@ -91,16 +91,16 @@ export default async function AboutPage() {
                 {/* Direct Communications & Network Links */}
                 {(siteSettings?.email || (siteSettings?.social_links && siteSettings.social_links.length > 0)) && (
                   <>
-                    <Label className="text-[color:var(--muted)] border-b border-[color:var(--border)] pt-2 pb-2">
+                    <Label className="text-[color:var(--text-muted)] border-b border-[color:var(--border)] pt-2 pb-2">
                       COMMUNICATIONS &amp; NETWORKS
                     </Label>
                     <div className="flex flex-col gap-3">
                       {siteSettings?.email && (
                         <div className="flex justify-between items-baseline text-sm">
-                          <Label className="text-[color:var(--muted)]">EMAIL</Label>
+                          <Label className="text-[color:var(--text-muted)]">EMAIL</Label>
                           <a
                             href={`mailto:${siteSettings.email}`}
-                            className="font-mono text-sm text-[color:var(--accent)] hover:underline"
+                            className="font-mono text-sm text-[color:var(--accent-text)] hover:underline"
                           >
                             {siteSettings.email}
                           </a>
@@ -110,12 +110,12 @@ export default async function AboutPage() {
                         ?.filter((s) => Boolean(s.url && s.url !== '#'))
                         .map((s, idx) => (
                           <div key={idx} className="flex justify-between items-baseline text-sm">
-                            <Label className="text-[color:var(--muted)]">{s.platform?.toUpperCase()}</Label>
+                            <Label className="text-[color:var(--text-muted)]">{s.platform?.toUpperCase()}</Label>
                             <a
                               href={s.url!}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="font-mono text-sm text-[color:var(--accent)] hover:underline"
+                              className="font-mono text-sm text-[color:var(--accent-text)] hover:underline"
                             >
                               {s.platform} ↗
                             </a>
@@ -139,7 +139,7 @@ export default async function AboutPage() {
                   quantum and scientific computing, and communications, with a long-term goal of pursuing
                   research in Physics and Astrophysics.
                 </p>
-                <p className="text-[color:var(--muted)]">
+                <p className="text-[color:var(--text-muted)]">
                   My academic interests connect engineering with scientific discovery. I view
                   Electronics and Communication Engineering as the foundational layer that enables work in
                   computational physics, astrophysics, signal processing, and future applications of
@@ -150,19 +150,19 @@ export default async function AboutPage() {
 
               {/* Trajectory / Core Tags */}
               <div className="flex flex-wrap items-center gap-3 pt-4">
-                <span className="px-3 py-1 text-xs font-mono ui-border text-[color:var(--muted)]">
+                <span className="px-3 py-1 text-xs font-mono ui-border text-[color:var(--text-muted)]">
                   PHYSICS
                 </span>
-                <span className="px-3 py-1 text-xs font-mono ui-border text-[color:var(--muted)]">
+                <span className="px-3 py-1 text-xs font-mono ui-border text-[color:var(--text-muted)]">
                   ASTROPHYSICS
                 </span>
-                <span className="px-3 py-1 text-xs font-mono ui-border text-[color:var(--muted)]">
+                <span className="px-3 py-1 text-xs font-mono ui-border text-[color:var(--text-muted)]">
                   ELECTRONICS & SIGNAL PROCESSING
                 </span>
-                <span className="px-3 py-1 text-xs font-mono ui-border text-[color:var(--muted)]">
+                <span className="px-3 py-1 text-xs font-mono ui-border text-[color:var(--text-muted)]">
                   SCIENTIFIC COMPUTING
                 </span>
-                <span className="px-3 py-1 text-xs font-mono ui-border text-[color:var(--muted)]">
+                <span className="px-3 py-1 text-xs font-mono ui-border text-[color:var(--text-muted)]">
                   QUANTUM INFORMATION
                 </span>
               </div>
@@ -179,7 +179,7 @@ export default async function AboutPage() {
               <RichTextRenderer data={profile.story} />
             </div>
           ) : (
-            <div className="text-[color:var(--muted)]">
+            <div className="text-[color:var(--text-muted)]">
               More about the research journey and toolkit will be published here.
             </div>
           )}

@@ -1,6 +1,6 @@
 {
   "extends": ["next/core-web-vitals", "next/typescript", "prettier"],
-  "ignorePatterns": ["src/migrations/**", "src/payload-types.ts", "src/importMap.js"],
+  "ignorePatterns": ["src/migrations/**", "src/payload-types.ts", "src/importMap.js", "scratch/**", ".next/**"],
   "rules": {
     "react/no-unescaped-entities": "off",
     "@typescript-eslint/no-explicit-any": "warn",

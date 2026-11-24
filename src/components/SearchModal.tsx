@@ -8,11 +8,12 @@ import type { SearchableItem } from '@/lib/content';
 interface SearchModalProps {
   isOpen: boolean;
   onClose: () => void;
-  items: SearchableItem[];
 }
 
-export function SearchModal({ isOpen, onClose, items }: SearchModalProps) {
+export function SearchModal({ isOpen, onClose }: SearchModalProps) {
   const [query, setQuery] = useState('');
+  const [items, setItems] = useState<SearchableItem[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const previousActiveElement = useRef<HTMLElement | null>(null);
@@ -78,6 +79,28 @@ export function SearchModal({ isOpen, onClose, items }: SearchModalProps) {
     };
   }, [isOpen, onClose]);
 
+  useEffect(() => {
+    if (!isOpen || items.length > 0 || isLoading) return;
+
+    let cancelled = false;
+    setIsLoading(true);
+    fetch('/api/search-index')
+      .then((response) => (response.ok ? response.json() : []))
+      .then((data: SearchableItem[]) => {
+        if (!cancelled) setItems(Array.isArray(data) ? data : []);
+      })
+      .catch(() => {
+        if (!cancelled) setItems([]);
+      })
+      .finally(() => {
+        if (!cancelled) setIsLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [isOpen, items.length, isLoading]);
+
   // Client-side filtering across title, excerpt, and topics
   const filteredResults = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -120,7 +143,7 @@ export function SearchModal({ isOpen, onClose, items }: SearchModalProps) {
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="text-[color:var(--muted)] flex-shrink-0"
+            className="text-[color:var(--text-muted)] flex-shrink-0"
             aria-hidden="true"
           >
             <circle cx="11" cy="11" r="8" />
@@ -133,7 +156,7 @@ export function SearchModal({ isOpen, onClose, items }: SearchModalProps) {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search writing, projects, and topics..."
-            className="w-full bg-transparent text-lg md:text-xl text-[color:var(--text)] placeholder:text-[color:var(--muted)] outline-none font-sans"
+            className="w-full bg-transparent text-lg md:text-xl text-[color:var(--text)] placeholder:text-[color:var(--text-muted)] outline-none font-sans"
             aria-label="Search query"
           />
 
@@ -141,7 +164,7 @@ export function SearchModal({ isOpen, onClose, items }: SearchModalProps) {
             <button
               type="button"
               onClick={() => setQuery('')}
-              className="text-xs text-[color:var(--muted)] hover:text-[color:var(--text)] transition-colors p-1"
+              className="text-xs text-[color:var(--text-muted)] hover:text-[color:var(--text)] transition-colors p-1"
               aria-label="Clear search input"
             >
               CLEAR
@@ -151,7 +174,7 @@ export function SearchModal({ isOpen, onClose, items }: SearchModalProps) {
           <button
             type="button"
             onClick={onClose}
-            className="text-xs font-mono text-[color:var(--muted)] hover:text-[color:var(--text)] border border-[color:var(--border)] px-2 py-1 rounded transition-colors"
+            className="text-xs font-mono text-[color:var(--text-muted)] hover:text-[color:var(--text)] border border-[color:var(--border)] px-2 py-1 rounded transition-colors"
             aria-label="Close search modal"
           >
             ESC
@@ -162,18 +185,24 @@ export function SearchModal({ isOpen, onClose, items }: SearchModalProps) {
         <div className="overflow-y-auto px-6 py-6 flex flex-col">
           {!query.trim() && (
             <div className="py-8 text-center flex flex-col items-center gap-2">
-              <Label className="text-[color:var(--muted)] font-mono text-xs uppercase tracking-wider">
+              <Label className="text-[color:var(--text-muted)] font-mono text-xs uppercase tracking-wider">
                 Type to search across titles, summaries, or topics
               </Label>
-              <span className="text-xs text-[color:var(--muted)] opacity-70">
+              <span className="text-xs text-[color:var(--text-muted)] opacity-70">
                 E.g. &ldquo;astrophysics&rdquo;, &ldquo;quantum&rdquo;, &ldquo;physics&rdquo;
               </span>
             </div>
           )}
 
-          {query.trim() && filteredResults.length === 0 && (
+          {query.trim() && isLoading && (
             <div className="py-8 text-center">
-              <Body className="text-[color:var(--muted)]">
+              <Body className="text-[color:var(--text-muted)]">Loading searchable content…</Body>
+            </div>
+          )}
+
+          {query.trim() && !isLoading && filteredResults.length === 0 && (
+            <div className="py-8 text-center">
+              <Body className="text-[color:var(--text-muted)]">
                 No matching content found for &ldquo;{query.trim()}&rdquo;.
               </Body>
             </div>
@@ -182,7 +211,7 @@ export function SearchModal({ isOpen, onClose, items }: SearchModalProps) {
           {query.trim() && filteredResults.length > 0 && (
             <div className="flex flex-col">
               <div className="mb-4 pb-2 border-b border-[color:var(--border)] flex items-center justify-between">
-                <Label className="text-[color:var(--muted)] text-xs font-mono uppercase">
+                <Label className="text-[color:var(--text-muted)] text-xs font-mono uppercase">
                   {filteredResults.length} {filteredResults.length === 1 ? 'Result' : 'Results'}
                 </Label>
               </div>
@@ -197,8 +226,8 @@ export function SearchModal({ isOpen, onClose, items }: SearchModalProps) {
                       className={`group py-4 px-2 -mx-2 rounded transition-colors hover:bg-[color:var(--border)]/30 ${idx > 0 ? 'border-t border-[color:var(--border)]' : ''}`}
                     >
                       {/* Meta line */}
-                      <div className="flex items-center gap-2.5 text-xs font-mono text-[color:var(--muted)] mb-1 flex-wrap">
-                        <span className="uppercase text-[color:var(--accent-ink)] font-medium tracking-wider">
+                      <div className="flex items-center gap-2.5 text-xs font-mono text-[color:var(--text-muted)] mb-1 flex-wrap">
+                        <span className="uppercase text-[color:var(--accent-text)] font-medium tracking-wider">
                           {item.type === 'post' ? 'Writing' : 'Project'}
                         </span>
                         {item.date && <span>• {item.date}</span>}
@@ -221,7 +250,7 @@ export function SearchModal({ isOpen, onClose, items }: SearchModalProps) {
                         <Link
                           href={href}
                           onClick={onClose}
-                          className="text-[color:var(--text)] group-hover:text-[color:var(--accent)] transition-colors inline-block"
+                          className="text-[color:var(--text)] group-hover:text-[color:var(--accent-text)] transition-colors inline-block"
                         >
                           {item.title}
                         </Link>
@@ -230,7 +259,7 @@ export function SearchModal({ isOpen, onClose, items }: SearchModalProps) {
                       {/* Excerpt */}
                       {item.excerpt && (
                         <Body
-                          className="text-xs md:text-sm text-[color:var(--muted)] line-clamp-2"
+                          className="text-xs md:text-sm text-[color:var(--text-muted)] line-clamp-2"
                           style={{ lineHeight: '1.6' }}
                         >
                           {item.excerpt}

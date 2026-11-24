@@ -22,29 +22,40 @@ export default async function SearchPage(
         
         {query && results.length === 0 && (
           <div className="py-8">
-            <Body className="text-[color:var(--muted)]">No results found for &quot;{query}&quot;.</Body>
+            <Body className="text-[color:var(--text-muted)]">No results found for &quot;{query}&quot;.</Body>
           </div>
         )}
 
         {results.length > 0 && (
-          <div className="flex flex-col" style={{ gap: 'var(--space-8)' }}>
-            {results.map((result) => (
-              <div key={`${result.type}-${result.id}`} className="ui-border-t" style={{ paddingTop: 'var(--space-4)' }}>
-                <Label className="text-[color:var(--muted)] mb-2 inline-block uppercase">{result.type}</Label>
-                <Title as="h3">
-                  <Link 
-                    href={result.url} 
-                    className="hover:text-[color:var(--accent)] transition-colors" 
-                    style={{ textDecoration: 'none' }}
-                  >
-                    {result.title}
-                  </Link>
-                </Title>
-                <Body className="text-[color:var(--muted)] mt-2">
-                  {result.excerpt}
-                </Body>
-              </div>
-            ))}
+          <div className="flex flex-col mt-8" style={{ gap: 'var(--space-6)' }}>
+            {results.map((result, index) => {
+              const isStaggered = index % 2 !== 0;
+              return (
+                <div
+                  key={`${result.type}-${result.id}`}
+                  className={`ui-border-t group p-4 -mx-4 transition-all duration-200 hover:bg-[color:var(--border)]/15 rounded-sm ${
+                    isStaggered ? 'md:translate-x-3' : ''
+                  }`}
+                  style={{ paddingTop: 'var(--space-4)' }}
+                >
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[color:var(--accent)] inline-block" />
+                    <Label className="text-[color:var(--accent-text)] font-semibold uppercase">{result.type}</Label>
+                  </div>
+                  <Title as="h3">
+                    <Link 
+                      href={result.url} 
+                      className="no-underline hover:text-[color:var(--accent-text)] transition-colors group-hover:underline decoration-[color:var(--accent-border)] decoration-1 underline-offset-4" 
+                    >
+                      {result.title}
+                    </Link>
+                  </Title>
+                  <Body className="text-[color:var(--text-muted)] mt-2">
+                    {result.excerpt}
+                  </Body>
+                </div>
+              );
+            })}
           </div>
         )}
       </Reveal>

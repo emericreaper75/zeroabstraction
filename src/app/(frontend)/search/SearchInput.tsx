@@ -24,13 +24,13 @@ export function SearchInput() {
 
   return (
     <div className="w-full max-w-xl mb-12">
-      <Label className="text-[color:var(--muted)] mb-2 block">SEARCH</Label>
+      <Label className="text-[color:var(--text-muted)] mb-2 block">SEARCH</Label>
       <input
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Search projects and posts..."
-        className="w-full bg-transparent border-b border-[color:var(--border)] py-4 text-xl md:text-2xl outline-none focus:border-[color:var(--accent)] transition-colors placeholder:text-[color:var(--muted)]"
+        className="w-full bg-transparent border-b border-[color:var(--border)] py-4 text-xl md:text-2xl outline-none focus:border-[color:var(--accent)] transition-colors placeholder:text-[color:var(--text-muted)]"
         autoFocus
       />
     </div>
