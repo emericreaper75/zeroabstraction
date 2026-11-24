@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { Display, Heading, Title, Label, Body } from '@/components/typography';
 import { ProjectImage } from '@/components/ProjectImage';
 import { EditorialLink } from '@/components/EditorialLink';
@@ -22,24 +21,12 @@ export default async function Home() {
       <SampleContentBadge />
       {/* Hero Section — 88svh Runtime Theme with Glass Top Bar (Doc 08) */}
       <section
-        className="relative min-h-[88svh] w-full flex flex-col justify-end overflow-hidden bg-[color:var(--inverse-bg)]"
+        className="relative min-h-[88svh] w-full flex flex-col justify-end overflow-hidden bg-[color:var(--bg)]"
         style={{
-          backgroundImage: 'var(--hero-scrim), linear-gradient(180deg, var(--inverse-bg) 0%, var(--inverse-bg) 100%)',
+          backgroundImage: 'var(--hero-scrim), linear-gradient(180deg, var(--bg-subtle) 0%, var(--bg) 100%)',
         }}
         aria-labelledby="home-title"
       >
-        {/* Layer 1: Media — real night-sky/observatory photograph via next/image */}
-        <div className="absolute inset-0 pointer-events-none z-0">
-          <Image
-            src="/images/hero-observatory.webp"
-            alt="Astronomical observatory under a starry night sky"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-center"
-          />
-        </div>
-
         {/* Layer 2: Scrim overlay */}
         <div
           className="absolute inset-0 pointer-events-none z-[1]"
@@ -176,7 +163,7 @@ export default async function Home() {
                   >
                     <span
                       className={`w-2.5 h-2.5 rounded-full mb-3 ${
-                        isEven ? 'bg-[color:var(--accent)]' : 'bg-[color:var(--accent-border)]'
+                        isEven ? 'bg-[color:var(--accent)]' : 'bg-[color:var(--secondary)]'
                       }`}
                     />
                     <Title as="h3" className="text-left">{entry.title}</Title>

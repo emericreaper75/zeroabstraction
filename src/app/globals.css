@@ -14,7 +14,7 @@ html {
 /* Glass top bar fallbacks */
 @supports not (backdrop-filter: blur(1px)) {
   .hero-glass-bar {
-    background-color: var(--inverse-bg) !important;
+    background-color: var(--surface) !important;
   }
   .compact-glass-bar {
     background-color: var(--bg) !important;
@@ -22,13 +22,35 @@ html {
 }
 @media (prefers-reduced-transparency: reduce) {
   .hero-glass-bar {
-    background-color: var(--inverse-bg) !important;
+    background-color: var(--surface) !important;
     backdrop-filter: none !important;
   }
   .compact-glass-bar {
     background-color: var(--bg) !important;
     backdrop-filter: none !important;
   }
+}
+
+/* Global Selection Context */
+::selection {
+  background-color: var(--accent-subtle);
+  color: var(--accent-text);
+}
+
+/* Global Scrollbar Context */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
 }
 
 html[data-theme='dark'] {

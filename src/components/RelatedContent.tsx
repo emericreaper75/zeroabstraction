@@ -4,7 +4,7 @@ import type { RelatedItem } from '@/lib/content';
 export function RelatedContent({ items, className = '' }: { items: RelatedItem[]; className?: string }) {
   if (!items.length) return null;
   return (
-    <section className={`container-reading ${className}`} style={{ marginTop: 'var(--space-7)', paddingBottom: 'var(--space-7)' }} aria-label="Related content">
+    <section className={`container-reading ${className}`} style={{ marginTop: 'var(--space-6)', paddingBottom: 'var(--space-6)' }} aria-label="Related content">
       <h2 className="font-mono text-[var(--text-label)] tracking-[var(--tracking-label)] text-[color:var(--text-muted)]">RELATED</h2>
       <div className="mt-5 border-t border-[color:var(--border)]">
         {items.map((item) => {

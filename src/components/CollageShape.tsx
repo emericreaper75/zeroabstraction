@@ -1,7 +1,7 @@
 import React from 'react';
 
 export type ShapeType = 'circle' | 'slash' | 'ring' | 'wedge' | 'dots';
-export type ShapeColor = 'emerald' | 'vermillion' | 'muted';
+export type ShapeColor = 'primary' | 'secondary' | 'emerald' | 'vermillion' | 'muted';
 
 export interface CollageShapeProps {
   type: ShapeType;
@@ -21,10 +21,10 @@ export function CollageShape({
   style = {},
 }: CollageShapeProps) {
   const colorHex =
-    color === 'emerald'
+    color === 'primary' || color === 'emerald'
       ? 'var(--accent)'
-      : color === 'vermillion'
-      ? 'var(--accent-border)'
+      : color === 'secondary' || color === 'vermillion'
+      ? 'var(--secondary)'
       : 'var(--text-muted)';
 
   const baseStyle: React.CSSProperties = {

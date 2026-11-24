@@ -58,10 +58,20 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   return (
     <>
       <SampleContentBadge />
-      <article style={{ paddingBottom: 'var(--space-8)' }}>
+      <article style={{ paddingBottom: 'var(--space-6)' }}>
         {/* Header - Reading Width */}
-        <header className="container-reading" style={{ paddingTop: 'var(--space-8)' }}>
-          <div className="flex w-full flex-col max-w-[56rem]">
+        <header className="container-reading" style={{ paddingTop: 'var(--space-6)' }}>
+          <div className="flex w-full flex-col">
+            {/* Back Navigation */}
+            <div className="mb-4">
+              <Link
+                href="/projects"
+                className="inline-flex items-center gap-1.5 font-mono text-[var(--text-label)] uppercase tracking-[var(--tracking-label)] text-[color:var(--text-muted)] hover:text-[color:var(--accent-text)] transition-colors"
+              >
+                <span aria-hidden="true">&larr;</span> Back to Projects
+              </Link>
+            </div>
+
             {/* Meta row */}
             <div
               className="flex items-center flex-wrap font-mono uppercase text-[color:var(--text-muted)]"
@@ -78,16 +88,23 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
                 return (
                   <React.Fragment key={typeof t === 'object' ? t.id || i : i}>
                     {topicSlug ? (
-                      <Link href={`/projects?topic=${encodeURIComponent(topicSlug)}`} className="text-[color:var(--accent-text)] hover:underline inline-flex items-center py-1">
+                      <Link
+                        href={`/projects?topic=${encodeURIComponent(topicSlug)}`}
+                        className="bg-[color:var(--accent-subtle)] text-[color:var(--accent-text)] border border-[color:var(--accent-border)]/40 px-2.5 py-0.5 rounded-full text-xs font-mono font-medium hover:opacity-80 transition-opacity inline-flex items-center"
+                      >
                         {name.toUpperCase()}
                       </Link>
                     ) : (
-                      <span className="text-[color:var(--accent-text)] inline-flex items-center py-1">{name.toUpperCase()}</span>
+                      <span className="bg-[color:var(--accent-subtle)] text-[color:var(--accent-text)] border border-[color:var(--accent-border)]/40 px-2.5 py-0.5 rounded-full text-xs font-mono font-medium inline-flex items-center">
+                        {name.toUpperCase()}
+                      </span>
                     )}
-                    <span className="text-[color:var(--text-muted)] opacity-60">•</span>
                   </React.Fragment>
                 );
               })}
+              {project.topics && project.topics.length > 0 && (
+                <span className="text-[color:var(--text-muted)] opacity-60">•</span>
+              )}
               <span className="text-[color:var(--text-muted)] inline-flex items-center py-1">{project.year || new Date().getFullYear()}</span>
               <span className="text-[color:var(--text-muted)] opacity-60">•</span>
               <span className="text-[color:var(--accent-text)] font-semibold uppercase inline-flex items-center py-1">{project.status?.replace('_', ' ') || 'PROJECT'}</span>
@@ -100,21 +117,21 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
                 fontSize: 'var(--text-title)',
                 lineHeight: 'var(--lh-display)',
                 fontFamily: 'var(--font-display)',
-                marginTop: 'var(--space-4)',
+                marginTop: 'var(--space-3)',
               }}
             >
               {project.title}
             </h1>
 
             {/* Divider: 1px --border hairline */}
-            <div className="mt-[var(--space-6)] mb-[var(--space-6)] border-t border-[color:var(--border)]" />
+            <div className="my-5 border-t border-[color:var(--border)]" />
           </div>
         </header>
 
         {/* Hero Image - Content Width */}
         {imageUrl && (
-          <div className="container-wide" style={{ marginBottom: 'var(--space-8)' }}>
-            <figure className="w-full overflow-hidden rounded-[var(--radius-s)]">
+          <div className="container-wide" style={{ marginBottom: 'var(--space-6)' }}>
+            <figure className="w-full overflow-hidden rounded-[var(--radius-s)] border border-[color:var(--border)] shadow-sm">
               <ProjectImage 
                 transitionName={`project-hero-${slug}`}
                 src={imageUrl} 
@@ -130,11 +147,11 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
         )}
 
         {/* Content - Reading Width */}
-        <div className="container-reading flex flex-col" style={{ gap: 'var(--space-6)' }}>
+        <div className="container-reading flex flex-col" style={{ gap: 'var(--space-5)' }}>
           {project.summary && (
-            <section className="flex flex-col" style={{ gap: 'var(--space-3)' }}>
+            <section className="flex flex-col border-l-2 border-[color:var(--accent)] bg-[color:var(--bg-subtle)]/60 p-6 rounded-r-[var(--radius-s)]" style={{ gap: 'var(--space-3)' }}>
               <Title as="h2">Summary</Title>
-              <Body className="text-[color:var(--text-muted)]" style={{ fontSize: '1.125rem', lineHeight: '1.8' }}>
+              <Body className="text-[color:var(--text)] leading-relaxed" style={{ fontSize: '1.125rem', lineHeight: '1.8' }}>
                 {project.summary}
               </Body>
             </section>
@@ -150,13 +167,13 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
         {/* Image Gallery - Content Width */}
         {project.gallery && project.gallery.length > 0 && (
-          <div className="container-wide" style={{ marginBlock: 'var(--space-8)' }}>
-            <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: 'var(--space-6)' }}>
+          <div className="container-wide" style={{ marginBlock: 'var(--space-6)' }}>
+            <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: 'var(--space-5)' }}>
               {project.gallery.map((item: any, i: number) => {
                 const imgUrl = typeof item.image === 'object' && item.image?.url ? item.image.url : '/placeholder.svg';
                 const imgAlt = typeof item.image === 'object' && item.image?.alt_text ? item.image.alt_text : `Gallery ${i+1}`;
                 return (
-                  <figure key={i} className="overflow-hidden rounded-[var(--radius-s)]">
+                  <figure key={i} className="overflow-hidden rounded-[var(--radius-s)] border border-[color:var(--border)] shadow-sm hover:border-[color:var(--accent-border)] transition-colors">
                     <ProjectImage src={imgUrl} alt={imgAlt} width={800} height={600} className="w-full h-auto aspect-video object-cover" />
                   </figure>
                 );
@@ -166,14 +183,17 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
         )}
 
         {/* More Content - Reading Width */}
-        <div className="container-reading flex flex-col" style={{ gap: 'var(--space-6)' }}>
+        <div className="container-reading flex flex-col" style={{ gap: 'var(--space-5)' }}>
           {/* Technologies Used */}
           {project.technologies && project.technologies.length > 0 && (
-            <section className="flex flex-col" style={{ gap: 'var(--space-4)' }}>
+            <section className="flex flex-col" style={{ gap: 'var(--space-3)' }}>
               <Title as="h2">Technologies Used</Title>
               <div className="flex flex-wrap gap-2">
                 {project.technologies.map((tech: any, i: number) => (
-                  <span key={i} className="font-mono text-[var(--text-ui-sm)] text-[color:var(--text-muted)] border border-[color:var(--border)] px-3 py-1 rounded-[var(--radius-s)]">
+                  <span
+                    key={i}
+                    className="font-mono text-[var(--text-ui-sm)] bg-[color:var(--surface)] text-[color:var(--text)] border border-[color:var(--border)] hover:border-[color:var(--accent)] hover:text-[color:var(--accent-text)] transition-colors px-3 py-1.5 rounded-[var(--radius-s)] shadow-sm"
+                  >
                     {tech.name.toUpperCase()}
                   </span>
                 ))}
@@ -190,7 +210,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
           {/* External Links */}
           {project.links && project.links.length > 0 && (
-            <section className="flex flex-col" style={{ gap: 'var(--space-4)' }}>
+            <section className="flex flex-col" style={{ gap: 'var(--space-3)' }}>
               <Title as="h2">External Links</Title>
               <div className="flex flex-col items-start gap-2">
                 {project.links.map((link: any, i: number) => (
@@ -205,19 +225,28 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
         {/* End Matter: Topic Chips */}
         {project.topics && project.topics.length > 0 && (
-          <div className="container-reading" style={{ marginTop: 'var(--space-8)' }}>
-            <div className="flex items-center flex-wrap gap-4 font-mono text-[var(--text-label)] uppercase tracking-[var(--tracking-label)] pt-8 border-t border-[color:var(--border)]">
-              <span className="text-[color:var(--text-muted)] font-medium">TOPICS</span>
+          <div className="container-reading" style={{ marginTop: 'var(--space-6)' }}>
+            <div className="flex items-center flex-wrap gap-2.5 font-mono text-[var(--text-label)] uppercase tracking-[var(--tracking-label)] pt-6 border-t border-[color:var(--border)]">
+              <span className="text-[color:var(--text-muted)] font-medium mr-2">TOPICS</span>
               {project.topics.map((t: any, i: number) => {
                 const name = typeof t === 'object' ? t?.name : t;
                 const topicSlug = typeof t === 'object' ? t?.slug : '';
                 if (!name) return null;
                 return topicSlug ? (
-                  <Link key={t.id || i} href={`/projects?topic=${encodeURIComponent(topicSlug)}`} className="text-[color:var(--accent-text)] hover:underline min-h-[44px] inline-flex items-center">
+                  <Link
+                    key={t.id || i}
+                    href={`/projects?topic=${encodeURIComponent(topicSlug)}`}
+                    className="bg-[color:var(--accent-subtle)] text-[color:var(--accent-text)] border border-[color:var(--accent-border)]/40 hover:bg-[color:var(--accent)] hover:text-[color:var(--on-accent)] transition-all px-3 py-1.5 rounded-full min-h-[36px] inline-flex items-center text-xs font-mono font-medium"
+                  >
                     {name.toUpperCase()}
                   </Link>
                 ) : (
-                  <span key={i} className="text-[color:var(--accent-text)] min-h-[44px] inline-flex items-center">{name.toUpperCase()}</span>
+                  <span
+                    key={i}
+                    className="bg-[color:var(--accent-subtle)] text-[color:var(--accent-text)] border border-[color:var(--accent-border)]/40 px-3 py-1.5 rounded-full min-h-[36px] inline-flex items-center text-xs font-mono font-medium"
+                  >
+                    {name.toUpperCase()}
+                  </span>
                 );
               })}
             </div>

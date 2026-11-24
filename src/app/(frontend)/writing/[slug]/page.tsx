@@ -78,10 +78,20 @@ export default async function WritingPage({ params }: { params: Promise<{ slug: 
   return (
     <>
       <SampleContentBadge />
-      <article style={{ paddingBottom: 'var(--space-8)' }}>
+      <article style={{ paddingBottom: 'var(--space-6)' }}>
         {/* Header Block */}
-        <header className="container-reading" style={{ paddingTop: 'var(--space-8)' }}>
-          <div className="flex w-full flex-col max-w-[56rem]">
+        <header className="container-reading" style={{ paddingTop: 'var(--space-6)' }}>
+          <div className="flex w-full flex-col">
+            {/* Back Navigation */}
+            <div className="mb-4">
+              <Link
+                href="/writing"
+                className="inline-flex items-center gap-1.5 font-mono text-[var(--text-label)] uppercase tracking-[var(--tracking-label)] text-[color:var(--text-muted)] hover:text-[color:var(--accent-text)] transition-colors"
+              >
+                <span aria-hidden="true">&larr;</span> Back to Writing
+              </Link>
+            </div>
+
             {/* Meta row */}
             <div
               className="flex items-center flex-wrap font-mono uppercase text-[color:var(--text-muted)]"
@@ -98,16 +108,23 @@ export default async function WritingPage({ params }: { params: Promise<{ slug: 
                 return (
                   <React.Fragment key={typeof t === 'object' ? t.id || i : i}>
                     {topicSlug ? (
-                      <Link href={`/writing?topic=${encodeURIComponent(topicSlug)}`} className="text-[color:var(--accent-text)] hover:underline inline-flex items-center py-1">
+                      <Link
+                        href={`/writing?topic=${encodeURIComponent(topicSlug)}`}
+                        className="bg-[color:var(--accent-subtle)] text-[color:var(--accent-text)] border border-[color:var(--accent-border)]/40 px-2.5 py-0.5 rounded-full text-xs font-mono font-medium hover:opacity-80 transition-opacity inline-flex items-center"
+                      >
                         {name.toUpperCase()}
                       </Link>
                     ) : (
-                      <span className="text-[color:var(--accent-text)] inline-flex items-center py-1">{name.toUpperCase()}</span>
+                      <span className="bg-[color:var(--accent-subtle)] text-[color:var(--accent-text)] border border-[color:var(--accent-border)]/40 px-2.5 py-0.5 rounded-full text-xs font-mono font-medium inline-flex items-center">
+                        {name.toUpperCase()}
+                      </span>
                     )}
-                    <span className="text-[color:var(--text-muted)] opacity-60">•</span>
                   </React.Fragment>
                 );
               })}
+              {post.topics && post.topics.length > 0 && (
+                <span className="text-[color:var(--text-muted)] opacity-60">•</span>
+              )}
               {post.published_at ? (
                 <time dateTime={post.published_at} className="text-[color:var(--text-muted)] inline-flex items-center py-1">
                   {dateStr}
@@ -126,7 +143,7 @@ export default async function WritingPage({ params }: { params: Promise<{ slug: 
                 fontSize: 'var(--text-title)',
                 lineHeight: 'var(--lh-display)',
                 fontFamily: 'var(--font-display)',
-                marginTop: 'var(--space-4)',
+                marginTop: 'var(--space-3)',
               }}
             >
               {post.title}
@@ -134,27 +151,31 @@ export default async function WritingPage({ params }: { params: Promise<{ slug: 
 
             {/* Dek (excerpt) */}
             {post.excerpt && (
-              <p
-                className="font-sans text-[color:var(--text-muted)] max-w-[var(--measure-reading)] leading-relaxed"
-                style={{
-                  fontSize: 'var(--text-body-lg)',
-                  lineHeight: 'var(--lh-body)',
-                  marginTop: 'var(--space-4)',
-                }}
+              <div
+                className="border-l-2 border-[color:var(--accent)] bg-[color:var(--bg-subtle)]/50 pl-5 py-3 pr-4 rounded-r-[var(--radius-s)]"
+                style={{ marginTop: 'var(--space-4)' }}
               >
-                {post.excerpt}
-              </p>
+                <p
+                  className="font-sans text-[color:var(--text)] italic leading-relaxed"
+                  style={{
+                    fontSize: 'var(--text-body-lg)',
+                    lineHeight: 'var(--lh-body)',
+                  }}
+                >
+                  {post.excerpt}
+                </p>
+              </div>
             )}
 
             {/* Divider: 1px --border hairline */}
-            <div className="mt-[var(--space-6)] mb-[var(--space-6)] border-t border-[color:var(--border)]" />
+            <div className="my-5 border-t border-[color:var(--border)]" />
           </div>
         </header>
 
         {/* Cover Image */}
         {coverImageUrl && (
-          <div className="container-wide" style={{ marginBottom: 'var(--space-8)' }}>
-            <figure className="w-full overflow-hidden rounded-[var(--radius-s)]">
+          <div className="container-wide" style={{ marginBottom: 'var(--space-6)' }}>
+            <figure className="w-full overflow-hidden rounded-[var(--radius-s)] border border-[color:var(--border)] shadow-sm">
               <ProjectImage
                 transitionName={`post-hero-${slug}`}
                 src={coverImageUrl}
@@ -175,7 +196,7 @@ export default async function WritingPage({ params }: { params: Promise<{ slug: 
         )}
 
         {/* Body Content */}
-        <div className="container-reading flex flex-col" style={{ gap: 'var(--space-6)' }}>
+        <div className="container-reading flex flex-col" style={{ gap: 'var(--space-5)' }}>
           {post.content && (
             <RichTextRenderer data={post.content} />
           )}
@@ -183,19 +204,28 @@ export default async function WritingPage({ params }: { params: Promise<{ slug: 
 
         {/* End Matter: Topic Chips */}
         {post.topics && post.topics.length > 0 && (
-          <div className="container-reading" style={{ marginTop: 'var(--space-8)' }}>
-            <div className="flex items-center flex-wrap gap-4 font-mono text-[var(--text-label)] uppercase tracking-[var(--tracking-label)] pt-8 border-t border-[color:var(--border)]">
-              <span className="text-[color:var(--text-muted)] font-medium">TOPICS</span>
+          <div className="container-reading" style={{ marginTop: 'var(--space-6)' }}>
+            <div className="flex items-center flex-wrap gap-2.5 font-mono text-[var(--text-label)] uppercase tracking-[var(--tracking-label)] pt-6 border-t border-[color:var(--border)]">
+              <span className="text-[color:var(--text-muted)] font-medium mr-2">TOPICS</span>
               {post.topics.map((t: any, i: number) => {
                 const name = typeof t === 'object' ? t?.name : t;
                 const topicSlug = typeof t === 'object' ? t?.slug : '';
                 if (!name) return null;
                 return topicSlug ? (
-                  <Link key={t.id || i} href={`/writing?topic=${encodeURIComponent(topicSlug)}`} className="text-[color:var(--accent-text)] hover:underline min-h-[44px] inline-flex items-center">
+                  <Link
+                    key={t.id || i}
+                    href={`/writing?topic=${encodeURIComponent(topicSlug)}`}
+                    className="bg-[color:var(--accent-subtle)] text-[color:var(--accent-text)] border border-[color:var(--accent-border)]/40 hover:bg-[color:var(--accent)] hover:text-[color:var(--on-accent)] transition-all px-3 py-1.5 rounded-full min-h-[36px] inline-flex items-center text-xs font-mono font-medium"
+                  >
                     {name.toUpperCase()}
                   </Link>
                 ) : (
-                  <span key={i} className="text-[color:var(--accent-text)] min-h-[44px] inline-flex items-center">{name.toUpperCase()}</span>
+                  <span
+                    key={i}
+                    className="bg-[color:var(--accent-subtle)] text-[color:var(--accent-text)] border border-[color:var(--accent-border)]/40 px-3 py-1.5 rounded-full min-h-[36px] inline-flex items-center text-xs font-mono font-medium"
+                  >
+                    {name.toUpperCase()}
+                  </span>
                 );
               })}
             </div>

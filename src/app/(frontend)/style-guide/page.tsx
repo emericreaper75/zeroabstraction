@@ -50,23 +50,23 @@ export default function StyleGuide() {
             marginBottom: 'var(--space-6)',
           }}
         >
-          Core Palette (Warm Ivory, Emerald Green & Vermillion)
+          Core Palette (Palette 01 Warm Sand Light / Palette 03 Indigo Dark)
         </h2>
         <div className="flex flex-wrap gap-8">
           {[
-            { name: '--bg', label: 'Warm Ivory Base', color: 'var(--bg)' },
+            { name: '--bg', label: 'Base Canvas', color: 'var(--bg)' },
             { name: '--surface', label: 'Surface', color: 'var(--surface)' },
             { name: '--surface-hover', label: 'Surface Hover', color: 'var(--surface-hover)' },
-            { name: '--text', label: 'Ultra-dark Green', color: 'var(--text)' },
-            { name: '--muted', label: 'Desaturated Green-gray', color: 'var(--muted)' },
-            { name: '--border', label: 'Ivory-brown Border', color: 'var(--border)' },
-            { name: '--border-strong', label: 'Strong Border', color: 'var(--border-strong)' },
-            { name: '--accent', label: 'Emerald Green (Primary)', color: 'var(--accent)' },
-            { name: '--accent-hover', label: 'Darker Emerald', color: 'var(--accent-hover)' },
-            { name: '--secondary', label: 'Vermillion (Accent/Error)', color: 'var(--secondary)' },
-            { name: '--secondary-hover', label: 'Darker Vermillion', color: 'var(--secondary-hover)' },
-            { name: '--success', label: 'Success (Emerald)', color: 'var(--success)' },
-            { name: '--warning', label: 'Warning (Amber)', color: 'var(--warning)' },
+            { name: '--text', label: 'Text / Heading', color: 'var(--text)' },
+            { name: '--muted', label: 'Muted Text', color: 'var(--muted)' },
+            { name: '--border', label: 'Divider / Border', color: 'var(--border)' },
+            { name: '--border-strong', label: 'Outline / Strong', color: 'var(--border-strong)' },
+            { name: '--accent', label: 'Primary Accent', color: 'var(--accent)' },
+            { name: '--accent-hover', label: 'Accent Hover', color: 'var(--accent-hover)' },
+            { name: '--secondary', label: 'Secondary Accent', color: 'var(--secondary)' },
+            { name: '--secondary-hover', label: 'Secondary Hover', color: 'var(--secondary-hover)' },
+            { name: '--success', label: 'Success', color: 'var(--success)' },
+            { name: '--warning', label: 'Warning', color: 'var(--warning)' },
           ].map((token) => (
             <div key={token.name} className="flex flex-col items-center">
               <div

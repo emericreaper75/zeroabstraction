@@ -42,7 +42,7 @@ export function CollageFrame({
     borderAccent === 'emerald'
       ? 'border border-[color:var(--accent)] ring-1 ring-[color:var(--accent)]/30'
       : borderAccent === 'vermillion'
-      ? 'border border-[color:var(--accent-border)] ring-1 ring-[color:var(--accent-border)]/30'
+      ? 'border border-[color:var(--secondary)] ring-1 ring-[color:var(--secondary)]/30'
       : borderAccent === 'default'
       ? 'border border-[color:var(--border)]'
       : '';

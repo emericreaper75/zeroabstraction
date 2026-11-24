@@ -41,6 +41,11 @@ function applyThemeToDOM(resolved: ResolvedTheme) {
   const root = document.documentElement;
   root.setAttribute('data-theme', resolved);
   root.style.colorScheme = resolved;
+  if (resolved === 'dark') {
+    root.classList.add('dark');
+  } else {
+    root.classList.remove('dark');
+  }
 }
 
 export function ThemeProvider({ children, defaultTheme = 'system' }: ThemeProviderProps) {

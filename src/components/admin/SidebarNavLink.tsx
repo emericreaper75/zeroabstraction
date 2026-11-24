@@ -20,12 +20,12 @@ export function SidebarNavLink({ href, icon, label, badge }: SidebarNavLinkProps
       href={href}
       className={`flex items-center justify-between py-1.5 pr-2.5 transition-colors font-label-md pl-2.5 group ${
         isActive
-          ? 'bg-[color:var(--sidebar-active-bg)] text-[color:var(--sidebar-fg)] border-l-2 border-[color:var(--sidebar-accent)] font-medium shadow-xs'
-          : 'text-[color:var(--sidebar-fg-muted)] hover:bg-[color:var(--sidebar-active-bg)] hover:text-[color:var(--sidebar-fg)]'
+          ? 'bg-white text-primary border-l-2 border-primary font-medium shadow-xs'
+          : 'text-ink-secondary hover:bg-surface-container-high hover:text-on-surface'
       }`}
     >
       <div className="flex items-center gap-2.5">
-        <span className={`material-symbols-outlined text-[17px] ${isActive ? 'text-[color:var(--sidebar-accent)]' : 'text-[color:var(--sidebar-fg-muted)] group-hover:text-[color:var(--sidebar-accent)]'}`}>
+        <span className={`material-symbols-outlined text-[17px] ${isActive ? 'text-primary' : 'text-ink-muted group-hover:text-primary'}`}>
           {icon}
         </span>
         <span>{label}</span>

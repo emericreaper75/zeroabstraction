@@ -27,52 +27,52 @@ export default async function UsersCollectionPage() {
       {/* Users Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {result.docs.map((user: any) => (
-          <div key={user.id} className="border border-[color:var(--border)] bg-[color:var(--bg-subtle)] shadow-xs rounded overflow-hidden">
+          <div key={user.id} className="border border-hairline-rule bg-white shadow-xs rounded overflow-hidden">
             {/* User Card Header */}
-            <div className="bg-[color:var(--surface)] px-5 py-4 border-b border-[color:var(--border)] flex items-center gap-4">
-              <div className="w-14 h-14 bg-[color:var(--accent-subtle)] border border-[color:var(--accent-border)] rounded flex items-center justify-center text-[color:var(--accent-text)] font-headline-md text-headline-md font-normal">
+            <div className="bg-paper-surface px-5 py-4 border-b border-hairline-rule flex items-center gap-4">
+              <div className="w-14 h-14 bg-amber-wash border border-primary/30 rounded flex items-center justify-center text-primary font-headline-md text-headline-md font-normal">
                 {user.email?.charAt(0).toUpperCase() || 'U'}
               </div>
               <div>
-                <h3 className="font-headline-sm text-headline-sm text-[color:var(--text)] font-medium">{user.email?.split('@')[0] || 'User'}</h3>
-                <span className="font-label-sm text-label-sm text-[color:var(--accent-text)] uppercase tracking-widest">SUPERADMIN // CHIEF OBSERVER</span>
+                <h3 className="font-headline-sm text-headline-sm text-on-surface font-medium">{user.email?.split('@')[0] || 'User'}</h3>
+                <span className="font-label-sm text-label-sm text-accent-ochre uppercase tracking-widest">SUPERADMIN // CHIEF OBSERVER</span>
               </div>
             </div>
             {/* User Details */}
             <div className="p-5 space-y-4">
-              <div className="space-y-2 text-label-sm font-label-sm text-[color:var(--text-muted)]">
-                <div className="flex justify-between py-1 border-b border-[color:var(--border)]">
+              <div className="space-y-2 text-label-sm font-label-sm text-ink-muted">
+                <div className="flex justify-between py-1 border-b border-hairline-subtle">
                   <span>Email</span>
-                  <span className="text-[color:var(--text)] font-medium font-mono">{user.email}</span>
+                  <span className="text-on-surface font-medium font-mono">{user.email}</span>
                 </div>
-                <div className="flex justify-between py-1 border-b border-[color:var(--border)]">
+                <div className="flex justify-between py-1 border-b border-hairline-subtle">
                   <span>Role</span>
-                  <span className="text-[color:var(--accent-text)] font-medium">Administrator</span>
+                  <span className="text-primary font-medium">Administrator</span>
                 </div>
-                <div className="flex justify-between py-1 border-b border-[color:var(--border)]">
+                <div className="flex justify-between py-1 border-b border-hairline-subtle">
                   <span>Created</span>
-                  <span className="text-[color:var(--text)]">{new Date(user.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                  <span className="text-on-surface">{new Date(user.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                 </div>
-                <div className="flex justify-between py-1 border-b border-[color:var(--border)]">
+                <div className="flex justify-between py-1 border-b border-hairline-subtle">
                   <span>Last Login</span>
-                  <span className="text-[color:var(--text)]">{user.updatedAt ? new Date(user.updatedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—'}</span>
+                  <span className="text-on-surface">{user.updatedAt ? new Date(user.updatedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—'}</span>
                 </div>
                 <div className="flex justify-between py-1">
                   <span>PG Connection</span>
-                  <span className="flex items-center gap-1 text-[color:var(--success)] font-medium">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[color:var(--success)]" />
+                  <span className="flex items-center gap-1 text-emerald-700 font-medium">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
                     Active
                   </span>
                 </div>
               </div>
 
               {/* Single-Owner Security Policy */}
-              <div className="pt-3 border-t border-[color:var(--border)] flex items-center justify-between text-[color:var(--text-muted)]">
+              <div className="pt-3 border-t border-hairline-rule flex items-center justify-between text-ink-muted">
                 <span className="font-label-sm text-label-sm uppercase tracking-wider flex items-center gap-1.5">
-                  <span className="material-symbols-outlined text-[15px] text-[color:var(--warning)]">lock</span>
+                  <span className="material-symbols-outlined text-[15px] text-amber-700">lock</span>
                   Single-Owner Enforced
                 </span>
-                <span className="font-mono text-xs text-[color:var(--text)] bg-[color:var(--surface)] px-2 py-0.5 rounded">
+                <span className="font-mono text-xs text-ink-secondary bg-surface-container-low px-2 py-0.5 rounded">
                   V1 Single Principal
                 </span>
               </div>

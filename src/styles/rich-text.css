@@ -51,7 +51,7 @@
   font-size: var(--text-h2);
   line-height: var(--lh-heading);
   font-weight: 500;
-  margin-top: var(--space-6);
+  margin-top: var(--space-5);
 }
 .rich-text h3 {
   font-size: var(--text-h3);
@@ -121,12 +121,18 @@
    Blockquotes
    -------------------------------------------------------------------------- */
 .rich-text blockquote {
-  border-left: 2px solid var(--accent-border);
-  padding-left: 1.5em;
+  border-left: 3px solid var(--accent);
+  background: color-mix(in srgb, var(--accent-subtle) 25%, transparent);
+  padding: var(--space-3) var(--space-4);
   margin-inline: 0;
-  margin-block: 2em;
-  color: var(--text-muted);
+  margin-block: var(--space-4);
+  color: var(--text);
   font-style: italic;
+  border-radius: 0 var(--radius-s) var(--radius-s) 0;
+}
+
+.rich-text blockquote p:last-child {
+  margin-bottom: 0;
 }
 
 /* --------------------------------------------------------------------------
@@ -134,11 +140,12 @@
    -------------------------------------------------------------------------- */
 .rich-text code:not(pre code) {
   background: var(--code-bg);
-  padding: 0.1em 0.35em;
+  padding: 0.15em 0.4em;
   border-radius: var(--radius-s);
+  border: 1px solid var(--border);
   font-family: var(--font-mono);
   font-size: 0.875em;
-  color: var(--text);
+  color: var(--accent-text);
 }
 
 /* --------------------------------------------------------------------------
@@ -163,7 +170,7 @@ html[data-theme='dark'] .shiki span {
 
 .rich-text .code-block {
   position: relative;
-  margin-block: var(--space-5);
+  margin-block: var(--space-4);
   border: 1px solid var(--border);
   border-radius: var(--radius-s);
   overflow: hidden;
@@ -175,7 +182,7 @@ html[data-theme='dark'] .shiki span {
   align-items: center;
   justify-content: space-between;
   padding: var(--space-2) var(--space-4);
-  background: color-mix(in srgb, var(--border) 35%, transparent);
+  background: color-mix(in srgb, var(--accent-subtle) 30%, var(--bg-subtle));
   border-bottom: 1px solid var(--border);
 }
 
@@ -183,7 +190,7 @@ html[data-theme='dark'] .shiki span {
   font-family: var(--font-mono);
   font-size: var(--text-label);
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--accent-text);
   letter-spacing: 0.05em;
   font-weight: 500;
 }
@@ -228,7 +235,7 @@ html[data-theme='dark'] .shiki span {
   max-width: 100%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  margin-block: var(--space-5);
+  margin-block: var(--space-4);
 }
 
 .rich-text table {
@@ -239,7 +246,8 @@ html[data-theme='dark'] .shiki span {
 }
 
 .rich-text thead {
-  border-bottom: 2px solid var(--border);
+  border-bottom: 2px solid var(--accent);
+  background: color-mix(in srgb, var(--accent-subtle) 25%, var(--bg-subtle));
 }
 
 .rich-text th {
@@ -250,7 +258,7 @@ html[data-theme='dark'] .shiki span {
   font-size: var(--text-label);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--text-muted);
+  color: var(--accent-text);
 }
 
 .rich-text td {
@@ -265,6 +273,14 @@ html[data-theme='dark'] .shiki span {
 .rich-text th p {
   margin: 0;
   display: inline;
+}
+
+.rich-text tbody tr:nth-child(even) {
+  background: color-mix(in srgb, var(--bg-subtle) 40%, transparent);
+}
+
+.rich-text tbody tr:hover {
+  background: color-mix(in srgb, var(--accent-subtle) 20%, transparent);
 }
 
 .rich-text tbody tr:last-child td {
@@ -283,6 +299,10 @@ html[data-theme='dark'] .shiki span {
   display: block;
   text-align: center;
   margin-block: 1.5em;
+  padding: var(--space-4) var(--space-5);
+  background: color-mix(in srgb, var(--bg-subtle) 60%, transparent);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-s);
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
@@ -301,10 +321,12 @@ html[data-theme='dark'] .shiki span {
 .rich-text a:not(.heading-anchor) {
   color: var(--accent-text);
   text-decoration: underline;
+  text-decoration-color: var(--accent-border);
   text-underline-offset: 3px;
-  transition: color 0.2s ease, text-decoration-thickness 0.2s ease;
+  transition: color 0.2s ease, text-decoration-color 0.2s ease, text-decoration-thickness 0.2s ease;
 }
 .rich-text a:not(.heading-anchor):hover {
+  color: var(--accent);
   text-decoration-thickness: 2px;
 }
 
@@ -323,7 +345,8 @@ html[data-theme='dark'] .shiki span {
 .rich-text img {
   max-width: 100%;
   height: auto;
-  border-radius: 4px;
+  border-radius: var(--radius-s);
+  border: 1px solid var(--border);
   margin-block: 1.5em;
 }
 

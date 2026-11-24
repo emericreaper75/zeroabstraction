@@ -1,11 +1,17 @@
+import '@/app/globals.css';
+import '@/styles/tokens.css';
+import { ThemeScript } from '@/components/ThemeScript';
 import { Display, Title, Body, Label } from '@/components/typography';
 import { Reveal } from '@/components/Reveal';
 import Link from 'next/link';
 
 export default function NotFound() {
   return (
-    <html lang="en">
-      <body>
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <ThemeScript />
+      </head>
+      <body className="bg-[color:var(--bg)] text-[color:var(--text)] antialiased min-h-screen">
         <div className="container-wide min-h-[70vh] flex flex-col justify-center items-center text-center">
           <Reveal>
             <div className="flex flex-col items-center" style={{ gap: 'var(--space-6)' }}>
