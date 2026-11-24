@@ -7,20 +7,38 @@ import { Title, Label, Display } from '@/components/typography';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { SearchModal } from '@/components/SearchModal';
-import type { SearchableItem } from '@/lib/content';
 
 interface HeaderProps {
-  searchableItems?: SearchableItem[];
   navLinks?: { label?: string | null; url?: string | null; id?: string | null }[];
 }
 
-export function Header({ searchableItems = [], navLinks = [] }: HeaderProps) {
+export function Header({ navLinks = [] }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [pastHero, setPastHero] = useState(false);
   const pathname = usePathname();
   const prefersReducedMotion = useReducedMotion();
   const overlayRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const isHome = pathname === '/';
+  const isHeroGlass = isHome && !pastHero;
+
+  // Listen to scroll to toggle between floating hero glass and compact glass bar on Home
+  useEffect(() => {
+    if (!isHome) {
+      setPastHero(false);
+      return;
+    }
+
+    const handleScroll = () => {
+      setPastHero(window.scrollY > window.innerHeight * 0.75);
+    };
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isHome]);
 
   // Close on Escape & prevent body scroll
   useEffect(() => {
@@ -115,7 +133,11 @@ export function Header({ searchableItems = [], navLinks = [] }: HeaderProps) {
     <button
       type="button"
       onClick={() => setIsSearchOpen(true)}
-      className="p-2 min-h-[44px] min-w-[44px] flex items-center justify-center text-[color:var(--text)] hover:text-[color:var(--accent)] transition-colors"
+      className={`p-2 min-h-[44px] min-w-[44px] flex items-center justify-center transition-colors ${
+        isHeroGlass
+          ? 'text-[color:var(--hero-fg)] hover:text-[color:var(--hero-accent)]'
+          : 'text-[color:var(--text)] hover:text-[color:var(--accent-text)]'
+      }`}
       aria-label="Search content (Press ⌘K or /)"
       title="Search (⌘K or /)"
     >
@@ -136,11 +158,34 @@ export function Header({ searchableItems = [], navLinks = [] }: HeaderProps) {
     </button>
   );
 
+  // Surface classes based on page and scroll position (Doc 08)
+  const headerContainerClasses = !isHome
+    ? 'sticky top-0 z-50 h-16 w-full border-b border-[color:var(--border)] bg-[var(--bg)]'
+    : isHeroGlass
+      ? 'fixed z-50 h-16 transition-all duration-[var(--dur-base)] ease-[var(--ease-out)] top-[var(--space-3)] left-[var(--space-3)] right-[var(--space-3)] max-w-[var(--measure-wide)] mx-auto rounded-[var(--radius-bar)] bg-[color:var(--hero-glass-bg)] border border-[color:var(--hero-glass-border)] [backdrop-filter:blur(var(--hero-glass-blur))_saturate(140%)] hero-glass-bar'
+      : 'fixed top-0 left-0 right-0 z-50 h-16 w-full rounded-none transition-all duration-[var(--dur-base)] ease-[var(--ease-out)] bg-[color:var(--glass-bg)] border-b border-[color:var(--glass-border)] [backdrop-filter:blur(var(--glass-blur))] compact-glass-bar';
+
+  const innerContainerClasses = isHome && isHeroGlass
+    ? 'w-full h-full px-6 flex items-center justify-between'
+    : 'container-wide h-full flex items-center justify-between';
+
   return (
     <>
-      <header className="container-wide py-8 flex items-center justify-between relative z-50">
+      <header
+        className={headerContainerClasses}
+        style={{
+          transition: prefersReducedMotion ? 'none' : undefined,
+        }}
+      >
+        <div className={innerContainerClasses}>
         <Link href="/" style={{ textDecoration: 'none' }} className="relative z-[60]">
-          <Title as="div">Zero Abstraction</Title>
+          <span
+            className={`font-[family-name:var(--font-display)] text-[clamp(1.5rem,2vw,2rem)] leading-none ${
+              isHeroGlass ? 'text-[color:var(--hero-fg)]' : 'text-[color:var(--text)]'
+            }`}
+          >
+            Zero Abstraction
+          </span>
         </Link>
 
         {/* Desktop Nav */}
@@ -150,28 +195,63 @@ export function Header({ searchableItems = [], navLinks = [] }: HeaderProps) {
             { label: 'PROJECTS', url: '/projects' },
             { label: 'WRITING', url: '/writing' },
             { label: 'ABOUT', url: '/about' },
-          ]).map(link => (
-            <Link key={link.url || '#'} href={link.url || '#'} className="text-[color:var(--text)] hover:text-[color:var(--accent)] transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center" style={{ textDecoration: 'none' }}>
-              <Label className={pathname === link.url ? '' : 'text-[color:var(--muted)]'}>
-                {link.label?.toUpperCase()}
-              </Label>
-            </Link>
-          ))}
-          <div className="h-4 w-px bg-[color:var(--border)]" aria-hidden="true" />
+          ]).map(link => {
+            const isActive = pathname === link.url;
+            return (
+              <Link
+                key={link.url || '#'}
+                href={link.url || '#'}
+                className="min-h-[44px] min-w-[44px] flex items-center justify-center transition-colors"
+                style={{ textDecoration: 'none' }}
+              >
+                <Label
+                  className={
+                    isActive
+                      ? isHeroGlass
+                        ? 'text-[color:var(--hero-fg)] border-b-2 border-[color:var(--hero-accent)] pb-0.5'
+                        : 'text-[color:var(--text)] border-b-2 border-[color:var(--accent)] pb-0.5'
+                      : isHeroGlass
+                        ? 'text-[color:var(--hero-fg-muted)] hover:text-[color:var(--hero-fg)]'
+                        : 'text-[color:var(--text-muted)] hover:text-[color:var(--text)]'
+                  }
+                >
+                  {link.label?.toUpperCase()}
+                </Label>
+              </Link>
+            );
+          })}
+          <div
+            className={`h-4 w-px ${isHeroGlass ? 'bg-[color:var(--hero-glass-border)]' : 'bg-[color:var(--border)]'}`}
+            aria-hidden="true"
+          />
           <div className="flex items-center gap-1">
             {searchButton}
-            <ThemeToggle />
+            <ThemeToggle
+              className={
+                isHeroGlass
+                  ? 'text-[color:var(--hero-fg-muted)] hover:text-[color:var(--hero-fg)]'
+                  : 'text-[color:var(--text-muted)] hover:text-[color:var(--text)]'
+              }
+            />
           </div>
         </div>
 
         {/* Mobile Controls */}
         <div className="md:hidden relative z-[60] flex items-center gap-1">
           {searchButton}
-          <ThemeToggle />
+          <ThemeToggle
+            className={
+              isHeroGlass
+                ? 'text-[color:var(--hero-fg-muted)] hover:text-[color:var(--hero-fg)]'
+                : 'text-[color:var(--text-muted)] hover:text-[color:var(--text)]'
+            }
+          />
           <button 
             ref={buttonRef}
             onClick={() => setIsOpen(!isOpen)}
-            className="p-2 -mr-2 min-h-[44px] min-w-[44px] flex items-center justify-center text-[color:var(--text)]"
+            className={`p-2 -mr-2 min-h-[44px] min-w-[44px] flex items-center justify-center ${
+              isHeroGlass ? 'text-[color:var(--hero-fg)]' : 'text-[color:var(--text)]'
+            }`}
             aria-label={isOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={isOpen}
           >
@@ -182,7 +262,11 @@ export function Header({ searchableItems = [], navLinks = [] }: HeaderProps) {
         {/* Mobile Menu Overlay */}
         <div 
           ref={overlayRef}
-          className="fixed inset-0 bg-[color:var(--bg)] z-50 flex flex-col justify-center px-8 md:hidden"
+          className={`fixed inset-0 z-50 flex flex-col justify-center px-8 md:hidden ${
+            isHeroGlass
+              ? 'bg-[color:var(--hero-glass-bg)] [backdrop-filter:blur(var(--hero-glass-blur))] text-[color:var(--hero-fg)]'
+              : 'bg-[color:var(--bg)] text-[color:var(--text)]'
+          }`}
           role="dialog"
           aria-modal="true"
           aria-label="Navigation Menu"
@@ -209,12 +293,30 @@ export function Header({ searchableItems = [], navLinks = [] }: HeaderProps) {
                   style={{ textDecoration: 'none' }}
                   className="flex items-center gap-4 group min-h-[44px] py-2"
                 >
-                  {isActive && <span className="text-[color:var(--text)] text-2xl" aria-hidden="true">→</span>}
-                  <Display as="span" className={isActive ? 'text-[color:var(--text)]' : 'text-[color:var(--muted)] group-hover:text-[color:var(--text)] transition-colors'}>
+                  {isActive && (
+                    <span
+                      className={`text-2xl ${isHeroGlass ? 'text-[color:var(--hero-accent)]' : 'text-[color:var(--text)]'}`}
+                      aria-hidden="true"
+                    >
+                      →
+                    </span>
+                  )}
+                  <Display
+                    as="span"
+                    className={
+                      isActive
+                        ? isHeroGlass
+                          ? 'text-[color:var(--hero-fg)]'
+                          : 'text-[color:var(--text)]'
+                        : isHeroGlass
+                          ? 'text-[color:var(--hero-fg-muted)] group-hover:text-[color:var(--hero-fg)] transition-colors'
+                          : 'text-[color:var(--text-muted)] group-hover:text-[color:var(--text)] transition-colors'
+                    }
+                  >
                     {link.label?.toUpperCase()}
                   </Display>
                 </Link>
-              )
+              );
             })}
             <button
               type="button"
@@ -224,15 +326,35 @@ export function Header({ searchableItems = [], navLinks = [] }: HeaderProps) {
               }}
               className="flex items-center gap-4 group min-h-[44px] py-2 text-left"
             >
-              <Display as="span" className="text-[color:var(--muted)] group-hover:text-[color:var(--text)] transition-colors">
+              <Display
+                as="span"
+                className={
+                  isHeroGlass
+                    ? 'text-[color:var(--hero-fg-muted)] group-hover:text-[color:var(--hero-fg)] transition-colors'
+                    : 'text-[color:var(--text-muted)] group-hover:text-[color:var(--text)] transition-colors'
+                }
+              >
                 SEARCH
               </Display>
             </button>
-            <div className="pt-6 border-t border-[color:var(--border)] flex items-center justify-between">
-              <Label className="text-[color:var(--muted)]">THEME</Label>
-              <ThemeToggle />
+            <div
+              className={`pt-6 border-t flex items-center justify-between ${
+                isHeroGlass ? 'border-[color:var(--hero-glass-border)]' : 'border-[color:var(--border)]'
+              }`}
+            >
+              <Label className={isHeroGlass ? 'text-[color:var(--hero-fg-muted)]' : 'text-[color:var(--text-muted)]'}>
+                THEME
+              </Label>
+              <ThemeToggle
+                className={
+                  isHeroGlass
+                    ? 'text-[color:var(--hero-fg-muted)] hover:text-[color:var(--hero-fg)]'
+                    : 'text-[color:var(--text-muted)] hover:text-[color:var(--text)]'
+                }
+              />
             </div>
           </nav>
+        </div>
         </div>
       </header>
 
@@ -240,7 +362,6 @@ export function Header({ searchableItems = [], navLinks = [] }: HeaderProps) {
       <SearchModal
         isOpen={isSearchOpen}
         onClose={() => setIsSearchOpen(false)}
-        items={searchableItems}
       />
     </>
   );

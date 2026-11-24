@@ -6,11 +6,9 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeScript } from "@/components/ThemeScript";
 import { Title, Label, Body } from "@/components/typography";
 import { Header } from "@/components/Header";
-import { getSearchIndex, getSiteSettings } from "@/lib/content";
+import { getSiteSettings } from "@/lib/content";
 import { ViewTransitions } from 'next-view-transitions';
 import Link from 'next/link';
-
-export const dynamic = 'force-dynamic'
 
 const inter = Inter({
   subsets: ["latin"],
@@ -42,7 +40,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const searchableItems = await getSearchIndex();
   const siteSettings = await getSiteSettings();
 
   const navLinks = siteSettings?.nav?.length ? siteSettings.nav : [
@@ -57,26 +54,26 @@ export default async function RootLayout({
   const footerText = siteSettings?.footer_text || `© ${new Date().getFullYear()} ${siteName}. All rights reserved.`;
 
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <ThemeScript />
-      </head>
-      <body>
-        <ViewTransitions>
+    <ViewTransitions>
+      <html lang="en" suppressHydrationWarning>
+        <head>
+          <ThemeScript />
+        </head>
+        <body>
           <div
             className={`${inter.variable} ${cormorant.variable} ${ibmPlexMono.variable} antialiased`}
           >
             <ThemeProvider>
               <div className="flex min-h-screen flex-col">
-                <Header searchableItems={searchableItems} navLinks={navLinks} />
+                <Header navLinks={navLinks} />
                 <main className="flex-1">{children}</main>
-            <footer className="container-wide py-16">
-              <div className="ui-border-t pt-16 flex flex-col lg:flex-row justify-between gap-16">
+            <footer className="container-wide py-12">
+              <div className="ui-border-t pt-10 flex flex-col lg:flex-row justify-between gap-10">
                 
                 {/* Brand & Personal Line */}
                 <div className="flex flex-col gap-6 lg:w-1/3">
                   <Title as="div">{siteName}</Title>
-                  <Body className="text-[color:var(--muted)] max-w-sm">
+                  <Body className="text-[color:var(--text-muted)] max-w-sm">
                     {siteSettings?.short_bio || <>&nbsp;</>}
                   </Body>
                 </div>
@@ -84,7 +81,7 @@ export default async function RootLayout({
                 <div className="flex flex-col sm:flex-row gap-16 lg:gap-32">
                   {/* Navigation */}
                   <div className="flex flex-col gap-4">
-                    <Label className="text-[color:var(--muted)] mb-2">NAVIGATION</Label>
+                    <Label className="text-[color:var(--text-muted)] mb-2">NAVIGATION</Label>
                     {navLinks.map((link, i) => (
                       <Link key={i} href={link.url || '#'} className="text-[color:var(--text)] hover:text-[color:var(--accent)] transition-colors" style={{ textDecoration: 'none' }}>
                         <Label>{link.label?.toUpperCase()}</Label>
@@ -94,7 +91,7 @@ export default async function RootLayout({
                   
                   {/* Connect */}
                   <div className="flex flex-col gap-4">
-                    <Label className="text-[color:var(--muted)] mb-2">CONNECT</Label>
+                    <Label className="text-[color:var(--text-muted)] mb-2">CONNECT</Label>
                     {siteSettings?.email && (
                       <a href={`mailto:${siteSettings.email}`} className="text-[color:var(--text)] hover:text-[color:var(--accent)] transition-colors" style={{ textDecoration: 'none' }}>
                         <Label>EMAIL</Label>
@@ -120,8 +117,8 @@ export default async function RootLayout({
               </div>
               
               {/* Copyright */}
-              <div className="mt-16 flex items-center justify-between">
-                <Label className="text-[color:var(--muted)]">
+              <div className="mt-10 flex items-center justify-between">
+                <Label className="text-[color:var(--text-muted)]">
                   {footerText}
                 </Label>
               </div>
@@ -129,8 +126,8 @@ export default async function RootLayout({
           </div>
         </ThemeProvider>
       </div>
-        </ViewTransitions>
       </body>
     </html>
+  </ViewTransitions>
   );
 }
