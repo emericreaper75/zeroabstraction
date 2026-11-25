@@ -80,10 +80,10 @@ export function HeroNebula({ className = '' }: HeroNebulaProps) {
     ];
 
     for (let i = 0; i < particleCount; i++) {
-      // Clustered towards an S-curve across the canvas (center-left to top-right)
+      // Distributed gracefully across the full hero canvas
       const t = Math.random();
-      const baseX = width * (0.2 + 0.75 * t);
-      const baseY = height * (0.15 + 0.65 * Math.sin(t * Math.PI) + (Math.random() - 0.5) * 0.45);
+      const baseX = width * (0.06 + 0.88 * t);
+      const baseY = height * (0.12 + 0.72 * Math.sin(t * Math.PI) + (Math.random() - 0.5) * 0.5);
 
       particles.push({
         x: baseX,
@@ -192,11 +192,11 @@ export function HeroNebula({ className = '' }: HeroNebulaProps) {
           p.y += p.vy;
           p.phase += p.speed;
 
-          // Wrap around edges gracefully within nebula region
-          if (p.x < width * 0.15) p.x = width * 0.95;
-          if (p.x > width * 0.98) p.x = width * 0.18;
-          if (p.y < 0) p.y = height * 0.9;
-          if (p.y > height) p.y = height * 0.1;
+          // Wrap around edges gracefully across full hero canvas
+          if (p.x < 0) p.x = width * 0.98;
+          if (p.x > width) p.x = width * 0.02;
+          if (p.y < 0) p.y = height * 0.95;
+          if (p.y > height) p.y = height * 0.05;
         }
 
         const currentAlpha = p.alpha * (0.6 + 0.4 * Math.sin(p.phase));
@@ -240,9 +240,9 @@ export function HeroNebula({ className = '' }: HeroNebulaProps) {
         }
       }
 
-      // 4. Subtle Observatory Coordinate Arcs
-      const cx = width * 0.62 + parallaxX * 0.35;
-      const cy = height * 0.48 + parallaxY * 0.35;
+      // 4. Subtle Observatory Coordinate Arcs centered behind Hero
+      const cx = width * 0.5 + parallaxX * 0.35;
+      const cy = height * 0.46 + parallaxY * 0.35;
       ctx.save();
       ctx.strokeStyle = isDark ? 'rgba(124, 168, 255, 0.08)' : 'rgba(30, 78, 140, 0.07)';
       ctx.lineWidth = 1;
@@ -277,8 +277,8 @@ export function HeroNebula({ className = '' }: HeroNebulaProps) {
         ref={canvasRef}
         className="absolute inset-0 w-full h-full object-cover"
         style={{
-          maskImage: 'radial-gradient(ellipse at 70% 45%, black 45%, transparent 78%)',
-          WebkitMaskImage: 'radial-gradient(ellipse at 70% 45%, black 45%, transparent 78%)',
+          maskImage: 'radial-gradient(ellipse at 50% 45%, black 48%, transparent 88%)',
+          WebkitMaskImage: 'radial-gradient(ellipse at 50% 45%, black 48%, transparent 88%)',
         }}
         aria-hidden="true"
       />
@@ -287,8 +287,8 @@ export function HeroNebula({ className = '' }: HeroNebulaProps) {
       <div 
         className="absolute inset-0 w-full h-full architectural-grid"
         style={{
-          maskImage: 'radial-gradient(ellipse at 65% 50%, black 50%, transparent 85%)',
-          WebkitMaskImage: 'radial-gradient(ellipse at 65% 50%, black 50%, transparent 85%)',
+          maskImage: 'radial-gradient(ellipse at 50% 45%, black 45%, transparent 88%)',
+          WebkitMaskImage: 'radial-gradient(ellipse at 50% 45%, black 45%, transparent 88%)',
         }}
         aria-hidden="true"
       />

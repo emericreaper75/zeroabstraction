@@ -4,7 +4,6 @@ import { Link } from 'next-view-transitions';
 import { HeroNebula } from '@/components/HeroNebula';
 import { FeaturedProjectCard } from '@/components/FeaturedProjectCard';
 import { TimelineStrip } from '@/components/TimelineStrip';
-import { TechnicalSpecimen } from '@/components/TechnicalSpecimen';
 import { Reveal } from '@/components/Reveal';
 import { getSiteSettings, getCurrentState, getProfile, getFeaturedProjects, getProjects, getPosts, getRecentPosts } from '@/lib/content';
 import type { Project, Post, SiteSetting, Profile, CurrentState } from '@/payload-types';
@@ -57,61 +56,69 @@ export default async function Home() {
 
   return (
     <div className="w-full bg-[color:var(--bg)] text-[color:var(--text)] overflow-hidden">
-      {/* 1. HERO SECTION — Scientific Editorial Layout */}
+      {/* 1. HERO SECTION — Centered Scientific Editorial Layout */}
       <section 
-        className="relative w-full min-h-[85vh] lg:min-h-[88vh] flex items-center justify-between overflow-hidden pt-24 pb-16 lg:pt-32 lg:pb-24 border-b border-[color:var(--border)]"
+        className="relative w-full min-h-[68vh] lg:min-h-[72vh] flex items-center justify-center overflow-hidden pt-28 pb-16 lg:pt-32 lg:pb-24 border-b border-[color:var(--border)]"
         aria-labelledby="hero-title"
       >
-        {/* Upper-Right Half: Subtle pastel particle/nebula canvas & architectural grid seamlessly blended */}
+        {/* Full-Width Cosmic Particle Canvas fading smoothly at the bottom */}
         <div 
-          className="absolute top-0 right-0 w-full sm:w-4/5 lg:w-3/5 h-full pointer-events-none z-0 overflow-hidden"
+          className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden"
+          style={{
+            maskImage: 'linear-gradient(to bottom, black 68%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, black 68%, transparent 100%)',
+          }}
           aria-hidden="true"
         >
           <HeroNebula className="w-full h-full" />
         </div>
 
-        {/* Hero Content Grid: Left Editorial + Right Blended Technical Specimen */}
-        <div className="container-wide relative z-10 w-full grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-start">
-          <div className="lg:col-span-5 max-w-2xl flex flex-col items-start gap-4">
-            {/* Live Research Status Pill */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[color:var(--border)] bg-[color:var(--surface)]/70 [backdrop-filter:blur(8px)] font-mono text-[11px] tracking-widest uppercase text-[color:var(--text-muted)]">
+        {/* Centered Editorial Stack */}
+        <div className="container-wide relative z-10 w-full">
+          <div className="mx-auto max-w-[720px] flex flex-col items-center text-center gap-5">
+            {/* Eyebrow Pill */}
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[color:var(--border)] bg-[color:var(--surface)]/75 [backdrop-filter:blur(8px)] font-mono text-[11px] tracking-widest uppercase text-[color:var(--text-muted)]">
               <span className="w-1.5 h-1.5 rounded-full bg-[color:var(--accent)] animate-pulse" aria-hidden="true" />
               <span>ECE × PHYSICS × ASTROPHYSICS</span>
             </div>
 
-            {/* Title: Left-aligned Serif Display */}
+            {/* Display Title */}
             <h1 
               id="hero-title"
-              className="font-[family-name:var(--font-display)] text-5xl sm:text-6xl md:text-7xl lg:text-[5rem] font-light leading-[0.98] tracking-tight text-[color:var(--text)]"
+              className="font-[family-name:var(--font-display)] text-5xl sm:text-6xl md:text-7xl lg:text-[5.25rem] font-light leading-[0.98] tracking-tight text-[color:var(--text)]"
             >
               ZeroAbstraction
             </h1>
 
-            {/* Subtitle */}
-            <p className="text-base sm:text-lg text-[color:var(--text-muted)] font-normal leading-relaxed max-w-xl font-sans mt-2">
+            {/* Subtitle (constrained to 56ch) */}
+            <p className="text-base sm:text-lg text-[color:var(--text-muted)] font-normal leading-relaxed max-w-[56ch] font-sans">
               {siteSettings?.short_bio || 'Digital garden & research universe exploring physics, ECE, and astrophysics.'}
             </p>
 
-            {/* Metadata Tags Rows */}
-            <div className="flex flex-col gap-2 mt-4 font-mono text-xs text-[color:var(--text-muted)] tracking-wider uppercase">
-              <div className="flex items-center flex-wrap gap-3">
-                <Link href="/projects" className="hover:text-[color:var(--accent-text)] transition-colors">PROJECTS</Link>
-                <span>•</span>
-                <span className="font-semibold text-[color:var(--text)]">{totalProjectsCount || 1}</span>
-                <span>•</span>
-                <Link href="/writing" className="hover:text-[color:var(--accent-text)] transition-colors">WRITING</Link>
-                <span>•</span>
-                <span className="font-semibold text-[color:var(--text)]">{totalPostsCount || 1}</span>
-              </div>
-              <div className="flex items-center flex-wrap gap-3">
-                <Link href="/about" className="hover:text-[color:var(--accent-text)] transition-colors">ABOUT</Link>
-                <span>•</span>
-                <Link href="/search" className="hover:text-[color:var(--accent-text)] transition-colors">SEARCH ARCHIVE</Link>
-              </div>
-            </div>
+            {/* Single Horizontal Navigation / Index Strip */}
+            <nav
+              aria-label="Hero quick index"
+              className="mt-2 flex items-center justify-center flex-wrap gap-x-3 gap-y-2 font-mono text-xs text-[color:var(--text-muted)] tracking-wider uppercase"
+            >
+              <Link href="/projects" className="hover:text-[color:var(--accent-text)] transition-colors" style={{ textDecoration: 'none' }}>
+                PROJECTS · <span className="font-semibold text-[color:var(--text)]">{totalProjectsCount || 1}</span>
+              </Link>
+              <span aria-hidden="true">·</span>
+              <Link href="/writing" className="hover:text-[color:var(--accent-text)] transition-colors" style={{ textDecoration: 'none' }}>
+                WRITING · <span className="font-semibold text-[color:var(--text)]">{totalPostsCount || 1}</span>
+              </Link>
+              <span aria-hidden="true">·</span>
+              <Link href="/about" className="hover:text-[color:var(--accent-text)] transition-colors" style={{ textDecoration: 'none' }}>
+                BIOGRAPHY
+              </Link>
+              <span aria-hidden="true">·</span>
+              <Link href="/search" className="hover:text-[color:var(--accent-text)] transition-colors" style={{ textDecoration: 'none' }}>
+                SEARCH ARCHIVE
+              </Link>
+            </nav>
 
-            {/* SCROLL TO DISCOVER Interactive Anchor */}
-            <div className="pt-8 lg:pt-12">
+            {/* Centered Scroll Cue */}
+            <div className="pt-6 lg:pt-8">
               <a
                 href="#featured-project"
                 className="group inline-flex items-center gap-2 min-h-[44px] font-mono text-xs tracking-widest text-[color:var(--text-muted)] hover:text-[color:var(--accent-text)] transition-colors"
@@ -121,11 +128,6 @@ export default async function Home() {
                 <span aria-hidden="true" className="inline-block animate-gentle-bob transition-transform duration-200 group-hover:translate-y-1">↓</span>
               </a>
             </div>
-          </div>
-
-          {/* Hero Right: Blended Technical Specimen & Monospace Annotation */}
-          <div className="lg:col-span-7">
-            <TechnicalSpecimen />
           </div>
         </div>
       </section>
