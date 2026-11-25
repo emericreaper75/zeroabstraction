@@ -1,0 +1,134 @@
+/* ==========================================================================
+ * ChromaForge Design System Tokens
+ * Base Color: #9F918E (Sage) | Harmony: Complementary (180°) & Triadic (±120°) Harmony
+ * ========================================================================== */
+
+:root {
+  /* Semantic UI Color Roles (Light Theme) */
+  --color-primary: #6B5D5A;
+  --color-on-primary: #FFFFFF;
+  --color-primary-container: #EEE8E7;
+  --color-on-primary-container: #161110;
+  --color-secondary: #546467;
+  --color-on-secondary: #FFFFFF;
+  --color-secondary-container: #E5EBEC;
+  --color-on-secondary-container: #0F1415;
+  --color-tertiary: #566559;
+  --color-on-tertiary: #FFFFFF;
+  --color-tertiary-container: #E5EBE6;
+  --color-on-tertiary-container: #0F1410;
+  --color-background: #F6F5F5;
+  --color-on-background: #141212;
+  --color-surface: #FFFFFF;
+  --color-on-surface: #141212;
+  --color-surface-variant: #EBE9E9;
+  --color-on-surface-variant: #4C4948;
+  --color-surface-elevated: #FFFFFF;
+  --color-outline: #9A9695;
+  --color-divider: #D5D3D2;
+  --color-success: #15803D;
+  --color-warning: #B45309;
+  --color-error: #DC2626;
+  --color-info: #1D4ED8;
+
+  /* Harmony Palette */
+  --harmony-base: #9F918E;
+  --harmony-comp: #8E9C9F;
+  --harmony-tri-cw: #8E9F91;
+  --harmony-tri-ccw: #918E9F;
+
+  /* Perceptual OKLCH Tonal Scales */
+  --palette-primary-50: #F8F5F4;
+  --palette-primary-100: #EEE8E7;
+  --palette-primary-200: #DBD1CF;
+  --palette-primary-300: #C1B3B0;
+  --palette-primary-400: #A2938F;
+  --palette-primary-500: #847571;
+  --palette-primary-600: #6B5D5A;
+  --palette-primary-700: #534744;
+  --palette-primary-800: #3D3331;
+  --palette-primary-900: #292220;
+  --palette-primary-950: #161110;
+
+  --palette-secondary-50: #F3F6F7;
+  --palette-secondary-100: #E5EBEC;
+  --palette-secondary-200: #CCD6D8;
+  --palette-secondary-300: #ACBABD;
+  --palette-secondary-400: #8A9A9E;
+  --palette-secondary-500: #6C7C80;
+  --palette-secondary-600: #546467;
+  --palette-secondary-700: #3F4C4F;
+  --palette-secondary-800: #2E383A;
+  --palette-secondary-900: #1E2527;
+  --palette-secondary-950: #0F1415;
+
+  --palette-tertiary-50: #F4F7F4;
+  --palette-tertiary-100: #E5EBE6;
+  --palette-tertiary-200: #CDD7CE;
+  --palette-tertiary-300: #ADBBAF;
+  --palette-tertiary-400: #8C9C8E;
+  --palette-tertiary-500: #6D7E70;
+  --palette-tertiary-600: #566559;
+  --palette-tertiary-700: #414E43;
+  --palette-tertiary-800: #2F3931;
+  --palette-tertiary-900: #1E2620;
+  --palette-tertiary-950: #0F1410;
+
+  --palette-neutral-50: #F6F5F5;
+  --palette-neutral-100: #EBE9E9;
+  --palette-neutral-200: #D5D3D2;
+  --palette-neutral-300: #B9B6B5;
+  --palette-neutral-400: #9A9695;
+  --palette-neutral-500: #7C7877;
+  --palette-neutral-600: #635F5E;
+  --palette-neutral-700: #4C4948;
+  --palette-neutral-800: #383535;
+  --palette-neutral-900: #252323;
+  --palette-neutral-950: #141212;
+
+  --palette-quaternary-50: #F6F5F8;
+  --palette-quaternary-100: #E9E9EE;
+  --palette-quaternary-200: #D4D2DC;
+  --palette-quaternary-300: #B7B5C3;
+  --palette-quaternary-400: #9794A5;
+  --palette-quaternary-500: #797687;
+  --palette-quaternary-600: #615E6D;
+  --palette-quaternary-700: #4A4855;
+  --palette-quaternary-800: #36343F;
+  --palette-quaternary-900: #24222A;
+  --palette-quaternary-950: #131217;
+}
+
+[data-theme="dark"],
+:root[data-theme="dark"] {
+  /* Semantic UI Color Roles (Dark Theme) */
+  --color-primary: #A2938F;
+  --color-on-primary: #161110;
+  --color-primary-container: #3D3331;
+  --color-on-primary-container: #F8F5F4;
+
+  --color-secondary: #8A9A9E;
+  --color-on-secondary: #0F1415;
+  --color-secondary-container: #2E383A;
+  --color-on-secondary-container: #F3F6F7;
+
+  --color-tertiary: #8C9C8E;
+  --color-on-tertiary: #0F1410;
+  --color-tertiary-container: #2F3931;
+  --color-on-tertiary-container: #F4F7F4;
+
+  --color-background: #0F1117;
+  --color-on-background: #F6F5F5;
+  --color-surface: #161922;
+  --color-on-surface: #F6F5F5;
+  --color-surface-variant: #202534;
+  --color-on-surface-variant: #B9B6B5;
+  --color-surface-elevated: #262C3D;
+  --color-outline: #635F5E;
+  --color-divider: #383535;
+
+  --color-success: #4ADE80;
+  --color-warning: #FBBF24;
+  --color-error: #F87171;
+  --color-info: #60A5FA;
+}

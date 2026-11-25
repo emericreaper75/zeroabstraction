@@ -1,7 +1,7 @@
 /* ─────────────────────────────────────────────────────────────
-   ZeroAbstraction Admin — Daylight Atelier Theme
-   Design System: Observatory Editorial Engine (Light Theme)
-   Source: Google Stitch Dashboard Prototypes
+   ZeroAbstraction Admin — ChromaForge Palette 03 Theme
+   Design System: Electric Indigo & Cyber Triadic System
+   Tailored for Developer Tools, Observatory Workbench & Telemetry
    ───────────────────────────────────────────────────────────── */
 
 @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400;1,6..72,500&display=swap');
@@ -11,6 +11,145 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root,
+html.light,
+[data-theme="light"] {
+  /* ChromaForge Palette 03 — Light Theme */
+  --harmony-base: #5636F7;
+  --harmony-comp: #D7F736;
+  --harmony-tri-cw: #F75636;
+  --harmony-tri-ccw: #36F756;
+
+  /* Admin Semantic UI Tokens (Light Theme) */
+  --admin-paper-base: #F5F6F6;
+  --admin-paper-surface: #FFFFFF;
+  --admin-paper-sidebar: #FFFFFF;
+  --admin-paper-container: #E9E9EB;
+  --admin-surface-container-lowest: #FFFFFF;
+  --admin-surface-container-low: #F5F6F6;
+  --admin-surface-container: #E9E9EB;
+  --admin-surface-container-high: #D3D3D5;
+  --admin-surface-container-highest: #E4E8FF;
+  --admin-hairline-rule: #D3D3D5;
+  --admin-hairline-subtle: #E9E9EB;
+  --admin-ink-primary: #121314;
+  --admin-ink-secondary: #494A4C;
+  --admin-ink-muted: #78787C;
+  --admin-on-surface: #121314;
+  --admin-primary: #5132E9;
+  --admin-primary-container: #E4E8FF;
+  --admin-on-primary: #FFFFFF;
+  --admin-on-primary-container: #0E023F;
+  --admin-amber-wash: #E4E8FF;
+  --admin-accent-amber: #5132E9;
+  --admin-accent-ochre: #AF2200;
+  --admin-secondary: #5A6900;
+  --admin-secondary-container: #E4F0C0;
+  --admin-on-secondary-container: #111500;
+  --admin-tertiary: #AF2200;
+  --admin-tertiary-container: #FFE2DB;
+  --admin-on-tertiary-container: #2A0200;
+  --admin-error: #DC2626;
+  --admin-error-container: #FFE2DB;
+  --admin-on-error-container: #2A0200;
+
+  /* Standard CSS UI Roles */
+  --bg: #F5F6F6;
+  --bg-subtle: #E9E9EB;
+  --surface: #FFFFFF;
+  --surface-hover: #E9E9EB;
+  --border: #D3D3D5;
+  --border-strong: #96969A;
+  --text: #121314;
+  --text-muted: #494A4C;
+  --accent: #5132E9;
+  --accent-hover: #3E1BBF;
+  --accent-text: #5132E9;
+  --accent-subtle: #E4E8FF;
+  --accent-border: #A7AFFF;
+  --on-accent: #FFFFFF;
+  --focus-ring: #5132E9;
+  --sidebar-bg: #FFFFFF;
+  --sidebar-fg: #121314;
+  --sidebar-fg-muted: #78787C;
+  --sidebar-border: #D3D3D5;
+  --sidebar-active-bg: #E4E8FF;
+  --sidebar-accent: #5132E9;
+  --success: #15803D;
+  --warning: #B45309;
+  --danger: #DC2626;
+}
+
+[data-theme="dark"],
+:root[data-theme="dark"],
+html.dark,
+.dark {
+  /* ChromaForge Palette 03 — Dark Theme (Signature Cyber Observatory Workbench) */
+  --harmony-base: #5636F7;
+  --harmony-comp: #D7F736;
+  --harmony-tri-cw: #F75636;
+  --harmony-tri-ccw: #36F756;
+
+  /* Admin Semantic UI Tokens (Dark Theme) */
+  --admin-paper-base: #0F1117;
+  --admin-paper-surface: #161922;
+  --admin-paper-sidebar: #161922;
+  --admin-paper-container: #202534;
+  --admin-surface-container-lowest: #161922;
+  --admin-surface-container-low: #1A1E29;
+  --admin-surface-container: #202534;
+  --admin-surface-container-high: #262C3D;
+  --admin-surface-container-highest: #2D0D93;
+  --admin-hairline-rule: #353638;
+  --admin-hairline-subtle: #262C3D;
+  --admin-ink-primary: #F5F6F6;
+  --admin-ink-secondary: #CAD0FF;
+  --admin-ink-muted: #96969A;
+  --admin-on-surface: #F5F6F6;
+  --admin-primary: #8287FF;
+  --admin-primary-container: #2D0D93;
+  --admin-on-primary: #0E023F;
+  --admin-on-primary-container: #F4F5FF;
+  --admin-amber-wash: #2D0D93;
+  --admin-accent-amber: #8287FF;
+  --admin-accent-ochre: #F65E40;
+  --admin-secondary: #8DA300;
+  --admin-secondary-container: #323B00;
+  --admin-on-secondary-container: #F3F9E1;
+  --admin-tertiary: #F65E40;
+  --admin-tertiary-container: #661000;
+  --admin-on-tertiary-container: #FFF3F0;
+  --admin-error: #F87171;
+  --admin-error-container: #661000;
+  --admin-on-error-container: #FFF3F0;
+
+  /* Standard CSS UI Roles */
+  --bg: #0F1117;
+  --bg-subtle: #161922;
+  --surface: #161922;
+  --surface-hover: #202534;
+  --border: #353638;
+  --border-strong: #606063;
+  --text: #F5F6F6;
+  --text-muted: #B6B6B9;
+  --accent: #8287FF;
+  --accent-hover: #A7AFFF;
+  --accent-text: #8287FF;
+  --accent-subtle: #2D0D93;
+  --accent-border: #3E1BBF;
+  --on-accent: #0E023F;
+  --focus-ring: #8287FF;
+  --sidebar-bg: #161922;
+  --sidebar-fg: #F5F6F6;
+  --sidebar-fg-muted: #B6B6B9;
+  --sidebar-border: #353638;
+  --sidebar-active-bg: #202534;
+  --sidebar-accent: #8287FF;
+  --success: #4ADE80;
+  --warning: #FBBF24;
+  --danger: #F87171;
+}
 
 /* ── Material Symbols ───────────────────────────────────────── */
 .material-symbols-outlined {
@@ -28,37 +167,49 @@
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── Scrollbar: Archival Parchment ──────────────────────────── */
+/* ── Dark Mode Card and Container Overrides ─────────────────── */
+html.dark .bg-white,
+[data-theme="dark"] .bg-white {
+  background-color: var(--admin-paper-surface) !important;
+  color: var(--admin-on-surface);
+}
+
+html.dark .divide-hairline-rule,
+[data-theme="dark"] .divide-hairline-rule {
+  border-color: var(--admin-hairline-rule);
+}
+
+/* ── Scrollbar: Palette 03 Themed ────────────────────────────── */
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #f6f5f0;
+  background: var(--admin-paper-base);
 }
 ::-webkit-scrollbar-thumb {
-  background: #d8d7d0;
+  background: var(--admin-hairline-rule);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #b3743b;
+  background: var(--admin-primary);
 }
 
 /* ── Cosmic Grid (Login page only) ──────────────────────────── */
 .cosmic-grid {
   background-size: 40px 40px;
   background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    linear-gradient(to right, rgba(130, 135, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(130, 135, 255, 0.05) 1px, transparent 1px);
 }
 
-/* ── Atelier Checkbox: Bronze Square ────────────────────────── */
+/* ── Atelier Checkbox: Palette 03 Square ─────────────────────── */
 input[type="checkbox"].atelier-checkbox {
   appearance: none;
   -webkit-appearance: none;
   width: 15px;
   height: 15px;
-  border: 1px solid #c9c3b4;
-  background: #ffffff;
+  border: 1px solid var(--admin-hairline-rule);
+  background: var(--admin-paper-surface);
   border-radius: 2px;
   cursor: pointer;
   position: relative;
@@ -68,14 +219,14 @@ input[type="checkbox"].atelier-checkbox {
   transition: all 150ms ease;
 }
 input[type="checkbox"].atelier-checkbox:checked {
-  background-color: #b3743b;
-  border-color: #b3743b;
+  background-color: var(--admin-primary);
+  border-color: var(--admin-primary);
 }
 input[type="checkbox"].atelier-checkbox:checked::after {
   content: '';
   width: 4px;
   height: 8px;
-  border: solid #ffffff;
+  border: solid var(--admin-on-primary);
   border-width: 0 1.75px 1.75px 0;
   transform: rotate(45deg) translate(-0.5px, -1px);
   display: block;
@@ -87,8 +238,8 @@ input[type="checkbox"].table-checkbox {
   -webkit-appearance: none;
   width: 16px;
   height: 16px;
-  border: 1px solid #d7c3b5;
-  background: #ffffff;
+  border: 1px solid var(--admin-hairline-rule);
+  background: var(--admin-paper-surface);
   border-radius: 0;
   cursor: pointer;
   position: relative;
@@ -96,17 +247,17 @@ input[type="checkbox"].table-checkbox {
   align-items: center;
   justify-content: center;
   transition: all 150ms ease;
-  accent-color: #b3743b;
+  accent-color: var(--admin-primary);
 }
 input[type="checkbox"].table-checkbox:checked {
-  background-color: #b3743b;
-  border-color: #b3743b;
+  background-color: var(--admin-primary);
+  border-color: var(--admin-primary);
 }
 input[type="checkbox"].table-checkbox:checked::after {
   content: '';
   width: 4px;
   height: 8px;
-  border: solid #ffffff;
+  border: solid var(--admin-on-primary);
   border-width: 0 1.75px 1.75px 0;
   transform: rotate(45deg) translate(-0.5px, -1px);
   display: block;
@@ -114,7 +265,7 @@ input[type="checkbox"].table-checkbox:checked::after {
 
 /* ── Focus / Accessibility ──────────────────────────────────── */
 :focus-visible {
-  outline: 2px solid #b3743b;
+  outline: 2px solid var(--admin-primary);
   outline-offset: 2px;
 }
 
@@ -130,14 +281,14 @@ input[type="checkbox"].table-checkbox:checked::after {
 
 /* ── Active sidebar link styling ────────────────────────────── */
 .sidebar-link-active {
-  background-color: #ffffff;
-  color: #9c602a;
-  border-left: 2px solid #9c602a;
+  background-color: var(--admin-amber-wash);
+  color: var(--admin-primary);
+  border-left: 2px solid var(--admin-primary);
   font-weight: 500;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.08);
 }
 
 /* ── Activity item hover indicator ──────────────────────────── */
 .activity-item:hover .activity-indicator {
-  background-color: #9c602a;
+  background-color: var(--admin-primary);
 }

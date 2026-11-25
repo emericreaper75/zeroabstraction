@@ -20,7 +20,7 @@ export function SidebarNavLink({ href, icon, label, badge }: SidebarNavLinkProps
       href={href}
       className={`flex items-center justify-between py-1.5 pr-2.5 transition-colors font-label-md pl-2.5 group ${
         isActive
-          ? 'bg-white text-primary border-l-2 border-primary font-medium shadow-xs'
+          ? 'bg-amber-wash text-primary border-l-2 border-primary font-medium shadow-xs'
           : 'text-ink-secondary hover:bg-surface-container-high hover:text-on-surface'
       }`}
     >

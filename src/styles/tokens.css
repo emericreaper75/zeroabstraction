@@ -96,22 +96,26 @@
   --palette-quaternary-950: #190B23;
 
   /* ZeroAbstraction Design Tokens — Light (Palette 01) */
-  --bg: #F6F6F5;
-  --bg-subtle: #EAE9E8;
+  --bg: #F7F7F5;
+  --bg-subtle: #EFEFEA;
   --surface: #FFFFFF;
   --surface-hover: #EAE9E8;
-  --border: #D5D3D1;
-  --border-strong: #999693;
-  --text: #131312;
-  --text-muted: #4B4947;
+  --border: rgba(20, 22, 25, 0.12);
+  --border-strong: rgba(20, 22, 25, 0.25);
+  --grid-line: rgba(20, 22, 25, 0.06);
+  --text: #141619;
+  --text-muted: #52565B;
   --muted: var(--text-muted);
+  --btn-cta-bg: #2F455C;
+  --btn-cta-fg: #FFFFFF;
+  --btn-cta-hover: #223447;
   --accent: #785B30;
   --accent-hover: #5E4520;
   --accent-text: #5E4520;
   --accent-subtle: #F3E8D9;
   --accent-border: #CDB28D;
   --on-accent: #FFFFFF;
-  --focus-ring: #785B30;
+  --focus-ring: #2F455C;
 
   --secondary: #44628B;
   --secondary-hover: #314B6E;
@@ -317,6 +321,10 @@ html.dark,
   --surface-hover: #202534;
   --border: #353638;
   --border-strong: #606063;
+  --grid-line: rgba(255, 255, 255, 0.06);
+  --btn-cta-bg: #2F455C;
+  --btn-cta-fg: #FFFFFF;
+  --btn-cta-hover: #3C5773;
   --text: #F5F6F6;
   --text-muted: #B6B6B9;
   --muted: var(--text-muted);

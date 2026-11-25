@@ -97,7 +97,7 @@ export async function AdminSidebar() {
             </span>
             <span className="text-[10px] font-label-sm text-ink-muted">v3.x</span>
           </div>
-          <p className="text-[10px] font-label-sm text-ink-muted mt-1 truncate">Observatory Node α // Light Engine</p>
+          <p className="text-[10px] font-label-sm text-ink-muted mt-1 truncate">Observatory Node α // Palette 03</p>
           <div className="mt-2 w-full bg-hairline-rule h-1 overflow-hidden rounded">
             <div className="bg-primary h-full w-3/4" />
           </div>

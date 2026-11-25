@@ -28,8 +28,14 @@ export default async function AdminLayout({
   }
 
   return (
-    <html lang="en" className="light">
+    <html lang="en" className="dark" data-theme="dark" suppressHydrationWarning>
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(){try{var s=localStorage.getItem('payload-admin-theme');var t=s==='light'||s==='dark'?s:'dark';document.documentElement.setAttribute('data-theme',t);document.documentElement.className=t;document.documentElement.style.colorScheme=t;}catch(e){}})();",
+          }}
+        />
         <link href="https://fonts.googleapis.com" rel="preconnect" />
         <link crossOrigin="" href="https://fonts.gstatic.com" rel="preconnect" />
         <link
@@ -41,7 +47,7 @@ export default async function AdminLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="bg-paper-base text-ink-secondary antialiased font-body-sm min-h-screen selection:bg-amber-wash selection:text-primary">
+      <body className="bg-paper-base text-ink-primary antialiased font-body-sm min-h-screen selection:bg-amber-wash selection:text-on-primary">
         <AdminHeader user={user as any} />
         <div className="max-w-[1440px] mx-auto flex w-full min-h-[calc(100vh-5rem)]">
           <AdminSidebar />

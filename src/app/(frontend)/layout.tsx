@@ -4,8 +4,8 @@ import "@/app/globals.css";
 import "@/styles/tokens.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeScript } from "@/components/ThemeScript";
-import { Title, Label, Body } from "@/components/typography";
 import { Header } from "@/components/Header";
+import { BackToTop } from "@/components/BackToTop";
 import { getSiteSettings } from "@/lib/content";
 import { ViewTransitions } from 'next-view-transitions';
 import Link from 'next/link';
@@ -43,20 +43,22 @@ export default async function RootLayout({
   const siteSettings = await getSiteSettings();
 
   const navLinks = siteSettings?.nav?.length ? siteSettings.nav : [
-    { label: 'HOME', url: '/' },
-    { label: 'WRITING', url: '/writing' },
+    { label: 'ME', url: '/' },
     { label: 'PROJECTS', url: '/projects' },
-    { label: 'ABOUT', url: '/about' },
+    { label: 'WRITING', url: '/writing' },
+    { label: 'BIOGRAPHY', url: '/about' },
   ];
   
   const socialLinks = siteSettings?.social_links ?? [];
-  const siteName = siteSettings?.name || "Zero Abstraction";
+  const siteName = siteSettings?.name || "ZeroAbstraction";
+  const siteTagline = siteSettings?.short_bio || "Digital garden & research universe exploring physics, ECE, and astrophysics.";
   const footerText = siteSettings?.footer_text || `© ${new Date().getFullYear()} ${siteName}. All rights reserved.`;
 
   return (
     <ViewTransitions>
       <html lang="en" suppressHydrationWarning>
         <head>
+          <meta name="color-scheme" content="light dark" />
           <ThemeScript />
         </head>
         <body>
@@ -65,62 +67,101 @@ export default async function RootLayout({
           >
             <ThemeProvider>
               <div className="flex min-h-screen flex-col">
+                <a href="#main-content" className="skip-link visually-hidden">
+                  Skip to main content
+                </a>
                 <Header navLinks={navLinks} />
-                <main className="flex-1">{children}</main>
-            <footer className="container-wide py-12">
-              <div className="ui-border-t pt-10 flex flex-col lg:flex-row justify-between gap-10">
+                <main id="main-content" tabIndex={-1} className="flex-1 outline-none">{children}</main>
+                <BackToTop />
+            <footer className="container-wide py-16 border-t border-[color:var(--border)]">
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-16">
                 
-                {/* Brand & Personal Line */}
-                <div className="flex flex-col gap-6 lg:w-1/3">
-                  <Title as="div">{siteName}</Title>
-                  <Body className="text-[color:var(--text-muted)] max-w-sm">
-                    {siteSettings?.short_bio || <>&nbsp;</>}
-                  </Body>
+                {/* Column 1 (Left): Brand + Tagline + Copyright */}
+                <div className="md:col-span-6 lg:col-span-6 flex flex-col justify-between gap-6">
+                  <div className="flex flex-col gap-3">
+                    <span className="font-[family-name:var(--font-display)] text-2xl sm:text-3xl font-light text-[color:var(--text)]">
+                      {siteName}
+                    </span>
+                    <p className="text-[color:var(--text-muted)] text-sm max-w-sm leading-relaxed font-sans">
+                      {siteTagline}
+                    </p>
+                  </div>
+                  <p className="font-mono text-xs text-[color:var(--text-muted)] pt-2">
+                    {footerText}
+                  </p>
                 </div>
                 
-                <div className="flex flex-col sm:flex-row gap-16 lg:gap-32">
-                  {/* Navigation */}
-                  <div className="flex flex-col gap-4">
-                    <Label className="text-[color:var(--text-muted)] mb-2">NAVIGATION</Label>
-                    {navLinks.map((link, i) => (
-                      <Link key={i} href={link.url || '#'} className="text-[color:var(--text)] hover:text-[color:var(--accent)] transition-colors" style={{ textDecoration: 'none' }}>
-                        <Label>{link.label?.toUpperCase()}</Label>
-                      </Link>
-                    ))}
+                {/* Column 2 (Center-Right): Navigation */}
+                <div className="md:col-span-3 lg:col-span-3 flex flex-col gap-4">
+                  <span className="font-mono text-xs tracking-widest text-[color:var(--text-muted)] uppercase">
+                    NAVIGATION
+                  </span>
+                  <div className="flex flex-col gap-2.5">
+                    <Link href="/" className="font-mono text-xs tracking-wider text-[color:var(--text)] hover:text-[color:var(--accent-text)] transition-colors" style={{ textDecoration: 'none' }}>
+                      HOME
+                    </Link>
+                    <Link href="/projects" className="font-mono text-xs tracking-wider text-[color:var(--text)] hover:text-[color:var(--accent-text)] transition-colors" style={{ textDecoration: 'none' }}>
+                      PROJECTS
+                    </Link>
+                    <Link href="/writing" className="font-mono text-xs tracking-wider text-[color:var(--text)] hover:text-[color:var(--accent-text)] transition-colors" style={{ textDecoration: 'none' }}>
+                      WRITING
+                    </Link>
+                    <Link href="/about" className="font-mono text-xs tracking-wider text-[color:var(--text)] hover:text-[color:var(--accent-text)] transition-colors" style={{ textDecoration: 'none' }}>
+                      BIOGRAPHY
+                    </Link>
+                    <Link href="/search" className="font-mono text-xs tracking-wider text-[color:var(--text)] hover:text-[color:var(--accent-text)] transition-colors" style={{ textDecoration: 'none' }}>
+                      SEARCH
+                    </Link>
                   </div>
-                  
-                  {/* Connect */}
-                  <div className="flex flex-col gap-4">
-                    <Label className="text-[color:var(--text-muted)] mb-2">CONNECT</Label>
-                    {siteSettings?.email && (
-                      <a href={`mailto:${siteSettings.email}`} className="text-[color:var(--text)] hover:text-[color:var(--accent)] transition-colors" style={{ textDecoration: 'none' }}>
-                        <Label>EMAIL</Label>
-                      </a>
-                    )}
-                    {socialLinks
-                      .filter((social) => Boolean(social.url && social.url !== '#'))
-                      .map((social, i) => (
-                        <a
-                          key={i}
-                          href={social.url!}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-[color:var(--text)] hover:text-[color:var(--accent)] transition-colors"
-                          style={{ textDecoration: 'none' }}
-                        >
-                          <Label>{social.platform?.toUpperCase()}</Label>
-                        </a>
-                      ))}
+                  <div className="pt-2 flex items-center gap-2 font-mono text-[11px] text-[color:var(--text-muted)]">
+                    <kbd className="px-1.5 py-0.5 border border-[color:var(--border)] rounded-[var(--radius-s)]">⌘K</kbd>
+                    <span>QUICK SEARCH</span>
                   </div>
                 </div>
 
-              </div>
-              
-              {/* Copyright */}
-              <div className="mt-10 flex items-center justify-between">
-                <Label className="text-[color:var(--text-muted)]">
-                  {footerText}
-                </Label>
+                {/* Column 3 (Right): Connect */}
+                <div className="md:col-span-3 lg:col-span-3 flex flex-col gap-4">
+                  <span className="font-mono text-xs tracking-widest text-[color:var(--text-muted)] uppercase">
+                    CONNECT
+                  </span>
+                  <div className="flex flex-col gap-2.5">
+                    {siteSettings?.email ? (
+                      <a href={`mailto:${siteSettings.email}`} className="font-mono text-xs tracking-wider text-[color:var(--text)] hover:text-[color:var(--accent-text)] transition-colors" style={{ textDecoration: 'none' }}>
+                        EMAIL
+                      </a>
+                    ) : (
+                      <a href="mailto:contact@zeroabstraction.com" className="font-mono text-xs tracking-wider text-[color:var(--text)] hover:text-[color:var(--accent-text)] transition-colors" style={{ textDecoration: 'none' }}>
+                        EMAIL
+                      </a>
+                    )}
+                    {socialLinks.length > 0 ? (
+                      socialLinks
+                        .filter((social) => Boolean(social.url && social.url !== '#'))
+                        .map((social, i) => (
+                          <a
+                            key={i}
+                            href={social.url!}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-mono text-xs tracking-wider text-[color:var(--text)] hover:text-[color:var(--accent-text)] transition-colors"
+                            style={{ textDecoration: 'none' }}
+                          >
+                            {social.platform?.toUpperCase()}
+                          </a>
+                        ))
+                    ) : (
+                      <>
+                        <a href="https://github.com/manoj-amavasya" target="_blank" rel="noopener noreferrer" className="font-mono text-xs tracking-wider text-[color:var(--text)] hover:text-[color:var(--accent-text)] transition-colors" style={{ textDecoration: 'none' }}>
+                          GITHUB
+                        </a>
+                        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="font-mono text-xs tracking-wider text-[color:var(--text)] hover:text-[color:var(--accent-text)] transition-colors" style={{ textDecoration: 'none' }}>
+                          LINKEDIN
+                        </a>
+                      </>
+                    )}
+                  </div>
+                </div>
+
               </div>
             </footer>
           </div>

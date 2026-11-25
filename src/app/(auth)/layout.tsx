@@ -12,7 +12,7 @@ export default function AuthLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="dark" data-theme="dark">
       <head>
         <link href="https://fonts.googleapis.com" rel="preconnect" />
         <link crossOrigin="" href="https://fonts.gstatic.com" rel="preconnect" />
@@ -25,7 +25,7 @@ export default function AuthLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="antialiased min-h-screen flex flex-col justify-between font-body-md overflow-x-hidden bg-gradient-to-br from-[#0b1013] via-[#12181c] to-[#080c0e] text-[#a2abb2] selection:bg-amber-wash selection:text-on-surface">
+      <body className="antialiased min-h-screen flex flex-col justify-between font-body-md overflow-x-hidden bg-gradient-to-br from-[#0F1117] via-[#161922] to-[#0A0D14] text-ink-primary selection:bg-amber-wash selection:text-on-primary">
         {children}
       </body>
     </html>

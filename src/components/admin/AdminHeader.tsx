@@ -1,7 +1,29 @@
-import React from 'react'
+'use client'
+
+import React, { useEffect, useState } from 'react'
 import type { User } from 'payload'
 
 export function AdminHeader({ user }: { user: User | null }) {
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark')
+
+  useEffect(() => {
+    const cur = document.documentElement.getAttribute('data-theme')
+    setTheme(cur === 'light' ? 'light' : 'dark')
+  }, [])
+
+  function toggleTheme() {
+    const next = theme === 'dark' ? 'light' : 'dark'
+    setTheme(next)
+    document.documentElement.setAttribute('data-theme', next)
+    document.documentElement.className = next
+    document.documentElement.style.colorScheme = next
+    try {
+      localStorage.setItem('payload-admin-theme', next)
+    } catch {
+      /* ignore storage errors */
+    }
+  }
+
   let initial = 'M'
   let displayName = 'Observer'
   if (user?.email) {
@@ -37,13 +59,13 @@ export function AdminHeader({ user }: { user: User | null }) {
               type="text"
               readOnly
             />
-            <span className="absolute right-2 text-[10px] font-label-sm text-ink-muted border border-hairline-rule px-1 py-0.5 bg-white rounded">⌘K</span>
+            <span className="absolute right-2 text-[10px] font-label-sm text-ink-muted border border-hairline-rule px-1 py-0.5 bg-surface-container-low rounded">⌘K</span>
           </div>
 
           {/* New Entry CTA */}
           <a
             href="/admin/collections/posts"
-            className="inline-flex items-center gap-1.5 bg-primary text-white font-label-md text-label-md px-3.5 py-1.5 rounded hover:bg-accent-ochre transition-colors shadow-xs"
+            className="inline-flex items-center gap-1.5 bg-primary text-on-primary font-label-md text-label-md px-3.5 py-1.5 rounded hover:bg-accent-ochre transition-colors shadow-xs"
           >
             <span className="material-symbols-outlined text-[15px]">add</span>
             New Entry
@@ -53,9 +75,15 @@ export function AdminHeader({ user }: { user: User | null }) {
           <div className="flex items-center border-l border-hairline-rule pl-2 ml-1 gap-1 text-ink-secondary">
             <button className="relative p-1.5 text-ink-secondary hover:text-primary transition-colors" title="Notifications">
               <span className="material-symbols-outlined text-[19px]">notifications</span>
-              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-emerald-600 ring-2 ring-white" />
+              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-emerald-500 ring-2 ring-paper-base" />
             </button>
-            <button className="p-1.5 text-ink-secondary hover:text-primary transition-colors" title="Toggle Display Contrast">
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="p-1.5 text-ink-secondary hover:text-primary transition-colors"
+              title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Theme`}
+              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
+            >
               <span className="material-symbols-outlined text-[19px]">contrast</span>
             </button>
           </div>
@@ -66,7 +94,7 @@ export function AdminHeader({ user }: { user: User | null }) {
               <div className="w-7 h-7 bg-amber-wash border border-primary/40 rounded flex items-center justify-center text-primary font-label-md text-xs font-semibold">
                 {initial}
               </div>
-              <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 border border-white" />
+              <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 border border-paper-base" />
             </div>
             <div className="hidden xl:flex flex-col text-left">
               <span className="text-label-sm font-label-sm text-on-surface font-medium leading-none">{displayName}</span>

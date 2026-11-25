@@ -6,9 +6,11 @@
 
 html {
   color-scheme: light dark;
+  accent-color: var(--accent);
   background-color: var(--bg);
   color: var(--text);
   scroll-padding-top: calc(var(--space-7) + var(--space-3));
+  scrollbar-color: var(--border-strong) var(--bg);
 }
 
 /* Glass top bar fallbacks */
@@ -37,20 +39,25 @@ html {
   color: var(--accent-text);
 }
 
-/* Global Scrollbar Context */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-track {
-  background: var(--bg);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--accent);
+/* Global Scrollbar Context with @supports fallback per dark-mode guidance */
+@supports not (scrollbar-color: auto) {
+  html {
+    scrollbar-width: auto;
+  }
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--bg);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
+  }
 }
 
 html[data-theme='dark'] {
@@ -113,6 +120,84 @@ body {
   .ui-border-r {
     border-right: 1px solid var(--border);
   }
+
+  .architectural-grid {
+    background-image: 
+      linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  .btn-cta-solid {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background-color: var(--btn-cta-bg);
+    color: var(--btn-cta-fg);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+    padding: 0.875rem 1.5rem;
+    border-radius: var(--radius-s);
+    text-decoration: none;
+    transition: background-color var(--dur-fast) ease, transform var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
+  }
+
+  .btn-cta-solid:hover {
+    background-color: var(--btn-cta-hover);
+    color: #FFFFFF;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
+  }
+
+  .btn-cta-solid:active {
+    scale: 0.97;
+  }
+
+  .visually-hidden:where(:not(:focus-within, :active)) {
+    position: absolute !important;
+    clip-path: inset(50%) !important;
+    overflow: hidden !important;
+    width: 1px !important;
+    height: 1px !important;
+    margin: -1px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    white-space: nowrap !important;
+  }
+
+  .skip-link:focus {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 120;
+    padding: 0.75rem 1.25rem;
+    background-color: var(--btn-cta-bg);
+    color: var(--btn-cta-fg);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-radius: var(--radius-s);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    text-decoration: none;
+  }
+}
+
+/* Targeted Typography Wrapping & Legibility */
+main :where(h1, h2, h3, h4) {
+  text-wrap: balance;
+}
+main :where(p, blockquote, li) {
+  text-wrap: pretty;
+  overflow-wrap: break-word;
+}
+
+/* Tactile press feedback for native buttons */
+:where(button):active:not(:disabled) {
+  scale: 0.97;
 }
 
 /* Global Reduced Motion Override */

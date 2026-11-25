@@ -7,6 +7,7 @@ import { Title, Label, Display } from '@/components/typography';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { SearchModal } from '@/components/SearchModal';
+import { ScrollProgressBar } from '@/components/ScrollProgressBar';
 
 interface HeaderProps {
   navLinks?: { label?: string | null; url?: string | null; id?: string | null }[];
@@ -133,7 +134,7 @@ export function Header({ navLinks = [] }: HeaderProps) {
     <button
       type="button"
       onClick={() => setIsSearchOpen(true)}
-      className={`p-2 min-h-[44px] min-w-[44px] flex items-center justify-center transition-colors ${
+      className={`px-2.5 min-h-[44px] min-w-[44px] flex items-center justify-center gap-2 rounded-[var(--radius-s)] transition-colors ${
         isHeroGlass
           ? 'text-[color:var(--hero-fg)] hover:text-[color:var(--hero-accent)]'
           : 'text-[color:var(--text)] hover:text-[color:var(--accent-text)]'
@@ -155,6 +156,12 @@ export function Header({ navLinks = [] }: HeaderProps) {
         <circle cx="11" cy="11" r="8" />
         <line x1="21" y1="21" x2="16.65" y2="16.65" />
       </svg>
+      <kbd
+        aria-hidden="true"
+        className="hidden lg:inline-flex items-center px-1.5 py-0.5 font-mono text-[10px] leading-none tracking-wider border border-[color:var(--border)] rounded-[var(--radius-s)] opacity-75"
+      >
+        ⌘K
+      </kbd>
     </button>
   );
 
@@ -184,23 +191,24 @@ export function Header({ navLinks = [] }: HeaderProps) {
               isHeroGlass ? 'text-[color:var(--hero-fg)]' : 'text-[color:var(--text)]'
             }`}
           >
-            Zero Abstraction
+            ZeroAbstraction
           </span>
         </Link>
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center" style={{ gap: 'var(--space-6)' }}>
           {(navLinks?.length ? navLinks : [
-            { label: 'HOME', url: '/' },
+            { label: 'ME', url: '/' },
             { label: 'PROJECTS', url: '/projects' },
             { label: 'WRITING', url: '/writing' },
-            { label: 'ABOUT', url: '/about' },
+            { label: 'BIOGRAPHY', url: '/about' },
           ]).map(link => {
             const isActive = pathname === link.url;
             return (
               <Link
                 key={link.url || '#'}
                 href={link.url || '#'}
+                aria-current={isActive ? 'page' : undefined}
                 className="min-h-[44px] min-w-[44px] flex items-center justify-center transition-colors"
                 style={{ textDecoration: 'none' }}
               >
@@ -290,6 +298,7 @@ export function Header({ navLinks = [] }: HeaderProps) {
                 <Link 
                   key={link.url || '#'} 
                   href={link.url || '#'} 
+                  aria-current={isActive ? 'page' : undefined}
                   style={{ textDecoration: 'none' }}
                   className="flex items-center gap-4 group min-h-[44px] py-2"
                 >
@@ -356,6 +365,7 @@ export function Header({ navLinks = [] }: HeaderProps) {
           </nav>
         </div>
         </div>
+        {!isHeroGlass && <ScrollProgressBar />}
       </header>
 
       {/* Client-Side Search Modal */}
