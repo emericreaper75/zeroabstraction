@@ -4,6 +4,7 @@ import { Link } from 'next-view-transitions';
 import { HeroNebula } from '@/components/HeroNebula';
 import { FeaturedProjectCard } from '@/components/FeaturedProjectCard';
 import { TimelineStrip } from '@/components/TimelineStrip';
+import { TechnicalSpecimen } from '@/components/TechnicalSpecimen';
 import { Reveal } from '@/components/Reveal';
 import { getSiteSettings, getCurrentState, getProfile, getFeaturedProjects, getProjects, getPosts, getRecentPosts } from '@/lib/content';
 import type { Project, Post, SiteSetting, Profile, CurrentState } from '@/payload-types';
@@ -184,7 +185,12 @@ export default async function Home() {
         </section>
       </Reveal>
 
-      {/* 3.75 RECENT DISPATCHES — LATEST WRITING */}
+      {/* 3.75 TECHNICAL SPECIMEN & MONOSPACE ANNOTATION */}
+      <Reveal>
+        <TechnicalSpecimen />
+      </Reveal>
+
+      {/* 3.85 RECENT DISPATCHES — LATEST WRITING */}
       {recentPosts.length > 0 && (
         <Reveal>
           <section className="container-wide py-16 lg:py-20 border-b border-[color:var(--border)]" aria-labelledby="recent-writing-heading">
