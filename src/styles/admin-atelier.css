@@ -303,25 +303,125 @@ dialog::backdrop {
   z-index: 1;
 }
 
-/* ── Panze Studio Typography Roles ──────────────────────────── */
+/* ── Panze Studio Typography Roles & Calibrated Scale ───────── */
 .admin-simple-text {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--admin-ink-primary);
 }
-.admin-simple-text .font-studio-display,
+
+/* Headings: Plus Jakarta Sans, SemiBold (600), upright */
 .admin-simple-text h1,
-.admin-simple-text h2,
-.admin-simple-text h3,
+.admin-simple-text .typo-page-title,
 .admin-simple-text .font-headline-xl,
-.admin-simple-text .font-headline-lg,
-.admin-simple-text .font-headline-md,
-.admin-simple-text .font-headline-sm {
+.admin-simple-text .font-headline-lg {
   font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 24px !important;
+  line-height: 32px !important;
+  letter-spacing: -0.02em !important;
   font-style: normal !important;
 }
-.admin-simple-text .font-mono-telemetry {
+
+.admin-simple-text h2,
+.admin-simple-text h3,
+.admin-simple-text .typo-card-title,
+.admin-simple-text .font-headline-md,
+.admin-simple-text .font-headline-sm,
+.admin-simple-text .font-studio-display {
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif !important;
+  font-weight: 600 !important;
+  font-style: normal !important;
+}
+
+.admin-simple-text .typo-card-title {
+  font-size: 15px !important;
+  line-height: 22px !important;
+  letter-spacing: -0.01em !important;
+}
+
+/* UI & Body: Inter (explicitly overrides legacy monospace label classes) */
+.admin-simple-text .font-label-lg,
+.admin-simple-text .font-label-md,
+.admin-simple-text .font-label-sm,
+.admin-simple-text .font-body-lg,
+.admin-simple-text .font-body-md,
+.admin-simple-text .font-body-sm {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+  font-style: normal !important;
+}
+
+.admin-simple-text .typo-breadcrumb {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.02em;
+  color: #64748B;
+}
+
+.admin-simple-text .typo-label {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0em;
+  color: #475569;
+}
+
+.admin-simple-text .typo-row-title {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.admin-simple-text .typo-subtitle {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 20px;
+  color: #475569;
+}
+
+.admin-simple-text .typo-btn {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+/* Machine / Data Artifacts ONLY: JetBrains Mono */
+.admin-simple-text .font-mono-telemetry,
+.admin-simple-text .typo-mono-data,
+.admin-simple-text .typo-pill,
+.admin-simple-text .typo-kpi {
   font-family: 'JetBrains Mono', monospace !important;
   font-variant-numeric: tabular-nums;
 }
+
+.admin-simple-text .typo-pill {
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 14px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.admin-simple-text .typo-mono-data {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: #64748B;
+}
+
+.admin-simple-text .typo-kpi {
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 28px;
+}
+
 .admin-simple-text .italic {
   font-style: normal !important;
 }

@@ -168,10 +168,10 @@ export function TopicsManager({ initialTopics, totalDocs: _totalDocs }: TopicsMa
         <div className="lg:col-span-7">
           <div className="bg-paper-surface rounded-[20px] overflow-hidden">
             <div className="px-6 py-4 border-b border-[#F1F5F9] dark:border-zinc-800 flex flex-wrap items-center justify-between gap-3">
-              <span className="font-studio-display text-[15px] font-semibold text-on-surface">
+              <h2 className="typo-card-title text-on-surface">
                 Topic Index
-              </span>
-              <span className="font-mono-telemetry text-[12px] text-ink-muted">
+              </h2>
+              <span className="typo-mono-data">
                 {filteredTopics.length} of {topics.length}
               </span>
             </div>

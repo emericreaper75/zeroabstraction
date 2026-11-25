@@ -269,15 +269,15 @@ export function DashboardOverviewClient({
             </svg>
           </div>
           <div>
-            <h1 className="font-studio-display text-[28px] font-semibold text-on-surface tracking-[-0.02em] leading-tight">
+            <h1 className="typo-page-title text-on-surface">
               {greeting}, {userName}
             </h1>
-            <div className="flex items-center gap-2 mt-0.5 text-[13px] text-ink-secondary">
+            <div className="flex items-center gap-2 mt-0.5 typo-subtitle">
               <span className="inline-flex items-center gap-1.5 text-[#059669] font-medium">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#059669]" />
                 Live
               </span>
-              <span className="text-ink-muted">·</span>
+              <span className="text-[#64748B]">·</span>
               <span>{metrics.draftPostsCount} drafts awaiting</span>
             </div>
           </div>
@@ -356,27 +356,27 @@ export function DashboardOverviewClient({
           <div className="w-full bg-paper-surface rounded-[20px] p-6 flex flex-col justify-between space-y-5">
             {/* Section 1: Active Manuscript */}
             <div className="pb-5 border-b border-[#F1F5F9] dark:border-zinc-800 space-y-2.5">
-              <h2 className="font-studio-display text-[16px] font-semibold text-on-surface">
+              <h2 className="typo-card-title text-on-surface">
                 Active Manuscript
               </h2>
               {latestPost ? (
                 <>
-                  <p className="text-[14px] font-medium text-on-surface leading-snug">
+                  <p className="typo-row-title text-on-surface">
                     {latestPost.title}
                   </p>
                   <Link
                     href={`/admin/collections/posts/${latestPost.id}`}
-                    className="inline-flex items-center gap-1.5 text-[13px] font-medium text-ink-secondary hover:text-on-surface transition-colors pt-1"
+                    className="inline-flex items-center gap-1.5 typo-btn text-[#475569] dark:text-slate-300 hover:text-on-surface transition-colors pt-1"
                   >
                     <span className="material-symbols-outlined text-[16px]">play_arrow</span>
                     <span>Resume</span>
-                    <span className="text-ink-muted">›</span>
+                    <span className="text-[#64748B]">›</span>
                   </Link>
                 </>
               ) : (
                 <Link
                   href="/admin/collections/posts/new"
-                  className="text-[13px] text-[#2563EB] hover:underline"
+                  className="typo-subtitle text-[#2563EB] hover:underline"
                 >
                   Create your first manuscript ›
                 </Link>
@@ -386,13 +386,13 @@ export function DashboardOverviewClient({
             {/* Section 2: Readiness */}
             <div className="pb-5 border-b border-[#F1F5F9] dark:border-zinc-800 space-y-4">
               <div className="flex items-center justify-between">
-                <h2 className="font-studio-display text-[16px] font-semibold text-on-surface flex items-center gap-1.5">
-                  <span className="material-symbols-outlined text-[17px] text-ink-secondary">
+                <h2 className="typo-card-title text-on-surface flex items-center gap-1.5">
+                  <span className="material-symbols-outlined text-[17px] text-[#475569]">
                     verified
                   </span>
                   Readiness
                 </h2>
-                <span className="font-mono-telemetry text-[12px] text-ink-secondary">
+                <span className="typo-mono-data">
                   {readinessScore}%
                 </span>
               </div>
@@ -583,20 +583,20 @@ export function DashboardOverviewClient({
                   href="/admin/collections/posts?status=draft"
                   className="pb-4 pr-4 border-r border-[#F1F5F9] dark:border-zinc-800 hover:opacity-75 transition-opacity"
                 >
-                  <div className="font-mono-telemetry text-[24px] font-semibold text-on-surface leading-none">
+                  <div className="typo-kpi text-on-surface">
                     {pad(metrics.draftPostsCount)}
                   </div>
-                  <div className="text-[13px] text-ink-secondary mt-1.5">Drafts</div>
+                  <div className="typo-subtitle mt-1">Drafts</div>
                 </Link>
 
                 <Link
                   href="/admin/collections/posts"
                   className="pb-4 pl-4 hover:opacity-75 transition-opacity"
                 >
-                  <div className="font-mono-telemetry text-[24px] font-semibold text-on-surface leading-none">
+                  <div className="typo-kpi text-on-surface">
                     {pad(metrics.postsCount)}
                   </div>
-                  <div className="text-[13px] text-ink-secondary mt-1.5">
+                  <div className="typo-subtitle mt-1">
                     Posts ({metrics.publishedPostsCount} live)
                   </div>
                 </Link>
@@ -605,30 +605,30 @@ export function DashboardOverviewClient({
                   href="/admin/collections/projects"
                   className="col-span-2 py-4 hover:opacity-75 transition-opacity"
                 >
-                  <div className="font-mono-telemetry text-[24px] font-semibold text-on-surface leading-none">
+                  <div className="typo-kpi text-on-surface">
                     {pad(metrics.projectsCount)}
                   </div>
-                  <div className="text-[13px] text-ink-secondary mt-1.5">Rigs</div>
+                  <div className="typo-subtitle mt-1">Rigs</div>
                 </Link>
 
                 <Link
                   href="/admin/collections/media"
                   className="pt-4 pr-4 border-r border-[#F1F5F9] dark:border-zinc-800 hover:opacity-75 transition-opacity"
                 >
-                  <div className="font-mono-telemetry text-[24px] font-semibold text-on-surface leading-none">
+                  <div className="typo-kpi text-on-surface">
                     {pad(metrics.mediaCount)}
                   </div>
-                  <div className="text-[13px] text-ink-secondary mt-1.5">Plates</div>
+                  <div className="typo-subtitle mt-1">Plates</div>
                 </Link>
 
                 <Link
                   href="/admin/collections/topics"
                   className="pt-4 pl-4 hover:opacity-75 transition-opacity"
                 >
-                  <div className="font-mono-telemetry text-[24px] font-semibold text-on-surface leading-none">
+                  <div className="typo-kpi text-on-surface">
                     {pad(metrics.topicsCount)}
                   </div>
-                  <div className="text-[13px] text-ink-secondary mt-1.5">Topics</div>
+                  <div className="typo-subtitle mt-1">Topics</div>
                 </Link>
               </div>
             </div>
@@ -673,19 +673,19 @@ export function DashboardOverviewClient({
                       <span className="material-symbols-outlined text-[18px] text-ink-secondary shrink-0">
                         {icon}
                       </span>
-                      <span className="text-[14px] font-medium text-on-surface truncate">
+                      <span className="typo-row-title text-on-surface truncate">
                         {item.title}
                       </span>
                     </div>
                     <div className="flex items-center gap-3 shrink-0">
                       <span
-                        className={`font-mono-telemetry text-[10px] font-semibold uppercase tracking-[0.06em] px-2.5 py-1 rounded-full ${getStatusPillClasses(
+                        className={`typo-pill px-2.5 py-1 rounded-full ${getStatusPillClasses(
                           item.statusLabel
                         )}`}
                       >
                         {item.statusLabel}
                       </span>
-                      <span className="font-mono-telemetry text-[12px] text-ink-secondary w-14 text-right">
+                      <span className="typo-mono-data w-14 text-right">
                         {dateStr}
                       </span>
                     </div>

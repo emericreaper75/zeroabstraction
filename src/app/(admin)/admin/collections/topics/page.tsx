@@ -26,31 +26,16 @@ export default async function TopicsCollectionPage() {
   )
 
   return (
-    <div className="flex flex-col w-full pb-12 space-y-8">
+    <div className="flex flex-col w-full pb-12 space-y-5">
       {/* Page Header */}
-      <header className="flex flex-col space-y-4 pt-4">
-        <div className="flex items-center space-x-2 font-label-sm text-label-sm text-ink-muted">
-          <span>OBSERVATORY</span>
-          <span>/</span>
-          <span>COLLECTIONS</span>
-          <span>/</span>
-          <span className="text-on-surface font-medium tracking-wide">TAXONOMY &amp; TAGS</span>
+      <header className="flex flex-wrap items-center justify-between gap-4">
+        <div className="space-y-1">
+          <div className="typo-breadcrumb">Observatory / Collections / Topics</div>
+          <h1 className="typo-page-title text-on-surface">Topics &amp; Taxonomy</h1>
         </div>
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
-          <div className="max-w-2xl space-y-1">
-            <h1 className="font-headline-xl text-headline-xl text-on-surface tracking-tight leading-none">
-              Topics &amp; Taxonomy
-            </h1>
-            <p className="font-body-md text-body-md text-ink-secondary leading-normal">
-              Classification schema for essays, engineering rigs, and observational data.
-            </p>
-          </div>
-          <div className="flex items-center gap-2 shrink-0">
-            <span className="font-label-sm text-label-sm px-2 py-0.5 bg-amber-wash text-accent-ochre font-medium">
-              {result.totalDocs} TOPICS INDEXED
-            </span>
-          </div>
-        </div>
+        <span className="typo-pill px-2.5 py-1 rounded-full bg-[#EFF6FF] text-[#2563EB] dark:bg-blue-950/50 dark:text-blue-300">
+          {result.totalDocs} Topics
+        </span>
       </header>
 
       {/* Interactive Topics Manager */}

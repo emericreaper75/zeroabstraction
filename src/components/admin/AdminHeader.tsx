@@ -169,7 +169,7 @@ export function AdminHeader({
             </Link>
 
             <span className="hidden sm:inline-block text-ink-muted/40 font-light">/</span>
-            <span className="hidden sm:inline-flex items-center gap-1.5 font-mono-telemetry text-[10px] font-semibold tracking-[0.06em] uppercase px-2.5 py-1 rounded-full bg-[#EFF6FF] text-[#2563EB] dark:bg-blue-950/50 dark:text-blue-300 truncate">
+            <span className="hidden sm:inline-flex items-center gap-1.5 typo-pill px-2.5 py-1 rounded-full bg-[#EFF6FF] text-[#2563EB] dark:bg-blue-950/50 dark:text-blue-300 truncate">
               <span className="w-1.5 h-1.5 rounded-full bg-[#2563EB] dark:bg-blue-400" />
               {routeLabel}
             </span>

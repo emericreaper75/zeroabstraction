@@ -148,58 +148,49 @@ export function PostsTableClient({
       : `/admin/collections/posts?page=${p}`
 
   return (
-    <div className="flex flex-col w-full pb-12 space-y-8">
-      {/* Page Header */}
-      <header className="flex flex-col space-y-3 pt-2">
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-1.5 font-label-sm text-xs text-ink-muted">
-            <Link href="/admin" className="hover:text-primary transition-colors flex items-center" title="Dashboard">
-              <span className="material-symbols-outlined text-[16px]">home</span>
-            </Link>
-            <span>/</span>
-            <span className="text-on-surface font-medium">Posts</span>
-          </div>
-          <span className="font-label-sm text-[11px] px-2 py-0.5 bg-amber-wash text-primary font-medium rounded">
-            {allCount} total
+    <div className="flex flex-col w-full pb-12 space-y-5">
+      {/* Minimal Header */}
+      <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-1">
+        <div className="flex items-center gap-3">
+          <h1 id="posts-table-title" className="font-studio-display text-[28px] font-semibold text-on-surface tracking-[-0.02em] leading-tight">
+            Posts
+          </h1>
+          <span className="font-mono-telemetry text-[11px] px-2.5 py-0.5 bg-paper-surface text-ink-secondary rounded-full">
+            {allCount}
           </span>
         </div>
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <h1 id="posts-table-title" className="font-headline-xl text-3xl text-on-surface tracking-tight leading-none">
-            Posts &amp; Treatises
-          </h1>
-          <div className="flex items-center gap-2 shrink-0">
-            <button
-              type="button"
-              onClick={() => downloadManifest()}
-              title="Export JSON Manifest"
-              aria-label="Export JSON Manifest"
-              className="flex items-center gap-1.5 px-3.5 py-2 bg-paper-surface text-ink-secondary text-[13px] font-medium hover:text-on-surface transition-colors rounded-full"
-            >
-              <span className="material-symbols-outlined text-[17px]">file_download</span>
-              <span className="hidden sm:inline">Export</span>
-            </button>
-            <Link
-              href="/admin/collections/posts/new"
-              className="flex items-center gap-1.5 px-4 py-2 bg-[#0F172A] text-white dark:bg-slate-100 dark:text-slate-900 text-[13px] transition-opacity hover:opacity-90 rounded-full font-medium"
-            >
-              <span className="material-symbols-outlined text-[17px]">add</span>
-              <span>New Post</span>
-            </Link>
-          </div>
+        <div className="flex items-center gap-2 shrink-0">
+          <button
+            type="button"
+            onClick={() => downloadManifest()}
+            title="Export JSON Manifest"
+            aria-label="Export JSON Manifest"
+            className="flex items-center gap-1.5 px-3.5 py-2 bg-paper-surface text-ink-secondary text-[13px] font-medium hover:text-on-surface transition-colors rounded-full"
+          >
+            <span className="material-symbols-outlined text-[17px]">file_download</span>
+            <span className="hidden sm:inline">Export</span>
+          </button>
+          <Link
+            href="/admin/collections/posts/new"
+            className="flex items-center gap-1.5 px-4 py-2 bg-[#0F172A] text-white dark:bg-slate-100 dark:text-slate-900 text-[13px] transition-opacity hover:opacity-90 rounded-full font-medium"
+          >
+            <span className="material-symbols-outlined text-[17px]">add</span>
+            <span>New Post</span>
+          </Link>
         </div>
       </header>
 
-      {/* Filter Toolbar */}
-      <div className="flex flex-col gap-4 bg-paper-surface p-5 rounded-[20px]">
-        <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
-          <div className="relative flex-1 max-w-xl flex items-center bg-[#F8FAFC] dark:bg-zinc-900 rounded-full px-3.5 py-2">
-            <span className="material-symbols-outlined text-ink-muted text-[18px] mr-2.5">search</span>
+      {/* Unified Single-Card Filter + Table */}
+      <div className="bg-paper-surface rounded-[20px] overflow-hidden flex flex-col">
+        <div className="p-5 border-b border-[#F1F5F9] dark:border-zinc-800 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
+          <div className="relative flex-1 max-w-md flex items-center bg-[#F8FAFC] dark:bg-zinc-900 rounded-full px-3.5 py-2">
+            <span className="material-symbols-outlined text-ink-muted text-[18px] mr-2">search</span>
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               aria-label="Filter posts by title, slug, or topic"
               className="w-full bg-transparent text-[13px] text-on-surface placeholder:text-ink-muted focus:outline-none"
-              placeholder="Filter manuscripts, canonical slugs, topics..."
+              placeholder="Search posts..."
               type="search"
             />
             {search && (
@@ -256,7 +247,6 @@ export function PostsTableClient({
             </Link>
           </div>
         </div>
-      </div>
 
       {/* Floating Bulk Action Bar */}
       {selectedIds.size > 0 && (
@@ -300,16 +290,15 @@ export function PostsTableClient({
       )}
 
       {/* Data Table */}
-      <div className="bg-paper-surface rounded-[20px] overflow-hidden flex flex-col">
-        <div
-          tabIndex={0}
-          role="region"
-          aria-labelledby="posts-table-title"
-          className="admin-table-region w-full"
-        >
+      <div
+        tabIndex={0}
+        role="region"
+        aria-labelledby="posts-table-title"
+        className="admin-table-region w-full"
+      >
           <table className="w-full text-left border-collapse min-w-[880px]">
             <thead>
-              <tr className="bg-paper-surface font-mono-telemetry text-[11px] text-ink-muted uppercase tracking-[0.06em] border-b border-[#F1F5F9] dark:border-zinc-800">
+              <tr className="bg-paper-surface typo-label border-b border-[#F1F5F9] dark:border-zinc-800">
                 <th className="w-10 px-4 py-3 text-center">
                   <input
                     type="checkbox"
@@ -328,7 +317,7 @@ export function PostsTableClient({
                     onClick={() => toggleSort('title')}
                     className="inline-flex items-center gap-1 hover:text-on-surface"
                   >
-                    <span>Title &amp; Canonical Slug</span>
+                    <span>Post Title</span>
                     <span className="material-symbols-outlined text-[14px]">
                       {sortKey === 'title' ? (sortDir === 'asc' ? 'arrow_upward' : 'arrow_downward') : 'unfold_more'}
                     </span>

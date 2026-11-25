@@ -190,13 +190,13 @@ export function MediaManager({ initialDocs, totalDocs }: MediaManagerProps) {
         )}
 
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <h1 className="font-studio-display text-[28px] font-semibold text-on-surface tracking-[-0.02em] leading-none">
+          <h1 className="typo-page-title text-on-surface">
             Media &amp; Plates
           </h1>
           <button
             type="button"
             onClick={() => setShowUploadModal(true)}
-            className="flex items-center gap-1.5 px-4 py-2 bg-[#0F172A] text-white dark:bg-slate-100 dark:text-slate-900 text-[13px] transition-opacity hover:opacity-90 rounded-full font-medium self-start sm:self-auto"
+            className="typo-btn flex items-center gap-1.5 px-4 py-2 bg-[#0F172A] text-white dark:bg-slate-100 dark:text-slate-900 transition-opacity hover:opacity-90 rounded-full self-start sm:self-auto"
           >
             <span className="material-symbols-outlined text-[17px]">cloud_upload</span>
             Upload Plate
@@ -419,11 +419,11 @@ export function MediaManager({ initialDocs, totalDocs }: MediaManagerProps) {
           <div className="admin-table-region">
             <table className="w-full text-left border-collapse min-w-[680px]">
               <thead>
-                <tr className="bg-surface-container-low border-b border-hairline-rule font-label-sm text-xs text-ink-muted uppercase">
-                  <th className="px-4 py-2.5">Asset</th>
-                  <th className="px-4 py-2.5">Type</th>
-                  <th className="px-4 py-2.5">Size</th>
-                  <th className="px-4 py-2.5 text-right">Actions</th>
+                <tr className="bg-paper-surface border-b border-[#F1F5F9] dark:border-zinc-800 typo-label">
+                  <th className="px-4 py-3 font-medium">Asset</th>
+                  <th className="px-4 py-3 font-medium">Type</th>
+                  <th className="px-4 py-3 font-medium">Size</th>
+                  <th className="px-4 py-3 font-medium text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-hairline-subtle text-xs">
