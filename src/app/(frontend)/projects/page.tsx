@@ -68,23 +68,53 @@ export default async function ProjectsArchive({ searchParams }: { searchParams: 
         ) : view === 'library' ? (
           <ProjectsLibrary projects={result.docs as Project[]} />
         ) : (
-          <div className="border-t border-[color:var(--border)]">
-            {[...result.docs].sort((a, b) => Number(Boolean(b.featured)) - Number(Boolean(a.featured)) || (b.year ?? 0) - (a.year ?? 0)).map((project) => (
-              <article key={project.id} className="group grid grid-cols-1 gap-4 border-b border-[color:var(--border)] py-5 px-3 -mx-3 rounded-[var(--radius-s)] transition-colors hover:bg-[color:var(--surface)]/60 md:grid-cols-[9rem_1fr_13rem]">
-                <p className="font-mono text-[var(--text-label)] text-[color:var(--text-muted)]">{project.year ?? ''} · {project.status?.replace('_', ' ').toUpperCase()}</p>
-                <div>
-                  <h2 className="font-[family-name:var(--font-display)] text-[var(--text-h3)]"><Link href={`/projects/${project.slug}`} className="group-hover:text-[color:var(--accent-text)] transition-colors" style={{ textDecoration: 'none' }}>{project.title}</Link></h2>
-                  {project.summary && <p className="mt-2 text-[var(--text-small)] text-[color:var(--text-muted)]">{project.summary}</p>}
-                </div>
-                <div className="flex flex-col md:items-end justify-between gap-2">
-                  <p className="font-mono text-[var(--text-label)] text-[color:var(--text-muted)] md:text-right">{project.technologies?.slice(0, 3).map((technology) => technology.name).join(' / ')}</p>
-                  <Link href={`/projects/${project.slug}`} className="font-mono text-[11px] text-[color:var(--accent-text)] inline-flex items-center gap-1" style={{ textDecoration: 'none' }}>
-                    <span>OPEN</span>
-                    <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">→</span>
-                  </Link>
-                </div>
-              </article>
-            ))}
+          <div className="border-t border-[color:var(--border)] overflow-x-auto">
+            <div className="min-w-[640px]">
+              {[...result.docs]
+                .sort((a, b) => Number(Boolean(b.featured)) - Number(Boolean(a.featured)) || (b.year ?? 0) - (a.year ?? 0))
+                .map((project, idx) => {
+                  const catalogId = `PRJ // ${String(idx + 1).padStart(3, '0')}`;
+                  const domainTags = (project.technologies ?? [])
+                    .slice(0, 3)
+                    .map((t) => t.name?.toUpperCase())
+                    .filter(Boolean)
+                    .join(' · ');
+
+                  return (
+                    <article
+                      key={project.id}
+                      className="group grid grid-cols-[7.5rem_1fr_14rem_4.5rem_6.5rem] items-center gap-4 border-b border-[color:var(--border)] py-4 px-3 -mx-3 rounded-[var(--radius-s)] transition-colors hover:bg-[color:var(--surface)]/70"
+                    >
+                      <span className="font-mono text-[11px] tracking-wider text-[color:var(--text-muted)] whitespace-nowrap">
+                        {catalogId}
+                      </span>
+                      <h2 className="font-[family-name:var(--font-display)] text-xl leading-snug text-[color:var(--text)] truncate">
+                        <Link
+                          href={`/projects/${project.slug}`}
+                          className="group-hover:text-[color:var(--accent-text)] transition-colors"
+                          style={{ textDecoration: 'none' }}
+                        >
+                          {project.title}
+                        </Link>
+                      </h2>
+                      <span className="font-mono text-[11px] tracking-wider text-[color:var(--text-muted)] truncate">
+                        {domainTags || project.status?.replace('_', ' ').toUpperCase()}
+                      </span>
+                      <span className="font-mono text-[11px] text-[color:var(--text-muted)]">
+                        {project.year ?? '—'}
+                      </span>
+                      <Link
+                        href={`/projects/${project.slug}`}
+                        className="font-mono text-[11px] tracking-wider text-[color:var(--accent-text)] inline-flex items-center justify-end gap-1 whitespace-nowrap"
+                        style={{ textDecoration: 'none' }}
+                      >
+                        <span>INSPECT</span>
+                        <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">→</span>
+                      </Link>
+                    </article>
+                  );
+                })}
+            </div>
           </div>
         )}
       </div>

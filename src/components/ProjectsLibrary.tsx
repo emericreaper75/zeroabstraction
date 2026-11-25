@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import type { Project } from '@/payload-types';
-import { ProjectImage } from './ProjectImage';
 
 function hash(value: string) {
   let result = 0;
@@ -8,52 +7,212 @@ function hash(value: string) {
   return result;
 }
 
-export function ProjectsLibrary({ projects }: { projects: Project[] }) {
-  const ordered = [...projects].sort((a, b) => Number(Boolean(b.featured)) - Number(Boolean(a.featured)) || (b.year ?? 0) - (a.year ?? 0));
+function ProjectSchematic({ variant, slug }: { variant: number; slug: string }) {
+  const mode = variant % 3;
+
+  if (mode === 0) {
+    // Cryogenic / Focal Plane Detector Array Schematic
+    return (
+      <svg viewBox="0 0 320 200" className="w-full h-full max-h-56" aria-hidden="true">
+        <defs>
+          <pattern id={`grid-${slug}`} width="20" height="20" patternUnits="userSpaceOnUse">
+            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="var(--grid-line)" strokeWidth="1" />
+          </pattern>
+        </defs>
+        <rect width="320" height="200" fill={`url(#grid-${slug})`} />
+        <circle cx="160" cy="100" r="68" fill="none" stroke="var(--border-strong)" strokeWidth="1" strokeDasharray="4 4" />
+        <circle cx="160" cy="100" r="46" fill="none" stroke="var(--accent)" strokeWidth="1.25" opacity="0.7" />
+        <circle cx="160" cy="100" r="22" fill="none" stroke="var(--secondary)" strokeWidth="1.25" />
+        <line x1="60" y1="100" x2="260" y2="100" stroke="var(--border-strong)" strokeWidth="1" />
+        <line x1="160" y1="20" x2="160" y2="180" stroke="var(--border-strong)" strokeWidth="1" />
+        {[-30, 0, 30].map((dx) =>
+          [-30, 0, 30].map((dy) => (
+            <rect
+              key={`${dx}-${dy}`}
+              x={160 + dx - 5}
+              y={100 + dy - 5}
+              width="10"
+              height="10"
+              rx="1"
+              fill={dx === 0 && dy === 0 ? 'var(--secondary)' : 'var(--accent-subtle)'}
+              stroke="var(--accent)"
+              strokeWidth="1"
+            />
+          ))
+        )}
+        <text x="14" y="22" fill="var(--text-muted)" fontSize="9" fontFamily="var(--font-mono)">
+          FIG.01 // DETECTOR ARRAY
+        </text>
+        <text x="236" y="186" fill="var(--text-muted)" fontSize="9" fontFamily="var(--font-mono)">
+          300 mK STAGE
+        </text>
+      </svg>
+    );
+  }
+
+  if (mode === 1) {
+    // Harmonic Signal / Matched-Filter Waveform Diagram
+    return (
+      <svg viewBox="0 0 320 200" className="w-full h-full max-h-56" aria-hidden="true">
+        <defs>
+          <pattern id={`grid-${slug}`} width="20" height="20" patternUnits="userSpaceOnUse">
+            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="var(--grid-line)" strokeWidth="1" />
+          </pattern>
+        </defs>
+        <rect width="320" height="200" fill={`url(#grid-${slug})`} />
+        <line x1="24" y1="100" x2="296" y2="100" stroke="var(--border-strong)" strokeWidth="1" strokeDasharray="3 3" />
+        <line x1="24" y1="40" x2="24" y2="160" stroke="var(--border-strong)" strokeWidth="1" />
+        <path
+          d="M 24 100 Q 52 38, 80 100 T 136 100 T 192 100 T 248 100 T 296 100"
+          fill="none"
+          stroke="var(--accent)"
+          strokeWidth="1.75"
+        />
+        <path
+          d="M 24 100 C 60 65, 90 135, 130 100 C 170 65, 200 135, 240 100 L 296 100"
+          fill="none"
+          stroke="var(--secondary)"
+          strokeWidth="1.25"
+          strokeDasharray="4 3"
+        />
+        <circle cx="136" cy="100" r="3.5" fill="var(--secondary)" />
+        <circle cx="248" cy="100" r="3.5" fill="var(--accent)" />
+        <text x="14" y="22" fill="var(--text-muted)" fontSize="9" fontFamily="var(--font-mono)">
+          FIG.02 // SPECTRAL RESPONSE
+        </text>
+        <text x="232" y="186" fill="var(--text-muted)" fontSize="9" fontFamily="var(--font-mono)">
+          SNR &gt; 14.2 dB
+        </text>
+      </svg>
+    );
+  }
+
+  // Ray-Tracing / Optical Interferometer Diagram
   return (
-    <div className="grid gap-8 [grid-template-columns:repeat(auto-fill,minmax(clamp(200px,22vw,280px),1fr))]">
-      {ordered.map((project) => {
-        const tint = `var(--spine-${(hash(project.slug) % 5) + 1})`;
-        const cover = typeof project.cover_image === 'object' ? project.cover_image : null;
+    <svg viewBox="0 0 320 200" className="w-full h-full max-h-56" aria-hidden="true">
+      <defs>
+        <pattern id={`grid-${slug}`} width="20" height="20" patternUnits="userSpaceOnUse">
+          <path d="M 20 0 L 0 0 0 20" fill="none" stroke="var(--grid-line)" strokeWidth="1" />
+        </pattern>
+      </defs>
+      <rect width="320" height="200" fill={`url(#grid-${slug})`} />
+      <path d="M 64 36 Q 94 100, 64 164" fill="none" stroke="var(--accent)" strokeWidth="2" />
+      <line x1="28" y1="60" x2="75" y2="60" stroke="var(--secondary)" strokeWidth="1.25" />
+      <line x1="28" y1="100" x2="78" y2="100" stroke="var(--secondary)" strokeWidth="1.25" />
+      <line x1="28" y1="140" x2="75" y2="140" stroke="var(--secondary)" strokeWidth="1.25" />
+      <line x1="75" y1="60" x2="230" y2="100" stroke="var(--accent)" strokeWidth="1.15" />
+      <line x1="78" y1="100" x2="230" y2="100" stroke="var(--accent)" strokeWidth="1.15" />
+      <line x1="75" y1="140" x2="230" y2="100" stroke="var(--accent)" strokeWidth="1.15" />
+      <rect x="230" y="84" width="10" height="32" fill="var(--accent-subtle)" stroke="var(--accent)" strokeWidth="1.25" />
+      <circle cx="230" cy="100" r="3" fill="var(--secondary)" />
+      <text x="14" y="22" fill="var(--text-muted)" fontSize="9" fontFamily="var(--font-mono)">
+        FIG.03 // RAY-TRACE GEOMETRY
+      </text>
+      <text x="220" y="186" fill="var(--text-muted)" fontSize="9" fontFamily="var(--font-mono)">
+        FOCAL PLANE
+      </text>
+    </svg>
+  );
+}
+
+export function ProjectsLibrary({ projects }: { projects: Project[] }) {
+  const ordered = [...projects].sort(
+    (a, b) => Number(Boolean(b.featured)) - Number(Boolean(a.featured)) || (b.year ?? 0) - (a.year ?? 0)
+  );
+
+  return (
+    <div className="flex flex-col gap-6 w-full">
+      {ordered.map((project, idx) => {
+        const catalogId = `PRJ // ${String(idx + 1).padStart(3, '0')}`;
         const statusLabel = project.status?.replace('_', ' ').toUpperCase() || 'ACTIVE';
+        const techNames = (project.technologies ?? [])
+          .map((t) => t.name?.toUpperCase())
+          .filter(Boolean);
+        const topicNames = (project.topics ?? [])
+          .map((t) => (typeof t === 'object' && t !== null && 'name' in t ? String(t.name).toUpperCase() : ''))
+          .filter(Boolean);
+        const specs = (techNames.length > 0 ? techNames : topicNames).slice(0, 4);
+        const secondaryLink = project.links?.[0]?.url ? project.links[0] : null;
+
         return (
-          <Link key={project.id} href={`/projects/${project.slug}`} className="group flex flex-col" style={{ textDecoration: 'none' }}>
-            <div className="mb-2 flex items-center justify-between gap-2 min-h-[20px]">
-              {project.featured ? (
-                <span className="font-mono text-[var(--text-label)] text-[color:var(--accent-text)] tracking-wider">FEATURED</span>
-              ) : (
-                <span />
-              )}
-              <span className="font-mono text-[10px] px-2 py-0.5 rounded-[var(--radius-s)] border border-[color:var(--border)] text-[color:var(--text-muted)] tracking-wider">
-                {statusLabel}
-              </span>
+          <article
+            key={project.id}
+            className="w-full grid grid-cols-1 lg:grid-cols-[2fr_3fr] border border-[color:var(--border)] hover:border-[color:var(--accent-border)] bg-[color:var(--surface)]/75 rounded-[var(--radius-s)] overflow-hidden transition-colors"
+          >
+            {/* Left Visual Stage (40%) */}
+            <div className="p-4 sm:p-6 bg-[color:var(--bg-subtle)]/50 border-b lg:border-b-0 lg:border-r border-[color:var(--border)] flex items-center justify-center">
+              <Link
+                href={`/projects/${project.slug}`}
+                tabIndex={-1}
+                aria-hidden="true"
+                className="w-full h-full min-h-[200px] rounded-[var(--radius-s)] border border-[color:var(--border)] bg-[color:var(--math-bg)] p-3 flex items-center justify-center hover:border-[color:var(--accent-border)] transition-colors"
+                style={{ textDecoration: 'none' }}
+              >
+                <ProjectSchematic variant={hash(project.slug)} slug={project.slug} />
+              </Link>
             </div>
-            <div className="aspect-[3/4] overflow-hidden rounded-[var(--radius-s)] border border-[color:var(--border)] border-b-[color:var(--border-strong)] shadow-[0_10px_12px_-10px_var(--shade)] [perspective:900px] group-hover:border-[color:var(--accent-border)] transition-colors">
-              {cover?.url ? (
-                <div className="relative h-full w-full transition-transform duration-[var(--dur-base)] ease-[var(--ease-out)] [transform-origin:left_center] [@media(hover:hover)]:group-hover:[transform:translateY(-6px)_rotateY(6deg)]">
-                  <div className="absolute left-0 top-0 z-10 h-full w-[8%] bg-gradient-to-r from-[var(--shade)] to-transparent" />
-                  <ProjectImage src={cover.url} alt={cover.alt_text || project.title} fill sizes="(max-width: 640px) 100vw, 280px" className="object-cover" />
-                </div>
-              ) : (
-                <div className="flex h-full flex-col justify-between p-5 transition-transform duration-[var(--dur-base)] ease-[var(--ease-out)] [transform-origin:left_center] [@media(hover:hover)]:group-hover:[transform:translateY(-6px)_rotateY(6deg)]" style={{ background: tint, color: 'var(--spine-fg)' }}>
-                  <h2 className="font-[family-name:var(--font-display)] text-[var(--text-h2)]">{project.title}</h2>
-                  <span className="font-mono text-[var(--text-label)]">{project.year ?? ''}</span>
-                </div>
-              )}
+
+            {/* Right Engineering Dossier (60%) */}
+            <div className="p-6 sm:p-8 flex flex-col justify-between gap-5">
+              {/* Top Metadata Bar */}
+              <div className="flex items-center justify-between gap-4 flex-wrap">
+                <span className="font-mono text-xs tracking-widest uppercase text-[color:var(--text-muted)]">
+                  {catalogId} · {project.year ?? '—'}
+                </span>
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border border-[color:var(--border)] bg-[color:var(--bg-subtle)] font-mono text-[10px] tracking-widest uppercase text-[color:var(--accent-text)]">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[color:var(--secondary)]" aria-hidden="true" />
+                  <span>{statusLabel}</span>
+                </span>
+              </div>
+
+              {/* Title + Full Summary */}
+              <div className="flex flex-col gap-3">
+                <h2 className="font-[family-name:var(--font-display)] text-2xl sm:text-3xl font-normal leading-snug text-[color:var(--text)]">
+                  <Link
+                    href={`/projects/${project.slug}`}
+                    className="hover:text-[color:var(--accent-text)] transition-colors"
+                    style={{ textDecoration: 'none' }}
+                  >
+                    {project.title}
+                  </Link>
+                </h2>
+                {project.summary && (
+                  <p className="text-sm sm:text-base text-[color:var(--text-muted)] leading-relaxed">
+                    {project.summary}
+                  </p>
+                )}
+              </div>
+
+              {/* Technical Specification Strip */}
+              <div className="px-3.5 py-2.5 rounded-[var(--radius-s)] border border-[color:var(--border)] bg-[color:var(--bg-subtle)]/70 font-mono text-[11px] tracking-wider uppercase text-[color:var(--text-muted)]">
+                {specs.length > 0 ? specs.join(' · ') : 'SYSTEM ARCHITECTURE · RESEARCH PROTOTYPE'}
+              </div>
+
+              {/* Footer Action Row */}
+              <div className="pt-2 border-t border-[color:var(--border)] flex items-center justify-between gap-4 flex-wrap">
+                <Link
+                  href={`/projects/${project.slug}`}
+                  className="inline-flex items-center gap-2 font-mono text-xs tracking-wider uppercase text-[color:var(--accent-text)] hover:underline"
+                  style={{ textDecoration: 'none' }}
+                >
+                  <span>INSPECT SYSTEM</span>
+                  <span aria-hidden="true">→</span>
+                </Link>
+                {secondaryLink?.url && (
+                  <a
+                    href={secondaryLink.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 font-mono text-xs tracking-wider uppercase text-[color:var(--text-muted)] hover:text-[color:var(--text)] transition-colors"
+                    style={{ textDecoration: 'none' }}
+                  >
+                    <span>{secondaryLink.label?.toUpperCase() || 'SOURCE / SCHEMATICS'}</span>
+                    <span aria-hidden="true">↗</span>
+                  </a>
+                )}
+              </div>
             </div>
-            <h2 className="mt-4 font-[family-name:var(--font-display)] text-[1.5rem] leading-[var(--lh-heading)] text-[color:var(--text)] group-hover:text-[color:var(--accent-text)] transition-colors">{project.title}</h2>
-            <p className="mt-1.5 font-mono text-[var(--text-label)] text-[color:var(--text-muted)]">{project.year ?? ''}</p>
-            {project.summary && (
-              <p className="mt-2 text-sm text-[color:var(--text-muted)] line-clamp-2 leading-relaxed">{project.summary}</p>
-            )}
-            {project.technologies?.length ? (
-              <p className="mt-2 font-mono text-[var(--text-label)] text-[color:var(--text-muted)]">{project.technologies.slice(0, 3).map((technology) => technology.name).join(' / ')}</p>
-            ) : null}
-            <span className="mt-3 inline-flex items-center gap-1.5 font-mono text-[var(--text-ui-sm)] text-[color:var(--accent-text)]">
-              <span>VIEW PROJECT</span>
-              <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">→</span>
-            </span>
-          </Link>
+          </article>
         );
       })}
     </div>
