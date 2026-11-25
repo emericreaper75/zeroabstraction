@@ -246,8 +246,13 @@ export function DashboardOverviewClient({
       <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 py-1">
         {/* Left: Greeting + Live Status */}
         <div className="flex items-center gap-3.5">
-          <div className="w-11 h-11 rounded-2xl bg-paper-surface flex items-center justify-center text-[#2563EB] shrink-0">
-            <span className="material-symbols-outlined text-[22px]">hub</span>
+          <div className="w-11 h-11 rounded-2xl bg-paper-surface flex items-center justify-center text-[#0F172A] dark:text-slate-100 shrink-0" title="Observatory Workbench">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M12 2a10 10 0 1 0 10 10" />
+              <path d="M12 12l7-7" />
+              <circle cx="12" cy="12" r="3" />
+              <path d="M16 2h6v6" />
+            </svg>
           </div>
           <div>
             <h1 className="font-studio-display text-[28px] font-semibold text-on-surface tracking-[-0.02em] leading-tight">
@@ -306,7 +311,7 @@ export function DashboardOverviewClient({
             className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-paper-surface text-on-surface text-[13px] font-medium hover:bg-surface-container-low transition-colors"
           >
             <span className="material-symbols-outlined text-[16px] text-ink-secondary">
-              precision_manufacturing
+              rocket_launch
             </span>
             <span>Rig</span>
           </Link>
@@ -315,7 +320,7 @@ export function DashboardOverviewClient({
             className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-paper-surface text-on-surface text-[13px] font-medium hover:bg-surface-container-low transition-colors"
           >
             <span className="material-symbols-outlined text-[16px] text-ink-secondary">
-              cloud_upload
+              add_photo_alternate
             </span>
             <span>Plate</span>
           </Link>
@@ -637,7 +642,7 @@ export function DashboardOverviewClient({
                   item.kind === 'post'
                     ? 'article'
                     : item.kind === 'project'
-                      ? 'qr_code_2'
+                      ? 'rocket_launch'
                       : 'image'
                 const dateStr = item.updatedAt
                   ? new Date(item.updatedAt).toLocaleDateString('en-US', {

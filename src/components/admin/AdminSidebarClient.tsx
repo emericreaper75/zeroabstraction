@@ -28,16 +28,16 @@ export function AdminSidebarClient({ counts: _counts }: { counts: AdminSidebarCo
   const pathname = usePathname()
 
   const navItems: NavItem[] = [
-    { href: '/admin', icon: 'dashboard', label: 'Dashboard' },
-    { href: '/admin/collections/posts', icon: 'edit_note', label: 'Posts' },
-    { href: '/admin/collections/projects', icon: 'qr_code_2', label: 'Projects' },
-    { href: '/admin/collections/topics', icon: 'label', label: 'Topics' },
-    { href: '/admin/collections/media', icon: 'photo_library', label: 'Media' },
-    { href: '/admin/globals/profile', icon: 'person', label: 'Profile' },
-    { href: '/admin/globals/current-state', icon: 'sensors', label: 'Current State' },
-    { href: '/admin/collections/journey', icon: 'timeline', label: 'Journey' },
+    { href: '/admin', icon: 'space_dashboard', label: 'Observatory Overview' },
+    { href: '/admin/collections/posts', icon: 'article', label: 'Posts & Treatises' },
+    { href: '/admin/collections/projects', icon: 'rocket_launch', label: 'Projects & Rigs' },
+    { href: '/admin/collections/topics', icon: 'sell', label: 'Topics & Taxonomy' },
+    { href: '/admin/collections/media', icon: 'photo_library', label: 'Media & Plates' },
+    { href: '/admin/globals/profile', icon: 'person', label: 'Observer Profile' },
+    { href: '/admin/globals/current-state', icon: 'sensors', label: 'Live Telemetry' },
+    { href: '/admin/collections/journey', icon: 'timeline', label: 'Journey Timeline' },
     { href: '/admin/globals/site-settings', icon: 'tune', label: 'Site Settings' },
-    { href: '/admin/collections/users', icon: 'group', label: 'Users' },
+    { href: '/admin/collections/users', icon: 'admin_panel_settings', label: 'Users & Access' },
   ]
 
   return (
@@ -106,16 +106,16 @@ export function AdminMobileDrawer({
 
   const pad = (n: number) => n.toString().padStart(2, '0')
   const links = [
-    { href: '/admin', icon: 'dashboard', label: 'Dashboard' },
-    { href: '/admin/collections/posts', icon: 'edit_note', label: 'Posts', badge: pad(counts.postsCount) },
-    { href: '/admin/collections/projects', icon: 'qr_code_2', label: 'Projects', badge: pad(counts.projectsCount) },
-    { href: '/admin/collections/topics', icon: 'label', label: 'Topics', badge: pad(counts.topicsCount) },
+    { href: '/admin', icon: 'space_dashboard', label: 'Dashboard' },
+    { href: '/admin/collections/posts', icon: 'article', label: 'Posts', badge: pad(counts.postsCount) },
+    { href: '/admin/collections/projects', icon: 'rocket_launch', label: 'Projects', badge: pad(counts.projectsCount) },
+    { href: '/admin/collections/topics', icon: 'sell', label: 'Topics', badge: pad(counts.topicsCount) },
     { href: '/admin/collections/media', icon: 'photo_library', label: 'Media', badge: counts.mediaCount },
     { href: '/admin/globals/profile', icon: 'person', label: 'Profile' },
     { href: '/admin/globals/current-state', icon: 'sensors', label: 'Current State' },
     { href: '/admin/collections/journey', icon: 'timeline', label: 'Journey' },
     { href: '/admin/globals/site-settings', icon: 'tune', label: 'Site Settings' },
-    { href: '/admin/collections/users', icon: 'group', label: 'Users', badge: pad(counts.usersCount) },
+    { href: '/admin/collections/users', icon: 'admin_panel_settings', label: 'Users', badge: pad(counts.usersCount) },
   ]
 
   return (

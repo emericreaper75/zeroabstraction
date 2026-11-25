@@ -156,10 +156,14 @@ export function AdminHeader({
             <Link
               className="text-[15px] font-semibold text-on-surface tracking-tight flex items-center gap-2 shrink-0"
               href="/admin"
-              title="ZeroAbstraction Atelier"
+              title="ZeroAbstraction Observatory"
             >
-              <span className="w-4 h-4 rounded-[4px] bg-[#0F172A] dark:bg-slate-100 inline-flex items-center justify-center">
-                <span className="w-1.5 h-1.5 rounded-full bg-white dark:bg-slate-900" />
+              <span className="w-6 h-6 rounded-lg bg-[#0F172A] dark:bg-slate-100 text-white dark:text-slate-900 inline-flex items-center justify-center shrink-0">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="9" />
+                  <circle cx="12" cy="12" r="2.5" fill="currentColor" />
+                  <path d="M12 3v3M12 18v3M3 12h3M18 12h3" />
+                </svg>
               </span>
               <span className="font-studio-display">ZeroAbstraction</span>
             </Link>
