@@ -200,60 +200,55 @@ export async function getRelatedContentForProject(project: Project): Promise<Rel
 }
 
 export async function searchContent(query: string): Promise<SearchableItem[]> {
-  const q = query.trim()
+  const q = query.trim().toLowerCase()
   if (!q) return []
 
-  const payload = await getPayloadClient()
-  const [posts, projects] = await Promise.all([
-    payload.find({
-      collection: 'posts',
-      overrideAccess: false, // SECURITY: enforce access control in search results
-      where: {
-        or: [{ title: { contains: q } }, { excerpt: { contains: q } }],
-      },
-      limit: 20,
-      depth: 0,
-    }),
-    payload.find({
-      collection: 'projects',
-      overrideAccess: false, // SECURITY: enforce access control in search results
-      where: {
-        or: [{ title: { contains: q } }, { summary: { contains: q } }],
-      },
-      limit: 20,
-      depth: 0,
-    }),
-  ])
+  const index = await getSearchIndex()
+  return index
+    .map((item) => {
+      const title = item.title.toLowerCase()
+      const excerpt = (item.excerpt ?? '').toLowerCase()
+      const topics = (item.topics ?? []).map((t) => t.toLowerCase())
 
-  return [
-    ...posts.docs.map((post: any) => ({
-      id: String(post.id),
-      title: post.title,
-      slug: post.slug,
-      url: `/writing/${post.slug}`,
-      type: 'post' as const,
-      date: post.published_at ?? undefined,
-      excerpt: post.excerpt ?? undefined,
-      topics: [] as string[],
-    })),
-    ...projects.docs.map((project: any) => ({
-      id: String(project.id),
-      title: project.title,
-      slug: project.slug,
-      url: `/projects/${project.slug}`,
-      type: 'project' as const,
-      excerpt: project.summary ?? undefined,
-      topics: [] as string[],
-    })),
-  ]
+      let score = 0
+      if (title === q) score += 100
+      else if (title.startsWith(q)) score += 60
+      else if (title.includes(q)) score += 40
+      if (topics.some((t) => t.includes(q))) score += 25
+      if (excerpt.includes(q)) score += 15
+
+      return { item, score }
+    })
+    .filter((entry) => entry.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .map((entry) => entry.item)
+}
+
+function extractTopicNames(topics: unknown, technologies?: unknown): string[] {
+  const names = new Set<string>()
+  if (Array.isArray(topics)) {
+    for (const t of topics) {
+      if (typeof t === 'object' && t !== null && 'name' in t && (t as { name?: string }).name) {
+        names.add(String((t as { name: string }).name))
+      }
+    }
+  }
+  if (Array.isArray(technologies)) {
+    for (const tech of technologies) {
+      if (typeof tech === 'object' && tech !== null && 'name' in tech && (tech as { name?: string }).name) {
+        names.add(String((tech as { name: string }).name))
+      }
+    }
+  }
+  return Array.from(names)
 }
 
 export async function getSearchIndex(): Promise<SearchableItem[]> {
   try {
     const payload = await getPayloadClient()
     const [posts, projects] = await Promise.all([
-      payload.find({ collection: 'posts', overrideAccess: false, limit: 100, depth: 0 }), // SECURITY
-      payload.find({ collection: 'projects', overrideAccess: false, limit: 100, depth: 0 }), // SECURITY
+      payload.find({ collection: 'posts', overrideAccess: false, limit: 100, depth: 1 }), // SECURITY
+      payload.find({ collection: 'projects', overrideAccess: false, limit: 100, depth: 1 }), // SECURITY
     ])
 
     return [
@@ -265,7 +260,7 @@ export async function getSearchIndex(): Promise<SearchableItem[]> {
         type: 'post' as const,
         date: post.published_at ?? undefined,
         excerpt: post.excerpt ?? undefined,
-        topics: [] as string[],
+        topics: extractTopicNames(post.topics),
       })),
       ...projects.docs.map((project: any) => ({
         id: String(project.id),
@@ -273,8 +268,9 @@ export async function getSearchIndex(): Promise<SearchableItem[]> {
         slug: project.slug,
         url: `/projects/${project.slug}`,
         type: 'project' as const,
+        date: project.year ? String(project.year) : undefined,
         excerpt: project.summary ?? undefined,
-        topics: [] as string[],
+        topics: extractTopicNames(project.topics, project.technologies),
       })),
     ]
   } catch (error) {
