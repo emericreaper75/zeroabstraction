@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import { Link } from 'next-view-transitions';
 import { Title, Label, Body } from '@/components/typography';
 import type { SearchableItem } from '@/lib/content';
@@ -11,7 +12,10 @@ interface SearchModalProps {
 }
 
 export function SearchModal({ isOpen, onClose }: SearchModalProps) {
+  const router = useRouter();
   const [query, setQuery] = useState('');
+  const [typeFilter, setTypeFilter] = useState<'all' | 'post' | 'project'>('all');
+  const [activeIndex, setActiveIndex] = useState(0);
   const [items, setItems] = useState<SearchableItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -107,12 +111,32 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
     if (!q) return [];
 
     return items.filter((item) => {
+      if (typeFilter !== 'all' && item.type !== typeFilter) return false;
       const inTitle = item.title.toLowerCase().includes(q);
       const inExcerpt = (item.excerpt ?? '').toLowerCase().includes(q);
       const inTopics = (item.topics ?? []).some((topic: string) => topic.toLowerCase().includes(q));
       return inTitle || inExcerpt || inTopics;
     });
-  }, [query, items]);
+  }, [query, items, typeFilter]);
+
+  useEffect(() => {
+    setActiveIndex(0);
+  }, [query, typeFilter]);
+
+  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (filteredResults.length === 0) return;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setActiveIndex((prev) => (prev + 1) % filteredResults.length);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setActiveIndex((prev) => (prev - 1 + filteredResults.length) % filteredResults.length);
+    } else if (e.key === 'Enter' && filteredResults[activeIndex]) {
+      e.preventDefault();
+      onClose();
+      router.push(filteredResults[activeIndex].url);
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -155,6 +179,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={handleInputKeyDown}
             placeholder="Search writing, projects, and topics..."
             className="w-full bg-transparent text-lg md:text-xl text-[color:var(--text)] placeholder:text-[color:var(--text-muted)] outline-none font-sans"
             aria-label="Search query"
@@ -210,20 +235,40 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
           {query.trim() && filteredResults.length > 0 && (
             <div className="flex flex-col">
-              <div className="mb-4 pb-2 border-b border-[color:var(--border)] flex items-center justify-between">
+              <div className="mb-4 pb-2 border-b border-[color:var(--border)] flex items-center justify-between gap-2 flex-wrap">
                 <Label className="text-[color:var(--text-muted)] text-xs font-mono uppercase">
                   {filteredResults.length} {filteredResults.length === 1 ? 'Result' : 'Results'}
                 </Label>
+                <div className="flex items-center gap-1.5 font-mono text-[11px]">
+                  {(['all', 'post', 'project'] as const).map((tab) => (
+                    <button
+                      key={tab}
+                      type="button"
+                      onClick={() => setTypeFilter(tab)}
+                      className={`px-2 py-0.5 rounded-[var(--radius-s)] uppercase transition-colors ${
+                        typeFilter === tab
+                          ? 'bg-[color:var(--accent-subtle)] text-[color:var(--accent-text)] font-medium'
+                          : 'text-[color:var(--text-muted)] hover:text-[color:var(--text)]'
+                      }`}
+                    >
+                      {tab === 'all' ? 'ALL' : tab === 'post' ? 'WRITING' : 'PROJECTS'}
+                    </button>
+                  ))}
+                </div>
               </div>
 
               <div className="flex flex-col">
                 {filteredResults.map((item, idx) => {
                   const href = item.url;
+                  const isActive = idx === activeIndex;
 
                   return (
                     <article
                       key={`${item.type}-${item.id}`}
-                      className={`group py-4 px-2 -mx-2 rounded transition-colors hover:bg-[color:var(--border)]/30 ${idx > 0 ? 'border-t border-[color:var(--border)]' : ''}`}
+                      onMouseEnter={() => setActiveIndex(idx)}
+                      className={`group py-4 px-3 -mx-3 rounded transition-colors ${
+                        isActive ? 'bg-[color:var(--surface-hover)]' : 'hover:bg-[color:var(--border)]/30'
+                      } ${idx > 0 ? 'border-t border-[color:var(--border)]' : ''}`}
                     >
                       {/* Meta line */}
                       <div className="flex items-center gap-2.5 text-xs font-mono text-[color:var(--text-muted)] mb-1 flex-wrap">

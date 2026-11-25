@@ -43,9 +43,25 @@ export default async function WritingArchive({ searchParams }: { searchParams: P
         <p className="mt-2 font-mono text-[var(--text-label)] text-[color:var(--text-muted)]">{result.totalDocs} ESSAYS</p>
       </header>
       <TopicFilter topics={topics} activeSlug={params.topic} basePath="/writing" />
-      <div className="mt-6 flex items-center gap-6 border-b border-[color:var(--border)] pb-3">
-        <Link href={`/writing?view=shelf${params.topic ? `&topic=${encodeURIComponent(params.topic)}` : ''}`} aria-current={view === 'shelf' ? 'page' : undefined} className={`min-h-11 inline-flex items-center font-mono text-[var(--text-ui-sm)] ${view === 'shelf' ? 'text-[color:var(--accent-text)] underline underline-offset-4' : 'text-[color:var(--text-muted)]'}`}>SHELF</Link>
-        <Link href={`/writing?view=list${params.topic ? `&topic=${encodeURIComponent(params.topic)}` : ''}`} aria-current={view === 'list' ? 'page' : undefined} className={`min-h-11 inline-flex items-center font-mono text-[var(--text-ui-sm)] ${view === 'list' ? 'text-[color:var(--accent-text)] underline underline-offset-4' : 'text-[color:var(--text-muted)]'}`}>LIST</Link>
+      <div className="mt-6 flex items-center justify-between border-b border-[color:var(--border)] pb-3">
+        <div className="inline-flex items-center p-1 rounded-[var(--radius-s)] border border-[color:var(--border)] bg-[color:var(--surface)]/60">
+          <Link
+            href={`/writing?view=shelf${params.topic ? `&topic=${encodeURIComponent(params.topic)}` : ''}`}
+            aria-current={view === 'shelf' ? 'page' : undefined}
+            style={{ textDecoration: 'none' }}
+            className={`min-h-[36px] px-3.5 rounded-[var(--radius-s)] inline-flex items-center font-mono text-[var(--text-ui-sm)] transition-colors ${view === 'shelf' ? 'bg-[color:var(--accent-subtle)] text-[color:var(--accent-text)] font-medium' : 'text-[color:var(--text-muted)] hover:text-[color:var(--text)]'}`}
+          >
+            SHELF
+          </Link>
+          <Link
+            href={`/writing?view=list${params.topic ? `&topic=${encodeURIComponent(params.topic)}` : ''}`}
+            aria-current={view === 'list' ? 'page' : undefined}
+            style={{ textDecoration: 'none' }}
+            className={`min-h-[36px] px-3.5 rounded-[var(--radius-s)] inline-flex items-center font-mono text-[var(--text-ui-sm)] transition-colors ${view === 'list' ? 'bg-[color:var(--accent-subtle)] text-[color:var(--accent-text)] font-medium' : 'text-[color:var(--text-muted)] hover:text-[color:var(--text)]'}`}
+          >
+            LIST
+          </Link>
+        </div>
       </div>
       <div className="mt-8">
         {view === 'shelf' ? <WritingShelf posts={result.docs} /> : <WritingList posts={result.docs} />}

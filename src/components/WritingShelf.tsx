@@ -54,20 +54,27 @@ export function WritingShelf({ posts }: { posts: Post[] }) {
       </div>
 
       {selected && (
-        <aside aria-label="Selected writing preview" className="lg:sticky lg:top-24 lg:self-start">
+        <aside aria-label="Selected writing preview" className="lg:sticky lg:top-24 lg:self-start p-6 border border-[color:var(--border)] bg-[color:var(--surface)]/70 rounded-[var(--radius-s)] shadow-sm">
           {typeof selected.cover_image === 'object' && selected.cover_image?.url && (
-            <div className="mb-4 aspect-[16/10] overflow-hidden rounded-[var(--radius-s)]">
-              <ProjectImage src={selected.cover_image.url} alt={selected.cover_image.alt_text || selected.title} fill sizes="(max-width: 1024px) 100vw, 33vw" />
+            <div className="mb-4 relative aspect-[16/10] overflow-hidden rounded-[var(--radius-s)] border border-[color:var(--border)]">
+              <ProjectImage src={selected.cover_image.url} alt={selected.cover_image.alt_text || selected.title} fill sizes="(max-width: 1024px) 100vw, 33vw" className="object-cover" />
             </div>
           )}
-          <p className="font-mono text-[var(--text-label)] text-[color:var(--accent-text)]">{(selected.topics as any[])?.map((topic) => typeof topic === 'object' ? topic.name : '').filter(Boolean).join(' · ').toUpperCase()}</p>
-          <h2 className="mt-3 font-[family-name:var(--font-display)] text-[var(--text-h2)]">{selected.title}</h2>
-          {selected.excerpt && <p className="mt-3 text-[var(--text-body)] text-[color:var(--text-muted)]">{selected.excerpt}</p>}
+          <div className="flex items-center justify-between gap-2 flex-wrap">
+            <p className="font-mono text-[var(--text-label)] text-[color:var(--accent-text)]">{(selected.topics as any[])?.map((topic) => typeof topic === 'object' ? topic.name : '').filter(Boolean).join(' · ').toUpperCase()}</p>
+            <span className="font-mono text-[10px] px-2 py-0.5 rounded-full border border-[color:var(--border)] text-[color:var(--text-muted)]">
+              {selected.reading_time ?? 1} MIN READ
+            </span>
+          </div>
+          <h2 className="mt-3 font-[family-name:var(--font-display)] text-[var(--text-h2)] leading-tight">{selected.title}</h2>
+          {selected.excerpt && <p className="mt-3 text-[var(--text-body)] text-[color:var(--text-muted)] leading-relaxed">{selected.excerpt}</p>}
           <p className="mt-4 font-mono text-[var(--text-label)] text-[color:var(--text-muted)]">
             {selected.published_at ? new Date(selected.published_at).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }).toUpperCase() : ''}
-            {' · '}{selected.reading_time ?? 1} MIN READ
           </p>
-          <Link href={`/writing/${selected.slug}`} className="mt-5 inline-flex min-h-11 items-center font-mono text-[var(--text-ui-sm)] text-[color:var(--accent-text)]">READ ARTICLE →</Link>
+          <Link href={`/writing/${selected.slug}`} className="mt-5 btn-cta-solid">
+            <span>READ ARTICLE</span>
+            <span aria-hidden="true">→</span>
+          </Link>
         </aside>
       )}
     </div>

@@ -17,23 +17,39 @@ export function TopicFilter({
   });
 
   return (
-    <nav className="w-full overflow-x-auto" aria-label="Filter by topic">
-      <div className="flex min-h-11 items-center gap-6 whitespace-nowrap">
+    <nav className="w-full overflow-x-auto pb-1 scroll-smooth [scroll-snap-type:x_proximity]" aria-label="Filter by topic">
+      <div className="flex min-h-11 items-center gap-2.5 whitespace-nowrap">
         <Link
           href={basePath}
-          className={`min-h-11 inline-flex items-center font-mono text-[var(--text-ui-sm)] ${!activeSlug ? 'text-[color:var(--accent-text)] underline underline-offset-4' : 'text-[color:var(--text-muted)]'}`}
+          aria-current={!activeSlug ? 'page' : undefined}
+          style={{ textDecoration: 'none' }}
+          className={`min-h-[38px] px-3.5 rounded-full border inline-flex items-center gap-2 font-mono text-[var(--text-ui-sm)] tracking-wider transition-colors [scroll-snap-align:start] ${
+            !activeSlug
+              ? 'bg-[color:var(--accent-subtle)] text-[color:var(--accent-text)] border-[color:var(--accent-border)] font-medium'
+              : 'bg-[color:var(--surface)]/60 text-[color:var(--text-muted)] border-[color:var(--border)] hover:border-[color:var(--accent-border)] hover:text-[color:var(--text)]'
+          }`}
         >
-          ALL
+          <span>ALL</span>
         </Link>
-        {visible.map((topic) => (
-          <Link
-            key={topic.slug}
-            href={`${basePath}?topic=${encodeURIComponent(topic.slug)}`}
-            className={`min-h-11 inline-flex items-center font-mono text-[var(--text-ui-sm)] ${activeSlug === topic.slug ? 'text-[color:var(--accent-text)] underline underline-offset-4' : 'text-[color:var(--text-muted)]'}`}
-          >
-            {topic.name.toUpperCase()} {topic.count}
-          </Link>
-        ))}
+        {visible.map((topic) => {
+          const isActive = activeSlug === topic.slug;
+          return (
+            <Link
+              key={topic.slug}
+              href={`${basePath}?topic=${encodeURIComponent(topic.slug)}`}
+              aria-current={isActive ? 'page' : undefined}
+              style={{ textDecoration: 'none' }}
+              className={`min-h-[38px] px-3.5 rounded-full border inline-flex items-center gap-2 font-mono text-[var(--text-ui-sm)] tracking-wider transition-colors [scroll-snap-align:start] ${
+                isActive
+                  ? 'bg-[color:var(--accent-subtle)] text-[color:var(--accent-text)] border-[color:var(--accent-border)] font-medium'
+                  : 'bg-[color:var(--surface)]/60 text-[color:var(--text-muted)] border-[color:var(--border)] hover:border-[color:var(--accent-border)] hover:text-[color:var(--text)]'
+              }`}
+            >
+              <span>{topic.name.toUpperCase()}</span>
+              <span className="text-[10px] opacity-70">{topic.count}</span>
+            </Link>
+          );
+        })}
       </div>
     </nav>
   );

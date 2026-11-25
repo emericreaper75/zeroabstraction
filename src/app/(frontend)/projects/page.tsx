@@ -42,9 +42,25 @@ export default async function ProjectsArchive({ searchParams }: { searchParams: 
         <p className="mt-2 font-mono text-[var(--text-label)] text-[color:var(--text-muted)]">{result.totalDocs} PROJECTS</p>
       </header>
       <TopicFilter topics={topics} activeSlug={params.topic} basePath="/projects" />
-      <div className="mt-6 flex items-center gap-6 border-b border-[color:var(--border)] pb-3">
-        <Link href={`/projects?view=library${params.topic ? `&topic=${encodeURIComponent(params.topic)}` : ''}`} aria-current={view === 'library' ? 'page' : undefined} className={`min-h-11 inline-flex items-center font-mono text-[var(--text-ui-sm)] ${view === 'library' ? 'text-[color:var(--accent-text)] underline underline-offset-4' : 'text-[color:var(--text-muted)]'}`}>LIBRARY</Link>
-        <Link href={`/projects?view=list${params.topic ? `&topic=${encodeURIComponent(params.topic)}` : ''}`} aria-current={view === 'list' ? 'page' : undefined} className={`min-h-11 inline-flex items-center font-mono text-[var(--text-ui-sm)] ${view === 'list' ? 'text-[color:var(--accent-text)] underline underline-offset-4' : 'text-[color:var(--text-muted)]'}`}>LIST</Link>
+      <div className="mt-6 flex items-center justify-between border-b border-[color:var(--border)] pb-3">
+        <div className="inline-flex items-center p-1 rounded-[var(--radius-s)] border border-[color:var(--border)] bg-[color:var(--surface)]/60">
+          <Link
+            href={`/projects?view=library${params.topic ? `&topic=${encodeURIComponent(params.topic)}` : ''}`}
+            aria-current={view === 'library' ? 'page' : undefined}
+            style={{ textDecoration: 'none' }}
+            className={`min-h-[36px] px-3.5 rounded-[var(--radius-s)] inline-flex items-center font-mono text-[var(--text-ui-sm)] transition-colors ${view === 'library' ? 'bg-[color:var(--accent-subtle)] text-[color:var(--accent-text)] font-medium' : 'text-[color:var(--text-muted)] hover:text-[color:var(--text)]'}`}
+          >
+            LIBRARY
+          </Link>
+          <Link
+            href={`/projects?view=list${params.topic ? `&topic=${encodeURIComponent(params.topic)}` : ''}`}
+            aria-current={view === 'list' ? 'page' : undefined}
+            style={{ textDecoration: 'none' }}
+            className={`min-h-[36px] px-3.5 rounded-[var(--radius-s)] inline-flex items-center font-mono text-[var(--text-ui-sm)] transition-colors ${view === 'list' ? 'bg-[color:var(--accent-subtle)] text-[color:var(--accent-text)] font-medium' : 'text-[color:var(--text-muted)] hover:text-[color:var(--text)]'}`}
+          >
+            LIST
+          </Link>
+        </div>
       </div>
       <div className="mt-8">
         {result.docs.length === 0 ? (
@@ -54,13 +70,19 @@ export default async function ProjectsArchive({ searchParams }: { searchParams: 
         ) : (
           <div className="border-t border-[color:var(--border)]">
             {[...result.docs].sort((a, b) => Number(Boolean(b.featured)) - Number(Boolean(a.featured)) || (b.year ?? 0) - (a.year ?? 0)).map((project) => (
-              <article key={project.id} className="grid grid-cols-1 gap-4 border-b border-[color:var(--border)] py-5 md:grid-cols-[8rem_1fr_12rem]">
+              <article key={project.id} className="group grid grid-cols-1 gap-4 border-b border-[color:var(--border)] py-5 px-3 -mx-3 rounded-[var(--radius-s)] transition-colors hover:bg-[color:var(--surface)]/60 md:grid-cols-[9rem_1fr_13rem]">
                 <p className="font-mono text-[var(--text-label)] text-[color:var(--text-muted)]">{project.year ?? ''} · {project.status?.replace('_', ' ').toUpperCase()}</p>
                 <div>
-                  <h2 className="font-[family-name:var(--font-display)] text-[var(--text-h3)]"><Link href={`/projects/${project.slug}`} className="hover:underline">{project.title}</Link></h2>
+                  <h2 className="font-[family-name:var(--font-display)] text-[var(--text-h3)]"><Link href={`/projects/${project.slug}`} className="group-hover:text-[color:var(--accent-text)] transition-colors" style={{ textDecoration: 'none' }}>{project.title}</Link></h2>
                   {project.summary && <p className="mt-2 text-[var(--text-small)] text-[color:var(--text-muted)]">{project.summary}</p>}
                 </div>
-                <p className="font-mono text-[var(--text-label)] text-[color:var(--text-muted)] md:text-right">{project.technologies?.slice(0, 3).map((technology) => technology.name).join(' / ')}</p>
+                <div className="flex flex-col md:items-end justify-between gap-2">
+                  <p className="font-mono text-[var(--text-label)] text-[color:var(--text-muted)] md:text-right">{project.technologies?.slice(0, 3).map((technology) => technology.name).join(' / ')}</p>
+                  <Link href={`/projects/${project.slug}`} className="font-mono text-[11px] text-[color:var(--accent-text)] inline-flex items-center gap-1" style={{ textDecoration: 'none' }}>
+                    <span>OPEN</span>
+                    <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">→</span>
+                  </Link>
+                </div>
               </article>
             ))}
           </div>
