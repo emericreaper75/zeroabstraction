@@ -41,7 +41,7 @@ export function SearchInput() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search projects, essays, and topics..."
-          className="w-full bg-transparent py-4 pr-16 text-xl md:text-2xl outline-none placeholder:text-[color:var(--text-muted)]"
+          className="w-full bg-transparent py-4 pr-16 text-xl md:text-2xl outline-none focus:outline-none focus-visible:outline-none placeholder:text-[color:var(--text-muted)]"
           autoFocus
         />
         {query && (
