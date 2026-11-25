@@ -121,6 +121,7 @@ Tracking all presentation and functional improvements to the Payload Atelier Adm
 78. **Harmonized Collection Tables**: Updated `PostsTableClient.tsx` and `ProjectsTableClient.tsx` to borderless `#FFFFFF` `rounded-[20px]` cards, `rounded-full` filter/action pills, and `#F1F5F9` row hairlines.
 79. **Harmonized Media & Topics Managers**: Updated `MediaManager.tsx` and `TopicsManager.tsx` to Panze Studio `rounded-[20px]` cards and `rounded-full` controls.
 80. **Purpose-Built Logos & Semantic Icons**: Replaced generic square/QR/hub icons with a custom SVG ZeroAbstraction Observatory orbital brand mark, observatory-radar greeting emblem, `rocket_launch` for Projects & Rigs, `article` for Posts, `sell` for Topics, `add_photo_alternate` for Plate uploads, and `admin_panel_settings` for Users & Access.
+81. **Media File Renaming (Upload & Existing)**: Added custom filename input during upload in `MediaManager.tsx` and `renameMediaAction` in `media/actions.ts` with a Rename `<AdminDialog>` accessible from Grid cards, List rows, and the Plate Inspector.
 
 
 

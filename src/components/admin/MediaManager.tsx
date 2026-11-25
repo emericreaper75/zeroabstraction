@@ -3,7 +3,11 @@
 import React, { useMemo, useRef, useState, useTransition } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { uploadMediaAction, deleteMediaAction } from '@/app/(admin)/admin/collections/media/actions'
+import {
+  uploadMediaAction,
+  renameMediaAction,
+  deleteMediaAction,
+} from '@/app/(admin)/admin/collections/media/actions'
 import { AdminDialog } from './AdminDialog'
 import { useAdminToast } from './AdminToastProvider'
 
@@ -29,11 +33,15 @@ export function MediaManager({ initialDocs, totalDocs }: MediaManagerProps) {
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const [showUploadModal, setShowUploadModal] = useState(false)
+  const [customFilename, setCustomFilename] = useState('')
   const [altText, setAltText] = useState('')
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const [search, setSearch] = useState('')
   const [inspectItem, setInspectItem] = useState<MediaItem | null>(null)
+  const [renameTarget, setRenameTarget] = useState<MediaItem | null>(null)
+  const [renameFilename, setRenameFilename] = useState('')
+  const [renameAlt, setRenameAlt] = useState('')
   const [confirmDelete, setConfirmDelete] = useState<{ id: string | number; filename?: string } | null>(null)
 
   const [isPending, startTransition] = useTransition()
@@ -55,6 +63,7 @@ export function MediaManager({ initialDocs, totalDocs }: MediaManagerProps) {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0]
       setSelectedFile(file)
+      setCustomFilename(file.name)
       if (!altText) {
         setAltText(file.name.replace(/\.[^/.]+$/, ''))
       }
@@ -72,7 +81,8 @@ export function MediaManager({ initialDocs, totalDocs }: MediaManagerProps) {
     startTransition(async () => {
       const formData = new FormData()
       formData.append('file', selectedFile)
-      formData.append('alt_text', altText || selectedFile.name)
+      formData.append('custom_filename', customFilename.trim() || selectedFile.name)
+      formData.append('alt_text', altText || customFilename.trim() || selectedFile.name)
 
       const res = await uploadMediaAction(formData)
       if (res.success) {
@@ -80,10 +90,40 @@ export function MediaManager({ initialDocs, totalDocs }: MediaManagerProps) {
         setFeedback({ type: 'success', message: 'Asset uploaded successfully.' })
         setShowUploadModal(false)
         setSelectedFile(null)
+        setCustomFilename('')
         setAltText('')
         router.refresh()
       } else {
         setFeedback({ type: 'error', message: res.error || 'Failed to upload media asset.' })
+      }
+    })
+  }
+
+  const openRenameDialog = (media: MediaItem) => {
+    setRenameTarget(media)
+    setRenameFilename(media.filename || '')
+    setRenameAlt(media.alt_text || media.alt || '')
+  }
+
+  const handleRenameSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!renameTarget || !renameFilename.trim()) return
+
+    startTransition(async () => {
+      const res = await renameMediaAction(
+        renameTarget.id,
+        renameFilename.trim(),
+        renameAlt.trim()
+      )
+      if (res.success) {
+        toast.success(`Renamed to ${res.doc?.filename || renameFilename}`)
+        setRenameTarget(null)
+        if (inspectItem?.id === renameTarget.id && res.doc) {
+          setInspectItem(res.doc as any)
+        }
+        router.refresh()
+      } else {
+        toast.error(res.error || 'Failed to rename file.')
       }
     })
   }
@@ -257,6 +297,19 @@ export function MediaManager({ initialDocs, totalDocs }: MediaManagerProps) {
 
             <div className="space-y-1.5">
               <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase">
+                File Name
+              </label>
+              <input
+                type="text"
+                value={customFilename}
+                onChange={(e) => setCustomFilename(e.target.value)}
+                placeholder="e.g. ngc-7000-emission.png"
+                className="w-full bg-surface-container-lowest border border-hairline-rule rounded text-on-surface font-body-md text-body-md px-3 py-2 focus:border-primary focus:outline-none"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase">
                 Alt Text / Description <span className="text-accent-ochre">*</span>
               </label>
               <input
@@ -323,6 +376,15 @@ export function MediaManager({ initialDocs, totalDocs }: MediaManagerProps) {
                   {media.mimeType?.split('/')[1]?.toUpperCase() || 'FILE'}
                 </div>
                 <div className="absolute top-1.5 right-1.5 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <button
+                    type="button"
+                    onClick={() => openRenameDialog(media)}
+                    className="p-1 bg-paper-surface/90 hover:text-primary text-ink-secondary rounded shadow-xs"
+                    title="Rename file"
+                    aria-label={`Rename ${media.filename}`}
+                  >
+                    <span className="material-symbols-outlined text-[15px]">drive_file_rename_outline</span>
+                  </button>
                   {media.url && (
                     <button
                       type="button"
@@ -393,6 +455,13 @@ export function MediaManager({ initialDocs, totalDocs }: MediaManagerProps) {
                       {media.filesize ? `${(media.filesize / 1024).toFixed(0)} KB` : '—'}
                     </td>
                     <td className="px-4 py-2.5 text-right space-x-2">
+                      <button
+                        type="button"
+                        onClick={() => openRenameDialog(media)}
+                        className="text-ink-muted hover:text-primary"
+                      >
+                        Rename
+                      </button>
                       {media.url && (
                         <button
                           type="button"
@@ -479,6 +548,13 @@ export function MediaManager({ initialDocs, totalDocs }: MediaManagerProps) {
               </div>
             </div>
             <div className="flex justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => openRenameDialog(inspectItem)}
+                className="px-3.5 py-1.5 rounded border border-hairline-rule text-xs font-label-sm text-on-surface hover:border-primary"
+              >
+                Rename File
+              </button>
               {inspectItem.url && (
                 <button
                   type="button"
@@ -498,6 +574,70 @@ export function MediaManager({ initialDocs, totalDocs }: MediaManagerProps) {
             </div>
           </div>
         )}
+      </AdminDialog>
+
+      {/* Rename Media Dialog */}
+      <AdminDialog
+        open={Boolean(renameTarget)}
+        onClose={() => setRenameTarget(null)}
+        labelledBy="rename-plate-title"
+        className="w-[min(460px,92vw)]"
+      >
+        <form onSubmit={handleRenameSubmit} className="p-5 bg-paper-surface space-y-4">
+          <div className="flex items-center justify-between border-b border-hairline-subtle pb-3">
+            <h1 id="rename-plate-title" className="font-studio-display text-base font-semibold text-on-surface">
+              Rename Media File
+            </h1>
+            <button
+              type="button"
+              onClick={() => setRenameTarget(null)}
+              aria-label="Close rename dialog"
+              className="p-1 text-ink-muted hover:text-on-surface"
+            >
+              <span className="material-symbols-outlined text-[18px]">close</span>
+            </button>
+          </div>
+          <div className="space-y-1.5">
+            <label className="block text-xs font-medium text-ink-secondary">
+              Filename
+            </label>
+            <input
+              type="text"
+              autoFocus
+              required
+              value={renameFilename}
+              onChange={(e) => setRenameFilename(e.target.value)}
+              className="w-full bg-surface-container-low border border-hairline-rule rounded-lg px-3 py-2 text-sm text-on-surface focus:outline-none focus:border-primary"
+            />
+          </div>
+          <div className="space-y-1.5">
+            <label className="block text-xs font-medium text-ink-secondary">
+              Alt Text
+            </label>
+            <input
+              type="text"
+              value={renameAlt}
+              onChange={(e) => setRenameAlt(e.target.value)}
+              className="w-full bg-surface-container-low border border-hairline-rule rounded-lg px-3 py-2 text-sm text-on-surface focus:outline-none focus:border-primary"
+            />
+          </div>
+          <div className="flex justify-end gap-2 pt-2">
+            <button
+              type="button"
+              onClick={() => setRenameTarget(null)}
+              className="px-4 py-1.5 rounded-full border border-hairline-rule text-xs font-medium text-on-surface hover:bg-surface-container-low"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={isPending}
+              className="px-4 py-1.5 rounded-full bg-[#0F172A] text-white dark:bg-slate-100 dark:text-slate-900 text-xs font-medium disabled:opacity-50"
+            >
+              {isPending ? 'Saving...' : 'Save Name'}
+            </button>
+          </div>
+        </form>
       </AdminDialog>
 
       {/* Delete Confirmation Dialog */}
