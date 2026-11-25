@@ -76,7 +76,7 @@ export default async function RootLayout({
             <footer className="container-wide py-16 border-t border-[color:var(--border)]">
               <div className="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-16">
                 
-                {/* Column 1 (Left): Brand + Tagline + Copyright */}
+                {/* Column 1 (Left): Brand + Tagline */}
                 <div className="md:col-span-6 lg:col-span-6 flex flex-col justify-between gap-6">
                   <div className="flex flex-col gap-3">
                     <span className="font-[family-name:var(--font-display)] text-2xl sm:text-3xl font-light text-[color:var(--text)]">
@@ -86,9 +86,6 @@ export default async function RootLayout({
                       {siteTagline}
                     </p>
                   </div>
-                  <p className="font-mono text-xs text-[color:var(--text-muted)] pt-2">
-                    {footerText}
-                  </p>
                 </div>
                 
                 {/* Column 2 (Center-Right): Navigation */}
@@ -162,6 +159,30 @@ export default async function RootLayout({
                   </div>
                 </div>
 
+              </div>
+
+              {/* Domain Filter Tag Strip & Copyright Bar */}
+              <div className="mt-12 pt-6 border-t border-[color:var(--border)] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="flex items-center flex-wrap gap-2 font-mono text-[11px] tracking-wider">
+                  {[
+                    { tag: '#ASTROPHYSICS', q: 'astrophysics' },
+                    { tag: '#FPGA', q: 'fpga' },
+                    { tag: '#EMBEDDED', q: 'embedded' },
+                    { tag: '#RAY-TRACING', q: 'ray' },
+                  ].map((item) => (
+                    <Link
+                      key={item.tag}
+                      href={`/search?q=${encodeURIComponent(item.q)}`}
+                      style={{ textDecoration: 'none' }}
+                      className="px-2.5 py-1 rounded-full border border-[color:var(--border)] bg-[color:var(--bg-subtle)]/60 text-[color:var(--text-muted)] hover:border-[color:var(--accent-border)] hover:text-[color:var(--accent-text)] transition-colors"
+                    >
+                      {item.tag}
+                    </Link>
+                  ))}
+                </div>
+                <p className="font-mono text-xs text-[color:var(--text-muted)]">
+                  {footerText}
+                </p>
               </div>
             </footer>
           </div>

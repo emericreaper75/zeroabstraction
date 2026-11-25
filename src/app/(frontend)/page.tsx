@@ -90,33 +90,48 @@ export default async function Home() {
       {/* 3.5 RIGHT NOW — LIVE LAB STATE BENTO */}
       <Reveal>
         <section className="container-wide py-12 lg:py-16 border-b border-[color:var(--border)]" aria-labelledby="right-now-heading">
-          <div className="flex items-center justify-between mb-6">
-            <span id="right-now-heading" className="font-mono text-xs uppercase tracking-widest text-[color:var(--text-muted)] flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-[color:var(--success)]" aria-hidden="true" />
+          <div className="flex items-center justify-between mb-6 gap-4 flex-wrap">
+            <span id="right-now-heading" className="font-mono text-xs uppercase tracking-widest text-[color:var(--text-muted)]">
               RIGHT NOW
             </span>
-            <span className="font-mono text-[11px] uppercase tracking-wider text-[color:var(--text-muted)]">
-              ACTIVE BENCH LOG
+            <span className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-wider text-[color:var(--text-muted)]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[color:var(--secondary)]" aria-hidden="true" />
+              <span>ACTIVE · UPDATED NOV 2026</span>
             </span>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-6 border border-[color:var(--border)] hover:border-[color:var(--accent-border)] bg-[color:var(--surface)]/70 rounded-[var(--radius-s)] flex flex-col gap-2 transition-all duration-200 hover:-translate-y-0.5">
-              <span className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--accent-text)]">STUDYING</span>
-              <p className="text-sm sm:text-base text-[color:var(--text)] leading-relaxed">
-                {currentState?.studying || 'Quantum error correction & superconducting qubit readout topologies.'}
-              </p>
+            <div className="p-6 border border-[color:var(--border)] hover:border-[color:var(--accent-border)] bg-[color:var(--surface)]/70 rounded-[var(--radius-s)] flex flex-col justify-between gap-4 transition-colors duration-200">
+              <div className="flex flex-col gap-2">
+                <span className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--accent-text)]">STUDYING</span>
+                <p className="text-sm sm:text-base text-[color:var(--text)] leading-relaxed">
+                  {currentState?.studying || 'Quantum error correction & superconducting qubit readout topologies.'}
+                </p>
+              </div>
+              <div className="pt-3 border-t border-[color:var(--border)] font-mono text-[10px] tracking-widest uppercase text-[color:var(--text-muted)]">
+                QUBIT READOUT
+              </div>
             </div>
-            <div className="p-6 border border-[color:var(--border)] hover:border-[color:var(--accent-border)] bg-[color:var(--surface)]/70 rounded-[var(--radius-s)] flex flex-col gap-2 transition-all duration-200 hover:-translate-y-0.5">
-              <span className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--accent-text)]">BUILDING</span>
-              <p className="text-sm sm:text-base text-[color:var(--text)] leading-relaxed">
-                {currentState?.building || 'Low-latency FPGA DSP pipelines for radio interferometry and telemetry.'}
-              </p>
+            <div className="p-6 border border-[color:var(--border)] hover:border-[color:var(--accent-border)] bg-[color:var(--surface)]/70 rounded-[var(--radius-s)] flex flex-col justify-between gap-4 transition-colors duration-200">
+              <div className="flex flex-col gap-2">
+                <span className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--accent-text)]">BUILDING</span>
+                <p className="text-sm sm:text-base text-[color:var(--text)] leading-relaxed">
+                  {currentState?.building || 'Low-latency FPGA DSP pipelines for radio interferometry and telemetry.'}
+                </p>
+              </div>
+              <div className="pt-3 border-t border-[color:var(--border)] font-mono text-[10px] tracking-widest uppercase text-[color:var(--text-muted)]">
+                VIVADO RTL
+              </div>
             </div>
-            <div className="p-6 border border-[color:var(--border)] hover:border-[color:var(--accent-border)] bg-[color:var(--surface)]/70 rounded-[var(--radius-s)] flex flex-col gap-2 transition-all duration-200 hover:-translate-y-0.5">
-              <span className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--accent-text)]">READING</span>
-              <p className="text-sm sm:text-base text-[color:var(--text)] leading-relaxed">
-                {currentState?.reading || 'Misner, Thorne & Wheeler — Gravitation, alongside cryogenic RF design notes.'}
-              </p>
+            <div className="p-6 border border-[color:var(--border)] hover:border-[color:var(--accent-border)] bg-[color:var(--surface)]/70 rounded-[var(--radius-s)] flex flex-col justify-between gap-4 transition-colors duration-200">
+              <div className="flex flex-col gap-2">
+                <span className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--accent-text)]">READING</span>
+                <p className="text-sm sm:text-base text-[color:var(--text)] leading-relaxed">
+                  {currentState?.reading || 'Misner, Thorne & Wheeler — Gravitation, alongside cryogenic RF design notes.'}
+                </p>
+              </div>
+              <div className="pt-3 border-t border-[color:var(--border)] font-mono text-[10px] tracking-widest uppercase text-[color:var(--text-muted)]">
+                MTW GRAVITATION
+              </div>
             </div>
           </div>
         </section>

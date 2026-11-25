@@ -1,8 +1,6 @@
 import type { Metadata } from 'next';
-import { Display, Heading, Title, Label, Body } from '@/components/typography';
+import { Display, Title, Label } from '@/components/typography';
 import { ProjectImage } from '@/components/ProjectImage';
-import { EditorialLink } from '@/components/EditorialLink';
-import { Reveal } from '@/components/Reveal';
 import { CopyEmailButton } from '@/components/CopyEmailButton';
 import { getProfile, getSiteSettings } from '@/lib/content';
 import { RichTextRenderer } from '@/components/RichTextRenderer';
@@ -13,6 +11,25 @@ export const metadata: Metadata = {
     'Manoj Amavasya — Electronics and Communication Engineering undergraduate building a foundation for research in Physics, Astrophysics, and Scientific Computing.',
 };
 
+const LEDGER_ENTRIES = [
+  {
+    category: 'EDUCATION',
+    title: 'B.Tech in Electronics & Communication Engineering — JNTU Anantapur',
+    meta: '2023 – 2027',
+  },
+  {
+    category: 'FOCUS',
+    title: 'Embedded Readout Systems, Digital Signal Processing & Computational Astrophysics',
+    meta: 'ONGOING',
+  },
+  {
+    category: 'OPEN SOURCE',
+    title: 'ZeroAbstraction Digital Garden, FPGA DSP Cores & Lensing Ray-Tracing Notes',
+    meta: 'GITHUB ↗',
+    href: 'https://github.com/manoj-amavasya',
+  },
+];
+
 export default async function AboutPage() {
   const [profile, siteSettings] = await Promise.all([
     getProfile().catch(() => null),
@@ -22,207 +39,149 @@ export default async function AboutPage() {
   const profileImgUrl =
     typeof profile?.photograph === 'object' && profile?.photograph?.url
       ? profile.photograph.url
-      : '/placeholder.svg';
+      : '/images/admin/portrait_manoj.png';
   const profileImgAlt =
     typeof profile?.photograph === 'object' && profile?.photograph?.alt_text
-      ? profile.photograph.alt_text
+      ? profile?.photograph.alt_text
       : 'Manoj Amavasya — Researcher';
 
   return (
-    <div className="container-wide pb-20">
-      {/* 1. Header & Researcher Dossier */}
-      <Reveal>
-        <section
-          className="pt-16 pb-16 ui-border-b relative overflow-hidden"
-          style={{ marginBottom: 'var(--space-6)' }}
-        >
-          <div className="flex flex-col gap-4 mb-10 relative z-10">
-            <Label className="text-[color:var(--text-muted)] tracking-widest">
-              ABOUT ZEROABSTRACTION
+    <div className="container-wide pb-20 pt-12 md:pt-16">
+      <div className="flex flex-col gap-3 pb-10 mb-10 border-b border-[color:var(--border)]">
+        <Label className="text-[color:var(--accent-text)] tracking-widest">
+          ABOUT ZEROABSTRACTION
+        </Label>
+        <Display>Researcher</Display>
+      </div>
+
+      {/* 2-Column Editorial Spread: 35% Sticky Spec Rail / 65% Prose Column */}
+      <div className="grid grid-cols-1 lg:grid-cols-[35fr_65fr] gap-10 lg:gap-14 items-start">
+        {/* Left Sticky Spec Rail (35%) */}
+        <aside className="lg:sticky lg:top-24 flex flex-col gap-6">
+          <figure className="w-full overflow-hidden rounded-[var(--radius-s)] border border-[color:var(--border)] bg-[color:var(--surface)]">
+            <ProjectImage
+              src={profileImgUrl}
+              alt={profileImgAlt}
+              width={600}
+              height={720}
+              className="w-full h-auto object-cover"
+              priority
+            />
+          </figure>
+
+          {/* Compact Monospace Coordinate & Toolkit Spec Block */}
+          <div className="border border-[color:var(--border)] bg-[color:var(--bg-subtle)]/60 rounded-[var(--radius-s)] p-5 flex flex-col gap-3 font-mono text-xs">
+            <div className="flex flex-col gap-1 pb-2.5 border-b border-[color:var(--border)]">
+              <span className="text-[10px] tracking-widest text-[color:var(--text-muted)]">BASE</span>
+              <span className="text-[color:var(--text)]">ANANTAPUR · 14.68° N, 77.60° E</span>
+            </div>
+            <div className="flex flex-col gap-1 pb-2.5 border-b border-[color:var(--border)]">
+              <span className="text-[10px] tracking-widest text-[color:var(--text-muted)]">FOCUS</span>
+              <span className="text-[color:var(--text)]">ECE · PHYSICS · ASTROPHYSICS</span>
+            </div>
+            <div className="flex flex-col gap-1 pb-2.5 border-b border-[color:var(--border)]">
+              <span className="text-[10px] tracking-widest text-[color:var(--text-muted)]">TOOLS</span>
+              <span className="text-[color:var(--text)]">VIVADO · KICAD · LTSPICE · PYTHON</span>
+            </div>
+
+            {siteSettings?.email && (
+              <div className="flex items-center justify-between gap-2 pt-1">
+                <a
+                  href={`mailto:${siteSettings.email}`}
+                  className="text-[color:var(--accent-text)] hover:underline truncate"
+                >
+                  {siteSettings.email}
+                </a>
+                <CopyEmailButton email={siteSettings.email} />
+              </div>
+            )}
+            {siteSettings?.social_links && siteSettings.social_links.length > 0 && (
+              <div className="flex flex-wrap gap-3 pt-1">
+                {siteSettings.social_links
+                  .filter((s) => Boolean(s.url && s.url !== '#'))
+                  .map((s, idx) => (
+                    <a
+                      key={idx}
+                      href={s.url!}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[11px] uppercase tracking-wider text-[color:var(--accent-text)] hover:underline"
+                    >
+                      {s.platform} ↗
+                    </a>
+                  ))}
+              </div>
+            )}
+          </div>
+        </aside>
+
+        {/* Right Prose Column (65%) */}
+        <div className="flex flex-col gap-10">
+          <section className="flex flex-col gap-6 max-w-[65ch]">
+            <Title as="h2" className="text-3xl md:text-4xl leading-tight">
+              Manoj Amavasya
+            </Title>
+            <div className="flex flex-col gap-5 text-[color:var(--text)] text-lg leading-relaxed font-sans">
+              <p>
+                I am a final-year Electronics and Communication Engineering undergraduate building a
+                strong engineering foundation spanning embedded systems, digital signal processing,
+                quantum and scientific computing, and communications, with a long-term goal of pursuing
+                research in Physics and Astrophysics.
+              </p>
+              <p className="text-[color:var(--text-muted)]">
+                My academic interests connect engineering with scientific discovery. I view
+                Electronics and Communication Engineering as the foundational layer that enables work in
+                computational physics, astrophysics, signal processing, and future applications of
+                quantum computing. I prefer approaching scientific questions through evidence,
+                computation, and engineering rather than speculation.
+              </p>
+            </div>
+          </section>
+
+          {/* 1-Line Ledger: Education, Focus, Open-Source */}
+          <section aria-label="Academic and Open-Source Ledger" className="max-w-[65ch]">
+            <Label className="text-[color:var(--text-muted)] tracking-widest block mb-3">
+              LEDGER
             </Label>
-            <Display>Researcher</Display>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start relative z-10">
-            {/* Left / Photo column */}
-            <div className="lg:col-span-4 flex flex-col gap-6">
-              <div className="p-4 architectural-grid border border-[color:var(--border)]/50 rounded-[var(--radius-s)]">
-                <figure className="w-full overflow-hidden rounded-[var(--radius-s)] border border-[color:var(--border)] shadow-sm">
-                  <ProjectImage
-                    src={profileImgUrl}
-                    alt={profileImgAlt}
-                    width={600}
-                    height={750}
-                    className="w-full h-auto object-cover"
-                    priority
-                  />
-                </figure>
-              </div>
-
-              {/* Metadata Card */}
-              <div className="ui-border p-6 flex flex-col gap-4 bg-[color:var(--bg)]">
-                <Label className="text-[color:var(--text-muted)] border-b border-[color:var(--border)] pb-2">
-                  ACADEMIC AFFILIATION
-                </Label>
-                <div className="flex flex-col gap-3">
-                  <div className="flex justify-between items-baseline text-sm">
-                    <Label className="text-[color:var(--text-muted)]">INSTITUTION</Label>
-                    <span className="font-mono text-sm text-[color:var(--text)]">
-                      JNTU Anantapur
+            <div className="border-t border-[color:var(--border)]">
+              {LEDGER_ENTRIES.map((entry) => (
+                <div
+                  key={entry.category}
+                  className="grid grid-cols-1 sm:grid-cols-[7.5rem_1fr_auto] items-baseline gap-2 sm:gap-4 border-b border-[color:var(--border)] py-4"
+                >
+                  <span className="font-mono text-[11px] tracking-widest text-[color:var(--accent-text)]">
+                    {entry.category}
+                  </span>
+                  <span className="text-sm sm:text-base text-[color:var(--text)]">
+                    {entry.title}
+                  </span>
+                  {entry.href ? (
+                    <a
+                      href={entry.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-mono text-[11px] tracking-wider text-[color:var(--accent-text)] hover:underline whitespace-nowrap"
+                    >
+                      {entry.meta}
+                    </a>
+                  ) : (
+                    <span className="font-mono text-[11px] tracking-wider text-[color:var(--text-muted)] whitespace-nowrap">
+                      {entry.meta}
                     </span>
-                  </div>
-                  <div className="flex justify-between items-baseline text-sm">
-                    <Label className="text-[color:var(--text-muted)]">GRADUATION</Label>
-                    <span className="font-mono text-sm text-[color:var(--text)]">
-                      2027
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-baseline text-sm">
-                    <Label className="text-[color:var(--text-muted)]">LOCATION</Label>
-                    <span className="font-mono text-sm text-[color:var(--text)]">
-                      India
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-baseline text-sm">
-                    <Label className="text-[color:var(--text-muted)]">PRIMARY FOCUS</Label>
-                    <span className="font-mono text-sm text-right text-[color:var(--text)]">
-                      ECE → Physics & Astrophysics
-                    </span>
-                  </div>
+                  )}
                 </div>
-
-                {/* Direct Communications & Network Links */}
-                {(siteSettings?.email || (siteSettings?.social_links && siteSettings.social_links.length > 0)) && (
-                  <>
-                    <Label className="text-[color:var(--text-muted)] border-b border-[color:var(--border)] pt-2 pb-2">
-                      COMMUNICATIONS &amp; NETWORKS
-                    </Label>
-                    <div className="flex flex-col gap-3">
-                      {siteSettings?.email && (
-                        <div className="flex justify-between items-center gap-2 text-sm">
-                          <Label className="text-[color:var(--text-muted)]">EMAIL</Label>
-                          <div className="flex items-center gap-2">
-                            <a
-                              href={`mailto:${siteSettings.email}`}
-                              className="font-mono text-sm text-[color:var(--accent-text)] hover:underline"
-                            >
-                              {siteSettings.email}
-                            </a>
-                            <CopyEmailButton email={siteSettings.email} />
-                          </div>
-                        </div>
-                      )}
-                      {siteSettings?.social_links
-                        ?.filter((s) => Boolean(s.url && s.url !== '#'))
-                        .map((s, idx) => (
-                          <div key={idx} className="flex justify-between items-baseline text-sm">
-                            <Label className="text-[color:var(--text-muted)]">{s.platform?.toUpperCase()}</Label>
-                            <a
-                              href={s.url!}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="font-mono text-sm text-[color:var(--accent-text)] hover:underline"
-                            >
-                              {s.platform} ↗
-                            </a>
-                          </div>
-                        ))}
-                    </div>
-                  </>
-                )}
-              </div>
+              ))}
             </div>
+          </section>
 
-            {/* Right / Biography column */}
-            <div className="lg:col-span-8 flex flex-col gap-6">
-              <Title as="h2" className="text-3xl md:text-4xl leading-tight">
-                Manoj Amavasya
-              </Title>
-              <div className="flex flex-col gap-6 text-[color:var(--text)] text-lg leading-relaxed font-sans">
-                <p>
-                  I am a final-year Electronics and Communication Engineering undergraduate building a
-                  strong engineering foundation spanning embedded systems, digital signal processing,
-                  quantum and scientific computing, and communications, with a long-term goal of pursuing
-                  research in Physics and Astrophysics.
-                </p>
-                <p className="text-[color:var(--text-muted)]">
-                  My academic interests connect engineering with scientific discovery. I view
-                  Electronics and Communication Engineering as the foundational layer that enables work in
-                  computational physics, astrophysics, signal processing, and future applications of
-                  quantum computing. I prefer approaching scientific questions through evidence,
-                  computation, and engineering rather than speculation.
-                </p>
-              </div>
-
-              {/* Trajectory / Core Tags */}
-              <div className="flex flex-wrap items-center gap-3 pt-4">
-                <span className="px-3 py-1 text-xs font-mono ui-border text-[color:var(--text-muted)]">
-                  PHYSICS
-                </span>
-                <span className="px-3 py-1 text-xs font-mono ui-border text-[color:var(--text-muted)]">
-                  ASTROPHYSICS
-                </span>
-                <span className="px-3 py-1 text-xs font-mono ui-border text-[color:var(--text-muted)]">
-                  ELECTRONICS & SIGNAL PROCESSING
-                </span>
-                <span className="px-3 py-1 text-xs font-mono ui-border text-[color:var(--text-muted)]">
-                  SCIENTIFIC COMPUTING
-                </span>
-                <span className="px-3 py-1 text-xs font-mono ui-border text-[color:var(--text-muted)]">
-                  QUANTUM INFORMATION
-                </span>
-              </div>
-            </div>
-          </div>
-        </section>
-      </Reveal>
-
-      {/* Research Trajectory Pillars */}
-      <Reveal>
-        <section className="py-12 ui-border-b" aria-labelledby="pillars-heading">
-          <Label id="pillars-heading" className="text-[color:var(--text-muted)] tracking-widest block mb-6">
-            RESEARCH TRAJECTORY
-          </Label>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-6 border border-[color:var(--border)] bg-[color:var(--surface)]/60 rounded-[var(--radius-s)] flex flex-col gap-2">
-              <span className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--accent-text)]">01 · HARDWARE</span>
-              <h3 className="font-[family-name:var(--font-display)] text-2xl text-[color:var(--text)]">Embedded &amp; FPGA Systems</h3>
-              <p className="text-sm text-[color:var(--text-muted)] leading-relaxed">
-                Deterministic timing, cryogenic readout electronics, and custom HDL pipelines bridging physical sensors and computation.
-              </p>
-            </div>
-            <div className="p-6 border border-[color:var(--border)] bg-[color:var(--surface)]/60 rounded-[var(--radius-s)] flex flex-col gap-2">
-              <span className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--accent-text)]">02 · COMPUTATION</span>
-              <h3 className="font-[family-name:var(--font-display)] text-2xl text-[color:var(--text)]">Signal &amp; Scientific Computing</h3>
-              <p className="text-sm text-[color:var(--text-muted)] leading-relaxed">
-                Spectral estimation, matched filtering, and numerical simulation for weak-signal extraction under high noise floors.
-              </p>
-            </div>
-            <div className="p-6 border border-[color:var(--border)] bg-[color:var(--surface)]/60 rounded-[var(--radius-s)] flex flex-col gap-2">
-              <span className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--accent-text)]">03 · DISCOVERY</span>
-              <h3 className="font-[family-name:var(--font-display)] text-2xl text-[color:var(--text)]">Astrophysics &amp; Quantum</h3>
-              <p className="text-sm text-[color:var(--text-muted)] leading-relaxed">
-                Observational instrumentation, gravitational wave data analysis, and fault-tolerant quantum information architectures.
-              </p>
-            </div>
-          </div>
-        </section>
-      </Reveal>
-
-      {/* Dynamic Story Content */}
-      <Reveal>
-        <section className="pt-8">
-          {profile?.story ? (
-            <div className="prose prose-lg dark:prose-invert max-w-none">
+          {/* Dynamic Story Content */}
+          {profile?.story && (
+            <section className="max-w-[65ch] pt-4 border-t border-[color:var(--border)]">
               <RichTextRenderer data={profile.story} />
-            </div>
-          ) : (
-            <div className="text-[color:var(--text-muted)]">
-              More about the research journey and toolkit will be published here.
-            </div>
+            </section>
           )}
-        </section>
-      </Reveal>
+        </div>
+      </div>
     </div>
   );
 }
