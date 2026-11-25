@@ -70,9 +70,9 @@ export default async function Home() {
           <HeroNebula className="w-full h-full" />
         </div>
 
-        {/* Hero Left Content */}
-        <div className="container-wide relative z-10 w-full flex flex-col items-start">
-          <div className="max-w-2xl flex flex-col items-start gap-4">
+        {/* Hero Content Grid: Left Editorial + Right Blended Technical Specimen */}
+        <div className="container-wide relative z-10 w-full grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+          <div className="lg:col-span-5 max-w-2xl flex flex-col items-start gap-4">
             {/* Live Research Status Pill */}
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[color:var(--border)] bg-[color:var(--surface)]/70 [backdrop-filter:blur(8px)] font-mono text-[11px] tracking-widest uppercase text-[color:var(--text-muted)]">
               <span className="w-1.5 h-1.5 rounded-full bg-[color:var(--accent)] animate-pulse" aria-hidden="true" />
@@ -82,13 +82,13 @@ export default async function Home() {
             {/* Title: Left-aligned Serif Display */}
             <h1 
               id="hero-title"
-              className="font-[family-name:var(--font-display)] text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-light leading-[0.98] tracking-tight text-[color:var(--text)]"
+              className="font-[family-name:var(--font-display)] text-5xl sm:text-6xl md:text-7xl lg:text-[5rem] font-light leading-[0.98] tracking-tight text-[color:var(--text)]"
             >
               ZeroAbstraction
             </h1>
 
             {/* Subtitle */}
-            <p className="text-base sm:text-lg lg:text-xl text-[color:var(--text-muted)] font-normal leading-relaxed max-w-xl font-sans mt-2">
+            <p className="text-base sm:text-lg text-[color:var(--text-muted)] font-normal leading-relaxed max-w-xl font-sans mt-2">
               {siteSettings?.short_bio || 'Digital garden & research universe exploring physics, ECE, and astrophysics.'}
             </p>
 
@@ -111,7 +111,7 @@ export default async function Home() {
             </div>
 
             {/* SCROLL TO DISCOVER Interactive Anchor */}
-            <div className="pt-10 lg:pt-14">
+            <div className="pt-8 lg:pt-12">
               <a
                 href="#featured-project"
                 className="group inline-flex items-center gap-2 min-h-[44px] font-mono text-xs tracking-widest text-[color:var(--text-muted)] hover:text-[color:var(--accent-text)] transition-colors"
@@ -121,6 +121,11 @@ export default async function Home() {
                 <span aria-hidden="true" className="inline-block transition-transform duration-200 group-hover:translate-y-1">↓</span>
               </a>
             </div>
+          </div>
+
+          {/* Hero Right: Blended Technical Specimen & Monospace Annotation */}
+          <div className="lg:col-span-7">
+            <TechnicalSpecimen />
           </div>
         </div>
       </section>
@@ -183,11 +188,6 @@ export default async function Home() {
             </div>
           </div>
         </section>
-      </Reveal>
-
-      {/* 3.75 TECHNICAL SPECIMEN & MONOSPACE ANNOTATION */}
-      <Reveal>
-        <TechnicalSpecimen />
       </Reveal>
 
       {/* 3.85 RECENT DISPATCHES — LATEST WRITING */}
