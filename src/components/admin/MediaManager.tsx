@@ -162,13 +162,13 @@ export function MediaManager({ initialDocs, totalDocs }: MediaManagerProps) {
         )}
 
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <h1 className="font-headline-xl text-3xl text-on-surface tracking-tight leading-none">
+          <h1 className="font-studio-display text-[28px] font-semibold text-on-surface tracking-[-0.02em] leading-none">
             Media &amp; Plates
           </h1>
           <button
             type="button"
             onClick={() => setShowUploadModal(true)}
-            className="flex items-center gap-1.5 px-4 py-2 bg-primary hover:bg-accent-ochre text-on-primary font-label-md text-xs shadow-sm transition-colors rounded font-medium self-start sm:self-auto"
+            className="flex items-center gap-1.5 px-4 py-2 bg-[#0F172A] text-white dark:bg-slate-100 dark:text-slate-900 text-[13px] transition-opacity hover:opacity-90 rounded-full font-medium self-start sm:self-auto"
           >
             <span className="material-symbols-outlined text-[17px]">cloud_upload</span>
             Upload Plate
@@ -177,8 +177,8 @@ export function MediaManager({ initialDocs, totalDocs }: MediaManagerProps) {
       </header>
 
       {/* Search & View Mode Toolbar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 bg-surface-container-lowest p-3.5 border border-hairline-rule rounded shadow-sm">
-        <div className="relative flex-1 min-w-[200px] max-w-md flex items-center bg-paper-surface border border-hairline-rule rounded px-3 py-1.5">
+      <div className="flex flex-wrap items-center justify-between gap-3 bg-paper-surface p-4 rounded-[20px]">
+        <div className="relative flex-1 min-w-[200px] max-w-md flex items-center bg-[#F8FAFC] dark:bg-zinc-900 rounded-full px-3.5 py-2">
           <span className="material-symbols-outlined text-ink-muted text-[18px] mr-2">search</span>
           <input
             type="search"
@@ -186,15 +186,17 @@ export function MediaManager({ initialDocs, totalDocs }: MediaManagerProps) {
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Filter plates by filename, alt text, or MIME..."
             aria-label="Filter media plates"
-            className="w-full bg-transparent text-xs text-on-surface placeholder:text-ink-muted focus:outline-none"
+            className="w-full bg-transparent text-[13px] text-on-surface placeholder:text-ink-muted focus:outline-none"
           />
         </div>
-        <div className="flex items-center gap-1 bg-paper-surface p-0.5 rounded border border-hairline-rule">
+        <div className="flex items-center gap-1 bg-[#F8FAFC] dark:bg-zinc-900 p-1 rounded-full">
           <button
             type="button"
             onClick={() => setViewMode('grid')}
-            className={`px-2.5 py-1 rounded text-xs font-label-sm flex items-center gap-1 transition-colors ${
-              viewMode === 'grid' ? 'bg-amber-wash text-primary font-medium' : 'text-ink-muted hover:text-on-surface'
+            className={`px-3 py-1 rounded-full text-[12px] font-medium flex items-center gap-1 transition-colors ${
+              viewMode === 'grid'
+                ? 'bg-[#0F172A] text-white dark:bg-slate-100 dark:text-slate-900'
+                : 'text-ink-muted hover:text-on-surface'
             }`}
           >
             <span className="material-symbols-outlined text-[15px]">grid_view</span>
@@ -203,8 +205,10 @@ export function MediaManager({ initialDocs, totalDocs }: MediaManagerProps) {
           <button
             type="button"
             onClick={() => setViewMode('list')}
-            className={`px-2.5 py-1 rounded text-xs font-label-sm flex items-center gap-1 transition-colors ${
-              viewMode === 'list' ? 'bg-amber-wash text-primary font-medium' : 'text-ink-muted hover:text-on-surface'
+            className={`px-3 py-1 rounded-full text-[12px] font-medium flex items-center gap-1 transition-colors ${
+              viewMode === 'list'
+                ? 'bg-[#0F172A] text-white dark:bg-slate-100 dark:text-slate-900'
+                : 'text-ink-muted hover:text-on-surface'
             }`}
           >
             <span className="material-symbols-outlined text-[15px]">view_list</span>

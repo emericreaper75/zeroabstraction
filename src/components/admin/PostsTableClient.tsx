@@ -173,14 +173,14 @@ export function PostsTableClient({
               onClick={() => downloadManifest()}
               title="Export JSON Manifest"
               aria-label="Export JSON Manifest"
-              className="flex items-center gap-1.5 px-3 py-2 bg-surface-container-low border border-hairline-rule text-ink-secondary font-label-md text-xs hover:bg-surface-container-high hover:text-on-surface transition-colors shadow-sm rounded"
+              className="flex items-center gap-1.5 px-3.5 py-2 bg-paper-surface text-ink-secondary text-[13px] font-medium hover:text-on-surface transition-colors rounded-full"
             >
               <span className="material-symbols-outlined text-[17px]">file_download</span>
               <span className="hidden sm:inline">Export</span>
             </button>
             <Link
               href="/admin/collections/posts/new"
-              className="flex items-center gap-1.5 px-4 py-2 bg-primary hover:bg-accent-ochre text-on-primary font-label-md text-xs shadow-sm transition-colors rounded font-medium"
+              className="flex items-center gap-1.5 px-4 py-2 bg-[#0F172A] text-white dark:bg-slate-100 dark:text-slate-900 text-[13px] transition-opacity hover:opacity-90 rounded-full font-medium"
             >
               <span className="material-symbols-outlined text-[17px]">add</span>
               <span>New Post</span>
@@ -190,15 +190,15 @@ export function PostsTableClient({
       </header>
 
       {/* Filter Toolbar */}
-      <div className="flex flex-col gap-4 bg-surface-container-lowest p-4 border border-hairline-rule rounded shadow-sm">
+      <div className="flex flex-col gap-4 bg-paper-surface p-5 rounded-[20px]">
         <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
-          <div className="relative flex-1 max-w-xl flex items-center bg-paper-surface border border-hairline-rule rounded px-3 py-2">
+          <div className="relative flex-1 max-w-xl flex items-center bg-[#F8FAFC] dark:bg-zinc-900 rounded-full px-3.5 py-2">
             <span className="material-symbols-outlined text-ink-muted text-[18px] mr-2.5">search</span>
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               aria-label="Filter posts by title, slug, or topic"
-              className="w-full bg-transparent font-body-md text-body-md text-on-surface placeholder:text-ink-muted focus:outline-none"
+              className="w-full bg-transparent text-[13px] text-on-surface placeholder:text-ink-muted focus:outline-none"
               placeholder="Filter manuscripts, canonical slugs, topics..."
               type="search"
             />
@@ -213,43 +213,43 @@ export function PostsTableClient({
               </button>
             )}
           </div>
-          <div className="flex items-center overflow-x-auto gap-1 py-0.5 font-label-sm text-label-sm">
+          <div className="flex items-center overflow-x-auto gap-1.5 py-0.5 text-[13px]">
             <Link
               href="/admin/collections/posts"
-              className={`px-3 py-1.5 rounded whitespace-nowrap ${
+              className={`px-3.5 py-1.5 rounded-full whitespace-nowrap font-medium ${
                 statusFilter === 'all'
-                  ? 'bg-amber-wash text-primary font-medium border border-primary/30'
-                  : 'bg-paper-surface hover:bg-surface-container text-ink-secondary transition-colors'
+                  ? 'bg-[#0F172A] text-white dark:bg-slate-100 dark:text-slate-900'
+                  : 'bg-[#F8FAFC] dark:bg-zinc-900 hover:text-on-surface text-ink-secondary transition-colors'
               }`}
             >
               All ({allCount})
             </Link>
             <Link
               href="/admin/collections/posts?status=published"
-              className={`px-3 py-1.5 rounded whitespace-nowrap ${
+              className={`px-3.5 py-1.5 rounded-full whitespace-nowrap font-medium ${
                 statusFilter === 'published'
-                  ? 'bg-amber-wash text-primary font-medium border border-primary/30'
-                  : 'bg-paper-surface hover:bg-surface-container text-ink-secondary transition-colors'
+                  ? 'bg-[#0F172A] text-white dark:bg-slate-100 dark:text-slate-900'
+                  : 'bg-[#F8FAFC] dark:bg-zinc-900 hover:text-on-surface text-ink-secondary transition-colors'
               }`}
             >
               Published ({publishedCount})
             </Link>
             <Link
               href="/admin/collections/posts?status=draft"
-              className={`px-3 py-1.5 rounded whitespace-nowrap ${
+              className={`px-3.5 py-1.5 rounded-full whitespace-nowrap font-medium ${
                 statusFilter === 'draft'
-                  ? 'bg-amber-wash text-primary font-medium border border-primary/30'
-                  : 'bg-paper-surface hover:bg-surface-container text-ink-secondary transition-colors'
+                  ? 'bg-[#0F172A] text-white dark:bg-slate-100 dark:text-slate-900'
+                  : 'bg-[#F8FAFC] dark:bg-zinc-900 hover:text-on-surface text-ink-secondary transition-colors'
               }`}
             >
               Drafts ({draftCount})
             </Link>
             <Link
               href="/admin/collections/posts?status=archived"
-              className={`px-3 py-1.5 rounded whitespace-nowrap ${
+              className={`px-3.5 py-1.5 rounded-full whitespace-nowrap font-medium ${
                 statusFilter === 'archived'
-                  ? 'bg-amber-wash text-primary font-medium border border-primary/30'
-                  : 'bg-paper-surface hover:bg-surface-container text-ink-secondary transition-colors'
+                  ? 'bg-[#0F172A] text-white dark:bg-slate-100 dark:text-slate-900'
+                  : 'bg-[#F8FAFC] dark:bg-zinc-900 hover:text-on-surface text-ink-secondary transition-colors'
               }`}
             >
               Archived ({archivedCount})
@@ -300,7 +300,7 @@ export function PostsTableClient({
       )}
 
       {/* Data Table */}
-      <div className="bg-surface-container-lowest border border-hairline-rule rounded shadow-sm overflow-hidden flex flex-col">
+      <div className="bg-paper-surface rounded-[20px] overflow-hidden flex flex-col">
         <div
           tabIndex={0}
           role="region"
@@ -309,7 +309,7 @@ export function PostsTableClient({
         >
           <table className="w-full text-left border-collapse min-w-[880px]">
             <thead>
-              <tr className="bg-paper-surface font-label-sm text-label-sm text-ink-muted uppercase tracking-wider border-b border-hairline-rule">
+              <tr className="bg-paper-surface font-mono-telemetry text-[11px] text-ink-muted uppercase tracking-[0.06em] border-b border-[#F1F5F9] dark:border-zinc-800">
                 <th className="w-10 px-4 py-3 text-center">
                   <input
                     type="checkbox"

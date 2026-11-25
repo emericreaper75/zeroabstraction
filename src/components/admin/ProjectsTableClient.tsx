@@ -92,14 +92,14 @@ export function ProjectsTableClient({ projects }: { projects: ProjectRowItem[] }
               onClick={exportManifest}
               title="Export JSON Manifest"
               aria-label="Export JSON Manifest"
-              className="flex items-center gap-1.5 px-3 py-2 bg-surface-container-low border border-hairline-rule text-ink-secondary font-label-md text-xs hover:bg-surface-container-high hover:text-on-surface transition-colors shadow-sm rounded"
+              className="flex items-center gap-1.5 px-3.5 py-2 bg-paper-surface text-ink-secondary text-[13px] font-medium hover:text-on-surface transition-colors rounded-full"
             >
               <span className="material-symbols-outlined text-[17px]">file_download</span>
               <span className="hidden sm:inline">Export</span>
             </button>
             <Link
               href="/admin/collections/projects/new"
-              className="flex items-center gap-1.5 px-4 py-2 bg-primary hover:bg-accent-ochre text-on-primary font-label-md text-xs shadow-sm transition-colors rounded font-medium"
+              className="flex items-center gap-1.5 px-4 py-2 bg-[#0F172A] text-white dark:bg-slate-100 dark:text-slate-900 text-[13px] hover:opacity-90 transition-opacity rounded-full font-medium"
             >
               <span className="material-symbols-outlined text-[17px]">add</span>
               <span>New Rig</span>
@@ -109,8 +109,8 @@ export function ProjectsTableClient({ projects }: { projects: ProjectRowItem[] }
       </header>
 
       {/* Toolbar */}
-      <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 bg-surface-container-lowest p-4 border border-hairline-rule rounded shadow-sm">
-        <div className="relative flex-1 max-w-xl flex items-center bg-paper-surface border border-hairline-rule rounded px-3 py-2">
+      <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 bg-paper-surface p-5 rounded-[20px]">
+        <div className="relative flex-1 max-w-xl flex items-center bg-[#F8FAFC] dark:bg-zinc-900 rounded-full px-3.5 py-2">
           <span className="material-symbols-outlined text-ink-muted text-[18px] mr-2.5">search</span>
           <input
             type="search"
@@ -118,10 +118,10 @@ export function ProjectsTableClient({ projects }: { projects: ProjectRowItem[] }
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Filter rigs by title or slug..."
             aria-label="Filter projects"
-            className="w-full bg-transparent font-body-md text-body-md text-on-surface placeholder:text-ink-muted focus:outline-none"
+            className="w-full bg-transparent text-[13px] text-on-surface placeholder:text-ink-muted focus:outline-none"
           />
         </div>
-        <div className="flex items-center gap-1 overflow-x-auto font-label-sm text-label-sm">
+        <div className="flex items-center gap-1.5 overflow-x-auto text-[13px]">
           {(
             [
               { key: 'all', label: 'All' },
@@ -134,10 +134,10 @@ export function ProjectsTableClient({ projects }: { projects: ProjectRowItem[] }
               key={t.key}
               type="button"
               onClick={() => setStatusFilter(t.key)}
-              className={`px-3 py-1.5 rounded whitespace-nowrap transition-colors ${
+              className={`px-3.5 py-1.5 rounded-full whitespace-nowrap font-medium transition-colors ${
                 statusFilter === t.key
-                  ? 'bg-amber-wash text-primary font-medium border border-primary/30'
-                  : 'bg-paper-surface text-ink-secondary hover:bg-surface-container'
+                  ? 'bg-[#0F172A] text-white dark:bg-slate-100 dark:text-slate-900'
+                  : 'bg-[#F8FAFC] dark:bg-zinc-900 text-ink-secondary hover:text-on-surface'
               }`}
             >
               {t.label}
@@ -147,7 +147,7 @@ export function ProjectsTableClient({ projects }: { projects: ProjectRowItem[] }
       </div>
 
       {/* Table */}
-      <div className="bg-surface-container-lowest border border-hairline-rule rounded shadow-sm overflow-hidden flex flex-col">
+      <div className="bg-paper-surface rounded-[20px] overflow-hidden flex flex-col">
         <div
           tabIndex={0}
           role="region"

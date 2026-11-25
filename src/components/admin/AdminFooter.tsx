@@ -27,8 +27,8 @@ export function AdminFooter() {
   }, [])
 
   return (
-    <footer className="fixed bottom-0 left-0 w-full z-30 bg-surface-container-low border-t border-hairline-rule h-7 flex items-center">
-      <div className="flex justify-between items-center w-full px-space-md max-w-[1440px] mx-auto text-[11px] font-label-sm text-ink-muted">
+    <footer className="fixed bottom-0 left-0 w-full z-30 bg-paper-base/85 backdrop-blur-sm h-7 flex items-center">
+      <div className="flex justify-between items-center w-full px-3 sm:px-6 max-w-[1440px] mx-auto font-mono-telemetry text-[11px] text-ink-muted">
         {/* Left: Node Status */}
         <div className="flex items-center gap-2 truncate">
           <span

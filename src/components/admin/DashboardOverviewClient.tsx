@@ -114,6 +114,7 @@ export function DashboardOverviewClient({
   const [scratchpad, setScratchpad] = useState('')
   const [healthPing, setHealthPing] = useState<{ ok: boolean; latencyMs: number } | null>(null)
   const [pinging, setPinging] = useState(false)
+  const [newTaskText, setNewTaskText] = useState('')
 
   const [tasks, setTasks] = useState<OngoingTask[]>([
     { id: 't1', label: 'Verify rig calibration', done: true },
@@ -144,6 +145,34 @@ export function DashboardOverviewClient({
   const toggleTask = (id: string) => {
     setTasks((prev) => {
       const next = prev.map((t) => (t.id === id ? { ...t, done: !t.done } : t))
+      try {
+        localStorage.setItem('atelier-ongoing-tasks', JSON.stringify(next))
+      } catch {
+        /* ignore */
+      }
+      return next
+    })
+  }
+
+  const addTask = (e: React.FormEvent) => {
+    e.preventDefault()
+    const text = newTaskText.trim()
+    if (!text) return
+    setTasks((prev) => {
+      const next = [...prev, { id: `t-${Date.now()}`, label: text, done: false }]
+      try {
+        localStorage.setItem('atelier-ongoing-tasks', JSON.stringify(next))
+      } catch {
+        /* ignore */
+      }
+      return next
+    })
+    setNewTaskText('')
+  }
+
+  const removeTask = (id: string) => {
+    setTasks((prev) => {
+      const next = prev.filter((t) => t.id !== id)
       try {
         localStorage.setItem('atelier-ongoing-tasks', JSON.stringify(next))
       } catch {
@@ -400,18 +429,23 @@ export function DashboardOverviewClient({
 
             {/* Section 3: On Going Tasks (Apricot Wash Inset) */}
             <div className="rounded-[14px] bg-[#FFF7ED] dark:bg-amber-950/20 p-4 space-y-3">
-              <h2 className="font-studio-display text-[15px] font-semibold text-on-surface">
-                On Going Tasks
-              </h2>
+              <div className="flex items-center justify-between">
+                <h2 className="font-studio-display text-[15px] font-semibold text-on-surface">
+                  On Going Tasks
+                </h2>
+                <span className="font-mono-telemetry text-[11px] text-ink-muted">
+                  {tasks.filter((t) => t.done).length}/{tasks.length}
+                </span>
+              </div>
               <ul className="space-y-2.5">
                 {tasks.map((task) => (
-                  <li key={task.id}>
-                    <label className="flex items-start gap-2.5 cursor-pointer group">
+                  <li key={task.id} className="flex items-start justify-between gap-2 group">
+                    <label className="flex items-start gap-2.5 cursor-pointer flex-1 min-w-0">
                       <input
                         type="checkbox"
                         checked={task.done}
                         onChange={() => toggleTask(task.id)}
-                        className="mt-0.5 w-4 h-4 rounded border-slate-300 accent-[#0F172A] cursor-pointer"
+                        className="mt-0.5 w-4 h-4 rounded border-slate-300 accent-[#0F172A] cursor-pointer shrink-0"
                       />
                       <span
                         className={`text-[13px] leading-snug transition-colors ${
@@ -423,9 +457,35 @@ export function DashboardOverviewClient({
                         {task.label}
                       </span>
                     </label>
+                    <button
+                      type="button"
+                      onClick={() => removeTask(task.id)}
+                      aria-label={`Remove task ${task.label}`}
+                      className="opacity-0 group-hover:opacity-100 text-ink-muted hover:text-rose-500 transition-opacity shrink-0"
+                    >
+                      <span className="material-symbols-outlined text-[14px]">close</span>
+                    </button>
                   </li>
                 ))}
               </ul>
+              <form onSubmit={addTask} className="pt-1 flex items-center gap-1.5">
+                <input
+                  type="text"
+                  value={newTaskText}
+                  onChange={(e) => setNewTaskText(e.target.value)}
+                  placeholder="Add task..."
+                  aria-label="Add ongoing task"
+                  className="flex-1 bg-white/70 dark:bg-zinc-900/60 rounded-lg px-2.5 py-1.5 text-[12px] text-on-surface placeholder:text-ink-muted focus:outline-none focus:ring-1 focus:ring-[#0F172A]/20"
+                />
+                <button
+                  type="submit"
+                  disabled={!newTaskText.trim()}
+                  aria-label="Add task"
+                  className="p-1.5 rounded-lg bg-[#0F172A] text-white dark:bg-slate-100 dark:text-slate-900 disabled:opacity-30 transition-opacity"
+                >
+                  <span className="material-symbols-outlined text-[14px]">add</span>
+                </button>
+              </form>
             </div>
           </div>
         </div>

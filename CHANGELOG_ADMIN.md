@@ -112,6 +112,16 @@ Tracking all presentation and functional improvements to the Payload Atelier Adm
 74. **3-Column Studio Grid (`25% / 50% / 25%`)**: Rebuilt `DashboardOverviewClient.tsx` with Left Focus & Readiness card (Active Manuscript, Readiness ring/checklist, Apricot-wash On Going Tasks), Center Operations & Activity (Thick-stroke Donut chart, 2-col metric grid, Recent Activity rows), and Right Plates/Notes/System Health column.
 75. **Interactive Filter Pills & Persistent Tasks**: Wired the `Drafts` / `Published` / `Archived` / `Reports` pill switcher, `localStorage`-persisted On Going Tasks checkboxes, Quick Field Notes, and live `/api/health` Ping.
 
+---
+
+## Milestone 8: Panze Studio Sub-Page Harmonization & Interactive Tasks (#76 – #79)
+
+76. **Interactive Task Creation & Removal**: Added inline `+ Add task...` form and hover delete action inside the `On Going Tasks` inset card (`localStorage`-persisted).
+77. **Seamless Canvas Footer**: Blended `AdminFooter.tsx` into the `#F1F5F9` canvas with `backdrop-blur-sm` and `JetBrains Mono` telemetry.
+78. **Harmonized Collection Tables**: Updated `PostsTableClient.tsx` and `ProjectsTableClient.tsx` to borderless `#FFFFFF` `rounded-[20px]` cards, `rounded-full` filter/action pills, and `#F1F5F9` row hairlines.
+79. **Harmonized Media & Topics Managers**: Updated `MediaManager.tsx` and `TopicsManager.tsx` to Panze Studio `rounded-[20px]` cards and `rounded-full` controls.
+
+
 
 
 

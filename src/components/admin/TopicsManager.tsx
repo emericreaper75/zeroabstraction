@@ -166,23 +166,23 @@ export function TopicsManager({ initialTopics, totalDocs: _totalDocs }: TopicsMa
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left: Topic List (7 cols) */}
         <div className="lg:col-span-7">
-          <div className="bg-surface-container-lowest shadow-sm border border-hairline-rule rounded overflow-hidden">
-            <div className="bg-paper-surface px-4 py-3 border-b border-hairline-rule flex flex-wrap items-center justify-between gap-3">
-              <span className="font-label-sm text-label-sm text-ink-muted uppercase tracking-widest font-semibold">
-                TOPIC INDEX
+          <div className="bg-paper-surface rounded-[20px] overflow-hidden">
+            <div className="px-6 py-4 border-b border-[#F1F5F9] dark:border-zinc-800 flex flex-wrap items-center justify-between gap-3">
+              <span className="font-studio-display text-[15px] font-semibold text-on-surface">
+                Topic Index
               </span>
-              <span className="font-label-sm text-label-sm text-ink-muted">
-                {filteredTopics.length} of {topics.length} entries
+              <span className="font-mono-telemetry text-[12px] text-ink-muted">
+                {filteredTopics.length} of {topics.length}
               </span>
             </div>
-            <div className="px-4 py-2.5 border-b border-hairline-subtle bg-paper-surface/60 flex flex-wrap items-center gap-2">
+            <div className="px-6 py-3 border-b border-[#F1F5F9] dark:border-zinc-800 flex flex-wrap items-center gap-2">
               <input
                 type="search"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Filter topics..."
                 aria-label="Filter topics"
-                className="flex-1 min-w-[160px] bg-surface-container-low border border-hairline-rule rounded px-2.5 py-1 text-xs text-on-surface placeholder:text-ink-muted focus:outline-none focus:border-primary"
+                className="flex-1 min-w-[160px] bg-[#F8FAFC] dark:bg-zinc-900 rounded-full px-3.5 py-1.5 text-[13px] text-on-surface placeholder:text-ink-muted focus:outline-none"
               />
               <div className="flex items-center gap-1 overflow-x-auto">
                 {topicTypes.map((tp) => (
@@ -190,9 +190,9 @@ export function TopicsManager({ initialTopics, totalDocs: _totalDocs }: TopicsMa
                     key={tp}
                     type="button"
                     onClick={() => setTypeFilter(tp)}
-                    className={`px-2 py-1 rounded text-[11px] font-label-sm uppercase transition-colors ${
+                    className={`px-3 py-1 rounded-full text-[11px] font-medium capitalize transition-colors ${
                       typeFilter === tp
-                        ? 'bg-amber-wash text-primary font-medium'
+                        ? 'bg-[#0F172A] text-white dark:bg-slate-100 dark:text-slate-900'
                         : 'text-ink-muted hover:text-on-surface'
                     }`}
                   >
