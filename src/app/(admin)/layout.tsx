@@ -79,19 +79,19 @@ export default async function AdminLayout({
     }))
 
   return (
-    <html lang="en" className="dark" data-theme="dark" suppressHydrationWarning>
+    <html lang="en" className="light" data-theme="light" suppressHydrationWarning>
       <head>
         <meta name="color-scheme" content="light dark" />
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "(function(){try{var s=localStorage.getItem('payload-admin-theme');var t=s==='light'||s==='dark'?s:'dark';document.documentElement.setAttribute('data-theme',t);document.documentElement.className=t;document.documentElement.style.colorScheme=t;var m=document.querySelector('meta[name=\"color-scheme\"]');if(m)m.setAttribute('content',t);}catch(e){}})();",
+              "(function(){try{var s=localStorage.getItem('payload-admin-theme');var t=s==='light'||s==='dark'?s:'light';document.documentElement.setAttribute('data-theme',t);document.documentElement.className=t;document.documentElement.style.colorScheme=t;var m=document.querySelector('meta[name=\"color-scheme\"]');if(m)m.setAttribute('content',t);}catch(e){}})();",
           }}
         />
         <link href="https://fonts.googleapis.com" rel="preconnect" />
         <link crossOrigin="" href="https://fonts.gstatic.com" rel="preconnect" />
         <link
-          href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400;1,6..72,500&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap"
           rel="stylesheet"
         />
         <link
@@ -99,7 +99,7 @@ export default async function AdminLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="admin-simple-text bg-paper-base text-ink-primary antialiased font-sans min-h-screen selection:bg-amber-wash selection:text-on-surface">
+      <body className="admin-simple-text bg-paper-base text-ink-primary antialiased min-h-screen selection:bg-amber-wash selection:text-on-surface">
         <AdminToastProvider>
           <AdminHeader
             user={user as any}
@@ -107,9 +107,9 @@ export default async function AdminLayout({
             counts={counts}
             notifications={draftNotifications}
           />
-          <div className="max-w-[1440px] mx-auto flex w-full min-h-[calc(100vh-5rem)]">
+          <div className="max-w-[1440px] mx-auto flex w-full min-h-[calc(100vh-4rem)] px-3 sm:px-6 gap-2 sm:gap-4">
             <AdminSidebar />
-            <main className="flex-1 px-5 sm:px-8 py-8 overflow-y-auto max-w-full pb-16 bg-paper-base">
+            <main className="flex-1 py-5 sm:py-6 overflow-y-auto max-w-full pb-14 bg-transparent">
               {children}
             </main>
           </div>

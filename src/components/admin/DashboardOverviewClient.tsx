@@ -74,6 +74,12 @@ export interface DashboardOverviewProps {
   healthIssues: HealthIssue[]
 }
 
+interface OngoingTask {
+  id: string
+  label: string
+  done: boolean
+}
+
 function getGreeting(): string {
   const hour = new Date().getHours()
   if (hour < 12) return 'Good morning'
@@ -81,11 +87,15 @@ function getGreeting(): string {
   return 'Good evening'
 }
 
-function formatBytes(bytes?: number | null): string {
-  if (!bytes) return '—'
-  if (bytes < 1024) return `${bytes} B`
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+function getStatusPillClasses(statusLabel: string): string {
+  const s = statusLabel.toUpperCase()
+  if (s === 'COMPLETED' || s === 'LIVE') {
+    return 'bg-[#ECFDF5] text-[#059669] dark:bg-emerald-950/50 dark:text-emerald-300'
+  }
+  if (s === 'PUBLISHED' || s === 'INGESTED') {
+    return 'bg-[#EFF6FF] text-[#2563EB] dark:bg-blue-950/50 dark:text-blue-300'
+  }
+  return 'bg-[#F1F5F9] text-[#475569] dark:bg-zinc-800 dark:text-zinc-300'
 }
 
 export function DashboardOverviewClient({
@@ -93,28 +103,55 @@ export function DashboardOverviewClient({
   metrics,
   activities,
   latestPost,
-  currentState,
   topicStats,
   recentMedia,
   readinessScore,
   healthIssues,
 }: DashboardOverviewProps) {
   const toast = useAdminToast()
-  const [greeting, setGreeting] = useState('Welcome')
-  const [activityTab, setActivityTab] = useState<'all' | 'post' | 'project' | 'media'>('all')
+  const [greeting, setGreeting] = useState('Good afternoon')
+  const [pillFilter, setPillFilter] = useState<'drafts' | 'published' | 'archived' | 'reports'>('drafts')
   const [scratchpad, setScratchpad] = useState('')
   const [healthPing, setHealthPing] = useState<{ ok: boolean; latencyMs: number } | null>(null)
   const [pinging, setPinging] = useState(false)
 
+  const [tasks, setTasks] = useState<OngoingTask[]>([
+    { id: 't1', label: 'Verify rig calibration', done: true },
+    {
+      id: 't2',
+      label: latestPost ? `Review draft of ${latestPost.title}` : 'Review latest manuscript',
+      done: false,
+    },
+    { id: 't3', label: `Verify ${metrics.mediaCount} ingest plates`, done: true },
+    { id: 't4', label: `Finalize ${metrics.draftPostsCount} drafts`, done: false },
+  ])
+
   useEffect(() => {
     setGreeting(getGreeting())
     try {
-      const saved = localStorage.getItem('atelier-field-scratchpad')
-      if (saved) setScratchpad(saved)
+      const savedNotes = localStorage.getItem('atelier-field-scratchpad')
+      if (savedNotes) setScratchpad(savedNotes)
+      const savedTasks = localStorage.getItem('atelier-ongoing-tasks')
+      if (savedTasks) {
+        const parsed = JSON.parse(savedTasks)
+        if (Array.isArray(parsed) && parsed.length > 0) setTasks(parsed)
+      }
     } catch {
       /* ignore */
     }
   }, [])
+
+  const toggleTask = (id: string) => {
+    setTasks((prev) => {
+      const next = prev.map((t) => (t.id === id ? { ...t, done: !t.done } : t))
+      try {
+        localStorage.setItem('atelier-ongoing-tasks', JSON.stringify(next))
+      } catch {
+        /* ignore */
+      }
+      return next
+    })
+  }
 
   const handleScratchpadChange = (val: string) => {
     setScratchpad(val)
@@ -125,15 +162,6 @@ export function DashboardOverviewClient({
     }
   }
 
-  const copyTelemetryJson = async () => {
-    try {
-      await navigator.clipboard.writeText(JSON.stringify(currentState || {}, null, 2))
-      toast.success('Telemetry JSON copied.')
-    } catch {
-      toast.error('Clipboard unavailable.')
-    }
-  }
-
   const runHealthCheck = async () => {
     setPinging(true)
     const start = performance.now()
@@ -141,7 +169,7 @@ export function DashboardOverviewClient({
       const res = await fetch('/api/health', { cache: 'no-store' })
       const elapsed = Math.round(performance.now() - start)
       setHealthPing({ ok: res.ok, latencyMs: elapsed })
-      toast.success(`Health OK · ${elapsed}ms`)
+      toast.success(`System Health OK · ${elapsed}ms`)
     } catch {
       setHealthPing({ ok: false, latencyMs: 0 })
       toast.error('Health check failed.')
@@ -151,290 +179,436 @@ export function DashboardOverviewClient({
   }
 
   const filteredActivities = useMemo(() => {
-    if (activityTab === 'all') return activities.slice(0, 6)
-    return activities.filter((a) => a.kind === activityTab).slice(0, 6)
-  }, [activities, activityTab])
+    if (pillFilter === 'published') {
+      const pub = activities.filter((a) => a.statusLabel === 'PUBLISHED')
+      return (pub.length > 0 ? pub : activities).slice(0, 5)
+    }
+    if (pillFilter === 'archived') {
+      const arch = activities.filter((a) => a.statusLabel === 'ARCHIVED')
+      return (arch.length > 0 ? arch : activities).slice(0, 5)
+    }
+    if (pillFilter === 'reports') {
+      return activities.filter((a) => a.kind !== 'post').slice(0, 5)
+    }
+    return activities.slice(0, 5)
+  }, [activities, pillFilter])
 
   const pad = (n: number) => n.toString().padStart(2, '0')
   const totalPosts = Math.max(1, metrics.postsCount)
   const pubPct = Math.round((metrics.publishedPostsCount / totalPosts) * 100)
   const draftPct = Math.round((metrics.draftPostsCount / totalPosts) * 100)
-  const archPct = Math.max(0, 100 - pubPct - draftPct)
 
-  const ringRadius = 22
-  const ringCircumference = 2 * Math.PI * ringRadius
-  const ringOffset = ringCircumference - (readinessScore / 100) * ringCircumference
+  // Radial Readiness Ring
+  const ringR = 24
+  const ringC = 2 * Math.PI * ringR
+  const ringOffset = ringC - (readinessScore / 100) * ringC
+
+  // Thick-Stroke Donut Chart (128x128)
+  const donutR = 46
+  const donutC = 2 * Math.PI * donutR
+  const seg1 = Math.max(0.15, pubPct / 100) * donutC
+  const seg2 = Math.max(0.2, draftPct / 100) * donutC
+
+  const topTopics = topicStats.slice(0, 2)
 
   return (
-    <div className="space-y-6">
-      {/* Compact Header + Primary Actions */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-hairline-rule pb-5 gap-4">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-amber-wash border border-primary/30 flex items-center justify-center text-primary shrink-0">
+    <div className="space-y-5">
+      {/* Greeting & Filter Bar */}
+      <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 py-1">
+        {/* Left: Greeting + Live Status */}
+        <div className="flex items-center gap-3.5">
+          <div className="w-11 h-11 rounded-2xl bg-paper-surface flex items-center justify-center text-[#2563EB] shrink-0">
             <span className="material-symbols-outlined text-[22px]">hub</span>
           </div>
           <div>
-            <h1 className="font-headline-md text-2xl sm:text-3xl text-on-surface italic font-normal tracking-tight leading-none">
+            <h1 className="font-studio-display text-[28px] font-semibold text-on-surface tracking-[-0.02em] leading-tight">
               {greeting}, {userName}
             </h1>
-            <div className="flex items-center gap-2 mt-1.5 text-[11px] font-label-sm text-ink-muted">
-              <span className="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <div className="flex items-center gap-2 mt-0.5 text-[13px] text-ink-secondary">
+              <span className="inline-flex items-center gap-1.5 text-[#059669] font-medium">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#059669]" />
                 Live
               </span>
-              <span>·</span>
+              <span className="text-ink-muted">·</span>
               <span>{metrics.draftPostsCount} drafts awaiting</span>
             </div>
           </div>
         </div>
 
-        {/* Icon-First Quick Actions */}
+        {/* Center: Floating Horizontal Pill Switcher */}
+        <div className="flex flex-wrap items-center gap-2">
+          {(
+            [
+              { key: 'drafts', label: 'Drafts' },
+              { key: 'published', label: 'Published' },
+              { key: 'archived', label: 'Archived' },
+              { key: 'reports', label: 'Reports' },
+            ] as const
+          ).map((tab) => {
+            const active = pillFilter === tab.key
+            return (
+              <button
+                key={tab.key}
+                type="button"
+                onClick={() => setPillFilter(tab.key)}
+                className={`px-4 py-1.5 rounded-full text-[13px] font-medium transition-colors ${
+                  active
+                    ? 'bg-[#0F172A] text-white dark:bg-slate-100 dark:text-slate-900'
+                    : 'bg-paper-surface text-ink-secondary hover:text-on-surface'
+                }`}
+              >
+                {tab.label}
+              </button>
+            )
+          })}
+        </div>
+
+        {/* Right: Compact Action Triggers */}
         <div className="flex flex-wrap items-center gap-2">
           <Link
             href="/admin/collections/posts/new"
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded bg-primary text-on-primary text-xs font-label-md hover:bg-accent-ochre transition-colors shadow-sm font-medium"
+            className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#0F172A] text-white dark:bg-slate-100 dark:text-slate-900 text-[13px] font-medium hover:opacity-90 transition-opacity"
           >
-            <span className="material-symbols-outlined text-[16px]">edit_note</span>
-            <span>New Post</span>
+            <span className="material-symbols-outlined text-[16px]">add</span>
+            <span>New</span>
           </Link>
           <Link
             href="/admin/collections/projects/new"
-            title="New Project Rig"
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded border border-hairline-rule bg-paper-surface text-on-surface text-xs font-label-md hover:border-primary/50 hover:text-primary transition-colors"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-paper-surface text-on-surface text-[13px] font-medium hover:bg-surface-container-low transition-colors"
           >
-            <span className="material-symbols-outlined text-[16px]">precision_manufacturing</span>
+            <span className="material-symbols-outlined text-[16px] text-ink-secondary">
+              precision_manufacturing
+            </span>
             <span>Rig</span>
           </Link>
           <Link
             href="/admin/collections/media"
-            title="Upload Media Plate"
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded border border-hairline-rule bg-paper-surface text-on-surface text-xs font-label-md hover:border-primary/50 hover:text-primary transition-colors"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-paper-surface text-on-surface text-[13px] font-medium hover:bg-surface-container-low transition-colors"
           >
-            <span className="material-symbols-outlined text-[16px]">cloud_upload</span>
+            <span className="material-symbols-outlined text-[16px] text-ink-secondary">
+              cloud_upload
+            </span>
             <span>Plate</span>
           </Link>
           <Link
             href="/admin/globals/current-state"
-            title="Update Field Telemetry"
-            aria-label="Update Field Telemetry"
-            className="inline-flex items-center justify-center p-2 rounded border border-hairline-rule bg-paper-surface text-ink-secondary hover:border-primary/50 hover:text-primary transition-colors"
+            title="Field Telemetry"
+            aria-label="Field Telemetry"
+            className="w-9 h-9 rounded-full bg-paper-surface text-ink-secondary hover:text-on-surface flex items-center justify-center transition-colors"
           >
-            <span className="material-symbols-outlined text-[17px]">sensors</span>
+            <span className="material-symbols-outlined text-[18px]">sensors</span>
           </Link>
         </div>
       </div>
 
-      {/* Priority KPI Strip (Drafts & Posts Highlighted) */}
-      <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
-        {/* Highlighted KPI 1: Draft Queue (Most Actionable) */}
-        <Link
-          href="/admin/collections/posts?status=draft"
-          className="p-4 rounded border border-primary/50 bg-paper-surface hover:border-primary transition-colors group shadow-xs"
-        >
-          <div className="flex items-center justify-between text-primary">
-            <span className="material-symbols-outlined text-[20px]">draw</span>
-            <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-wash text-primary font-medium">
-              Priority
-            </span>
-          </div>
-          <div className="text-3xl text-on-surface mt-2 leading-none font-normal">
-            {pad(metrics.draftPostsCount)}
-          </div>
-          <div className="text-xs text-ink-secondary mt-1.5">Drafts</div>
-        </Link>
-
-        {/* Highlighted KPI 2: Posts */}
-        <Link
-          href="/admin/collections/posts"
-          className="p-4 rounded border border-hairline-rule bg-paper-surface hover:border-primary/50 transition-colors group"
-        >
-          <div className="flex items-center justify-between text-ink-muted group-hover:text-primary transition-colors">
-            <span className="material-symbols-outlined text-[20px]">article</span>
-            <svg viewBox="0 0 48 16" className="w-12 h-4 text-primary/70" aria-hidden="true">
-              <polyline fill="none" stroke="currentColor" strokeWidth="1.75" points="2,13 14,10 26,11 36,5 46,3" />
-            </svg>
-          </div>
-          <div className="font-headline-md text-3xl text-on-surface mt-2 leading-none">
-            {pad(metrics.postsCount)}
-          </div>
-          <div className="text-xs font-label-sm text-ink-muted mt-1.5">
-            Posts <span className="text-emerald-600 dark:text-emerald-400">({metrics.publishedPostsCount} live)</span>
-          </div>
-        </Link>
-
-        {/* KPI 3: Projects */}
-        <Link
-          href="/admin/collections/projects"
-          className="p-4 rounded border border-hairline-rule bg-paper-surface hover:border-primary/50 transition-colors group"
-        >
-          <div className="flex items-center justify-between text-ink-muted group-hover:text-emerald-500 transition-colors">
-            <span className="material-symbols-outlined text-[20px]">qr_code_2</span>
-            <svg viewBox="0 0 48 16" className="w-12 h-4 text-emerald-500/70" aria-hidden="true">
-              <polyline fill="none" stroke="currentColor" strokeWidth="1.75" points="2,12 14,12 26,8 36,9 46,4" />
-            </svg>
-          </div>
-          <div className="font-headline-md text-3xl text-on-surface mt-2 leading-none">
-            {pad(metrics.projectsCount)}
-          </div>
-          <div className="text-xs font-label-sm text-ink-muted mt-1.5">Projects</div>
-        </Link>
-
-        {/* KPI 4: Media */}
-        <Link
-          href="/admin/collections/media"
-          className="p-4 rounded border border-hairline-rule bg-paper-surface hover:border-primary/50 transition-colors group"
-        >
-          <div className="flex items-center justify-between text-ink-muted group-hover:text-sky-500 transition-colors">
-            <span className="material-symbols-outlined text-[20px]">photo_library</span>
-            <svg viewBox="0 0 48 16" className="w-12 h-4 text-sky-500/70" aria-hidden="true">
-              <polyline fill="none" stroke="currentColor" strokeWidth="1.75" points="2,14 14,9 26,11 36,5 46,4" />
-            </svg>
-          </div>
-          <div className="font-headline-md text-3xl text-on-surface mt-2 leading-none">
-            {metrics.mediaCount}
-          </div>
-          <div className="text-xs font-label-sm text-ink-muted mt-1.5">Plates</div>
-        </Link>
-
-        {/* KPI 5: Topics */}
-        <Link
-          href="/admin/collections/topics"
-          className="col-span-2 lg:col-span-1 p-4 rounded border border-hairline-rule bg-paper-surface hover:border-primary/50 transition-colors group"
-        >
-          <div className="flex items-center justify-between text-ink-muted group-hover:text-primary transition-colors">
-            <span className="material-symbols-outlined text-[20px]">label</span>
-            <span className="material-symbols-outlined text-[15px] opacity-40">arrow_forward</span>
-          </div>
-          <div className="font-headline-md text-3xl text-on-surface mt-2 leading-none">
-            {pad(metrics.topicsCount)}
-          </div>
-          <div className="text-xs font-label-sm text-ink-muted mt-1.5">Topics</div>
-        </Link>
-      </div>
-
-      {/* Main 2-Column Workspace */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* LEFT COLUMN (8 cols) */}
-        <div className="lg:col-span-8 space-y-6">
-          {/* Highlighted Card: Latest Manuscript / Resume Work */}
-          {latestPost && (
-            <div className="border border-primary/40 bg-paper-surface p-5 rounded-lg shadow-xs relative overflow-hidden">
-              <div className="flex flex-wrap items-center justify-between gap-2 mb-2.5">
-                <span className="inline-flex items-center gap-1.5 text-[11px] font-label-sm text-primary bg-amber-wash px-2 py-0.5 rounded font-medium">
-                  <span className="material-symbols-outlined text-[14px]">bookmark</span>
-                  Active Manuscript
-                </span>
-                <div className="flex items-center gap-2 text-[11px] font-label-sm text-ink-muted">
-                  {latestPost.reading_time && (
-                    <span className="inline-flex items-center gap-1">
-                      <span className="material-symbols-outlined text-[13px]">schedule</span>
-                      {latestPost.reading_time}m
-                    </span>
-                  )}
-                  <span
-                    className={`px-1.5 py-0.5 rounded uppercase text-[10px] ${
-                      latestPost.status === 'published'
-                        ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
-                        : 'bg-amber-wash text-primary'
-                    }`}
-                  >
-                    {latestPost.status || 'draft'}
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <h2 className="font-headline-md text-xl text-on-surface italic font-normal leading-snug">
-                  {latestPost.title}
-                </h2>
-                <div className="flex items-center gap-2 shrink-0">
-                  <Link
-                    href={`/writing/${latestPost.slug}`}
-                    title="Preview"
-                    aria-label="Preview latest manuscript"
-                    className="p-2 rounded border border-hairline-rule text-ink-secondary hover:text-primary hover:border-primary/40 transition-colors"
-                  >
-                    <span className="material-symbols-outlined text-[18px]">visibility</span>
-                  </Link>
+      {/* 3-Column Studio Grid Architecture (25% / 50% / 25%) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
+        {/* LEFT COLUMN (3 cols — 25%): Focus & Readiness Card */}
+        <div className="lg:col-span-3 flex">
+          <div className="w-full bg-paper-surface rounded-[20px] p-6 flex flex-col justify-between space-y-5">
+            {/* Section 1: Active Manuscript */}
+            <div className="pb-5 border-b border-[#F1F5F9] dark:border-zinc-800 space-y-2.5">
+              <h2 className="font-studio-display text-[16px] font-semibold text-on-surface">
+                Active Manuscript
+              </h2>
+              {latestPost ? (
+                <>
+                  <p className="text-[14px] font-medium text-on-surface leading-snug">
+                    {latestPost.title}
+                  </p>
                   <Link
                     href={`/admin/collections/posts/${latestPost.id}`}
-                    className="inline-flex items-center gap-1.5 bg-primary text-on-primary font-label-md text-xs py-2 px-4 rounded hover:bg-accent-ochre transition-colors shadow-xs"
+                    className="inline-flex items-center gap-1.5 text-[13px] font-medium text-ink-secondary hover:text-on-surface transition-colors pt-1"
                   >
-                    <span className="material-symbols-outlined text-[16px]">edit_document</span>
-                    Resume
+                    <span className="material-symbols-outlined text-[16px]">play_arrow</span>
+                    <span>Resume</span>
+                    <span className="text-ink-muted">›</span>
                   </Link>
+                </>
+              ) : (
+                <Link
+                  href="/admin/collections/posts/new"
+                  className="text-[13px] text-[#2563EB] hover:underline"
+                >
+                  Create your first manuscript ›
+                </Link>
+              )}
+            </div>
+
+            {/* Section 2: Readiness */}
+            <div className="pb-5 border-b border-[#F1F5F9] dark:border-zinc-800 space-y-4">
+              <div className="flex items-center justify-between">
+                <h2 className="font-studio-display text-[16px] font-semibold text-on-surface flex items-center gap-1.5">
+                  <span className="material-symbols-outlined text-[17px] text-ink-secondary">
+                    verified
+                  </span>
+                  Readiness
+                </h2>
+                <span className="font-mono-telemetry text-[12px] text-ink-secondary">
+                  {readinessScore}%
+                </span>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <svg width="60" height="60" viewBox="0 0 60 60" className="shrink-0 -rotate-90">
+                  <circle
+                    cx="30"
+                    cy="30"
+                    r={ringR}
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="6"
+                    className="text-[#E2E8F0] dark:text-zinc-800"
+                  />
+                  <circle
+                    cx="30"
+                    cy="30"
+                    r={ringR}
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="6"
+                    strokeDasharray={ringC}
+                    strokeDashoffset={ringOffset}
+                    strokeLinecap="round"
+                    className="text-[#475569] dark:text-slate-300 transition-all duration-500"
+                  />
+                </svg>
+
+                <ul className="flex-1 space-y-2 text-[12px]">
+                  {healthIssues.map((issue) => (
+                    <li key={issue.id}>
+                      <Link
+                        href={issue.href}
+                        className="flex items-center justify-between gap-2 text-ink-secondary hover:text-on-surface transition-colors"
+                      >
+                        <span className="truncate">{issue.label}</span>
+                        <span
+                          className={`w-5 h-5 rounded-md flex items-center justify-center shrink-0 font-mono-telemetry text-[10px] font-semibold ${
+                            issue.count === 0
+                              ? 'bg-[#ECFDF5] text-[#059669] dark:bg-emerald-950/60 dark:text-emerald-300'
+                              : 'bg-[#FFF7ED] text-[#D97706] dark:bg-amber-950/60 dark:text-amber-300'
+                          }`}
+                        >
+                          {issue.count === 0 ? '✓' : issue.count}
+                        </span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            {/* Section 3: On Going Tasks (Apricot Wash Inset) */}
+            <div className="rounded-[14px] bg-[#FFF7ED] dark:bg-amber-950/20 p-4 space-y-3">
+              <h2 className="font-studio-display text-[15px] font-semibold text-on-surface">
+                On Going Tasks
+              </h2>
+              <ul className="space-y-2.5">
+                {tasks.map((task) => (
+                  <li key={task.id}>
+                    <label className="flex items-start gap-2.5 cursor-pointer group">
+                      <input
+                        type="checkbox"
+                        checked={task.done}
+                        onChange={() => toggleTask(task.id)}
+                        className="mt-0.5 w-4 h-4 rounded border-slate-300 accent-[#0F172A] cursor-pointer"
+                      />
+                      <span
+                        className={`text-[13px] leading-snug transition-colors ${
+                          task.done
+                            ? 'text-ink-muted line-through'
+                            : 'text-on-surface group-hover:text-[#0F172A]'
+                        }`}
+                      >
+                        {task.label}
+                      </span>
+                    </label>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* CENTER COLUMN (6 cols — 50%): Operations & Activity */}
+        <div className="lg:col-span-6 flex flex-col gap-5">
+          {/* Top Card: Overview & Content Composition */}
+          <div className="bg-paper-surface rounded-[20px] p-6 space-y-5">
+            <h2 className="font-studio-display text-[16px] font-semibold text-on-surface">
+              Overview &amp; Content Composition
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:divide-x md:divide-[#F1F5F9] dark:md:divide-zinc-800 items-center">
+              {/* Left Split: Thick-Stroke Donut Chart + Topic Legend */}
+              <div className="md:col-span-5 flex flex-col items-center space-y-4">
+                <svg width="132" height="132" viewBox="0 0 132 132" className="-rotate-90">
+                  <circle
+                    cx="66"
+                    cy="66"
+                    r={donutR}
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="22"
+                    className="text-[#E2E8F0] dark:text-zinc-800"
+                  />
+                  <circle
+                    cx="66"
+                    cy="66"
+                    r={donutR}
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="22"
+                    strokeDasharray={`${seg2} ${donutC}`}
+                    strokeDashoffset={-seg1}
+                    className="text-[#64748B] dark:text-slate-500"
+                  />
+                  <circle
+                    cx="66"
+                    cy="66"
+                    r={donutR}
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="22"
+                    strokeDasharray={`${seg1} ${donutC}`}
+                    className="text-[#0F172A] dark:text-slate-100"
+                  />
+                </svg>
+
+                <div className="w-full space-y-2 pt-1">
+                  {topTopics.map((topic, idx) => {
+                    const maxT = Math.max(1, ...topicStats.map((t) => t.count))
+                    const pct = Math.round((topic.count / maxT) * 100)
+                    return (
+                      <div key={topic.id} className="flex items-center justify-between text-[13px]">
+                        <span className="flex items-center gap-2 text-on-surface truncate pr-2">
+                          <span
+                            className={`w-2 h-2 rounded-full shrink-0 ${
+                              idx === 0 ? 'bg-[#0F172A] dark:bg-slate-100' : 'bg-[#94A3B8]'
+                            }`}
+                          />
+                          <span className="truncate">#{topic.name}</span>
+                        </span>
+                        <span className="font-mono-telemetry text-[12px] text-ink-secondary">
+                          {pct}%
+                        </span>
+                      </div>
+                    )
+                  })}
+                  {topTopics.length === 0 && (
+                    <div className="text-center text-[12px] text-ink-muted">No topics indexed</div>
+                  )}
                 </div>
               </div>
-            </div>
-          )}
 
-          {/* Icon-Driven Recent Activity */}
-          <section>
-            <div className="flex items-center justify-between gap-3 mb-3">
-              <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[18px] text-primary">history</span>
-                <h2 className="font-headline-md text-lg text-on-surface italic">Recent</h2>
-              </div>
-              <div className="flex items-center gap-1 bg-surface-container-low p-0.5 rounded border border-hairline-rule">
-                {(
-                  [
-                    { key: 'all', icon: 'apps', label: 'All' },
-                    { key: 'post', icon: 'article', label: 'Posts' },
-                    { key: 'project', icon: 'qr_code_2', label: 'Rigs' },
-                    { key: 'media', icon: 'image', label: 'Plates' },
-                  ] as const
-                ).map((t) => (
-                  <button
-                    key={t.key}
-                    type="button"
-                    onClick={() => setActivityTab(t.key)}
-                    title={t.label}
-                    className={`inline-flex items-center gap-1 px-2 py-1 rounded text-[11px] font-label-sm transition-colors ${
-                      activityTab === t.key
-                        ? 'bg-primary text-on-primary font-medium'
-                        : 'text-ink-muted hover:text-on-surface'
-                    }`}
-                  >
-                    <span className="material-symbols-outlined text-[13px]">{t.icon}</span>
-                    <span className="hidden sm:inline">{t.label}</span>
-                  </button>
-                ))}
+              {/* Right Split: Clean 2-Column Metric Grid */}
+              <div className="md:col-span-7 md:pl-6 grid grid-cols-2 divide-y divide-[#F1F5F9] dark:divide-zinc-800">
+                <Link
+                  href="/admin/collections/posts?status=draft"
+                  className="pb-4 pr-4 border-r border-[#F1F5F9] dark:border-zinc-800 hover:opacity-75 transition-opacity"
+                >
+                  <div className="font-mono-telemetry text-[24px] font-semibold text-on-surface leading-none">
+                    {pad(metrics.draftPostsCount)}
+                  </div>
+                  <div className="text-[13px] text-ink-secondary mt-1.5">Drafts</div>
+                </Link>
+
+                <Link
+                  href="/admin/collections/posts"
+                  className="pb-4 pl-4 hover:opacity-75 transition-opacity"
+                >
+                  <div className="font-mono-telemetry text-[24px] font-semibold text-on-surface leading-none">
+                    {pad(metrics.postsCount)}
+                  </div>
+                  <div className="text-[13px] text-ink-secondary mt-1.5">
+                    Posts ({metrics.publishedPostsCount} live)
+                  </div>
+                </Link>
+
+                <Link
+                  href="/admin/collections/projects"
+                  className="col-span-2 py-4 hover:opacity-75 transition-opacity"
+                >
+                  <div className="font-mono-telemetry text-[24px] font-semibold text-on-surface leading-none">
+                    {pad(metrics.projectsCount)}
+                  </div>
+                  <div className="text-[13px] text-ink-secondary mt-1.5">Projects</div>
+                </Link>
+
+                <Link
+                  href="/admin/collections/media"
+                  className="pt-4 pr-4 border-r border-[#F1F5F9] dark:border-zinc-800 hover:opacity-75 transition-opacity"
+                >
+                  <div className="font-mono-telemetry text-[24px] font-semibold text-on-surface leading-none">
+                    {pad(metrics.mediaCount)}
+                  </div>
+                  <div className="text-[13px] text-ink-secondary mt-1.5">Plates</div>
+                </Link>
+
+                <Link
+                  href="/admin/collections/topics"
+                  className="pt-4 pl-4 hover:opacity-75 transition-opacity"
+                >
+                  <div className="font-mono-telemetry text-[24px] font-semibold text-on-surface leading-none">
+                    {pad(metrics.topicsCount)}
+                  </div>
+                  <div className="text-[13px] text-ink-secondary mt-1.5">Topics</div>
+                </Link>
               </div>
             </div>
+          </div>
 
-            <div className="border border-hairline-rule divide-y divide-hairline-subtle bg-paper-surface shadow-xs rounded overflow-hidden">
+          {/* Bottom Card: Recent Activity & Pipeline Status */}
+          <div className="bg-paper-surface rounded-[20px] p-6 flex-1">
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="font-studio-display text-[16px] font-semibold text-on-surface">
+                Recent Activity &amp; Pipeline Status
+              </h2>
+              <Link
+                href="/admin/collections/posts"
+                className="text-[12px] text-ink-secondary hover:text-on-surface transition-colors"
+              >
+                View all ›
+              </Link>
+            </div>
+
+            <div className="divide-y divide-[#F1F5F9] dark:divide-zinc-800">
               {filteredActivities.map((item) => {
                 const icon =
-                  item.kind === 'post' ? 'article' : item.kind === 'project' ? 'qr_code_2' : 'image'
-                const iconColor =
                   item.kind === 'post'
-                    ? 'text-primary'
+                    ? 'article'
                     : item.kind === 'project'
-                      ? 'text-emerald-500'
-                      : 'text-sky-500'
+                      ? 'qr_code_2'
+                      : 'image'
                 const dateStr = item.updatedAt
-                  ? new Date(item.updatedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                  ? new Date(item.updatedAt).toLocaleDateString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                    })
                   : ''
 
                 return (
                   <Link
                     key={item.id}
                     href={item.href}
-                    className="px-4 py-3 flex items-center justify-between gap-3 hover:bg-surface-container-low transition-colors group"
+                    className="py-3.5 flex items-center justify-between gap-3 hover:bg-surface-container-low/60 -mx-2 px-2 rounded-xl transition-colors"
                   >
                     <div className="flex items-center gap-3 min-w-0">
-                      <span className={`material-symbols-outlined text-[18px] shrink-0 ${iconColor}`}>
+                      <span className="material-symbols-outlined text-[18px] text-ink-secondary shrink-0">
                         {icon}
                       </span>
-                      <span className="text-sm text-on-surface group-hover:text-primary transition-colors truncate">
+                      <span className="text-[14px] font-medium text-on-surface truncate">
                         {item.title}
                       </span>
                     </div>
-                    <div className="flex items-center gap-2.5 shrink-0">
-                      <span className="text-[10px] font-label-sm px-1.5 py-0.5 rounded bg-surface-container-low text-ink-muted">
+                    <div className="flex items-center gap-3 shrink-0">
+                      <span
+                        className={`font-mono-telemetry text-[10px] font-semibold uppercase tracking-[0.06em] px-2.5 py-1 rounded-full ${getStatusPillClasses(
+                          item.statusLabel
+                        )}`}
+                      >
                         {item.statusLabel}
                       </span>
-                      <span className="font-label-sm text-[11px] text-ink-muted w-12 text-right">
+                      <span className="font-mono-telemetry text-[12px] text-ink-secondary w-14 text-right">
                         {dateStr}
                       </span>
                     </div>
@@ -442,70 +616,37 @@ export function DashboardOverviewClient({
                 )
               })}
               {filteredActivities.length === 0 && (
-                <div className="p-8 text-center text-ink-muted text-xs">No recent items.</div>
+                <div className="py-10 text-center text-[13px] text-ink-muted">
+                  No recent activity in this view.
+                </div>
               )}
             </div>
-          </section>
+          </div>
+        </div>
 
-          {/* Compact Visual Composition + Recent Plates */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Archive Composition */}
-            <section className="border border-hairline-rule bg-paper-surface p-4 rounded shadow-xs space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-label-sm text-on-surface font-medium flex items-center gap-1.5">
-                  <span className="material-symbols-outlined text-[16px] text-primary">bar_chart</span>
-                  Composition
-                </span>
-                <span className="text-[11px] font-label-sm text-primary">{pubPct}% live</span>
-              </div>
-              <div className="w-full h-2.5 rounded overflow-hidden bg-surface-container-low flex">
-                <div className="bg-emerald-500 h-full" style={{ width: `${pubPct}%` }} title="Published" />
-                <div className="bg-primary h-full" style={{ width: `${draftPct}%` }} title="Drafts" />
-                <div className="bg-ink-muted/40 h-full" style={{ width: `${archPct}%` }} title="Archived" />
-              </div>
-              <div className="space-y-2 pt-1">
-                {topicStats.slice(0, 4).map((topic) => {
-                  const maxCount = Math.max(1, ...topicStats.map((t) => t.count))
-                  const widthPct = Math.max(8, Math.round((topic.count / maxCount) * 100))
-                  return (
-                    <div key={topic.id} className="grid grid-cols-12 items-center gap-2 text-[11px]">
-                      <span className="col-span-5 truncate font-label-sm text-ink-secondary">
-                        #{topic.name}
-                      </span>
-                      <div className="col-span-5 h-1.5 bg-surface-container-low rounded overflow-hidden">
-                        <div className="h-full bg-primary/80 rounded" style={{ width: `${widthPct}%` }} />
-                      </div>
-                      <span className="col-span-2 text-right font-label-sm text-ink-muted">
-                        {topic.count}
-                      </span>
-                    </div>
-                  )
-                })}
-              </div>
-            </section>
-
-            {/* Recent Media Plates */}
-            <section className="border border-hairline-rule bg-paper-surface p-4 rounded shadow-xs space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-label-sm text-on-surface font-medium flex items-center gap-1.5">
-                  <span className="material-symbols-outlined text-[16px] text-sky-500">photo_library</span>
-                  Plates
-                </span>
+        {/* RIGHT COLUMN (3 cols — 25%): Plates, Notes & System Health */}
+        <div className="lg:col-span-3 flex flex-col gap-5">
+          {/* Plates Card: 3-column 3:4 Thumbnail Grid */}
+          <div className="bg-paper-surface rounded-[20px] p-6 space-y-4">
+            <div className="flex items-center justify-between">
+              <h2 className="font-studio-display text-[16px] font-semibold text-on-surface">
+                Plates
+              </h2>
+              <Link
+                href="/admin/collections/media"
+                className="text-[12px] text-ink-secondary hover:text-on-surface transition-colors"
+              >
+                All ›
+              </Link>
+            </div>
+            <div className="grid grid-cols-3 gap-2.5">
+              {recentMedia.slice(0, 3).map((m) => (
                 <Link
+                  key={m.id}
                   href="/admin/collections/media"
-                  className="text-[11px] font-label-sm text-primary hover:underline"
+                  className="group space-y-1.5 min-w-0"
                 >
-                  All →
-                </Link>
-              </div>
-              <div className="grid grid-cols-2 gap-2">
-                {recentMedia.slice(0, 4).map((m) => (
-                  <Link
-                    key={m.id}
-                    href="/admin/collections/media"
-                    title={`${m.filename} (${formatBytes(m.filesize)})`}
-                    className="group aspect-[16/10] border border-hairline-rule rounded overflow-hidden bg-surface-container-low relative hover:border-primary/50 transition-colors"
-                  >
+                  <div className="aspect-[3/4] rounded-[12px] overflow-hidden bg-surface-container-low">
                     {m.url && m.mimeType?.startsWith('image/') ? (
                       <img
                         src={m.url}
@@ -514,170 +655,67 @@ export function DashboardOverviewClient({
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
-                        <span className="material-symbols-outlined text-ink-muted text-[22px]">
-                          description
+                        <span className="material-symbols-outlined text-ink-muted text-[20px]">
+                          image
                         </span>
                       </div>
                     )}
-                  </Link>
-                ))}
-              </div>
-            </section>
-          </div>
-        </div>
-
-        {/* RIGHT COLUMN (4 cols) */}
-        <div className="lg:col-span-4 space-y-5">
-          {/* Highlighted Card: Archive Readiness Ring */}
-          <div className="border border-hairline-rule bg-paper-surface p-4 rounded shadow-xs">
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-label-sm text-on-surface font-semibold flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[16px] text-primary">verified</span>
-                Readiness
-              </span>
-              <span className="text-xs font-label-sm text-primary font-semibold">{readinessScore}%</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <svg width="56" height="56" viewBox="0 0 56 56" className="shrink-0 -rotate-90">
-                <circle
-                  cx="28"
-                  cy="28"
-                  r={ringRadius}
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="5"
-                  className="text-surface-container-high"
-                />
-                <circle
-                  cx="28"
-                  cy="28"
-                  r={ringRadius}
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="5"
-                  strokeDasharray={ringCircumference}
-                  strokeDashoffset={ringOffset}
-                  strokeLinecap="round"
-                  className="text-primary transition-all duration-500"
-                />
-              </svg>
-              <ul className="flex-1 space-y-1 text-[11px]">
-                {healthIssues.map((issue) => (
-                  <li key={issue.id}>
-                    <Link
-                      href={issue.href}
-                      className="flex items-center justify-between hover:text-primary transition-colors"
-                    >
-                      <span className="text-ink-secondary truncate pr-2">{issue.label}</span>
-                      <span
-                        className={`font-label-sm px-1.5 py-0.5 rounded text-[10px] ${
-                          issue.count === 0
-                            ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
-                            : 'bg-amber-wash text-primary font-semibold'
-                        }`}
-                      >
-                        {issue.count === 0 ? '✓' : issue.count}
-                      </span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          {/* Icon-Labeled Field Telemetry */}
-          <div className="border border-hairline-rule bg-paper-surface p-4 rounded shadow-xs">
-            <div className="flex items-center justify-between pb-2.5 border-b border-hairline-rule mb-3">
-              <span className="text-xs font-label-sm text-on-surface font-semibold flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                Right Now
-              </span>
-              <div className="flex items-center gap-1.5">
-                <button
-                  type="button"
-                  onClick={copyTelemetryJson}
-                  title="Copy telemetry JSON"
-                  aria-label="Copy telemetry JSON"
-                  className="p-1 text-ink-muted hover:text-primary rounded transition-colors"
-                >
-                  <span className="material-symbols-outlined text-[15px]">data_object</span>
-                </button>
-                <Link
-                  href="/admin/globals/current-state"
-                  title="Edit Telemetry"
-                  aria-label="Edit Field Telemetry"
-                  className="p-1 text-ink-muted hover:text-primary rounded transition-colors"
-                >
-                  <span className="material-symbols-outlined text-[15px]">edit</span>
+                  </div>
+                  <p className="text-[11px] text-ink-secondary truncate text-center">
+                    {m.filename.replace(/\.[^/.]+$/, '')}
+                  </p>
                 </Link>
-              </div>
-            </div>
-            <ul className="space-y-2.5 text-xs">
-              {[
-                { icon: 'auto_stories', label: 'Studying', value: currentState?.studying },
-                { icon: 'memory', label: 'Building', value: currentState?.building },
-                { icon: 'article', label: 'Reading', value: currentState?.reading },
-                { icon: 'psychology', label: 'Thinking', value: currentState?.thinking_about },
-              ].map((item) => (
-                <li key={item.label} className="flex items-start gap-2.5" title={item.label}>
-                  <span className="material-symbols-outlined text-[16px] text-primary mt-0.5 shrink-0">
-                    {item.icon}
-                  </span>
-                  <span className="text-on-surface leading-snug line-clamp-2">
-                    {item.value || <span className="italic text-ink-muted">—</span>}
-                  </span>
-                </li>
               ))}
-            </ul>
-          </div>
-
-          {/* Compact Scratchpad */}
-          <div className="border border-hairline-rule bg-paper-surface p-4 rounded shadow-xs">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-label-sm text-on-surface font-semibold flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[16px] text-primary">sticky_note_2</span>
-                Notes
-              </span>
-              {scratchpad && (
-                <button
-                  type="button"
-                  onClick={() => handleScratchpadChange('')}
-                  title="Clear notes"
-                  aria-label="Clear scratchpad"
-                  className="text-ink-muted hover:text-rose-500 transition-colors"
-                >
-                  <span className="material-symbols-outlined text-[15px]">delete_sweep</span>
-                </button>
+              {recentMedia.length === 0 && (
+                <div className="col-span-3 py-8 text-center text-[12px] text-ink-muted">
+                  No plates uploaded.
+                </div>
               )}
             </div>
+          </div>
+
+          {/* Quick Field Notes Card */}
+          <div className="bg-paper-surface rounded-[20px] p-6 space-y-3 flex-1 flex flex-col">
+            <h2 className="font-studio-display text-[16px] font-semibold text-on-surface flex items-center gap-2">
+              <span className="material-symbols-outlined text-[18px] text-ink-secondary">
+                sticky_note_2
+              </span>
+              Quick Field Notes
+            </h2>
             <textarea
               value={scratchpad}
               onChange={(e) => handleScratchpadChange(e.target.value)}
-              rows={3}
+              rows={4}
               placeholder="Quick field notes..."
-              aria-label="Field scratchpad notes"
-              className="w-full bg-surface-container-low border border-hairline-rule rounded p-2 text-xs text-on-surface placeholder:text-ink-muted focus:outline-none focus:border-primary resize-y"
+              aria-label="Quick field notes"
+              className="w-full flex-1 bg-[#F8FAFC] dark:bg-zinc-900 border-0 rounded-[12px] p-3.5 text-[13px] text-on-surface placeholder:text-ink-muted focus:outline-none focus:ring-2 focus:ring-[#2563EB]/30 resize-none"
             />
           </div>
 
-          {/* Compact API Health Ping */}
-          <div className="border border-hairline-rule bg-paper-surface px-4 py-3 rounded shadow-xs flex items-center justify-between">
-            <div className="flex items-center gap-2 text-xs font-label-sm text-ink-secondary">
-              <span className="material-symbols-outlined text-[16px] text-emerald-500">monitor_heart</span>
-              <span>
+          {/* System Health Card */}
+          <div className="bg-paper-surface rounded-[20px] p-6 space-y-3">
+            <h2 className="font-studio-display text-[16px] font-semibold text-on-surface flex items-center gap-2">
+              <span className="material-symbols-outlined text-[18px] text-ink-secondary">
+                monitor_heart
+              </span>
+              System Health
+            </h2>
+            <div className="flex items-center justify-between gap-2">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#ECFDF5] text-[#059669] dark:bg-emerald-950/50 dark:text-emerald-300 text-[12px] font-medium">
+                <span className="material-symbols-outlined text-[15px]">sensors</span>
                 {healthPing
-                  ? `${healthPing.ok ? 'OK' : 'ERR'} · ${healthPing.latencyMs}ms`
+                  ? `${healthPing.ok ? 'Healthy' : 'Error'} · ${healthPing.latencyMs}ms`
                   : 'System Health'}
               </span>
+              <button
+                type="button"
+                onClick={runHealthCheck}
+                disabled={pinging}
+                className="px-3.5 py-1.5 rounded-full bg-[#F8FAFC] hover:bg-[#F1F5F9] dark:bg-zinc-800 dark:hover:bg-zinc-700 text-[12px] font-medium text-on-surface transition-colors"
+              >
+                {pinging ? '...' : 'Ping'}
+              </button>
             </div>
-            <button
-              type="button"
-              onClick={runHealthCheck}
-              disabled={pinging}
-              className="px-2.5 py-1 rounded border border-hairline-rule bg-surface-container-low hover:border-primary text-[11px] font-label-sm text-on-surface transition-colors"
-            >
-              {pinging ? '...' : 'Ping'}
-            </button>
           </div>
         </div>
       </div>

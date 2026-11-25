@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -18,208 +18,51 @@ interface NavItem {
   href: string
   icon: string
   label: string
-  badge?: string | number
-  badgeHighlight?: boolean
-  pulse?: boolean
 }
 
-export function AdminSidebarClient({ counts }: { counts: AdminSidebarCounts }) {
+/**
+ * Slim, transparent left icon rail floating directly on the #F1F5F9 canvas.
+ * Active route sits inside a solid dark obsidian circle (#0F172A) with a white icon.
+ */
+export function AdminSidebarClient({ counts: _counts }: { counts: AdminSidebarCounts }) {
   const pathname = usePathname()
-  const [collapsed, setCollapsed] = useState(false)
 
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem('atelier-sidebar-collapsed')
-      if (saved === 'true') setCollapsed(true)
-    } catch {
-      /* ignore */
-    }
-  }, [])
-
-  const toggleCollapsed = () => {
-    setCollapsed((prev) => {
-      const next = !prev
-      try {
-        localStorage.setItem('atelier-sidebar-collapsed', String(next))
-      } catch {
-        /* ignore */
-      }
-      return next
-    })
-  }
-
-  const pad = (n: number) => n.toString().padStart(2, '0')
-  const publishRatio =
-    counts.postsCount > 0 ? Math.round((counts.publishedPostsCount / counts.postsCount) * 100) : 0
-
-  const contentItems: NavItem[] = [
-    { href: '/admin', icon: 'space_dashboard', label: 'Dashboard' },
-    {
-      href: '/admin/collections/posts',
-      icon: 'edit_note',
-      label: 'Posts',
-      badge: pad(counts.postsCount),
-      badgeHighlight: true,
-    },
-    {
-      href: '/admin/collections/projects',
-      icon: 'qr_code_2',
-      label: 'Projects',
-      badge: pad(counts.projectsCount),
-    },
-    {
-      href: '/admin/collections/topics',
-      icon: 'label',
-      label: 'Topics',
-      badge: pad(counts.topicsCount),
-    },
-    {
-      href: '/admin/collections/media',
-      icon: 'photo_library',
-      label: 'Media',
-      badge: counts.mediaCount,
-    },
-  ]
-
-  const globalItems: NavItem[] = [
+  const navItems: NavItem[] = [
+    { href: '/admin', icon: 'dashboard', label: 'Dashboard' },
+    { href: '/admin/collections/posts', icon: 'edit_note', label: 'Posts' },
+    { href: '/admin/collections/projects', icon: 'qr_code_2', label: 'Projects' },
+    { href: '/admin/collections/topics', icon: 'label', label: 'Topics' },
+    { href: '/admin/collections/media', icon: 'photo_library', label: 'Media' },
     { href: '/admin/globals/profile', icon: 'person', label: 'Profile' },
-    {
-      href: '/admin/globals/current-state',
-      icon: 'sensors',
-      label: 'Current State',
-      pulse: true,
-    },
+    { href: '/admin/globals/current-state', icon: 'sensors', label: 'Current State' },
     { href: '/admin/collections/journey', icon: 'timeline', label: 'Journey' },
-  ]
-
-  const systemItems: NavItem[] = [
     { href: '/admin/globals/site-settings', icon: 'tune', label: 'Site Settings' },
-    {
-      href: '/admin/collections/users',
-      icon: 'group',
-      label: 'Users',
-      badge: pad(counts.usersCount),
-    },
+    { href: '/admin/collections/users', icon: 'group', label: 'Users' },
   ]
-
-  const renderLink = (item: NavItem) => {
-    const isActive = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href))
-    return (
-      <Link
-        key={item.href}
-        href={item.href}
-        title={collapsed ? item.label : undefined}
-        className={`flex items-center ${collapsed ? 'justify-center px-2' : 'justify-between pl-2.5 pr-2.5'} py-1.5 rounded-r transition-colors font-label-md group ${
-          isActive
-            ? 'bg-amber-wash text-primary border-l-2 border-primary font-medium shadow-xs'
-            : 'text-ink-secondary hover:bg-surface-container-high hover:text-on-surface border-l-2 border-transparent'
-        }`}
-      >
-        <div className="flex items-center gap-2.5 min-w-0">
-          <span
-            className={`material-symbols-outlined text-[17px] shrink-0 ${
-              isActive ? 'text-primary' : 'text-ink-muted group-hover:text-primary'
-            }`}
-          >
-            {item.icon}
-          </span>
-          {!collapsed && <span className="truncate">{item.label}</span>}
-        </div>
-        {!collapsed && item.badge !== undefined && (
-          <span
-            className={`text-label-sm font-label-sm px-1.5 py-0.5 rounded ${
-              item.badgeHighlight
-                ? 'text-primary bg-amber-wash border border-primary/20'
-                : 'text-ink-muted bg-surface-container-high'
-            }`}
-          >
-            {item.badge}
-          </span>
-        )}
-        {!collapsed && item.pulse && (
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-amber opacity-75" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
-          </span>
-        )}
-      </Link>
-    )
-  }
 
   return (
-    <aside
-      className={`${
-        collapsed ? 'w-16' : 'w-60'
-      } shrink-0 bg-paper-sidebar border-r border-hairline-rule flex-col justify-between py-space-md px-space-sm hidden md:flex transition-[width] duration-200`}
-    >
-      <div className="space-y-space-md">
-        {/* Section Node Tag + Collapse Toggle */}
-        <div className={`pb-3 border-b border-hairline-rule flex items-center ${collapsed ? 'justify-center' : 'justify-between px-space-sm'}`}>
-          {!collapsed && (
-            <div className="flex items-center gap-2 min-w-0">
-              <span className="material-symbols-outlined text-primary text-[18px]">auto_awesome</span>
-              <span className="font-headline-sm text-sm text-on-surface tracking-tight font-normal truncate">
-                Atelier
-              </span>
-            </div>
-          )}
-          <button
-            type="button"
-            onClick={toggleCollapsed}
-            className="p-1 text-ink-muted hover:text-primary hover:bg-surface-container-low rounded transition-colors"
-            title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-            aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          >
-            <span className="material-symbols-outlined text-[18px]">
-              {collapsed ? 'chevron_right' : 'chevron_left'}
-            </span>
-          </button>
-        </div>
-
-        {/* Collections */}
-        <nav className="space-y-1" aria-label="Admin collections">
-          {contentItems.map(renderLink)}
-
-          <div className="my-2.5 border-t border-hairline-rule" />
-
-          {globalItems.map(renderLink)}
-
-          <div className="my-2.5 border-t border-hairline-rule" />
-
-          {systemItems.map(renderLink)}
-        </nav>
-      </div>
-
-      {/* Bottom Telemetry Card */}
-      {!collapsed ? (
-        <div className="space-y-space-sm pt-space-sm border-t border-hairline-rule">
-          <div className="p-2.5 bg-surface-container-low border border-hairline-rule rounded">
-            <div className="flex items-center justify-between">
-              <span className="text-label-sm font-label-sm text-primary flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
-                Node α Active
-              </span>
-              <span className="text-[10px] font-label-sm text-ink-muted">{publishRatio}% PUB</span>
-            </div>
-            <p className="text-[10px] font-label-sm text-ink-muted mt-1 truncate">
-              {counts.publishedPostsCount} published · {counts.draftPostsCount} drafts
-            </p>
-            <div
-              className="mt-2 w-full bg-hairline-rule h-1 overflow-hidden rounded"
-              title={`${publishRatio}% of posts published`}
+    <aside className="w-12 shrink-0 hidden md:flex flex-col items-center py-4 bg-transparent select-none">
+      <nav className="flex flex-col items-center gap-2 sticky top-20" aria-label="Admin navigation">
+        {navItems.map((item) => {
+          const isActive =
+            pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href))
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              title={item.label}
+              aria-label={item.label}
+              className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${
+                isActive
+                  ? 'bg-[#0F172A] text-white dark:bg-slate-100 dark:text-slate-900'
+                  : 'text-[#64748B] hover:text-[#0F172A] hover:bg-white/80 dark:text-slate-400 dark:hover:text-white dark:hover:bg-white/10'
+              }`}
             >
-              <div className="bg-primary h-full transition-all duration-300" style={{ width: `${publishRatio}%` }} />
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="pt-space-sm border-t border-hairline-rule flex justify-center">
-          <span
-            className="w-2.5 h-2.5 rounded-full bg-emerald-500"
-            title={`Node α Active · ${publishRatio}% published`}
-          />
-        </div>
-      )}
+              <span className="material-symbols-outlined text-[20px]">{item.icon}</span>
+            </Link>
+          )
+        })}
+      </nav>
     </aside>
   )
 }
@@ -256,7 +99,6 @@ export function AdminMobileDrawer({
     return () => dialog.removeEventListener('close', handleClose)
   }, [open, onClose])
 
-  // Close drawer on route change
   useEffect(() => {
     if (open) onClose()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -264,7 +106,7 @@ export function AdminMobileDrawer({
 
   const pad = (n: number) => n.toString().padStart(2, '0')
   const links = [
-    { href: '/admin', icon: 'space_dashboard', label: 'Dashboard' },
+    { href: '/admin', icon: 'dashboard', label: 'Dashboard' },
     { href: '/admin/collections/posts', icon: 'edit_note', label: 'Posts', badge: pad(counts.postsCount) },
     { href: '/admin/collections/projects', icon: 'qr_code_2', label: 'Projects', badge: pad(counts.projectsCount) },
     { href: '/admin/collections/topics', icon: 'label', label: 'Topics', badge: pad(counts.topicsCount) },
@@ -283,36 +125,36 @@ export function AdminMobileDrawer({
       onClick={(e) => {
         if (e.target === dialogRef.current) onClose()
       }}
-      className="m-0 h-[100dvh] max-h-none w-[min(18rem,82vw)] bg-paper-sidebar text-on-surface border-r border-hairline-rule p-0 shadow-2xl"
+      className="m-0 h-[100dvh] max-h-none w-[min(18rem,82vw)] bg-paper-surface text-on-surface p-0 shadow-2xl"
     >
-      <div className="flex flex-col h-full justify-between p-4">
+      <div className="flex flex-col h-full justify-between p-5">
         <div>
-          <div className="flex items-center justify-between pb-3 mb-3 border-b border-hairline-rule">
-            <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-primary text-[18px]">radio_button_checked</span>
-              <span className="font-headline-sm text-sm text-on-surface">Payload Atelier</span>
-            </div>
+          <div className="flex items-center justify-between pb-4 mb-4 border-b border-hairline-subtle">
+            <span className="font-studio-display font-semibold text-sm text-on-surface">
+              ZeroAbstraction
+            </span>
             <button
               type="button"
               onClick={onClose}
               autoFocus
               aria-label="Close navigation menu"
-              className="p-1.5 text-ink-muted hover:text-on-surface rounded"
+              className="p-1.5 text-ink-muted hover:text-on-surface rounded-full"
             >
               <span className="material-symbols-outlined text-[20px]">close</span>
             </button>
           </div>
           <nav className="space-y-1">
             {links.map((item) => {
-              const isActive = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href))
+              const isActive =
+                pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href))
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`flex items-center justify-between px-3 py-2 rounded font-label-md text-xs transition-colors ${
+                  className={`flex items-center justify-between px-3 py-2 rounded-xl text-[13px] transition-colors ${
                     isActive
-                      ? 'bg-amber-wash text-primary font-medium'
-                      : 'text-ink-secondary hover:bg-surface-container-high hover:text-on-surface'
+                      ? 'bg-[#0F172A] text-white font-medium'
+                      : 'text-ink-secondary hover:bg-surface-container-low hover:text-on-surface'
                   }`}
                 >
                   <span className="flex items-center gap-2.5">
@@ -320,17 +162,12 @@ export function AdminMobileDrawer({
                     <span>{item.label}</span>
                   </span>
                   {item.badge !== undefined && (
-                    <span className="text-[11px] font-label-sm px-1.5 py-0.5 rounded bg-surface-container-high text-ink-muted">
-                      {item.badge}
-                    </span>
+                    <span className="font-mono-telemetry text-[11px] opacity-75">{item.badge}</span>
                   )}
                 </Link>
               )
             })}
           </nav>
-        </div>
-        <div className="pt-3 border-t border-hairline-rule text-[11px] font-label-sm text-ink-muted">
-          OBSERVATORY NODE α // PALETTE 03
         </div>
       </div>
     </dialog>

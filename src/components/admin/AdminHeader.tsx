@@ -51,7 +51,7 @@ function getBreadcrumbLabel(pathname: string): string {
   if (pathname.startsWith('/admin/globals/current-state')) return 'CURRENT STATE'
   if (pathname.startsWith('/admin/globals/profile')) return 'OBSERVER PROFILE'
   if (pathname.startsWith('/admin/globals/site-settings')) return 'SITE SETTINGS'
-  return 'ATELIER WORKBENCH'
+  return 'OBSERVATORY OVERVIEW'
 }
 
 export function AdminHeader({
@@ -61,15 +61,13 @@ export function AdminHeader({
   notifications = [],
 }: AdminHeaderProps) {
   const pathname = usePathname()
-  const [theme, setTheme] = useState<'light' | 'dark'>('dark')
+  const [theme, setTheme] = useState<'light' | 'dark'>('light')
   const [paletteOpen, setPaletteOpen] = useState(false)
   const [shortcutsOpen, setShortcutsOpen] = useState(false)
   const [drawerOpen, setDrawerOpen] = useState(false)
-  const [createMenuOpen, setCreateMenuOpen] = useState(false)
   const [notifOpen, setNotifOpen] = useState(false)
   const [unreadCleared, setUnreadCleared] = useState(false)
 
-  const createMenuRef = useRef<HTMLDivElement>(null)
   const notifRef = useRef<HTMLDivElement>(null)
 
   const applyTheme = (next: 'light' | 'dark') => {
@@ -83,7 +81,7 @@ export function AdminHeader({
 
   useEffect(() => {
     const cur = document.documentElement.getAttribute('data-theme')
-    setTheme(cur === 'light' ? 'light' : 'dark')
+    setTheme(cur === 'dark' ? 'dark' : 'light')
 
     const onStorage = (e: StorageEvent) => {
       if (e.key === 'payload-admin-theme' && (e.newValue === 'light' || e.newValue === 'dark')) {
@@ -100,19 +98,14 @@ export function AdminHeader({
     }
   }, [])
 
-  // Close popovers on outside click or Escape
   useEffect(() => {
     const onPointerDown = (e: PointerEvent) => {
-      if (createMenuOpen && createMenuRef.current && !createMenuRef.current.contains(e.target as Node)) {
-        setCreateMenuOpen(false)
-      }
       if (notifOpen && notifRef.current && !notifRef.current.contains(e.target as Node)) {
         setNotifOpen(false)
       }
     }
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        setCreateMenuOpen(false)
         setNotifOpen(false)
       }
     }
@@ -122,20 +115,20 @@ export function AdminHeader({
       document.removeEventListener('pointerdown', onPointerDown)
       document.removeEventListener('keydown', onKeyDown)
     }
-  }, [createMenuOpen, notifOpen])
+  }, [notifOpen])
 
   function toggleTheme() {
-    const next = theme === 'dark' ? 'light' : 'dark'
+    const next = theme === 'light' ? 'dark' : 'light'
     applyTheme(next)
     try {
       localStorage.setItem('payload-admin-theme', next)
     } catch {
-      /* ignore storage errors */
+      /* ignore */
     }
   }
 
-  let initial = 'M'
-  let displayName = 'Observer'
+  let initial = 'A'
+  let displayName = 'Admin'
   if (user?.email) {
     initial = user.email.charAt(0).toUpperCase()
     displayName = user.email.split('@')[0].charAt(0).toUpperCase() + user.email.split('@')[0].slice(1)
@@ -146,226 +139,168 @@ export function AdminHeader({
 
   return (
     <>
-      <header className="bg-surface-container-lowest/95 sticky top-0 z-40 border-b border-hairline-rule backdrop-blur-md">
-        <div className="flex justify-between items-center w-full px-space-md h-14 max-w-[1440px] mx-auto">
-          {/* Left: Mobile Drawer Trigger + Brand + Dynamic Breadcrumb */}
+      <header className="bg-paper-base/90 sticky top-0 z-40 backdrop-blur-md">
+        <div className="flex justify-between items-center w-full px-3 sm:px-6 h-16 max-w-[1440px] mx-auto gap-3">
+          {/* Left: Mobile Drawer Trigger + Brand + Soft Blue Pill */}
           <div className="flex items-center gap-3 min-w-0">
             <button
               type="button"
               onClick={() => setDrawerOpen(true)}
               aria-label="Open navigation menu"
               aria-expanded={drawerOpen}
-              className="md:hidden p-1.5 -ml-1.5 text-ink-secondary hover:text-primary rounded transition-colors"
+              className="md:hidden p-1.5 text-ink-secondary hover:text-on-surface rounded-full transition-colors"
             >
               <span className="material-symbols-outlined text-[21px]">menu</span>
             </button>
 
             <Link
-              className="font-headline-sm text-lg text-on-surface tracking-tight flex items-center gap-2 group shrink-0"
+              className="text-[15px] font-semibold text-on-surface tracking-tight flex items-center gap-2 shrink-0"
               href="/admin"
               title="ZeroAbstraction Atelier"
             >
-              <span className="w-2.5 h-2.5 bg-primary rounded-none inline-block group-hover:rotate-45 transition-transform" />
-              <span className="font-headline-md italic font-normal text-on-surface group-hover:text-primary transition-colors">
-                ZeroAbstraction
+              <span className="w-4 h-4 rounded-[4px] bg-[#0F172A] dark:bg-slate-100 inline-flex items-center justify-center">
+                <span className="w-1.5 h-1.5 rounded-full bg-white dark:bg-slate-900" />
               </span>
+              <span className="font-studio-display">ZeroAbstraction</span>
             </Link>
 
-            <span className="hidden lg:inline-block text-hairline-rule font-light">/</span>
-            <span className="hidden lg:inline-flex items-center gap-1.5 text-[11px] font-label-sm text-ink-muted px-2 py-0.5 rounded bg-surface-container-low border border-hairline-subtle truncate">
-              <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+            <span className="hidden sm:inline-block text-ink-muted/40 font-light">/</span>
+            <span className="hidden sm:inline-flex items-center gap-1.5 font-mono-telemetry text-[10px] font-semibold tracking-[0.06em] uppercase px-2.5 py-1 rounded-full bg-[#EFF6FF] text-[#2563EB] dark:bg-blue-950/50 dark:text-blue-300 truncate">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#2563EB] dark:bg-blue-400" />
               {routeLabel}
             </span>
           </div>
 
           {/* Right Utility Controls */}
-          <div className="flex items-center gap-2">
-            {/* Command Palette Trigger */}
+          <div className="flex items-center gap-2 sm:gap-2.5">
+            {/* Rounded Pill Search Trigger */}
             <button
               type="button"
               onClick={() => setPaletteOpen(true)}
-              aria-label="Open command palette"
-              className="relative flex items-center gap-2 bg-surface-container-low hover:bg-surface-container text-ink-muted hover:text-on-surface text-label-sm font-label-sm px-2.5 py-1.5 rounded border border-hairline-rule transition-colors sm:w-44 justify-between"
+              aria-label="Search manuscripts and plates"
+              className="flex items-center gap-2 bg-paper-surface hover:bg-surface-container-low text-ink-muted hover:text-on-surface text-[13px] px-3 sm:px-3.5 py-1.5 rounded-full transition-colors sm:w-64 justify-start"
             >
-              <span className="flex items-center gap-1.5 truncate">
-                <span className="material-symbols-outlined text-[16px] text-primary">search</span>
-                <span className="hidden sm:inline truncate">Search...</span>
-              </span>
-              <kbd className="hidden sm:inline text-[10px] font-label-sm text-ink-muted border border-hairline-rule px-1 py-0.5 bg-paper-surface rounded">
-                ⌘K
-              </kbd>
+              <span className="material-symbols-outlined text-[17px] text-ink-muted">search</span>
+              <span className="hidden sm:inline truncate">Search manuscripts, plates...</span>
             </button>
 
-            {/* Quick Create Dropdown */}
-            <div className="relative" ref={createMenuRef}>
+            {/* Quick Compose */}
+            <Link
+              href="/admin/collections/posts/new"
+              title="New Manuscript"
+              aria-label="Create new manuscript"
+              className="p-2 rounded-full text-ink-secondary hover:text-on-surface hover:bg-paper-surface transition-colors"
+            >
+              <span className="material-symbols-outlined text-[19px]">edit_square</span>
+            </Link>
+
+            {/* Notifications */}
+            <div className="relative" ref={notifRef}>
               <button
                 type="button"
-                onClick={() => setCreateMenuOpen((o) => !o)}
-                aria-expanded={createMenuOpen}
-                aria-haspopup="menu"
-                className="inline-flex items-center gap-1 bg-primary text-on-primary font-label-md text-xs px-3 py-1.5 rounded hover:bg-accent-ochre transition-colors shadow-xs"
+                onClick={() => setNotifOpen((o) => !o)}
+                aria-expanded={notifOpen}
+                aria-label="Notifications"
+                className="relative p-2 rounded-full text-ink-secondary hover:text-on-surface hover:bg-paper-surface transition-colors"
+                title="Notifications"
               >
-                <span className="material-symbols-outlined text-[16px]">add</span>
-                <span className="hidden sm:inline">New</span>
-                <span className="material-symbols-outlined text-[14px] opacity-80">expand_more</span>
+                <span className="material-symbols-outlined text-[19px]">notifications</span>
+                {hasUnread && (
+                  <span className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                )}
               </button>
 
-              {createMenuOpen && (
-                <div
-                  role="menu"
-                  className="absolute right-0 mt-2 w-56 rounded border border-hairline-rule bg-paper-surface shadow-xl py-1.5 z-50"
-                >
-                  <div className="px-3 py-1 text-[10px] font-label-sm text-ink-muted uppercase tracking-widest">
-                    Quick Create
+              {notifOpen && (
+                <div className="absolute right-0 mt-2 w-80 rounded-[16px] bg-paper-surface shadow-xl z-50 overflow-hidden border border-hairline-subtle">
+                  <div className="flex items-center justify-between px-4 py-3 border-b border-hairline-subtle">
+                    <span className="font-mono-telemetry text-[10px] font-semibold uppercase tracking-[0.06em] text-on-surface">
+                      Observatory Queue
+                    </span>
+                    {hasUnread && (
+                      <button
+                        type="button"
+                        onClick={() => setUnreadCleared(true)}
+                        className="text-[11px] text-[#2563EB] hover:underline"
+                      >
+                        Mark read
+                      </button>
+                    )}
                   </div>
-                  <Link
-                    href="/admin/collections/posts/new"
-                    onClick={() => setCreateMenuOpen(false)}
-                    className="flex items-center gap-2.5 px-3 py-2 text-xs text-on-surface hover:bg-surface-container-low transition-colors"
-                  >
-                    <span className="material-symbols-outlined text-[16px] text-primary">edit_note</span>
-                    <span>New Treatise / Post</span>
-                  </Link>
-                  <Link
-                    href="/admin/collections/projects/new"
-                    onClick={() => setCreateMenuOpen(false)}
-                    className="flex items-center gap-2.5 px-3 py-2 text-xs text-on-surface hover:bg-surface-container-low transition-colors"
-                  >
-                    <span className="material-symbols-outlined text-[16px] text-primary">precision_manufacturing</span>
-                    <span>New Project Rig</span>
-                  </Link>
-                  <Link
-                    href="/admin/collections/media"
-                    onClick={() => setCreateMenuOpen(false)}
-                    className="flex items-center gap-2.5 px-3 py-2 text-xs text-on-surface hover:bg-surface-container-low transition-colors"
-                  >
-                    <span className="material-symbols-outlined text-[16px] text-primary">upload_file</span>
-                    <span>Upload Media Plate</span>
-                  </Link>
-                  <div className="my-1 border-t border-hairline-subtle" />
-                  <Link
-                    href="/admin/globals/current-state"
-                    onClick={() => setCreateMenuOpen(false)}
-                    className="flex items-center gap-2.5 px-3 py-2 text-xs text-on-surface hover:bg-surface-container-low transition-colors"
-                  >
-                    <span className="material-symbols-outlined text-[16px] text-emerald-500">sensors</span>
-                    <span>Update Field Telemetry</span>
-                  </Link>
+                  <div className="divide-y divide-hairline-subtle max-h-72 overflow-y-auto">
+                    {notifications.map((n) => (
+                      <Link
+                        key={n.id}
+                        href={n.href}
+                        onClick={() => setNotifOpen(false)}
+                        className="flex items-start gap-2.5 px-4 py-3 hover:bg-surface-container-low transition-colors"
+                      >
+                        <span className="material-symbols-outlined text-[16px] text-ink-muted mt-0.5 shrink-0">
+                          {n.kind === 'draft' ? 'draw' : n.kind === 'project' ? 'qr_code_2' : 'check_circle'}
+                        </span>
+                        <div className="min-w-0">
+                          <p className="text-[13px] text-on-surface font-medium truncate">{n.title}</p>
+                          <p className="text-[11px] text-ink-muted mt-0.5 truncate">{n.meta}</p>
+                        </div>
+                      </Link>
+                    ))}
+                    {notifications.length === 0 && (
+                      <div className="px-4 py-6 text-center text-xs text-ink-muted">
+                        All manuscripts &amp; telemetry synced.
+                      </div>
+                    )}
+                  </div>
                 </div>
               )}
             </div>
 
-            {/* View Public Site (Icon-first) */}
-            <a
-              href="/"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="Open public site"
-              aria-label="Open public site in new tab"
-              className="hidden sm:inline-flex p-1.5 rounded border border-hairline-rule text-ink-secondary hover:text-primary hover:border-primary/40 transition-colors"
+            {/* Settings Gear */}
+            <Link
+              href="/admin/globals/site-settings"
+              title="Site Settings"
+              aria-label="Site Settings"
+              className="hidden sm:inline-flex p-2 rounded-full text-ink-secondary hover:text-on-surface hover:bg-paper-surface transition-colors"
             >
-              <span className="material-symbols-outlined text-[17px]">open_in_new</span>
-            </a>
+              <span className="material-symbols-outlined text-[19px]">settings</span>
+            </Link>
 
-            {/* Utility Icons: Notifications, Shortcuts, Theme */}
-            <div className="flex items-center border-l border-hairline-rule pl-2 ml-1 gap-0.5 text-ink-secondary">
-              <div className="relative" ref={notifRef}>
-                <button
-                  type="button"
-                  onClick={() => setNotifOpen((o) => !o)}
-                  aria-expanded={notifOpen}
-                  aria-label="Observatory notifications"
-                  className="relative p-1.5 text-ink-secondary hover:text-primary transition-colors rounded"
-                  title="Notifications"
-                >
-                  <span className="material-symbols-outlined text-[19px]">notifications</span>
-                  {hasUnread && (
-                    <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-emerald-500 ring-2 ring-paper-base" />
-                  )}
-                </button>
+            {/* Theme Toggle */}
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="p-2 rounded-full text-ink-secondary hover:text-on-surface hover:bg-paper-surface transition-colors"
+              title={`Switch to ${theme === 'light' ? 'Dark' : 'Light'} Theme`}
+              aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
+            >
+              <span className="material-symbols-outlined text-[19px]">
+                {theme === 'light' ? 'dark_mode' : 'light_mode'}
+              </span>
+            </button>
 
-                {notifOpen && (
-                  <div className="absolute right-0 mt-2 w-80 rounded border border-hairline-rule bg-paper-surface shadow-xl z-50 overflow-hidden">
-                    <div className="flex items-center justify-between px-3.5 py-2.5 border-b border-hairline-rule bg-surface-container-low">
-                      <span className="text-[11px] font-label-sm font-semibold uppercase tracking-wider text-on-surface">
-                        Observatory Queue
-                      </span>
-                      {hasUnread && (
-                        <button
-                          type="button"
-                          onClick={() => setUnreadCleared(true)}
-                          className="text-[11px] font-label-sm text-primary hover:underline"
-                        >
-                          Mark read
-                        </button>
-                      )}
-                    </div>
-                    <div className="divide-y divide-hairline-subtle max-h-72 overflow-y-auto">
-                      {notifications.map((n) => (
-                        <Link
-                          key={n.id}
-                          href={n.href}
-                          onClick={() => setNotifOpen(false)}
-                          className="flex items-start gap-2.5 px-3.5 py-2.5 hover:bg-surface-container-low transition-colors"
-                        >
-                          <span className="material-symbols-outlined text-[16px] text-primary mt-0.5 shrink-0">
-                            {n.kind === 'draft' ? 'draw' : n.kind === 'project' ? 'qr_code_2' : 'check_circle'}
-                          </span>
-                          <div className="min-w-0">
-                            <p className="text-xs text-on-surface font-medium truncate">{n.title}</p>
-                            <p className="text-[11px] font-label-sm text-ink-muted mt-0.5">{n.meta}</p>
-                          </div>
-                        </Link>
-                      ))}
-                      {notifications.length === 0 && (
-                        <div className="px-4 py-6 text-center text-xs text-ink-muted">
-                          All manuscripts &amp; telemetry synced.
-                        </div>
-                      )}
-                    </div>
+            {/* Admin Avatar Pill */}
+            <div className="flex items-center gap-2 pl-1">
+              <Link
+                href="/admin/globals/profile"
+                className="flex items-center gap-2 rounded-full bg-paper-surface px-2.5 py-1 hover:bg-surface-container-low transition-colors"
+                title={`${displayName} Profile`}
+              >
+                <div className="relative">
+                  <div className="w-6 h-6 rounded-full bg-[#0F172A] dark:bg-slate-200 text-white dark:text-slate-900 flex items-center justify-center text-[11px] font-semibold">
+                    {initial}
                   </div>
-                )}
-              </div>
-
-              <button
-                type="button"
-                onClick={() => setShortcutsOpen(true)}
-                className="hidden sm:inline-flex p-1.5 text-ink-secondary hover:text-primary transition-colors rounded"
-                title="Keyboard shortcuts (?)"
-                aria-label="Keyboard shortcuts"
-              >
-                <span className="material-symbols-outlined text-[19px]">keyboard</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={toggleTheme}
-                className="p-1.5 text-ink-secondary hover:text-primary transition-colors rounded"
-                title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Theme`}
-                aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
-              >
-                <span className="material-symbols-outlined text-[19px]">
-                  {theme === 'dark' ? 'light_mode' : 'dark_mode'}
-                </span>
-              </button>
-            </div>
-
-            {/* User Profile */}
-            <div className="flex items-center gap-2 pl-2 border-l border-hairline-rule">
-              <div className="relative" title={`${displayName} — Admin`}>
-                <div className="w-7 h-7 bg-amber-wash border border-primary/40 rounded flex items-center justify-center text-primary font-label-md text-xs font-semibold">
-                  {initial}
+                  <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-paper-surface" />
                 </div>
-                <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 border border-paper-base" />
-              </div>
+                <span className="hidden lg:inline text-[13px] font-medium text-on-surface pr-1">
+                  {displayName}
+                </span>
+              </Link>
               <form action="/api/users/logout" method="POST">
                 <button
                   type="submit"
-                  className="text-ink-muted hover:text-primary transition-colors flex items-center justify-center ml-1"
-                  title="Disconnect"
+                  className="p-1.5 rounded-full text-ink-muted hover:text-on-surface transition-colors flex items-center justify-center"
+                  title="Sign out"
                   aria-label="Disconnect and sign out"
                 >
-                  <span className="material-symbols-outlined text-[16px]">power_settings_new</span>
+                  <span className="material-symbols-outlined text-[17px]">logout</span>
                 </button>
               </form>
             </div>

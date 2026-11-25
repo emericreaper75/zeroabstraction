@@ -102,6 +102,17 @@ Tracking all presentation and functional improvements to the Payload Atelier Adm
 69. **Neutral Zinc/Slate Palette**: Replaced heavy electric-indigo/violet/vermillion tokens in `admin-atelier.css` with a calm neutral Zinc palette (`#FAFAFA`/`#FFFFFF` light, `#09090B`/`#111113` dark) and understated blue accent (`#2563EB`/`#60A5FA`).
 70. **Simple Sans Text Style (Same Sizes)**: Applied `.admin-simple-text` in `admin-atelier.css` and `(admin)/layout.tsx` to normalize all serif/monospace/italic/heavy-tracked headings and labels to clean `IBM Plex Sans` (`font-weight <= 500`, `font-style: normal`) while keeping all font sizes unchanged.
 
+---
+
+## Milestone 7: Panze Studio 3-Column Single-Canvas Refactor (#71 – #75)
+
+71. **Slate-Mist Canvas & Borderless Tonal Cards**: Updated `admin-atelier.css` and `(admin)/layout.tsx` to `#F1F5F9` canvas with borderless `#FFFFFF` `rounded-[20px]` cards, uniform `24px` padding, and `20px` grid gaps.
+72. **Panze Studio Typography (`Plus Jakarta Sans` + `Inter` + `JetBrains Mono`)**: Loaded `Plus Jakarta Sans`, `Inter`, and `JetBrains Mono` in `(admin)/layout.tsx` for upright headings, clean body labels, and `tabular-nums` telemetry.
+73. **Floating Left Icon Rail & Pill Top Bar**: Refactored `AdminSidebarClient.tsx` into a transparent left icon rail with solid `#0F172A` active circle, and `AdminHeader.tsx` with `OBSERVATORY OVERVIEW` pill, rounded search input, compose, bell, gear, theme toggle, and `Admin` avatar pill.
+74. **3-Column Studio Grid (`25% / 50% / 25%`)**: Rebuilt `DashboardOverviewClient.tsx` with Left Focus & Readiness card (Active Manuscript, Readiness ring/checklist, Apricot-wash On Going Tasks), Center Operations & Activity (Thick-stroke Donut chart, 2-col metric grid, Recent Activity rows), and Right Plates/Notes/System Health column.
+75. **Interactive Filter Pills & Persistent Tasks**: Wired the `Drafts` / `Published` / `Archived` / `Reports` pill switcher, `localStorage`-persisted On Going Tasks checkboxes, Quick Field Notes, and live `/api/health` Ping.
+
+
 
 
 

@@ -15,38 +15,38 @@
 :root,
 html.light,
 [data-theme="light"] {
-  /* Calm Neutral Light Theme */
-  --harmony-base: #3B82F6;
+  /* Panze Studio — Light Canvas Tokens */
+  --harmony-base: #0F172A;
   --harmony-comp: #10B981;
   --harmony-tri-cw: #EF4444;
   --harmony-tri-ccw: #10B981;
 
   /* Admin Semantic UI Tokens (Light Theme) */
-  --admin-paper-base: #FAFAFA;
+  --admin-paper-base: #F1F5F9;
   --admin-paper-surface: #FFFFFF;
-  --admin-paper-sidebar: #FFFFFF;
-  --admin-paper-container: #F4F4F5;
+  --admin-paper-sidebar: transparent;
+  --admin-paper-container: #F8FAFC;
   --admin-surface-container-lowest: #FFFFFF;
-  --admin-surface-container-low: #F4F4F5;
-  --admin-surface-container: #E4E4E7;
-  --admin-surface-container-high: #E4E4E7;
+  --admin-surface-container-low: #F8FAFC;
+  --admin-surface-container: #F1F5F9;
+  --admin-surface-container-high: #E2E8F0;
   --admin-surface-container-highest: #EFF6FF;
-  --admin-hairline-rule: #E4E4E7;
-  --admin-hairline-subtle: #F4F4F5;
-  --admin-ink-primary: #18181B;
-  --admin-ink-secondary: #52525B;
-  --admin-ink-muted: #71717A;
-  --admin-on-surface: #18181B;
-  --admin-primary: #2563EB;
+  --admin-hairline-rule: #E2E8F0;
+  --admin-hairline-subtle: #F1F5F9;
+  --admin-ink-primary: #0F172A;
+  --admin-ink-secondary: #475569;
+  --admin-ink-muted: #64748B;
+  --admin-on-surface: #0F172A;
+  --admin-primary: #0F172A;
   --admin-primary-container: #EFF6FF;
   --admin-on-primary: #FFFFFF;
   --admin-on-primary-container: #1E3A8A;
   --admin-amber-wash: #EFF6FF;
-  --admin-accent-amber: #2563EB;
-  --admin-accent-ochre: #1D4ED8;
-  --admin-secondary: #52525B;
-  --admin-secondary-container: #F4F4F5;
-  --admin-on-secondary-container: #18181B;
+  --admin-accent-amber: #0F172A;
+  --admin-accent-ochre: #1E293B;
+  --admin-secondary: #475569;
+  --admin-secondary-container: #F1F5F9;
+  --admin-on-secondary-container: #0F172A;
   --admin-tertiary: #DC2626;
   --admin-tertiary-container: #FEF2F2;
   --admin-on-tertiary-container: #7F1D1D;
@@ -55,28 +55,28 @@ html.light,
   --admin-on-error-container: #7F1D1D;
 
   /* Standard CSS UI Roles */
-  --bg: #FAFAFA;
-  --bg-subtle: #F4F4F5;
+  --bg: #F1F5F9;
+  --bg-subtle: #F8FAFC;
   --surface: #FFFFFF;
-  --surface-hover: #F4F4F5;
-  --border: #E4E4E7;
-  --border-strong: #D4D4D8;
-  --text: #18181B;
-  --text-muted: #52525B;
-  --accent: #2563EB;
-  --accent-hover: #1D4ED8;
-  --accent-text: #2563EB;
+  --surface-hover: #F8FAFC;
+  --border: #E2E8F0;
+  --border-strong: #CBD5E1;
+  --text: #0F172A;
+  --text-muted: #475569;
+  --accent: #0F172A;
+  --accent-hover: #1E293B;
+  --accent-text: #0F172A;
   --accent-subtle: #EFF6FF;
   --accent-border: #BFDBFE;
   --on-accent: #FFFFFF;
   --focus-ring: #2563EB;
-  --sidebar-bg: #FFFFFF;
-  --sidebar-fg: #18181B;
-  --sidebar-fg-muted: #71717A;
-  --sidebar-border: #E4E4E7;
-  --sidebar-active-bg: #EFF6FF;
-  --sidebar-accent: #2563EB;
-  --success: #16A34A;
+  --sidebar-bg: transparent;
+  --sidebar-fg: #0F172A;
+  --sidebar-fg-muted: #64748B;
+  --sidebar-border: transparent;
+  --sidebar-active-bg: #0F172A;
+  --sidebar-accent: #0F172A;
+  --success: #059669;
   --warning: #D97706;
   --danger: #DC2626;
 }
@@ -305,31 +305,27 @@ dialog::backdrop {
   z-index: 1;
 }
 
-/* ── Simple Clean Sans Typography Override (keeps sizes intact) ── */
-.admin-simple-text,
+/* ── Panze Studio Typography Roles ──────────────────────────── */
+.admin-simple-text {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+.admin-simple-text .font-studio-display,
+.admin-simple-text h1,
+.admin-simple-text h2,
+.admin-simple-text h3,
 .admin-simple-text .font-headline-xl,
 .admin-simple-text .font-headline-lg,
 .admin-simple-text .font-headline-md,
-.admin-simple-text .font-headline-sm,
-.admin-simple-text .font-label-lg,
-.admin-simple-text .font-label-md,
-.admin-simple-text .font-label-sm,
-.admin-simple-text .font-body-lg,
-.admin-simple-text .font-body-md,
-.admin-simple-text .font-body-sm {
-  font-family: 'IBM Plex Sans', system-ui, -apple-system, sans-serif !important;
+.admin-simple-text .font-headline-sm {
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif !important;
   font-style: normal !important;
+}
+.admin-simple-text .font-mono-telemetry {
+  font-family: 'JetBrains Mono', monospace !important;
+  font-variant-numeric: tabular-nums;
 }
 .admin-simple-text .italic {
   font-style: normal !important;
-}
-.admin-simple-text .tracking-widest,
-.admin-simple-text .tracking-wider {
-  letter-spacing: 0.01em !important;
-}
-.admin-simple-text .font-semibold,
-.admin-simple-text .font-bold {
-  font-weight: 500 !important;
 }
 
 /* ── Reduced Motion ─────────────────────────────────────────── */
