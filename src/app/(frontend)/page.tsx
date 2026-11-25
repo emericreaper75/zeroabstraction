@@ -2,7 +2,6 @@ import React from 'react';
 import Image from 'next/image';
 import { Link } from 'next-view-transitions';
 import { HeroNebula } from '@/components/HeroNebula';
-import { HeroTelemetry } from '@/components/HeroTelemetry';
 import { FeaturedProjectCard } from '@/components/FeaturedProjectCard';
 import { TimelineStrip } from '@/components/TimelineStrip';
 import { Reveal } from '@/components/Reveal';
@@ -70,9 +69,9 @@ export default async function Home() {
           <HeroNebula className="w-full h-full" />
         </div>
 
-        {/* Hero Content Grid */}
-        <div className="container-wide relative z-10 w-full grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
-          <div className="lg:col-span-7 max-w-2xl flex flex-col items-start gap-4">
+        {/* Hero Left Content */}
+        <div className="container-wide relative z-10 w-full flex flex-col items-start">
+          <div className="max-w-2xl flex flex-col items-start gap-4">
             {/* Live Research Status Pill */}
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[color:var(--border)] bg-[color:var(--surface)]/70 [backdrop-filter:blur(8px)] font-mono text-[11px] tracking-widest uppercase text-[color:var(--text-muted)]">
               <span className="w-1.5 h-1.5 rounded-full bg-[color:var(--accent)] animate-pulse" aria-hidden="true" />
@@ -104,7 +103,7 @@ export default async function Home() {
                 <span className="font-semibold text-[color:var(--text)]">{totalPostsCount || 1}</span>
               </div>
               <div className="flex items-center flex-wrap gap-3">
-                <Link href="/about" className="hover:text-[color:var(--accent-text)] transition-colors">BIOGRAPHY</Link>
+                <Link href="/about" className="hover:text-[color:var(--accent-text)] transition-colors">ABOUT</Link>
                 <span>•</span>
                 <Link href="/search" className="hover:text-[color:var(--accent-text)] transition-colors">SEARCH ARCHIVE</Link>
               </div>
@@ -121,11 +120,6 @@ export default async function Home() {
                 <span aria-hidden="true" className="inline-block transition-transform duration-200 group-hover:translate-y-1">↓</span>
               </a>
             </div>
-          </div>
-
-          {/* Hero Right: Interactive Observatory Telemetry Panel */}
-          <div className="lg:col-span-5">
-            <HeroTelemetry />
           </div>
         </div>
       </section>

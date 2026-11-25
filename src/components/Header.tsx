@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { motion } from 'framer-motion';
 import { Title, Label, Display } from '@/components/typography';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { ThemeToggle } from '@/components/ThemeToggle';
@@ -202,33 +203,61 @@ export function Header({ navLinks = [] }: HeaderProps) {
             className="flex items-center gap-1 p-1 rounded-full border border-[color:var(--border)] bg-[color:var(--surface)]/55 [backdrop-filter:blur(10px)]"
           >
             {(navLinks?.length ? navLinks : [
-              { label: 'ME', url: '/' },
+              { label: 'HOME', url: '/' },
               { label: 'PROJECTS', url: '/projects' },
               { label: 'WRITING', url: '/writing' },
-              { label: 'BIOGRAPHY', url: '/about' },
+              { label: 'ABOUT', url: '/about' },
             ]).map(link => {
               const isActive = pathname === link.url;
+              const rawLabel = (link.label || '').toUpperCase();
+              const displayLabel =
+                rawLabel === 'ME' ? 'HOME' : rawLabel === 'BIOGRAPHY' ? 'ABOUT' : rawLabel;
+
               return (
                 <Link
                   key={link.url || '#'}
                   href={link.url || '#'}
                   aria-current={isActive ? 'page' : undefined}
-                  className={`min-h-[36px] px-3.5 rounded-full flex items-center gap-2 transition-all duration-150 ${
+                  className={`relative min-h-[36px] px-3.5 rounded-full flex items-center gap-2 transition-colors duration-150 ${
                     isActive
-                      ? 'bg-[color:var(--accent-subtle)] text-[color:var(--accent-text)] border border-[color:var(--accent-border)]/60 shadow-sm'
-                      : 'text-[color:var(--text-muted)] hover:text-[color:var(--text)] hover:bg-[color:var(--surface-hover)]/60 border border-transparent'
+                      ? 'text-[color:var(--accent-text)]'
+                      : 'text-[color:var(--text-muted)] hover:text-[color:var(--text)]'
                   }`}
                   style={{ textDecoration: 'none' }}
                 >
                   {isActive && (
-                    <span
-                      className="w-1.5 h-1.5 rounded-full bg-[color:var(--accent)]"
+                    <motion.span
+                      layoutId="nav-active-pill"
+                      transition={
+                        prefersReducedMotion
+                          ? { duration: 0 }
+                          : { type: 'spring', stiffness: 420, damping: 34 }
+                      }
+                      className="absolute inset-0 rounded-full bg-[color:var(--accent-subtle)] border border-[color:var(--accent-border)]/60 shadow-sm -z-10"
                       aria-hidden="true"
                     />
                   )}
-                  <Label className="tracking-[0.11em] font-medium text-[11px] cursor-pointer">
-                    {link.label?.toUpperCase()}
-                  </Label>
+                  <motion.span
+                    whileHover={prefersReducedMotion ? undefined : { y: -1 }}
+                    whileTap={prefersReducedMotion ? undefined : { scale: 0.96 }}
+                    className="relative z-10 flex items-center gap-2"
+                  >
+                    {isActive && (
+                      <motion.span
+                        layoutId="nav-active-dot"
+                        transition={
+                          prefersReducedMotion
+                            ? { duration: 0 }
+                            : { type: 'spring', stiffness: 500, damping: 32 }
+                        }
+                        className="w-1.5 h-1.5 rounded-full bg-[color:var(--accent)]"
+                        aria-hidden="true"
+                      />
+                    )}
+                    <Label className="tracking-[0.11em] font-medium text-[11px] cursor-pointer">
+                      {displayLabel}
+                    </Label>
+                  </motion.span>
                 </Link>
               );
             })}

@@ -43,10 +43,10 @@ export default async function RootLayout({
   const siteSettings = await getSiteSettings();
 
   const navLinks = siteSettings?.nav?.length ? siteSettings.nav : [
-    { label: 'ME', url: '/' },
+    { label: 'HOME', url: '/' },
     { label: 'PROJECTS', url: '/projects' },
     { label: 'WRITING', url: '/writing' },
-    { label: 'BIOGRAPHY', url: '/about' },
+    { label: 'ABOUT', url: '/about' },
   ];
   
   const socialLinks = siteSettings?.social_links ?? [];
@@ -107,7 +107,7 @@ export default async function RootLayout({
                       WRITING
                     </Link>
                     <Link href="/about" className="font-mono text-xs tracking-wider text-[color:var(--text)] hover:text-[color:var(--accent-text)] transition-colors" style={{ textDecoration: 'none' }}>
-                      BIOGRAPHY
+                      ABOUT
                     </Link>
                     <Link href="/search" className="font-mono text-xs tracking-wider text-[color:var(--text)] hover:text-[color:var(--accent-text)] transition-colors" style={{ textDecoration: 'none' }}>
                       SEARCH
