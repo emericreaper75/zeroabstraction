@@ -209,21 +209,6 @@ export function ProjectEditor({
 
   return (
     <div className="flex flex-col w-full pb-12 space-y-5">
-      {/* Breadcrumb */}
-      <div className="flex items-center gap-2 font-mono-telemetry text-[11px] text-ink-muted uppercase tracking-[0.06em]">
-        <Link href="/admin" className="hover:text-on-surface transition-colors">
-          OBSERVATORY
-        </Link>
-        <span>/</span>
-        <Link href="/admin/collections/projects" className="hover:text-on-surface transition-colors">
-          RIGS
-        </Link>
-        <span>/</span>
-        <span className="text-on-surface font-semibold">
-          {isNew ? 'NEW RIG' : 'EDIT RIG'}
-        </span>
-      </div>
-
       {/* Feedback Banner */}
       {feedback && (
         <div

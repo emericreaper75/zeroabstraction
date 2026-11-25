@@ -159,21 +159,9 @@ export function MediaManager({ initialDocs, totalDocs }: MediaManagerProps) {
   }
 
   return (
-    <div className="flex flex-col w-full pb-12 space-y-8">
-      {/* Header */}
-      <header className="flex flex-col space-y-3 pt-2">
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-1.5 font-label-sm text-xs text-ink-muted">
-            <Link href="/admin" className="hover:text-primary transition-colors flex items-center" title="Dashboard">
-              <span className="material-symbols-outlined text-[16px]">home</span>
-            </Link>
-            <span>/</span>
-            <span className="text-on-surface font-medium">Media</span>
-          </div>
-          <span className="font-label-sm text-[11px] px-2 py-0.5 bg-amber-wash text-primary font-medium rounded">
-            {totalDocs} plates
-          </span>
-        </div>
+    <div className="flex flex-col w-full pb-12 space-y-5">
+      {/* Minimal Header */}
+      <header className="flex flex-col space-y-3">
 
         {/* Feedback Banner */}
         {feedback && (

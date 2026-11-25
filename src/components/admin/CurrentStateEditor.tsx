@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useEffect, useState, useTransition } from 'react'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { updateCurrentStateAction } from '@/app/(admin)/admin/globals/current-state/actions'
 import { useAdminToast } from './AdminToastProvider'
@@ -35,7 +34,7 @@ export function CurrentStateEditor({ currentState }: CurrentStateEditorProps) {
 
       if (res.success) {
         toast.success('Field telemetry synced.')
-        setFeedback({ type: 'success', message: 'Current state updated successfully.' })
+        setFeedback({ type: 'success', message: 'Current state updated.' })
         router.refresh()
       } else {
         toast.error(res.error || 'Failed to update current state.')
@@ -56,192 +55,81 @@ export function CurrentStateEditor({ currentState }: CurrentStateEditorProps) {
   })
 
   const fields = [
-    {
-      key: 'studying',
-      label: 'STUDYING',
-      icon: 'auto_stories',
-      description: 'Current field of study or research focus',
-      maxChars: 320,
-      value: studying,
-      setter: setStudying,
-    },
-    {
-      key: 'building',
-      label: 'BUILDING',
-      icon: 'memory',
-      description: 'Active engineering or development project',
-      maxChars: 320,
-      value: building,
-      setter: setBuilding,
-    },
-    {
-      key: 'reading',
-      label: 'READING',
-      icon: 'article',
-      description: 'Current literature, papers, or books',
-      maxChars: 320,
-      value: reading,
-      setter: setReading,
-    },
-    {
-      key: 'thinking_about',
-      label: 'CONTEMPLATING',
-      icon: 'psychology',
-      description: 'Ideas, questions, or intellectual pursuits',
-      maxChars: 320,
-      value: thinkingAbout,
-      setter: setThinkingAbout,
-    },
+    { key: 'studying', label: 'Studying', icon: 'auto_stories', maxChars: 320, value: studying, setter: setStudying },
+    { key: 'building', label: 'Building', icon: 'memory', maxChars: 320, value: building, setter: setBuilding },
+    { key: 'reading', label: 'Reading', icon: 'article', maxChars: 320, value: reading, setter: setReading },
+    { key: 'thinking_about', label: 'Thinking', icon: 'psychology', maxChars: 320, value: thinkingAbout, setter: setThinkingAbout },
   ]
 
   return (
-    <div className="flex flex-col w-full pb-12 space-y-8">
-      {/* Header */}
-      <header className="flex flex-col space-y-4 pt-4">
-        <div className="flex items-center space-x-2 font-label-sm text-label-sm text-ink-muted">
-          <Link href="/admin" className="hover:text-primary transition-colors">OBSERVATORY</Link>
-          <span>/</span><span>GLOBALS</span><span>/</span>
-          <span className="text-on-surface font-medium tracking-wide">CURRENT STATE</span>
-        </div>
-
-        {/* Feedback Banner */}
-        {feedback && (
-          <div
-            className={`px-4 py-3 border flex items-center justify-between text-body-sm transition-all ${
-              feedback.type === 'success'
-                ? 'bg-emerald-50 border-emerald-300 text-emerald-800'
-                : 'bg-rose-50 border-rose-300 text-rose-800'
-            }`}
+    <div className="flex flex-col w-full pb-12 space-y-5">
+      <header className="flex flex-wrap items-center justify-between gap-4">
+        <h1 className="font-studio-display text-[28px] font-semibold text-on-surface tracking-[-0.02em] leading-tight">
+          Current State
+        </h1>
+        <div className="flex items-center gap-2.5">
+          <button
+            type="button"
+            onClick={() => setVisibility(!visibility)}
+            className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-paper-surface text-[12px] font-medium transition-colors"
+            title="Toggle public visibility"
           >
-            <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-[18px]">
-                {feedback.type === 'success' ? 'check_circle' : 'error'}
-              </span>
-              <span>{feedback.message}</span>
-            </div>
-            <button
-              type="button"
-              onClick={() => setFeedback(null)}
-              className="text-ink-muted hover:text-on-surface"
-            >
-              <span className="material-symbols-outlined text-[16px]">close</span>
-            </button>
-          </div>
-        )}
+            <span className={`w-2 h-2 rounded-full ${visibility ? 'bg-emerald-500' : 'bg-slate-400'}`} />
+            <span className="text-on-surface">{visibility ? 'Live' : 'Muted'}</span>
+          </button>
 
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
-          <div className="max-w-2xl space-y-1">
-            <h1 className="font-headline-xl text-headline-xl text-on-surface tracking-tight leading-none">Current State</h1>
-            <p className="font-body-md text-body-md text-ink-secondary leading-normal">Live broadcast beacon — what you&apos;re doing right now.</p>
-          </div>
-          <div className="flex items-center gap-3">
-            {/* Live Status Indicator & Visibility Toggle */}
-            <button
-              type="button"
-              onClick={() => setVisibility(!visibility)}
-              className="flex items-center gap-2 p-2 px-3.5 border border-hairline-rule bg-white shadow-xs rounded hover:border-primary/40 transition-colors"
-              title="Click to toggle visibility"
-            >
-              <span className="relative flex h-3 w-3">
-                {visibility ? (
-                  <>
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-600" />
-                  </>
-                ) : (
-                  <span className="relative inline-flex rounded-full h-3 w-3 bg-stone-400" />
-                )}
-              </span>
-              <span className={`font-label-md text-label-md tracking-wider font-medium ${visibility ? 'text-emerald-700' : 'text-stone-500'}`}>
-                {visibility ? 'BEACON ACTIVE' : 'BEACON MUTED'}
-              </span>
-            </button>
-
-            <button
-              type="button"
-              onClick={handleSave}
-              disabled={isPending}
-              className="flex items-center gap-1.5 px-5 py-2 rounded-full bg-[#0F172A] text-white dark:bg-slate-100 dark:text-slate-900 text-[13px] font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
-            >
-              <span className="material-symbols-outlined text-[16px]">
-                {isPending ? 'sync' : 'save'}
-              </span>
-              {isPending ? 'Saving...' : 'Save State'}
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={handleSave}
+            disabled={isPending}
+            className="flex items-center gap-1.5 px-5 py-2 rounded-full bg-[#0F172A] text-white dark:bg-slate-100 dark:text-slate-900 text-[13px] font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+          >
+            <span className="material-symbols-outlined text-[16px]">
+              {isPending ? 'sync' : 'check'}
+            </span>
+            {isPending ? 'Saving...' : 'Save State'}
+          </button>
         </div>
       </header>
 
-      {/* UTC Synchronization */}
-      <div className="bg-paper-surface rounded-[20px] p-5 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <span className="material-symbols-outlined text-[20px] text-ink-secondary">schedule</span>
-          <div>
-            <span className="font-mono-telemetry text-[10px] text-ink-muted uppercase tracking-[0.06em]">UTC SYNCHRONIZATION</span>
-            <p className="font-mono-telemetry text-[13px] text-on-surface mt-0.5">
-              {currentState?.updatedAt
-                ? `Last updated: ${new Date(currentState.updatedAt).toISOString().replace('T', ' ').slice(0, 19)} UTC`
-                : 'Not yet synchronized'}
-            </p>
-          </div>
+      {feedback && (
+        <div
+          className={`px-4 py-3 rounded-[14px] flex items-center justify-between text-[13px] ${
+            feedback.type === 'success'
+              ? 'bg-[#ECFDF5] text-[#059669] dark:bg-emerald-950/50 dark:text-emerald-300'
+              : 'bg-[#FEF2F2] text-[#DC2626] dark:bg-rose-950/50 dark:text-rose-300'
+          }`}
+        >
+          <span>{feedback.message}</span>
+          <button type="button" onClick={() => setFeedback(null)} aria-label="Dismiss">
+            <span className="material-symbols-outlined text-[16px]">close</span>
+          </button>
         </div>
-        <span className="font-mono-telemetry text-[10px] font-semibold uppercase tracking-[0.06em] text-[#2563EB] bg-[#EFF6FF] dark:bg-blue-950/50 dark:text-blue-300 px-2.5 py-1 rounded-full">
-          EPOCH 2025.2
-        </span>
-      </div>
+      )}
 
-      {/* Telemetry Input Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        {fields.map((field) => {
-          const charCount = field.value.length
-
-          return (
-            <div key={field.key} className="bg-paper-surface rounded-[20px] p-6 space-y-3">
-              <div className="pb-3 border-b border-[#F1F5F9] dark:border-zinc-800 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[18px] text-ink-secondary">{field.icon}</span>
-                  <span className="font-studio-display text-[15px] font-semibold text-on-surface">{field.label}</span>
-                </div>
-                <span className="font-mono-telemetry text-[11px] text-ink-muted">{charCount} / {field.maxChars}</span>
+        {fields.map((field) => (
+          <div key={field.key} className="bg-paper-surface rounded-[20px] p-6 space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-[18px] text-ink-secondary">{field.icon}</span>
+                <span className="font-studio-display text-[15px] font-semibold text-on-surface">{field.label}</span>
               </div>
-              <p className="text-[13px] text-ink-secondary">{field.description}</p>
-              <textarea
-                className="w-full bg-[#F8FAFC] dark:bg-zinc-900 border-0 text-on-surface text-[14px] px-3.5 py-3 focus:outline-none rounded-[12px] resize-y min-h-[100px]"
-                value={field.value}
-                onChange={(e) => field.setter(e.target.value)}
-                placeholder={`What are you ${field.label.toLowerCase()}?`}
-                maxLength={field.maxChars}
-                rows={3}
-              />
+              <span className="font-mono-telemetry text-[11px] text-ink-muted">
+                {field.value.length}/{field.maxChars}
+              </span>
             </div>
-          )
-        })}
+            <textarea
+              className="w-full bg-[#F8FAFC] dark:bg-zinc-900 border-0 text-on-surface text-[14px] px-3.5 py-3 focus:outline-none rounded-[12px] resize-none"
+              value={field.value}
+              onChange={(e) => field.setter(e.target.value)}
+              placeholder={`What are you ${field.label.toLowerCase()}?`}
+              maxLength={field.maxChars}
+              rows={3}
+            />
+          </div>
+        ))}
       </div>
-
-      {/* Live Public Preview Strip */}
-      <section className="bg-paper-surface p-6 rounded-[20px]">
-        <div className="flex items-center justify-between pb-3 border-b border-[#F1F5F9] dark:border-zinc-800 mb-4">
-          <span className="font-label-sm text-xs text-ink-secondary uppercase tracking-widest font-semibold flex items-center gap-2">
-            <span className="material-symbols-outlined text-[16px] text-primary">preview</span>
-            Live Homepage &ldquo;Right Now&rdquo; Preview
-          </span>
-          <span className="text-[11px] font-label-sm text-ink-muted">
-            {visibility ? 'Visible on public homepage' : 'Hidden from public homepage'}
-          </span>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
-          {fields.map((f) => (
-            <div key={f.key} className="p-3 rounded bg-surface-container-low border border-hairline-subtle">
-              <div className="font-label-sm text-[10px] text-primary uppercase tracking-wider mb-1">
-                {f.label}
-              </div>
-              <p className="text-on-surface leading-relaxed">
-                {f.value || <span className="italic text-ink-muted">Not set</span>}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
     </div>
   )
 }

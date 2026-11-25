@@ -134,6 +134,14 @@ Tracking all presentation and functional improvements to the Payload Atelier Adm
 86. **Unified Global Editors (`CurrentState`, `Profile`, `SiteSettings`)**: Updated all global configuration screens to borderless `#FFFFFF` `rounded-[20px]` cards, `#F8FAFC` inputs, and `rounded-full` action pills.
 87. **Unified Users & Access Page**: Updated `users/page.tsx` to borderless `#FFFFFF` `rounded-[20px]` cards with `#F1F5F9` row hairlines and pill status badges.
 
+---
+
+## Milestone 10: Minimalistic Sub-Pages Pass (#88 – #90)
+
+88. **Minimal Global & Collection Headers**: Removed redundant breadcrumbs, heavy section numbers, and extra telemetry banners across `SiteSettingsEditor`, `CurrentStateEditor`, `ProfileEditor`, `JourneyEditor`, `MediaManager`, `PostEditor`, and `ProjectEditor`.
+89. **Single-Card Global Settings & Timeline**: Consolidated `SiteSettingsEditor` into one clean `#FFFFFF` `rounded-[20px]` card with `1px solid #F1F5F9` dividers, and streamlined `JourneyEditor` into minimal timeline rows.
+90. **Single-Card Projects & Posts Index**: Merged search and status filter pills directly into the `ProjectsTableClient` table card for a lighter, uncluttered index view.
+
 
 
 

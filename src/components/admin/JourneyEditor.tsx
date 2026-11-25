@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState, useTransition } from 'react'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { saveJourneyAction, type JourneyEntry } from '@/app/(admin)/admin/collections/journey/actions'
 
@@ -15,7 +14,6 @@ export function JourneyEditor({ initialEntries }: JourneyEditorProps) {
   const [isPending, startTransition] = useTransition()
   const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
 
-  // New entry form state
   const [showAddForm, setShowAddForm] = useState(false)
   const [newTitle, setNewTitle] = useState('')
   const [newCategory, setNewCategory] = useState<'physics' | 'ece' | 'astrophysics'>('astrophysics')
@@ -28,31 +26,28 @@ export function JourneyEditor({ initialEntries }: JourneyEditorProps) {
     startTransition(async () => {
       const res = await saveJourneyAction(entries)
       if (res.success) {
-        setFeedback({ type: 'success', message: 'Journey entries saved successfully.' })
+        setFeedback({ type: 'success', message: 'Journey saved.' })
         router.refresh()
       } else {
-        setFeedback({ type: 'error', message: res.error || 'Failed to save journey entries.' })
+        setFeedback({ type: 'error', message: res.error || 'Failed to save journey.' })
       }
     })
   }
 
   const handleAddEntry = () => {
-    if (!newTitle.trim()) {
-      alert('Please enter a title for the journey entry.')
-      return
-    }
-
+    if (!newTitle.trim()) return
     const nextOrder = entries.length > 0 ? Math.max(...entries.map((e) => e.order || 0)) + 1 : 1
-    const newEntry: JourneyEntry = {
-      order: nextOrder,
-      title: newTitle.trim(),
-      category: newCategory,
-      date: newDate || null,
-      description: newDescription.trim() || null,
-      milestone: newMilestone,
-    }
-
-    setEntries([...entries, newEntry])
+    setEntries([
+      ...entries,
+      {
+        order: nextOrder,
+        title: newTitle.trim(),
+        category: newCategory,
+        date: newDate || null,
+        description: newDescription.trim() || null,
+        milestone: newMilestone,
+      },
+    ])
     setNewTitle('')
     setNewDescription('')
     setNewDate('')
@@ -61,291 +56,175 @@ export function JourneyEditor({ initialEntries }: JourneyEditorProps) {
   }
 
   const handleDeleteEntry = (index: number) => {
-    if (confirm('Are you sure you want to remove this milestone?')) {
-      const updated = entries.filter((_, idx) => idx !== index)
-      // re-index order
-      const reindexed = updated.map((e, idx) => ({ ...e, order: idx + 1 }))
-      setEntries(reindexed)
-    }
+    const updated = entries.filter((_, idx) => idx !== index)
+    setEntries(updated.map((e, idx) => ({ ...e, order: idx + 1 })))
   }
 
   const handleMove = (index: number, direction: 'up' | 'down') => {
     const targetIndex = direction === 'up' ? index - 1 : index + 1
     if (targetIndex < 0 || targetIndex >= entries.length) return
-
     const newArr = [...entries]
     const temp = newArr[index]
     newArr[index] = newArr[targetIndex]
     newArr[targetIndex] = temp
-
-    // re-index order
-    const reindexed = newArr.map((e, idx) => ({ ...e, order: idx + 1 }))
-    setEntries(reindexed)
+    setEntries(newArr.map((e, idx) => ({ ...e, order: idx + 1 })))
   }
 
   return (
-    <div className="flex flex-col w-full pb-12 space-y-8">
-      {/* Header */}
-      <header className="flex flex-col space-y-4 pt-4">
-        <div className="flex items-center space-x-2 font-label-sm text-label-sm text-ink-muted">
-          <Link href="/admin" className="hover:text-primary transition-colors">OBSERVATORY</Link>
-          <span>/</span><span>GLOBALS</span><span>/</span>
-          <span className="text-on-surface font-medium tracking-wide">JOURNEY ARCHIVE</span>
-        </div>
-
-        {/* Feedback Banner */}
-        {feedback && (
-          <div
-            className={`px-4 py-3 border flex items-center justify-between text-body-sm transition-all ${
-              feedback.type === 'success'
-                ? 'bg-emerald-50 border-emerald-300 text-emerald-800'
-                : 'bg-rose-50 border-rose-300 text-rose-800'
-            }`}
+    <div className="flex flex-col w-full pb-12 space-y-5">
+      <header className="flex flex-wrap items-center justify-between gap-4">
+        <h1 className="font-studio-display text-[28px] font-semibold text-on-surface tracking-[-0.02em] leading-tight">
+          Journey
+        </h1>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setShowAddForm(!showAddForm)}
+            className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-paper-surface text-on-surface text-[13px] font-medium hover:bg-surface-container-low transition-colors"
           >
-            <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-[18px]">
-                {feedback.type === 'success' ? 'check_circle' : 'error'}
-              </span>
-              <span>{feedback.message}</span>
-            </div>
-            <button
-              type="button"
-              onClick={() => setFeedback(null)}
-              className="text-ink-muted hover:text-on-surface"
-            >
-              <span className="material-symbols-outlined text-[16px]">close</span>
-            </button>
-          </div>
-        )}
-
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
-          <div className="max-w-2xl space-y-1">
-            <h1 className="font-headline-xl text-headline-xl text-on-surface tracking-tight leading-none">Journey &amp; Timeline</h1>
-            <p className="font-body-md text-body-md text-ink-secondary leading-normal">Monotonic sequence controller — ordered milestones and epoch markers.</p>
-          </div>
-          <div className="flex items-center gap-3">
-            <span className="font-label-sm text-label-sm px-2.5 py-1 bg-amber-wash text-accent-ochre border border-primary/20 rounded font-medium">
-              {entries.length} MILESTONES
-            </span>
-            <button
-              type="button"
-              onClick={() => setShowAddForm(!showAddForm)}
-              className="flex items-center gap-1.5 px-3 py-2 bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-label-md text-label-md uppercase tracking-wider transition-colors shadow-xs"
-            >
-              <span className="material-symbols-outlined text-[16px]">
-                {showAddForm ? 'close' : 'add'}
-              </span>
-              {showAddForm ? 'Cancel' : 'Add Milestone'}
-            </button>
-            <button
-              type="button"
-              onClick={handleSave}
-              disabled={isPending}
-              className="flex items-center gap-1.5 px-4 py-2 bg-primary hover:bg-accent-ochre text-on-primary font-label-md text-label-md uppercase tracking-wider shadow-sm transition-colors disabled:opacity-50"
-            >
-              <span className="material-symbols-outlined text-[16px]">
-                {isPending ? 'sync' : 'save'}
-              </span>
-              {isPending ? 'Saving...' : 'Save Sequence'}
-            </button>
-          </div>
+            <span className="material-symbols-outlined text-[16px]">{showAddForm ? 'close' : 'add'}</span>
+            {showAddForm ? 'Cancel' : 'Add Milestone'}
+          </button>
+          <button
+            type="button"
+            onClick={handleSave}
+            disabled={isPending}
+            className="flex items-center gap-1.5 px-5 py-2 rounded-full bg-[#0F172A] text-white dark:bg-slate-100 dark:text-slate-900 text-[13px] font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+          >
+            <span className="material-symbols-outlined text-[16px]">{isPending ? 'sync' : 'check'}</span>
+            {isPending ? 'Saving...' : 'Save'}
+          </button>
         </div>
       </header>
 
-      {/* Add New Milestone Form */}
+      {feedback && (
+        <div
+          className={`px-4 py-3 rounded-[14px] flex items-center justify-between text-[13px] ${
+            feedback.type === 'success'
+              ? 'bg-[#ECFDF5] text-[#059669] dark:bg-emerald-950/50 dark:text-emerald-300'
+              : 'bg-[#FEF2F2] text-[#DC2626] dark:bg-rose-950/50 dark:text-rose-300'
+          }`}
+        >
+          <span>{feedback.message}</span>
+          <button type="button" onClick={() => setFeedback(null)} aria-label="Dismiss">
+            <span className="material-symbols-outlined text-[16px]">close</span>
+          </button>
+        </div>
+      )}
+
       {showAddForm && (
-        <div className="border border-hairline-rule bg-white p-5 shadow-xs rounded space-y-4">
-          <h2 className="font-headline-sm text-headline-sm text-on-surface font-medium border-b border-hairline-rule pb-2">
-            New Journey Milestone
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-1.5">
-              <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase">
-                Title <span className="text-accent-ochre">*</span>
-              </label>
-              <input
-                type="text"
-                className="w-full bg-surface-container-lowest border border-hairline-rule text-on-surface font-body-md text-body-md px-3 py-2 focus:border-primary focus:outline-none"
-                placeholder="e.g. Master's in Astrophysical Systems"
-                value={newTitle}
-                onChange={(e) => setNewTitle(e.target.value)}
-              />
-            </div>
-            <div className="space-y-1.5">
-              <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase">
-                Category
-              </label>
-              <select
-                className="w-full bg-surface-container-lowest border border-hairline-rule text-on-surface font-body-md text-body-md px-3 py-2 focus:border-primary focus:outline-none"
-                value={newCategory}
-                onChange={(e) => setNewCategory(e.target.value as any)}
-              >
-                <option value="astrophysics">Astrophysics</option>
-                <option value="physics">Physics</option>
-                <option value="ece">ECE</option>
-              </select>
-            </div>
-            <div className="space-y-1.5">
-              <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase">
-                Date
-              </label>
-              <input
-                type="date"
-                className="w-full bg-surface-container-lowest border border-hairline-rule text-on-surface font-body-md text-body-md px-3 py-2 focus:border-primary focus:outline-none"
-                value={newDate}
-                onChange={(e) => setNewDate(e.target.value)}
-              />
-            </div>
-            <div className="flex items-center pt-6 gap-2">
+        <div className="bg-paper-surface rounded-[20px] p-6 space-y-4">
+          <h2 className="font-studio-display text-[16px] font-semibold text-on-surface">New Milestone</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <input
+              type="text"
+              className="bg-[#F8FAFC] dark:bg-zinc-900 border-0 text-on-surface text-[14px] px-3.5 py-2.5 focus:outline-none"
+              placeholder="Milestone title..."
+              value={newTitle}
+              onChange={(e) => setNewTitle(e.target.value)}
+            />
+            <select
+              className="bg-[#F8FAFC] dark:bg-zinc-900 border-0 text-on-surface text-[14px] px-3.5 py-2.5 focus:outline-none"
+              value={newCategory}
+              onChange={(e) => setNewCategory(e.target.value as any)}
+            >
+              <option value="astrophysics">Astrophysics</option>
+              <option value="physics">Physics</option>
+              <option value="ece">ECE</option>
+            </select>
+            <input
+              type="date"
+              className="bg-[#F8FAFC] dark:bg-zinc-900 border-0 text-on-surface text-[14px] px-3.5 py-2.5 focus:outline-none"
+              value={newDate}
+              onChange={(e) => setNewDate(e.target.value)}
+            />
+          </div>
+          <textarea
+            className="w-full bg-[#F8FAFC] dark:bg-zinc-900 border-0 text-on-surface text-[14px] px-3.5 py-3 focus:outline-none resize-none"
+            placeholder="Notes..."
+            value={newDescription}
+            onChange={(e) => setNewDescription(e.target.value)}
+            rows={2}
+          />
+          <div className="flex items-center justify-between">
+            <label className="flex items-center gap-2 text-[13px] text-on-surface cursor-pointer">
               <input
                 type="checkbox"
-                id="new-milestone-flag"
-                className="w-4 h-4 accent-primary cursor-pointer"
+                className="w-4 h-4 rounded accent-[#0F172A]"
                 checked={newMilestone}
                 onChange={(e) => setNewMilestone(e.target.checked)}
               />
-              <label htmlFor="new-milestone-flag" className="text-label-sm font-label-sm text-on-surface uppercase tracking-wider cursor-pointer">
-                Major Landmark / Epoch Milestone
-              </label>
-            </div>
-            <div className="space-y-1.5 md:col-span-2">
-              <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase">
-                Description
-              </label>
-              <textarea
-                className="w-full bg-surface-container-lowest border border-hairline-rule text-on-surface font-body-md text-body-md px-3 py-2 focus:border-primary focus:outline-none resize-y min-h-[80px]"
-                placeholder="Description of research, findings, or institutional milestone..."
-                value={newDescription}
-                onChange={(e) => setNewDescription(e.target.value)}
-                rows={3}
-              />
-            </div>
-          </div>
-          <div className="flex justify-end gap-2 pt-2 border-t border-hairline-rule">
-            <button
-              type="button"
-              onClick={() => setShowAddForm(false)}
-              className="px-3 py-1.5 bg-surface-container-low text-ink-secondary font-label-sm text-label-sm uppercase tracking-wider hover:bg-surface-container-high transition-colors"
-            >
-              Cancel
-            </button>
+              <span>Major Landmark</span>
+            </label>
             <button
               type="button"
               onClick={handleAddEntry}
-              className="px-4 py-1.5 bg-primary hover:bg-accent-ochre text-on-primary font-label-sm text-label-sm uppercase tracking-wider transition-colors"
+              className="px-4 py-1.5 rounded-full bg-[#0F172A] text-white dark:bg-slate-100 dark:text-slate-900 text-[13px] font-medium"
             >
-              Add to Sequence
+              Add
             </button>
           </div>
         </div>
       )}
 
-      {/* Milestone Sequence */}
-      <div className="space-y-4">
-        {entries.map((entry, i) => (
-          <div
-            key={i}
-            className="border border-hairline-rule bg-white shadow-xs rounded overflow-hidden hover:border-primary/40 transition-colors group"
-          >
-            <div className="flex items-stretch">
-              {/* Sequence Reorder Buttons */}
-              <div className="w-12 bg-surface-container-low border-r border-hairline-rule flex flex-col items-center justify-center gap-1 group-hover:bg-amber-wash transition-colors">
-                <button
-                  type="button"
-                  onClick={() => handleMove(i, 'up')}
-                  disabled={i === 0}
-                  className="p-0.5 text-ink-muted hover:text-primary disabled:opacity-20"
-                  title="Move up"
-                >
-                  <span className="material-symbols-outlined text-[16px]">arrow_upward</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleMove(i, 'down')}
-                  disabled={i === entries.length - 1}
-                  className="p-0.5 text-ink-muted hover:text-primary disabled:opacity-20"
-                  title="Move down"
-                >
-                  <span className="material-symbols-outlined text-[16px]">arrow_downward</span>
-                </button>
-              </div>
-
-              {/* Sequence Number */}
-              <div className="w-16 bg-paper-surface border-r border-hairline-rule flex items-center justify-center">
-                <span className="font-headline-md text-headline-md text-primary font-normal">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-              </div>
-
-              {/* Content */}
-              <div className="flex-1 p-4">
-                <div className="flex items-center gap-2 mb-1">
-                  {entry.date && (
-                    <span className="font-label-sm text-label-sm text-primary bg-amber-wash px-2 py-0.5 border border-primary/20 rounded font-medium">
-                      {new Date(entry.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
-                    </span>
-                  )}
-                  {entry.category && (
-                    <span className="font-label-sm text-label-sm text-ink-muted bg-surface-container-high px-2 py-0.5 rounded uppercase">
-                      {entry.category}
-                    </span>
-                  )}
+      <div className="bg-paper-surface rounded-[20px] p-6 divide-y divide-[#F1F5F9] dark:divide-zinc-800">
+        {entries.map((entry, idx) => (
+          <div key={idx} className="py-4 first:pt-0 last:pb-0 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3 min-w-0">
+              <span className="font-mono-telemetry text-[12px] text-ink-muted w-6">
+                {String(idx + 1).padStart(2, '0')}
+              </span>
+              <div className="min-w-0">
+                <div className="flex items-center gap-2">
+                  <span className="text-[14px] font-medium text-on-surface truncate">{entry.title}</span>
                   {entry.milestone && (
-                    <span className="font-label-sm text-label-sm text-amber-700 bg-amber-50 px-2 py-0.5 border border-amber-200 rounded font-medium">
-                      ★ KEY MILESTONE
+                    <span className="px-2 py-0.5 rounded-full bg-[#EFF6FF] text-[#2563EB] dark:bg-blue-950/50 dark:text-blue-300 font-mono-telemetry text-[10px] font-semibold uppercase">
+                      Landmark
                     </span>
                   )}
                 </div>
-                <h3 className="font-headline-sm text-headline-sm text-on-surface font-medium leading-snug">
-                  {entry.title || `Milestone ${i + 1}`}
-                </h3>
                 {entry.description && (
-                  <p className="font-body-sm text-body-sm text-ink-secondary mt-1 line-clamp-2">
-                    {entry.description}
-                  </p>
+                  <p className="text-[13px] text-ink-secondary truncate mt-0.5">{entry.description}</p>
                 )}
               </div>
-
-              {/* Actions */}
-              <div className="flex items-center px-3 gap-1">
-                <button
-                  type="button"
-                  onClick={() => handleDeleteEntry(i)}
-                  className="p-1.5 text-ink-muted hover:text-rose-600 transition-colors"
-                  title="Remove milestone"
-                >
-                  <span className="material-symbols-outlined text-[18px]">delete</span>
-                </button>
-              </div>
+            </div>
+            <div className="flex items-center gap-2 shrink-0">
+              <span className="font-mono-telemetry text-[11px] text-ink-muted uppercase">{entry.category}</span>
+              <button
+                type="button"
+                onClick={() => handleMove(idx, 'up')}
+                disabled={idx === 0}
+                aria-label="Move up"
+                className="p-1 text-ink-muted hover:text-on-surface disabled:opacity-30"
+              >
+                <span className="material-symbols-outlined text-[16px]">arrow_upward</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleMove(idx, 'down')}
+                disabled={idx === entries.length - 1}
+                aria-label="Move down"
+                className="p-1 text-ink-muted hover:text-on-surface disabled:opacity-30"
+              >
+                <span className="material-symbols-outlined text-[16px]">arrow_downward</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleDeleteEntry(idx)}
+                aria-label="Delete milestone"
+                className="p-1 text-ink-muted hover:text-rose-500"
+              >
+                <span className="material-symbols-outlined text-[16px]">delete</span>
+              </button>
             </div>
           </div>
         ))}
-
         {entries.length === 0 && (
-          <div className="border border-hairline-rule bg-white shadow-xs rounded p-12 text-center">
-            <span className="material-symbols-outlined text-[48px] text-ink-muted/20 block mb-4">timeline</span>
-            <p className="text-ink-muted font-body-md mb-2">No journey milestones configured yet.</p>
-            <p className="text-ink-muted font-body-sm mb-4">Add your academic and research epochs to populate the timeline.</p>
-            <button
-              type="button"
-              onClick={() => setShowAddForm(true)}
-              className="inline-flex items-center gap-1.5 px-4 py-2 bg-primary hover:bg-accent-ochre text-on-primary font-label-md text-label-md uppercase tracking-wider transition-colors"
-            >
-              <span className="material-symbols-outlined text-[16px]">add</span>
-              Add First Milestone
-            </button>
+          <div className="py-10 text-center text-[13px] text-ink-muted">
+            No milestones yet.
           </div>
         )}
       </div>
-
-      {/* Bottom Telemetry */}
-      <footer className="bg-surface-container-lowest border border-hairline-rule px-4 py-2 flex items-center justify-between font-label-sm text-label-sm text-ink-muted shadow-sm">
-        <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-emerald-600" />
-          <span className="text-on-surface font-medium">Sequence Integrity: OK</span>
-        </div>
-        <span>{entries.length} entries in sequence</span>
-      </footer>
     </div>
   )
 }

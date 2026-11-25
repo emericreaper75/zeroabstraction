@@ -188,22 +188,7 @@ export function PostEditor({
     : ''
 
   return (
-    <div className="flex flex-col w-full pb-16 space-y-6">
-      {/* Breadcrumb */}
-      <div className="flex items-center space-x-2 font-label-sm text-label-sm text-ink-muted pt-2">
-        <Link href="/admin" className="hover:text-primary transition-colors">
-          OBSERVATORY
-        </Link>
-        <span>/</span>
-        <Link href="/admin/collections/posts" className="hover:text-primary transition-colors">
-          POSTS
-        </Link>
-        <span>/</span>
-        <span className="text-on-surface font-medium tracking-wide">
-          {isNew ? 'NEW ENTRY' : 'EDIT MANUSCRIPT'}
-        </span>
-      </div>
-
+    <div className="flex flex-col w-full pb-16 space-y-5">
       {/* Feedback Banner */}
       {feedback && (
         <div
