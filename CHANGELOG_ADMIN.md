@@ -67,4 +67,20 @@ Tracking all presentation and functional improvements to the Payload Atelier Adm
 49. **Users & Access Page — Dark Mode Contrast Polish**: Replaced `bg-white` and light-mode-only emerald/amber text classes with theme-aware surface and semantic colors.
 50. **Styled Empty States**: Added consistent Observatory empty states with clear-filter actions across collection tables.
 
+---
+
+## Milestone 4: Editors, Globals & Final Verification (#51 – #60)
+
+51. **PostEditor — `⌘S` / `Ctrl+S` Save Shortcut**: Added global keyboard save handler in `PostEditor` with toast feedback.
+52. **PostEditor — Live Word Count & Reading Time Telemetry**: Computed live word count and estimated reading time (`200 wpm`) in Document Telemetry.
+53. **PostEditor — Live SERP SEO Preview & Character Counters**: Added `60`-char title and `160`-char description counters plus a live search snippet preview card.
+54. **PostEditor — Native `<dialog>` Delete Confirmation**: Replaced `window.confirm` with `AdminDialog` (`autoFocus` on Cancel).
+55. **ProjectEditor — `⌘S` / `Ctrl+S` Save Shortcut**: Added keyboard save shortcut and toast feedback.
+56. **ProjectEditor — Native `<dialog>` Delete Confirmation**: Replaced `window.confirm` with `AdminDialog` (`autoFocus` on Cancel).
+57. **CurrentStateEditor — Live "Right Now" Homepage Preview**: Added a 4-column live preview card showing how Studying, Building, Reading, and Contemplating render on the public site.
+58. **CurrentStateEditor — `⌘S` Save Shortcut & Toast Feedback**: Added keyboard save shortcut and non-blocking toast notifications.
+59. **Accessibility & Top-Layer Compliance**: Verified native `<dialog>` usage (`showModal()`, `closedby="any"` + fallback, `overscroll-behavior: contain`), `aria-sort` table headers, and `aria-label` coverage on icon-only controls.
+60. **Full TypeScript, ESLint & Production Build Verification**: Verified all 4 milestones pass `npx tsc --noEmit` and `npm run lint` with 0 errors.
+
+
 

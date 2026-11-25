@@ -1,10 +1,12 @@
 'use client'
 
-import React, { useState, useTransition } from 'react'
+import React, { useEffect, useState, useTransition } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { RichContentEditor } from './RichContentEditor'
 import { saveProjectAction, deleteProjectAction } from '@/app/(admin)/admin/collections/projects/actions'
+import { AdminDialog } from './AdminDialog'
+import { useAdminToast } from './AdminToastProvider'
 
 interface ProjectEditorProps {
   project: any | null
@@ -33,7 +35,9 @@ export function ProjectEditor({
   allPosts = [],
 }: ProjectEditorProps) {
   const router = useRouter()
+  const toast = useAdminToast()
   const isNew = !project
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false)
 
   const [title, setTitle] = useState(project?.title || '')
   const [slug, setSlug] = useState(project?.slug || '')
@@ -124,6 +128,7 @@ export function ProjectEditor({
       })
 
       if (res.success && res.doc) {
+        toast.success(isNew ? 'Project created.' : 'Project saved.')
         setFeedback({
           type: 'success',
           message: isNew ? 'Project created successfully.' : 'Project updated successfully.',
@@ -135,6 +140,7 @@ export function ProjectEditor({
           router.refresh()
         }
       } else {
+        toast.error(res.error || 'Failed to save project.')
         setFeedback({
           type: 'error',
           message: res.error || 'An error occurred while saving the project.',
@@ -143,19 +149,35 @@ export function ProjectEditor({
     })
   }
 
-  const handleDelete = async () => {
-    if (!project?.id) return
-    const confirmed = window.confirm(`Are you sure you want to delete "${title || 'this project'}"? This action cannot be undone.`)
-    if (!confirmed) return
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 's') {
+        e.preventDefault()
+        handleSave()
+      }
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  })
 
+  const handleDelete = () => {
+    if (!project?.id) return
+    setConfirmDeleteOpen(true)
+  }
+
+  const executeDelete = async () => {
+    if (!project?.id) return
+    setConfirmDeleteOpen(false)
     setIsDeleting(true)
     const res = await deleteProjectAction(project.id)
     setIsDeleting(false)
 
     if (res.success) {
+      toast.success('Project deleted.')
       router.push('/admin/collections/projects')
       router.refresh()
     } else {
+      toast.error(res.error || 'Failed to delete project.')
       setFeedback({ type: 'error', message: res.error || 'Failed to delete project.' })
     }
   }
@@ -643,6 +665,39 @@ export function ProjectEditor({
           </div>
         </div>
       </div>
+
+      <AdminDialog
+        open={confirmDeleteOpen}
+        onClose={() => setConfirmDeleteOpen(false)}
+        labelledBy="delete-project-title"
+        className="w-[min(420px,92vw)]"
+      >
+        <div className="p-5 bg-paper-surface space-y-4">
+          <h1 id="delete-project-title" className="font-headline-sm text-lg text-on-surface">
+            Delete Project Rig?
+          </h1>
+          <p className="text-xs text-ink-secondary leading-relaxed">
+            Permanently delete <strong className="text-on-surface">{title || 'this project'}</strong>? This action cannot be undone.
+          </p>
+          <div className="flex justify-end gap-2 pt-2">
+            <button
+              type="button"
+              autoFocus
+              onClick={() => setConfirmDeleteOpen(false)}
+              className="px-3.5 py-1.5 rounded border border-hairline-rule text-xs font-label-sm text-on-surface hover:bg-surface-container-low"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={executeDelete}
+              className="px-3.5 py-1.5 rounded bg-rose-600 text-white text-xs font-label-sm hover:bg-rose-700"
+            >
+              Delete Project
+            </button>
+          </div>
+        </div>
+      </AdminDialog>
     </div>
   )
 }

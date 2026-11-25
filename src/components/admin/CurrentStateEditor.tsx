@@ -1,9 +1,10 @@
 'use client'
 
-import React, { useState, useTransition } from 'react'
+import React, { useEffect, useState, useTransition } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { updateCurrentStateAction } from '@/app/(admin)/admin/globals/current-state/actions'
+import { useAdminToast } from './AdminToastProvider'
 
 interface CurrentStateEditorProps {
   currentState: any
@@ -11,6 +12,7 @@ interface CurrentStateEditorProps {
 
 export function CurrentStateEditor({ currentState }: CurrentStateEditorProps) {
   const router = useRouter()
+  const toast = useAdminToast()
   const [studying, setStudying] = useState(currentState?.studying || '')
   const [building, setBuilding] = useState(currentState?.building || '')
   const [reading, setReading] = useState(currentState?.reading || '')
@@ -32,13 +34,26 @@ export function CurrentStateEditor({ currentState }: CurrentStateEditorProps) {
       })
 
       if (res.success) {
+        toast.success('Field telemetry synced.')
         setFeedback({ type: 'success', message: 'Current state updated successfully.' })
         router.refresh()
       } else {
+        toast.error(res.error || 'Failed to update current state.')
         setFeedback({ type: 'error', message: res.error || 'Failed to update current state.' })
       }
     })
   }
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 's') {
+        e.preventDefault()
+        handleSave()
+      }
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  })
 
   const fields = [
     {
@@ -202,6 +217,31 @@ export function CurrentStateEditor({ currentState }: CurrentStateEditorProps) {
           )
         })}
       </div>
+
+      {/* Live Public Preview Strip */}
+      <section className="border border-hairline-rule bg-paper-surface p-5 rounded shadow-xs">
+        <div className="flex items-center justify-between pb-3 border-b border-hairline-rule mb-4">
+          <span className="font-label-sm text-xs text-ink-secondary uppercase tracking-widest font-semibold flex items-center gap-2">
+            <span className="material-symbols-outlined text-[16px] text-primary">preview</span>
+            Live Homepage &ldquo;Right Now&rdquo; Preview
+          </span>
+          <span className="text-[11px] font-label-sm text-ink-muted">
+            {visibility ? 'Visible on public homepage' : 'Hidden from public homepage'}
+          </span>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
+          {fields.map((f) => (
+            <div key={f.key} className="p-3 rounded bg-surface-container-low border border-hairline-subtle">
+              <div className="font-label-sm text-[10px] text-primary uppercase tracking-wider mb-1">
+                {f.label}
+              </div>
+              <p className="text-on-surface leading-relaxed">
+                {f.value || <span className="italic text-ink-muted">Not set</span>}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   )
 }

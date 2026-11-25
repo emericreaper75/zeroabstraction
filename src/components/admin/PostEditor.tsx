@@ -1,10 +1,12 @@
 'use client'
 
-import React, { useState, useTransition } from 'react'
+import React, { useEffect, useMemo, useState, useTransition } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { RichContentEditor } from './RichContentEditor'
 import { savePostAction, deletePostAction } from '@/app/(admin)/admin/collections/posts/actions'
+import { AdminDialog } from './AdminDialog'
+import { useAdminToast } from './AdminToastProvider'
 
 interface PostEditorProps {
   post: any | null
@@ -33,7 +35,9 @@ export function PostEditor({
   allPosts = [],
 }: PostEditorProps) {
   const router = useRouter()
+  const toast = useAdminToast()
   const isNew = !post
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false)
 
   const [title, setTitle] = useState(post?.title || '')
   const [slug, setSlug] = useState(post?.slug || '')
@@ -111,6 +115,7 @@ export function PostEditor({
       })
 
       if (res.success && res.doc) {
+        toast.success(isNew ? 'Manuscript created.' : 'Manuscript saved.')
         setFeedback({
           type: 'success',
           message: isNew ? 'Manuscript created successfully.' : 'Manuscript updated successfully.',
@@ -122,6 +127,7 @@ export function PostEditor({
           router.refresh()
         }
       } else {
+        toast.error(res.error || 'Failed to save post.')
         setFeedback({
           type: 'error',
           message: res.error || 'An error occurred while saving the post.',
@@ -130,20 +136,43 @@ export function PostEditor({
     })
   }
 
-  // Handle post deletion
-  const handleDelete = async () => {
-    if (!post?.id) return
-    const confirmed = window.confirm(`Are you sure you want to delete "${title || 'this post'}"? This action cannot be undone.`)
-    if (!confirmed) return
+  // Cmd/Ctrl+S shortcut
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 's') {
+        e.preventDefault()
+        handleSave()
+      }
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  })
 
+  const wordCount = useMemo(
+    () => (contentMarkdown || '').trim().split(/\s+/).filter(Boolean).length,
+    [contentMarkdown]
+  )
+  const estMinutes = Math.max(1, Math.ceil(wordCount / 200))
+
+  // Handle post deletion
+  const handleDelete = () => {
+    if (!post?.id) return
+    setConfirmDeleteOpen(true)
+  }
+
+  const executeDelete = async () => {
+    if (!post?.id) return
+    setConfirmDeleteOpen(false)
     setIsDeleting(true)
     const res = await deletePostAction(post.id)
     setIsDeleting(false)
 
     if (res.success) {
+      toast.success('Manuscript deleted.')
       router.push('/admin/collections/posts')
       router.refresh()
     } else {
+      toast.error(res.error || 'Failed to delete post.')
       setFeedback({ type: 'error', message: res.error || 'Failed to delete post.' })
     }
   }
@@ -559,41 +588,74 @@ export function PostEditor({
             </h3>
             <div className="space-y-3">
               <div>
-                <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase mb-1">
-                  Meta Title
-                </label>
+                <div className="flex justify-between items-center mb-1">
+                  <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase">
+                    Meta Title
+                  </label>
+                  <span className="text-[10px] font-label-sm text-ink-muted">
+                    {(seoTitle || title).length}/60
+                  </span>
+                </div>
                 <input
                   type="text"
                   value={seoTitle}
                   onChange={(e) => setSeoTitle(e.target.value)}
                   placeholder={title || 'Custom SEO title...'}
-                  className="w-full bg-white border border-hairline-rule text-on-surface font-body-sm text-body-sm px-3 py-2 focus:border-primary focus:outline-none rounded-none"
+                  className="w-full bg-surface-container-lowest border border-hairline-rule text-on-surface font-body-sm text-body-sm px-3 py-2 focus:border-primary focus:outline-none rounded-none"
                 />
               </div>
               <div>
-                <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase mb-1">
-                  Meta Description
-                </label>
+                <div className="flex justify-between items-center mb-1">
+                  <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase">
+                    Meta Description
+                  </label>
+                  <span className="text-[10px] font-label-sm text-ink-muted">
+                    {(seoDescription || excerpt).length}/160
+                  </span>
+                </div>
                 <textarea
                   value={seoDescription}
                   onChange={(e) => setSeoDescription(e.target.value)}
                   placeholder="Custom meta description..."
                   rows={2}
-                  className="w-full bg-white border border-hairline-rule text-on-surface font-body-sm text-body-sm px-3 py-2 focus:border-primary focus:outline-none rounded-none resize-none"
+                  className="w-full bg-surface-container-lowest border border-hairline-rule text-on-surface font-body-sm text-body-sm px-3 py-2 focus:border-primary focus:outline-none rounded-none resize-none"
                 />
+              </div>
+              {/* Live SERP Preview */}
+              <div className="mt-3 p-3 bg-surface-container-low border border-hairline-subtle rounded space-y-1">
+                <span className="text-[10px] font-label-sm text-ink-muted uppercase tracking-wider">
+                  SERP Preview
+                </span>
+                <p className="text-xs font-medium text-primary truncate">
+                  {seoTitle || title || 'Untitled Treatise'} — ZeroAbstraction
+                </p>
+                <p className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 truncate">
+                  zeroabstraction.dev/writing/{slug || 'slug'}
+                </p>
+                <p className="text-[11px] text-ink-secondary line-clamp-2">
+                  {seoDescription || excerpt || 'Add an excerpt or meta description to preview search snippet.'}
+                </p>
               </div>
             </div>
           </div>
 
           {/* Telemetry & Metadata */}
-          <div className="border border-hairline-rule bg-white p-5 shadow-xs">
+          <div className="border border-hairline-rule bg-paper-surface p-5 shadow-xs">
             <h3 className="font-label-sm text-label-sm text-ink-muted uppercase tracking-widest font-semibold mb-4 pb-2 border-b border-hairline-rule">
               Document Telemetry
             </h3>
             <div className="space-y-2 text-label-sm font-label-sm text-ink-muted">
               <div className="flex justify-between">
-                <span>Type</span>
-                <span className="text-on-surface font-medium">Post / Essay</span>
+                <span>Word Count</span>
+                <span className="text-on-surface font-medium">{wordCount.toLocaleString()} words</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Est. Reading Time</span>
+                <span className="text-on-surface font-medium">{estMinutes} min read</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Save Shortcut</span>
+                <kbd className="text-[10px] px-1.5 py-0.5 border border-hairline-rule rounded bg-surface-container-low">⌘S / Ctrl+S</kbd>
               </div>
               {post && (
                 <>
@@ -621,6 +683,39 @@ export function PostEditor({
           </div>
         </div>
       </div>
+
+      <AdminDialog
+        open={confirmDeleteOpen}
+        onClose={() => setConfirmDeleteOpen(false)}
+        labelledBy="delete-post-title"
+        className="w-[min(420px,92vw)]"
+      >
+        <div className="p-5 bg-paper-surface space-y-4">
+          <h1 id="delete-post-title" className="font-headline-sm text-lg text-on-surface">
+            Delete Manuscript?
+          </h1>
+          <p className="text-xs text-ink-secondary leading-relaxed">
+            Permanently delete <strong className="text-on-surface">{title || 'this post'}</strong>? This action cannot be undone.
+          </p>
+          <div className="flex justify-end gap-2 pt-2">
+            <button
+              type="button"
+              autoFocus
+              onClick={() => setConfirmDeleteOpen(false)}
+              className="px-3.5 py-1.5 rounded border border-hairline-rule text-xs font-label-sm text-on-surface hover:bg-surface-container-low"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={executeDelete}
+              className="px-3.5 py-1.5 rounded bg-rose-600 text-white text-xs font-label-sm hover:bg-rose-700"
+            >
+              Delete Post
+            </button>
+          </div>
+        </div>
+      </AdminDialog>
     </div>
   )
 }
