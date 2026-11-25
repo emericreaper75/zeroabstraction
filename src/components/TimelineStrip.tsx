@@ -111,7 +111,7 @@ export function TimelineStrip({
           <span className="font-mono text-xs uppercase tracking-widest text-[color:var(--text-muted)]">
             MILESTONE TIMELINE
           </span>
-          <div className="inline-flex items-center p-0.5 rounded-[var(--radius-s)] border border-[color:var(--border)] bg-[color:var(--surface)]/60 font-mono text-[11px]">
+          <div className="inline-flex items-center p-0.5 rounded-[var(--radius-s)] border border-[color:var(--border)] bg-[color:var(--surface)] font-mono text-[11px]">
             {(['ALL', '2026', '2025'] as const).map((yr) => {
               const isSelected = yearFilter === yr;
               return (
@@ -188,7 +188,7 @@ export function TimelineStrip({
         {/* Compact Single-Row Recessed Summary Strip */}
         {active && (
           <div
-            className="px-4 py-3 rounded-[var(--radius-s)] border border-[color:var(--border)] bg-[color:var(--bg-subtle)]/70 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-6"
+            className="px-4 py-3 rounded-[var(--radius-s)] border border-[color:var(--border)] bg-[color:var(--bg-subtle)] flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-6"
             aria-live="polite"
           >
             <span className="font-mono text-[11px] uppercase tracking-wider text-[color:var(--accent-text)] shrink-0">

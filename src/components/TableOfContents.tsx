@@ -64,7 +64,7 @@ export function TableOfContents({ variant = 'sidebar' }: { variant?: 'sidebar' |
   if (variant === 'inline') {
     return (
       <nav aria-label="Table of contents" className="lg:hidden mb-8">
-        <div className="border border-[color:var(--border)] bg-[color:var(--surface)]/50 rounded-[var(--radius-s)] p-4">
+        <div className="border border-[color:var(--border)] bg-[color:var(--surface)] rounded-[var(--radius-s)] p-4">
           <div className="flex items-center justify-between gap-4">
             <span className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--text-muted)]">
               ON THIS PAGE ({headings.length})

@@ -230,7 +230,7 @@ export function HeroMasthead({ totalProjectsCount, totalPostsCount }: HeroMasthe
                   onFocus={() => setHoveredId(sat.id)}
                   onBlur={() => setHoveredId(null)}
                   style={{ textDecoration: 'none' }}
-                  className={`block rounded-lg border p-3.5 bg-[color:var(--surface)]/75 [backdrop-filter:blur(8px)] transition-colors duration-200 ${
+                  className={`block rounded-lg border p-3.5 bg-[color:var(--glass-bg)] [backdrop-filter:blur(8px)] transition-colors duration-200 ${
                     isHovered
                       ? 'border-[color:var(--accent)] shadow-md'
                       : 'border-[color:var(--border)] hover:border-[color:var(--accent-border)]'
@@ -265,7 +265,7 @@ export function HeroMasthead({ totalProjectsCount, totalPostsCount }: HeroMasthe
           className="mx-auto max-w-[540px] xl:max-w-[680px] flex flex-col items-center text-center"
         >
           {/* Eyebrow Pill */}
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-[color:var(--border)] bg-[color:var(--surface)]/75 [backdrop-filter:blur(8px)] font-mono text-[12.5px] tracking-[0.14em] uppercase text-[color:var(--text-muted)]">
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-[color:var(--border)] bg-[color:var(--glass-bg)] [backdrop-filter:blur(8px)] font-mono text-[12.5px] tracking-[0.14em] uppercase text-[color:var(--text-muted)]">
             <span className="w-1.5 h-1.5 rounded-full bg-[color:var(--accent)] animate-pulse" aria-hidden="true" />
             <span>ECE × PHYSICS × ASTROPHYSICS</span>
           </div>
@@ -297,7 +297,7 @@ export function HeroMasthead({ totalProjectsCount, totalPostsCount }: HeroMasthe
             <Link
               href="/writing"
               style={{ textDecoration: 'none' }}
-              className="min-h-[44px] px-6 py-2.5 rounded-full inline-flex items-center gap-2 border border-[color:var(--border-strong)] bg-[color:var(--surface)]/70 hover:border-[color:var(--accent)] hover:text-[color:var(--accent-text)] text-[color:var(--text)] font-mono text-xs tracking-[0.11em] uppercase font-medium transition-all duration-150 active:scale-[0.97]"
+              className="min-h-[44px] px-6 py-2.5 rounded-full inline-flex items-center gap-2 border border-[color:var(--border-strong)] bg-[color:var(--surface)] hover:border-[color:var(--accent)] hover:text-[color:var(--accent-text)] text-[color:var(--text)] font-mono text-xs tracking-[0.11em] uppercase font-medium transition-all duration-150 active:scale-[0.97]"
             >
               <span>READ FIELD NOTES</span>
             </Link>
@@ -310,7 +310,7 @@ export function HeroMasthead({ totalProjectsCount, totalPostsCount }: HeroMasthe
                 key={sat.id}
                 href={sat.href}
                 style={{ textDecoration: 'none' }}
-                className="block rounded-lg border border-[color:var(--border)] bg-[color:var(--surface)]/75 [backdrop-filter:blur(8px)] p-3.5 hover:border-[color:var(--accent-border)] transition-colors"
+                className="block rounded-lg border border-[color:var(--border)] bg-[color:var(--glass-bg)] [backdrop-filter:blur(8px)] p-3.5 hover:border-[color:var(--accent-border)] transition-colors"
               >
                 <span className="block font-mono text-[10px] tracking-widest uppercase text-[color:var(--accent-text)] mb-1">
                   {sat.code}

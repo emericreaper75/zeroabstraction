@@ -38,7 +38,7 @@ export default async function WritingArchive({ searchParams }: { searchParams: P
 
   return (
     <div className="container-wide pb-20 pt-8 md:pt-12">
-      <header className="relative mb-8 rounded-[var(--radius-s)] border border-[color:var(--border)] bg-[color:var(--surface)]/70 architectural-grid p-6 sm:p-10">
+      <header className="relative mb-8 rounded-[var(--radius-s)] border border-[color:var(--border)] bg-[color:var(--surface)] architectural-grid p-6 sm:p-10">
         <span aria-hidden="true" className="absolute top-2 left-2 font-mono text-[10px] leading-none text-[color:var(--text-muted)]/60 select-none">+</span>
         <span aria-hidden="true" className="absolute top-2 right-2 font-mono text-[10px] leading-none text-[color:var(--text-muted)]/60 select-none">+</span>
         <span aria-hidden="true" className="absolute bottom-2 left-2 font-mono text-[10px] leading-none text-[color:var(--text-muted)]/60 select-none">+</span>
@@ -69,7 +69,7 @@ export default async function WritingArchive({ searchParams }: { searchParams: P
           </div>
 
           {/* Right Editorial Ledger Summary */}
-          <div className="rounded-[var(--radius-s)] border border-[color:var(--border)] bg-[color:var(--math-bg)]/90 p-5 flex flex-col gap-3 font-mono">
+          <div className="rounded-[var(--radius-s)] border border-[color:var(--border)] bg-[color:var(--math-bg)] p-5 flex flex-col gap-3 font-mono">
             <div className="flex items-center justify-between text-[10px] tracking-widest uppercase text-[color:var(--text-muted)] border-b border-[color:var(--border)] pb-2">
               <span>ARCHIVE LEDGER</span>
               <span className="text-[color:var(--accent-text)]">FORMAT: {view.toUpperCase()}</span>
@@ -105,7 +105,7 @@ export default async function WritingArchive({ searchParams }: { searchParams: P
       </header>
       <TopicFilter topics={topics} activeSlug={params.topic} basePath="/writing" />
       <div className="mt-6 flex items-center justify-between border-b border-[color:var(--border)] pb-3">
-        <div className="inline-flex items-center p-1 rounded-[var(--radius-s)] border border-[color:var(--border)] bg-[color:var(--surface)]/60">
+        <div className="inline-flex items-center p-1 rounded-[var(--radius-s)] border border-[color:var(--border)] bg-[color:var(--surface)]">
           <Link
             href={`/writing?view=shelf${params.topic ? `&topic=${encodeURIComponent(params.topic)}` : ''}`}
             aria-current={view === 'shelf' ? 'page' : undefined}

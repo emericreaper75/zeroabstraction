@@ -98,7 +98,7 @@ export function WritingShelf({ posts }: { posts: Post[] }) {
           <section
             key={year}
             aria-label={year}
-            className="rounded-[var(--radius-s)] border border-[color:var(--border)] bg-[color:var(--bg-subtle)]/55 p-4 sm:p-6"
+            className="rounded-[var(--radius-s)] border border-[color:var(--border)] bg-[color:var(--bg-subtle)] p-4 sm:p-6"
           >
             <div className="flex items-center justify-between mb-4">
               <h2 className="font-mono text-[var(--text-label)] tracking-widest text-[color:var(--text-muted)]">
@@ -152,7 +152,7 @@ export function WritingShelf({ posts }: { posts: Post[] }) {
       {selected && (
         <aside
           aria-label="Selected writing preview"
-          className="lg:sticky lg:top-24 lg:self-start p-6 border border-[color:var(--border)] bg-[color:var(--surface)]/75 rounded-[var(--radius-s)] shadow-sm overflow-hidden"
+          className="lg:sticky lg:top-24 lg:self-start p-6 border border-[color:var(--border)] bg-[color:var(--surface)] rounded-[var(--radius-s)] shadow-sm overflow-hidden"
         >
           <AnimatePresence mode="wait">
             <motion.div

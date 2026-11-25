@@ -70,7 +70,7 @@ export default async function AboutPage() {
           </figure>
 
           {/* Compact Monospace Coordinate & Toolkit Spec Block */}
-          <div className="border border-[color:var(--border)] bg-[color:var(--bg-subtle)]/60 rounded-[var(--radius-s)] p-5 flex flex-col gap-3 font-mono text-xs">
+          <div className="border border-[color:var(--border)] bg-[color:var(--bg-subtle)] rounded-[var(--radius-s)] p-5 flex flex-col gap-3 font-mono text-xs">
             <div className="flex flex-col gap-1 pb-2.5 border-b border-[color:var(--border)]">
               <span className="text-[10px] tracking-widest text-[color:var(--text-muted)]">BASE</span>
               <span className="text-[color:var(--text)]">ANANTAPUR · 14.68° N, 77.60° E</span>

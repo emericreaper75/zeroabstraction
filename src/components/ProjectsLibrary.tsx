@@ -137,10 +137,10 @@ export function ProjectsLibrary({ projects }: { projects: Project[] }) {
         return (
           <article
             key={project.id}
-            className="group w-full grid grid-cols-1 lg:grid-cols-[2fr_3fr] border border-[color:var(--border)] hover:border-[color:var(--accent-border)] bg-[color:var(--surface)]/75 rounded-[var(--radius-s)] overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
+            className="group w-full grid grid-cols-1 lg:grid-cols-[2fr_3fr] border border-[color:var(--border)] hover:border-[color:var(--accent-border)] bg-[color:var(--surface)] rounded-[var(--radius-s)] overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
           >
             {/* Left Visual Stage (40%) */}
-            <div className="p-4 sm:p-6 bg-[color:var(--bg-subtle)]/50 border-b lg:border-b-0 lg:border-r border-[color:var(--border)] flex items-center justify-center">
+            <div className="p-4 sm:p-6 bg-[color:var(--bg-subtle)] border-b lg:border-b-0 lg:border-r border-[color:var(--border)] flex items-center justify-center">
               <Link
                 href={`/projects/${project.slug}`}
                 tabIndex={-1}
@@ -184,7 +184,7 @@ export function ProjectsLibrary({ projects }: { projects: Project[] }) {
               </div>
 
               {/* Technical Specification Strip */}
-              <div className="px-3.5 py-2.5 rounded-[var(--radius-s)] border border-[color:var(--border)] bg-[color:var(--bg-subtle)]/70 font-mono text-[11px] tracking-wider uppercase text-[color:var(--text-muted)]">
+              <div className="px-3.5 py-2.5 rounded-[var(--radius-s)] border border-[color:var(--border)] bg-[color:var(--bg-subtle)] font-mono text-[11px] tracking-wider uppercase text-[color:var(--text-muted)]">
                 {specs.length > 0 ? specs.join(' · ') : 'SYSTEM ARCHITECTURE · RESEARCH PROTOTYPE'}
               </div>
 

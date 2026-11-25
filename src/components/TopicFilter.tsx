@@ -26,7 +26,7 @@ export function TopicFilter({
           className={`min-h-[38px] px-3.5 rounded-full border inline-flex items-center gap-2 font-mono text-[var(--text-ui-sm)] tracking-wider transition-colors [scroll-snap-align:start] ${
             !activeSlug
               ? 'bg-[color:var(--accent-subtle)] text-[color:var(--accent-text)] border-[color:var(--accent-border)] font-medium'
-              : 'bg-[color:var(--surface)]/60 text-[color:var(--text-muted)] border-[color:var(--border)] hover:border-[color:var(--accent-border)] hover:text-[color:var(--text)]'
+              : 'bg-[color:var(--surface)] text-[color:var(--text-muted)] border-[color:var(--border)] hover:border-[color:var(--accent-border)] hover:text-[color:var(--text)]'
           }`}
         >
           <span>ALL</span>
@@ -42,7 +42,7 @@ export function TopicFilter({
               className={`min-h-[38px] px-3.5 rounded-full border inline-flex items-center gap-2 font-mono text-[var(--text-ui-sm)] tracking-wider transition-colors [scroll-snap-align:start] ${
                 isActive
                   ? 'bg-[color:var(--accent-subtle)] text-[color:var(--accent-text)] border-[color:var(--accent-border)] font-medium'
-                  : 'bg-[color:var(--surface)]/60 text-[color:var(--text-muted)] border-[color:var(--border)] hover:border-[color:var(--accent-border)] hover:text-[color:var(--text)]'
+                  : 'bg-[color:var(--surface)] text-[color:var(--text-muted)] border-[color:var(--border)] hover:border-[color:var(--accent-border)] hover:text-[color:var(--text)]'
               }`}
             >
               <span>{topic.name.toUpperCase()}</span>

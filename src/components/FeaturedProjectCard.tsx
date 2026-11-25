@@ -87,7 +87,7 @@ export function FeaturedProjectCard({ project }: FeaturedProjectCardProps) {
           </p>
 
           {/* Recessed Tech Spec Strip */}
-          <div className="w-full px-3.5 py-2 rounded-[var(--radius-s)] border border-[color:var(--border)] bg-[color:var(--bg-subtle)]/70 font-mono text-[11px] tracking-wider uppercase text-[color:var(--text-muted)]">
+          <div className="w-full px-3.5 py-2 rounded-[var(--radius-s)] border border-[color:var(--border)] bg-[color:var(--bg-subtle)] font-mono text-[11px] tracking-wider uppercase text-[color:var(--text-muted)]">
             {techString}
           </div>
 

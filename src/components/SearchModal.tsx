@@ -217,7 +217,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
     >
       <div
         ref={modalRef}
-        className="w-full max-w-xl bg-[color:var(--bg)]/95 [backdrop-filter:blur(16px)] border border-[color:var(--border)] rounded-xl shadow-2xl flex flex-col overflow-hidden"
+        className="w-full max-w-xl bg-[color:var(--surface)] border border-[color:var(--border-strong)] rounded-xl shadow-2xl flex flex-col overflow-hidden"
         style={{ maxHeight: 'calc(100vh - 140px)' }}
       >
         {/* Minimalist Search Input Bar (no inner outline box) */}
@@ -395,7 +395,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                       }}
                       onMouseEnter={() => setActiveIndex(idx)}
                       className={`group py-3 px-2.5 -mx-2.5 rounded-lg transition-colors ${
-                        isActive ? 'bg-[color:var(--surface-hover)]' : 'hover:bg-[color:var(--surface)]/60'
+                        isActive ? 'bg-[color:var(--surface-hover)]' : 'hover:bg-[color:var(--bg-subtle)]'
                       }`}
                     >
                       <div className="flex items-center gap-2 text-[10px] font-mono text-[color:var(--text-muted)] mb-0.5">
@@ -446,7 +446,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
         {/* Minimal Footer (only shown when typing a query) */}
         {query.trim() && (
-          <div className="px-5 py-2 border-t border-[color:var(--border)] bg-[color:var(--bg-subtle)]/60 flex items-center justify-between font-mono text-[10px] tracking-wider uppercase text-[color:var(--text-muted)]">
+          <div className="px-5 py-2 border-t border-[color:var(--border)] bg-[color:var(--bg-subtle)] flex items-center justify-between font-mono text-[10px] tracking-wider uppercase text-[color:var(--text-muted)]">
             <span className="hidden sm:inline">↑↓ · ↵ · ESC</span>
             <Link
               href={`/search?q=${encodeURIComponent(query.trim())}`}

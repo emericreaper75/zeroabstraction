@@ -100,7 +100,7 @@ export default async function Home() {
             </span>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-6 border border-[color:var(--border)] hover:border-[color:var(--accent-border)] bg-[color:var(--surface)]/70 rounded-[var(--radius-s)] flex flex-col justify-between gap-4 transition-colors duration-200">
+            <div className="p-6 border border-[color:var(--border)] hover:border-[color:var(--accent-border)] bg-[color:var(--surface)] rounded-[var(--radius-s)] flex flex-col justify-between gap-4 transition-colors duration-200">
               <div className="flex flex-col gap-2">
                 <span className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--accent-text)]">STUDYING</span>
                 <p className="text-sm sm:text-base text-[color:var(--text)] leading-relaxed">
@@ -111,7 +111,7 @@ export default async function Home() {
                 QUBIT READOUT
               </div>
             </div>
-            <div className="p-6 border border-[color:var(--border)] hover:border-[color:var(--accent-border)] bg-[color:var(--surface)]/70 rounded-[var(--radius-s)] flex flex-col justify-between gap-4 transition-colors duration-200">
+            <div className="p-6 border border-[color:var(--border)] hover:border-[color:var(--accent-border)] bg-[color:var(--surface)] rounded-[var(--radius-s)] flex flex-col justify-between gap-4 transition-colors duration-200">
               <div className="flex flex-col gap-2">
                 <span className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--accent-text)]">BUILDING</span>
                 <p className="text-sm sm:text-base text-[color:var(--text)] leading-relaxed">
@@ -122,7 +122,7 @@ export default async function Home() {
                 VIVADO RTL
               </div>
             </div>
-            <div className="p-6 border border-[color:var(--border)] hover:border-[color:var(--accent-border)] bg-[color:var(--surface)]/70 rounded-[var(--radius-s)] flex flex-col justify-between gap-4 transition-colors duration-200">
+            <div className="p-6 border border-[color:var(--border)] hover:border-[color:var(--accent-border)] bg-[color:var(--surface)] rounded-[var(--radius-s)] flex flex-col justify-between gap-4 transition-colors duration-200">
               <div className="flex flex-col gap-2">
                 <span className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--accent-text)]">READING</span>
                 <p className="text-sm sm:text-base text-[color:var(--text)] leading-relaxed">
@@ -157,7 +157,7 @@ export default async function Home() {
                 return (
                   <article
                     key={post.id}
-                    className="group flex flex-col justify-between p-6 border border-[color:var(--border)] hover:border-[color:var(--accent-border)] bg-[color:var(--surface)]/50 rounded-[var(--radius-s)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-sm"
+                    className="group flex flex-col justify-between p-6 border border-[color:var(--border)] hover:border-[color:var(--accent-border)] bg-[color:var(--surface)] rounded-[var(--radius-s)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-sm"
                   >
                     <div>
                       <div className="flex items-center justify-between font-mono text-[11px] text-[color:var(--text-muted)] tracking-wider mb-3">

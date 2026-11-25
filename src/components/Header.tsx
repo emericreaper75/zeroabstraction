@@ -200,7 +200,7 @@ export function Header({ navLinks = [] }: HeaderProps) {
         <div className="hidden md:flex items-center gap-4 lg:gap-6">
           <nav
             aria-label="Primary"
-            className="flex items-center gap-1 p-1 rounded-full border border-[color:var(--border)] bg-[color:var(--surface)]/55 [backdrop-filter:blur(10px)]"
+            className="flex items-center gap-1 p-1 rounded-full border border-[color:var(--border)] bg-[color:var(--glass-bg)] [backdrop-filter:blur(10px)]"
           >
             {(navLinks?.length ? navLinks : [
               { label: 'HOME', url: '/' },

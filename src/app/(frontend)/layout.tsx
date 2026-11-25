@@ -174,7 +174,7 @@ export default async function RootLayout({
                       key={item.tag}
                       href={`/search?q=${encodeURIComponent(item.q)}`}
                       style={{ textDecoration: 'none' }}
-                      className="px-2.5 py-1 rounded-full border border-[color:var(--border)] bg-[color:var(--bg-subtle)]/60 text-[color:var(--text-muted)] hover:border-[color:var(--accent-border)] hover:text-[color:var(--accent-text)] transition-colors"
+                      className="px-2.5 py-1 rounded-full border border-[color:var(--border)] bg-[color:var(--bg-subtle)] text-[color:var(--text-muted)] hover:border-[color:var(--accent-border)] hover:text-[color:var(--accent-text)] transition-colors"
                     >
                       {item.tag}
                     </Link>

@@ -6,7 +6,7 @@ export default function NotFound() {
   return (
     <div className="container-wide min-h-[75vh] flex flex-col justify-center items-center text-center relative architectural-grid border-b border-[color:var(--border)]">
       <Reveal>
-        <div className="flex flex-col items-center p-8 sm:p-12 border border-[color:var(--border)] bg-[color:var(--bg)]/90 [backdrop-filter:blur(8px)] rounded-[var(--radius-s)]" style={{ gap: 'var(--space-5)' }}>
+        <div className="flex flex-col items-center p-8 sm:p-12 border border-[color:var(--border)] bg-[color:var(--surface)] rounded-[var(--radius-s)] shadow-sm" style={{ gap: 'var(--space-5)' }}>
           <Label className="text-[color:var(--accent-text)] tracking-widest">ERR_404 // TRAJECTORY_NULL</Label>
           <Display>404</Display>
           <div className="flex flex-col items-center" style={{ gap: 'var(--space-2)' }}>
