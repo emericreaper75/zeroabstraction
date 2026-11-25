@@ -2,6 +2,8 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 import type { Post } from '@/payload-types';
 
 function hash(value: string) {
@@ -26,7 +28,7 @@ function EssayVectorDiagram({ slug }: { slug: string }) {
         {/* Optical Axis */}
         <line x1="20" y1="90" x2="340" y2="90" stroke="var(--border-strong)" strokeWidth="1" strokeDasharray="4 4" />
         {/* Lens Mass & Einstein Ring */}
-        <circle cx="180" cy="90" r="36" fill="none" stroke="var(--accent)" strokeWidth="1" strokeDasharray="3 3" opacity="0.65" />
+        <circle cx="180" cy="90" r="36" fill="none" stroke="var(--accent)" strokeWidth="1" className="schematic-flow" opacity="0.65" />
         <circle cx="180" cy="90" r="14" fill="var(--accent-subtle)" stroke="var(--accent)" strokeWidth="1.5" />
         {/* Bent Light Rays */}
         <path d="M 32 42 Q 180 20, 328 90" fill="none" stroke="var(--secondary)" strokeWidth="1.5" />
@@ -74,6 +76,7 @@ function EssayVectorDiagram({ slug }: { slug: string }) {
 
 export function WritingShelf({ posts }: { posts: Post[] }) {
   const [selectedId, setSelectedId] = useState(String(posts[0]?.id ?? ''));
+  const prefersReducedMotion = useReducedMotion();
   const selected = posts.find((post) => String(post.id) === selectedId) ?? posts[0];
   const groups = posts.reduce<Record<string, Post[]>>((acc, post) => {
     const year = post.published_at ? new Date(post.published_at).getUTCFullYear().toString() : 'UNDATED';
@@ -149,47 +152,58 @@ export function WritingShelf({ posts }: { posts: Post[] }) {
       {selected && (
         <aside
           aria-label="Selected writing preview"
-          className="lg:sticky lg:top-24 lg:self-start p-6 border border-[color:var(--border)] bg-[color:var(--surface)]/75 rounded-[var(--radius-s)] shadow-sm flex flex-col gap-4"
+          className="lg:sticky lg:top-24 lg:self-start p-6 border border-[color:var(--border)] bg-[color:var(--surface)]/75 rounded-[var(--radius-s)] shadow-sm overflow-hidden"
         >
-          {/* Theme-aware SVG Vector Diagram on Recessed Surface */}
-          <div className="aspect-[16/9] w-full overflow-hidden rounded-[var(--radius-s)] border border-[color:var(--border)] bg-[color:var(--math-bg)] p-2">
-            <EssayVectorDiagram slug={selected.slug} />
-          </div>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={selected.id}
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={prefersReducedMotion ? undefined : { opacity: 0, y: -6 }}
+              transition={{ duration: prefersReducedMotion ? 0 : 0.18, ease: [0.22, 1, 0.36, 1] }}
+              className="flex flex-col gap-4"
+            >
+              {/* Theme-aware SVG Vector Diagram on Recessed Surface */}
+              <div className="aspect-[16/9] w-full overflow-hidden rounded-[var(--radius-s)] border border-[color:var(--border)] bg-[color:var(--math-bg)] p-2">
+                <EssayVectorDiagram slug={selected.slug} />
+              </div>
 
-          {/* Category + Reading Time */}
-          <div className="flex items-center justify-between gap-2 flex-wrap font-mono text-[var(--text-label)] tracking-wider">
-            <span className="text-[color:var(--accent-text)]">
-              {selectedTopics || 'ESSAY'}
-            </span>
-            <span className="text-[color:var(--text-muted)]">
-              {selected.reading_time ?? 1} MIN READ
-            </span>
-          </div>
+              {/* Category + Reading Time */}
+              <div className="flex items-center justify-between gap-2 flex-wrap font-mono text-[var(--text-label)] tracking-wider">
+                <span className="text-[color:var(--accent-text)]">
+                  {selectedTopics || 'ESSAY'}
+                </span>
+                <span className="text-[color:var(--text-muted)]">
+                  {selected.reading_time ?? 1} MIN READ
+                </span>
+              </div>
 
-          {/* Title */}
-          <h2 className="font-[family-name:var(--font-display)] text-[var(--text-h2)] leading-tight text-[color:var(--text)]">
-            {selected.title}
-          </h2>
+              {/* Title */}
+              <h2 className="font-[family-name:var(--font-display)] text-[var(--text-h2)] leading-tight text-[color:var(--text)]">
+                {selected.title}
+              </h2>
 
-          {/* 3-line Summary */}
-          {selected.excerpt && (
-            <p className="text-sm sm:text-base text-[color:var(--text-muted)] leading-relaxed line-clamp-3">
-              {selected.excerpt}
-            </p>
-          )}
+              {/* 3-line Summary */}
+              {selected.excerpt && (
+                <p className="text-sm sm:text-base text-[color:var(--text-muted)] leading-relaxed line-clamp-3">
+                  {selected.excerpt}
+                </p>
+              )}
 
-          {/* Publication Date & CTA */}
-          <div className="pt-3 border-t border-[color:var(--border)] flex items-center justify-between gap-4 flex-wrap">
-            <span className="font-mono text-[var(--text-label)] text-[color:var(--text-muted)]">
-              {selected.published_at
-                ? new Date(selected.published_at).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }).toUpperCase()
-                : 'PUBLISHED'}
-            </span>
-            <Link href={`/writing/${selected.slug}`} className="btn-cta-solid">
-              <span>READ ARTICLE</span>
-              <span aria-hidden="true">→</span>
-            </Link>
-          </div>
+              {/* Publication Date & CTA */}
+              <div className="pt-3 border-t border-[color:var(--border)] flex items-center justify-between gap-4 flex-wrap">
+                <span className="font-mono text-[var(--text-label)] text-[color:var(--text-muted)]">
+                  {selected.published_at
+                    ? new Date(selected.published_at).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }).toUpperCase()
+                    : 'PUBLISHED'}
+                </span>
+                <Link href={`/writing/${selected.slug}`} className="btn-cta-solid">
+                  <span>READ ARTICLE</span>
+                  <span aria-hidden="true">→</span>
+                </Link>
+              </div>
+            </motion.div>
+          </AnimatePresence>
         </aside>
       )}
     </div>

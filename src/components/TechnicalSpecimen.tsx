@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 
 interface SpecimenGlyph {
   char: string;
@@ -40,6 +42,7 @@ const GLYPHS: SpecimenGlyph[] = [
 
 export function TechnicalSpecimen() {
   const [activeTag, setActiveTag] = useState<string>('Inktrap');
+  const prefersReducedMotion = useReducedMotion();
   const activeCallout = GLYPHS.find((g) => g.callout?.tag === activeTag)?.callout;
 
   return (
@@ -98,9 +101,17 @@ export function TechnicalSpecimen() {
           {GLYPHS.map((glyph, idx) => {
             const isCalloutActive = glyph.callout && glyph.callout.tag === activeTag;
             return (
-              <div
+              <motion.div
                 key={idx}
-                className="relative flex flex-col items-center border-x border-[color:var(--border)]/50 bg-[color:var(--surface)]/25 [backdrop-filter:blur(4px)] py-3 sm:py-4"
+                initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={
+                  prefersReducedMotion
+                    ? { duration: 0 }
+                    : { duration: 0.35, delay: idx * 0.045, ease: [0.22, 1, 0.36, 1] }
+                }
+                whileHover={prefersReducedMotion ? undefined : { y: -2 }}
+                className="relative flex flex-col items-center border-x border-[color:var(--border)]/50 bg-[color:var(--surface)]/25 [backdrop-filter:blur(4px)] py-3 sm:py-4 transition-colors hover:border-[color:var(--accent-border)]/70"
               >
                 {/* Top Caliper Tick */}
                 <div
@@ -115,13 +126,25 @@ export function TechnicalSpecimen() {
                       type="button"
                       onClick={() => setActiveTag(glyph.callout!.tag)}
                       onMouseEnter={() => setActiveTag(glyph.callout!.tag)}
-                      className={`px-1.5 py-0.5 font-mono text-[8px] sm:text-[9px] tracking-wider rounded-[2px] transition-colors cursor-pointer ${
+                      className={`relative px-1.5 py-0.5 font-mono text-[8px] sm:text-[9px] tracking-wider rounded-[2px] transition-colors cursor-pointer ${
                         isCalloutActive
-                          ? 'bg-[color:var(--accent)] text-[color:var(--on-accent)]'
-                          : 'bg-[color:var(--accent-subtle)] text-[color:var(--accent-text)] hover:bg-[color:var(--accent)] hover:text-[color:var(--on-accent)]'
+                          ? 'text-[color:var(--on-accent)]'
+                          : 'bg-[color:var(--accent-subtle)] text-[color:var(--accent-text)] hover:text-[color:var(--text)]'
                       }`}
                     >
-                      {glyph.callout.tag}
+                      {isCalloutActive && (
+                        <motion.span
+                          layoutId="specimen-callout-pill"
+                          transition={
+                            prefersReducedMotion
+                              ? { duration: 0 }
+                              : { type: 'spring', stiffness: 450, damping: 32 }
+                          }
+                          className="absolute inset-0 rounded-[2px] bg-[color:var(--accent)] -z-10"
+                          aria-hidden="true"
+                        />
+                      )}
+                      <span className="relative z-10">{glyph.callout.tag}</span>
                     </button>
                   )}
                 </div>
@@ -169,7 +192,7 @@ export function TechnicalSpecimen() {
                 <span className="mt-2 font-mono text-[8px] sm:text-[9px] tracking-widest uppercase text-[color:var(--text-muted)]">
                   SPACE
                 </span>
-              </div>
+              </motion.div>
             );
           })}
         </div>
@@ -180,15 +203,22 @@ export function TechnicalSpecimen() {
         <div className="uppercase tracking-wider text-[color:var(--text-muted)]">
           <span className="text-[color:var(--text)] font-medium">MODULAR FORM</span> · PRECISE GEOMETRY
         </div>
-        {activeCallout && (
-          <div
-            className="text-[color:var(--accent-text)] bg-[color:var(--accent-subtle)]/75 border border-[color:var(--accent-border)]/50 px-2.5 py-1 rounded-[var(--radius-s)]"
-            aria-live="polite"
-          >
-            <span className="uppercase font-semibold mr-1.5">[{activeCallout.tag}]</span>
-            <span className="text-[color:var(--text)]">{activeCallout.detail}</span>
-          </div>
-        )}
+        <AnimatePresence mode="wait">
+          {activeCallout && (
+            <motion.div
+              key={activeCallout.tag}
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={prefersReducedMotion ? undefined : { opacity: 0, y: -4 }}
+              transition={{ duration: prefersReducedMotion ? 0 : 0.16 }}
+              className="text-[color:var(--accent-text)] bg-[color:var(--accent-subtle)]/75 border border-[color:var(--accent-border)]/50 px-2.5 py-1 rounded-[var(--radius-s)]"
+              aria-live="polite"
+            >
+              <span className="uppercase font-semibold mr-1.5">[{activeCallout.tag}]</span>
+              <span className="text-[color:var(--text)]">{activeCallout.detail}</span>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

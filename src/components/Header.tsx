@@ -328,6 +328,9 @@ export function Header({ navLinks = [] }: HeaderProps) {
               { label: 'ABOUT', url: '/about' },
             ]).map(link => {
               const isActive = pathname === link.url;
+              const rawLabel = (link.label || '').toUpperCase();
+              const displayLabel =
+                rawLabel === 'ME' ? 'HOME' : rawLabel === 'BIOGRAPHY' ? 'ABOUT' : rawLabel;
               return (
                 <Link 
                   key={link.url || '#'} 
@@ -356,7 +359,7 @@ export function Header({ navLinks = [] }: HeaderProps) {
                           : 'text-[color:var(--text-muted)] group-hover:text-[color:var(--text)] transition-colors'
                     }
                   >
-                    {link.label?.toUpperCase()}
+                    {displayLabel}
                   </Display>
                 </Link>
               );

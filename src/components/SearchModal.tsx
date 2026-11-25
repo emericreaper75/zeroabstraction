@@ -218,7 +218,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
     >
       <div
         ref={modalRef}
-        className="w-full max-w-2xl bg-[color:var(--bg)] border border-[color:var(--border)] rounded-[var(--radius-s)] shadow-2xl flex flex-col overflow-hidden"
+        className="w-full max-w-2xl bg-[color:var(--bg)] border border-[color:var(--border)] rounded-[var(--radius-s)] shadow-2xl flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150"
         style={{ maxHeight: 'calc(100vh - 120px)' }}
       >
         {/* Search Header Bar */}

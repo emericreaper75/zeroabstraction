@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 
 interface TimelineMilestone {
   id: string;
@@ -25,6 +27,8 @@ export function TimelineStrip({
   label = 'Listen on Research of 264 — Ans/t',
   logNote = 'Experimental calibration activities of the system in the lab before integration.',
 }: TimelineStripProps) {
+  const prefersReducedMotion = useReducedMotion();
+
   const milestones: TimelineMilestone[] = [
     {
       id: 'commence',
@@ -72,16 +76,19 @@ export function TimelineStrip({
       <div className="flex flex-col gap-5 py-6 px-4 sm:px-8 border-y border-[color:var(--border)] bg-[color:var(--bg)]">
         {/* Progress Timeline Track */}
         <div className="flex items-center gap-4 sm:gap-6 w-full">
-          {/* Start Date */}
           <span className="font-mono text-[11px] sm:text-xs text-[color:var(--text-muted)] tracking-wider whitespace-nowrap">
             {startDate}
           </span>
 
-          {/* Track line with interactive glowing node markers */}
           <div className="relative flex-1 h-[2px] bg-[color:var(--border)] flex items-center" role="tablist" aria-label="Research milestones">
-            <div
-              className="absolute left-0 top-0 h-full bg-[color:var(--accent)] transition-all duration-300 ease-out"
-              style={{ width: `${active.position}%` }}
+            <motion.div
+              className="absolute left-0 top-0 h-full bg-[color:var(--accent)]"
+              animate={{ width: `${active.position}%` }}
+              transition={
+                prefersReducedMotion
+                  ? { duration: 0 }
+                  : { type: 'spring', stiffness: 280, damping: 28 }
+              }
               aria-hidden="true"
             />
             {milestones.map((milestone, index) => {
@@ -113,26 +120,35 @@ export function TimelineStrip({
             })}
           </div>
 
-          {/* End Date */}
           <span className="font-mono text-[11px] sm:text-xs text-[color:var(--text-muted)] tracking-wider whitespace-nowrap">
             {endDate}
           </span>
         </div>
 
         {/* Interactive Milestone Log Note */}
-        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 sm:gap-4 pl-0 sm:pl-1" aria-live="polite">
-          <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
-            <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-wider text-[color:var(--accent-text)] shrink-0 font-medium">
-              {active.title}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={active.id}
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={prefersReducedMotion ? undefined : { opacity: 0, y: -4 }}
+            transition={{ duration: prefersReducedMotion ? 0 : 0.16 }}
+            className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 sm:gap-4 pl-0 sm:pl-1"
+            aria-live="polite"
+          >
+            <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
+              <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-wider text-[color:var(--accent-text)] shrink-0 font-medium">
+                {active.title}
+              </span>
+              <p className="text-xs sm:text-sm text-[color:var(--text)] font-sans tracking-tight">
+                {active.note}
+              </p>
+            </div>
+            <span className="font-mono text-[10px] tracking-widest text-[color:var(--text-muted)] uppercase shrink-0">
+              {active.date} · NODE {activeIndex + 1}/{milestones.length}
             </span>
-            <p className="text-xs sm:text-sm text-[color:var(--text)] font-sans tracking-tight">
-              {active.note}
-            </p>
-          </div>
-          <span className="font-mono text-[10px] tracking-widest text-[color:var(--text-muted)] uppercase shrink-0">
-            {active.date} · NODE {activeIndex + 1}/{milestones.length}
-          </span>
-        </div>
+          </motion.div>
+        </AnimatePresence>
       </div>
     </section>
   );

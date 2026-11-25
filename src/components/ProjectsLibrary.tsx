@@ -20,7 +20,7 @@ function ProjectSchematic({ variant, slug }: { variant: number; slug: string }) 
           </pattern>
         </defs>
         <rect width="320" height="200" fill={`url(#grid-${slug})`} />
-        <circle cx="160" cy="100" r="68" fill="none" stroke="var(--border-strong)" strokeWidth="1" strokeDasharray="4 4" />
+        <circle cx="160" cy="100" r="68" fill="none" stroke="var(--border-strong)" strokeWidth="1" className="schematic-flow" />
         <circle cx="160" cy="100" r="46" fill="none" stroke="var(--accent)" strokeWidth="1.25" opacity="0.7" />
         <circle cx="160" cy="100" r="22" fill="none" stroke="var(--secondary)" strokeWidth="1.25" />
         <line x1="60" y1="100" x2="260" y2="100" stroke="var(--border-strong)" strokeWidth="1" />
@@ -73,7 +73,7 @@ function ProjectSchematic({ variant, slug }: { variant: number; slug: string }) 
           fill="none"
           stroke="var(--secondary)"
           strokeWidth="1.25"
-          strokeDasharray="4 3"
+          className="schematic-flow"
         />
         <circle cx="136" cy="100" r="3.5" fill="var(--secondary)" />
         <circle cx="248" cy="100" r="3.5" fill="var(--accent)" />
@@ -137,7 +137,7 @@ export function ProjectsLibrary({ projects }: { projects: Project[] }) {
         return (
           <article
             key={project.id}
-            className="w-full grid grid-cols-1 lg:grid-cols-[2fr_3fr] border border-[color:var(--border)] hover:border-[color:var(--accent-border)] bg-[color:var(--surface)]/75 rounded-[var(--radius-s)] overflow-hidden transition-colors"
+            className="group w-full grid grid-cols-1 lg:grid-cols-[2fr_3fr] border border-[color:var(--border)] hover:border-[color:var(--accent-border)] bg-[color:var(--surface)]/75 rounded-[var(--radius-s)] overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
           >
             {/* Left Visual Stage (40%) */}
             <div className="p-4 sm:p-6 bg-[color:var(--bg-subtle)]/50 border-b lg:border-b-0 lg:border-r border-[color:var(--border)] flex items-center justify-center">
@@ -196,7 +196,7 @@ export function ProjectsLibrary({ projects }: { projects: Project[] }) {
                   style={{ textDecoration: 'none' }}
                 >
                   <span>INSPECT SYSTEM</span>
-                  <span aria-hidden="true">→</span>
+                  <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">→</span>
                 </Link>
                 {secondaryLink?.url && (
                   <a

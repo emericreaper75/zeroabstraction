@@ -251,3 +251,30 @@ input[type="checkbox"].atelier-checkbox:checked::after {
   transform: rotate(45deg) translate(-0.5px, -1px);
   display: block;
 }
+
+/* Subtle SVG Schematic & Hero Scroll Animations (Milestone 5) */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes schematic-dash {
+    to {
+      stroke-dashoffset: -24;
+    }
+  }
+
+  @keyframes gentle-bob {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(3px);
+    }
+  }
+
+  .schematic-flow {
+    stroke-dasharray: 6 6;
+    animation: schematic-dash 2.8s linear infinite;
+  }
+
+  .animate-gentle-bob {
+    animation: gentle-bob 2.2s ease-in-out infinite;
+  }
+}
