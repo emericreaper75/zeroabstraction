@@ -163,35 +163,33 @@ export function AdminHeader({
             <Link
               className="font-headline-sm text-lg text-on-surface tracking-tight flex items-center gap-2 group shrink-0"
               href="/admin"
+              title="ZeroAbstraction Atelier"
             >
               <span className="w-2.5 h-2.5 bg-primary rounded-none inline-block group-hover:rotate-45 transition-transform" />
               <span className="font-headline-md italic font-normal text-on-surface group-hover:text-primary transition-colors">
                 ZeroAbstraction
               </span>
-              <span className="text-label-sm font-label-sm text-ink-muted px-1.5 py-0.5 border border-hairline-rule rounded bg-surface-container-low hidden sm:inline-block">
-                v3.28
-              </span>
             </Link>
 
             <span className="hidden lg:inline-block text-hairline-rule font-light">/</span>
-            <div className="hidden lg:flex items-center gap-1.5 text-label-sm font-label-sm text-ink-muted truncate">
-              <span className="material-symbols-outlined text-[14px] text-primary">satellite_alt</span>
-              <span className="truncate">{routeLabel}</span>
-            </div>
+            <span className="hidden lg:inline-flex items-center gap-1.5 text-[11px] font-label-sm text-ink-muted px-2 py-0.5 rounded bg-surface-container-low border border-hairline-subtle truncate">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+              {routeLabel}
+            </span>
           </div>
 
           {/* Right Utility Controls */}
-          <div className="flex items-center gap-space-sm">
+          <div className="flex items-center gap-2">
             {/* Command Palette Trigger */}
             <button
               type="button"
               onClick={() => setPaletteOpen(true)}
               aria-label="Open command palette"
-              className="relative flex items-center gap-2 bg-surface-container-low hover:bg-surface-container text-ink-muted hover:text-on-surface text-label-sm font-label-sm px-2.5 sm:pl-3 sm:pr-2 py-1.5 rounded border border-hairline-rule transition-colors sm:w-56 justify-between"
+              className="relative flex items-center gap-2 bg-surface-container-low hover:bg-surface-container text-ink-muted hover:text-on-surface text-label-sm font-label-sm px-2.5 py-1.5 rounded border border-hairline-rule transition-colors sm:w-44 justify-between"
             >
-              <span className="flex items-center gap-2 truncate">
+              <span className="flex items-center gap-1.5 truncate">
                 <span className="material-symbols-outlined text-[16px] text-primary">search</span>
-                <span className="hidden sm:inline truncate">Search catalog &amp; commands...</span>
+                <span className="hidden sm:inline truncate">Search...</span>
               </span>
               <kbd className="hidden sm:inline text-[10px] font-label-sm text-ink-muted border border-hairline-rule px-1 py-0.5 bg-paper-surface rounded">
                 ⌘K
@@ -205,10 +203,10 @@ export function AdminHeader({
                 onClick={() => setCreateMenuOpen((o) => !o)}
                 aria-expanded={createMenuOpen}
                 aria-haspopup="menu"
-                className="inline-flex items-center gap-1.5 bg-primary text-on-primary font-label-md text-label-md px-3 py-1.5 rounded hover:bg-accent-ochre transition-colors shadow-xs"
+                className="inline-flex items-center gap-1 bg-primary text-on-primary font-label-md text-xs px-3 py-1.5 rounded hover:bg-accent-ochre transition-colors shadow-xs"
               >
-                <span className="material-symbols-outlined text-[15px]">add</span>
-                <span className="hidden sm:inline">New Entry</span>
+                <span className="material-symbols-outlined text-[16px]">add</span>
+                <span className="hidden sm:inline">New</span>
                 <span className="material-symbols-outlined text-[14px] opacity-80">expand_more</span>
               </button>
 
@@ -257,16 +255,16 @@ export function AdminHeader({
               )}
             </div>
 
-            {/* View Public Site */}
+            {/* View Public Site (Icon-first) */}
             <a
               href="/"
               target="_blank"
               rel="noopener noreferrer"
-              title="Open public site in new tab"
-              className="hidden xl:inline-flex items-center gap-1 px-2.5 py-1.5 rounded border border-hairline-rule text-label-sm font-label-sm text-ink-secondary hover:text-primary hover:border-primary/40 transition-colors"
+              title="Open public site"
+              aria-label="Open public site in new tab"
+              className="hidden sm:inline-flex p-1.5 rounded border border-hairline-rule text-ink-secondary hover:text-primary hover:border-primary/40 transition-colors"
             >
-              <span>View Site</span>
-              <span className="material-symbols-outlined text-[13px]">open_in_new</span>
+              <span className="material-symbols-outlined text-[17px]">open_in_new</span>
             </a>
 
             {/* Utility Icons: Notifications, Shortcuts, Theme */}
@@ -353,20 +351,12 @@ export function AdminHeader({
             </div>
 
             {/* User Profile */}
-            <div className="flex items-center gap-2.5 pl-2 border-l border-hairline-rule">
-              <div className="relative">
+            <div className="flex items-center gap-2 pl-2 border-l border-hairline-rule">
+              <div className="relative" title={`${displayName} — Admin`}>
                 <div className="w-7 h-7 bg-amber-wash border border-primary/40 rounded flex items-center justify-center text-primary font-label-md text-xs font-semibold">
                   {initial}
                 </div>
                 <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 border border-paper-base" />
-              </div>
-              <div className="hidden xl:flex flex-col text-left">
-                <span className="text-label-sm font-label-sm text-on-surface font-medium leading-none">
-                  {displayName}
-                </span>
-                <span className="text-[9px] font-label-sm text-ink-muted leading-tight mt-0.5">
-                  ADMIN // CHIEF OBSERVER
-                </span>
               </div>
               <form action="/api/users/logout" method="POST">
                 <button

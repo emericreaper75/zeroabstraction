@@ -121,11 +121,18 @@ export function MediaManager({ initialDocs, totalDocs }: MediaManagerProps) {
   return (
     <div className="flex flex-col w-full pb-12 space-y-8">
       {/* Header */}
-      <header className="flex flex-col space-y-4 pt-4">
-        <div className="flex items-center space-x-2 font-label-sm text-label-sm text-ink-muted">
-          <Link href="/admin" className="hover:text-primary transition-colors">OBSERVATORY</Link>
-          <span>/</span><span>COLLECTIONS</span><span>/</span>
-          <span className="text-on-surface font-medium tracking-wide">MEDIA &amp; PLATES ARCHIVE</span>
+      <header className="flex flex-col space-y-3 pt-2">
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center gap-1.5 font-label-sm text-xs text-ink-muted">
+            <Link href="/admin" className="hover:text-primary transition-colors flex items-center" title="Dashboard">
+              <span className="material-symbols-outlined text-[16px]">home</span>
+            </Link>
+            <span>/</span>
+            <span className="text-on-surface font-medium">Media</span>
+          </div>
+          <span className="font-label-sm text-[11px] px-2 py-0.5 bg-amber-wash text-primary font-medium rounded">
+            {totalDocs} plates
+          </span>
         </div>
 
         {/* Feedback Banner */}
@@ -154,28 +161,18 @@ export function MediaManager({ initialDocs, totalDocs }: MediaManagerProps) {
           </div>
         )}
 
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
-          <div className="max-w-2xl space-y-1">
-            <h1 className="font-headline-xl text-headline-xl text-on-surface tracking-tight leading-none">
-              Media &amp; Plates
-            </h1>
-            <p className="font-body-md text-body-md text-ink-secondary leading-normal">
-              Astrophotography plates, diagrams, and editorial media assets.
-            </p>
-          </div>
-          <div className="flex items-center gap-2 shrink-0">
-            <span className="font-label-sm text-label-sm px-2 py-0.5 bg-amber-wash text-primary font-medium rounded">
-              {totalDocs} ASSETS INDEXED
-            </span>
-            <button
-              type="button"
-              onClick={() => setShowUploadModal(true)}
-              className="flex items-center gap-1.5 px-4 py-2 bg-primary hover:bg-accent-ochre text-on-primary font-label-md text-label-md uppercase tracking-wider shadow-sm transition-colors rounded"
-            >
-              <span className="material-symbols-outlined text-[16px]">cloud_upload</span>
-              Upload Plate
-            </button>
-          </div>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <h1 className="font-headline-xl text-3xl text-on-surface tracking-tight leading-none">
+            Media &amp; Plates
+          </h1>
+          <button
+            type="button"
+            onClick={() => setShowUploadModal(true)}
+            className="flex items-center gap-1.5 px-4 py-2 bg-primary hover:bg-accent-ochre text-on-primary font-label-md text-xs shadow-sm transition-colors rounded font-medium self-start sm:self-auto"
+          >
+            <span className="material-symbols-outlined text-[17px]">cloud_upload</span>
+            Upload Plate
+          </button>
         </div>
       </header>
 

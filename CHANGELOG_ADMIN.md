@@ -82,5 +82,19 @@ Tracking all presentation and functional improvements to the Payload Atelier Adm
 59. **Accessibility & Top-Layer Compliance**: Verified native `<dialog>` usage (`showModal()`, `closedby="any"` + fallback, `overscroll-behavior: contain`), `aria-sort` table headers, and `aria-label` coverage on icon-only controls.
 60. **Full TypeScript, ESLint & Production Build Verification**: Verified all 4 milestones pass `npx tsc --noEmit` and `npm run lint` with 0 errors.
 
+---
+
+## Milestone 5: Icon-First & Visual Priority Refinement (#61 – #68)
+
+61. **Streamlined Header Chrome**: Replaced verbose breadcrumb prefixes, version tags, and `"ADMIN // CHIEF OBSERVER"` text with clean icon triggers (`open_in_new`, `search`, `add`) and compact route pill.
+62. **Minimalist Sidebar & Footer Telemetry**: Trimmed redundant section headings and verbose footer text in favor of crisp icons (`auto_awesome`, `database`, `keyboard`) and live status indicators.
+63. **Highlighted Priority KPIs**: Elevated the **Draft Queue** card (`PRIORITY` badge + accent border) and **Posts** card above secondary collections.
+64. **Prominent Active Manuscript Resume Card**: Highlighted the latest manuscript with a dedicated accent border, reading-time icon, and one-click `Resume` CTA.
+65. **Icon-Driven Recent Activity**: Replaced multi-line text badges and subtitles with clean collection icons (`article`, `qr_code_2`, `image`) and icon-tab filters.
+66. **Icon-Labeled Field Telemetry ("Right Now")**: Replaced all-caps `STUDYING:` / `BUILDING:` / `READING:` / `THINKING:` labels with intuitive icons and compact edit/copy-JSON icon buttons.
+67. **Compact Readiness, Notes & Health Widgets**: Reduced explanatory prose to scannable icons, ring progress, and compact action pills.
+68. **Clean Collection Headers**: Replaced verbose `OBSERVATORY / COLLECTIONS / ...` text breadcrumbs with a home-icon breadcrumb and concise total pills across Posts, Projects, and Media.
+
+
 
 

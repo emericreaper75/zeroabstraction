@@ -156,14 +156,11 @@ export function AdminSidebarClient({ counts }: { counts: AdminSidebarCounts }) {
         {/* Section Node Tag + Collapse Toggle */}
         <div className={`pb-3 border-b border-hairline-rule flex items-center ${collapsed ? 'justify-center' : 'justify-between px-space-sm'}`}>
           {!collapsed && (
-            <div className="min-w-0">
-              <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary text-[18px]">radio_button_checked</span>
-                <span className="font-headline-sm text-sm text-on-surface tracking-tight font-normal truncate">
-                  Payload Atelier
-                </span>
-              </div>
-              <p className="text-label-sm font-label-sm text-ink-muted mt-0.5 truncate">EPOCH 2025.2 // v4.12.0</p>
+            <div className="flex items-center gap-2 min-w-0">
+              <span className="material-symbols-outlined text-primary text-[18px]">auto_awesome</span>
+              <span className="font-headline-sm text-sm text-on-surface tracking-tight font-normal truncate">
+                Atelier
+              </span>
             </div>
           )}
           <button
@@ -180,36 +177,15 @@ export function AdminSidebarClient({ counts }: { counts: AdminSidebarCounts }) {
         </div>
 
         {/* Collections */}
-        {!collapsed && (
-          <div className="px-space-sm pt-0.5">
-            <span className="text-[10px] font-label-sm text-ink-muted tracking-widest uppercase font-semibold">
-              COLLECTIONS
-            </span>
-          </div>
-        )}
         <nav className="space-y-1" aria-label="Admin collections">
           {contentItems.map(renderLink)}
 
           <div className="my-2.5 border-t border-hairline-rule" />
 
-          {!collapsed && (
-            <div className="px-space-sm pt-0.5 pb-1">
-              <span className="text-[10px] font-label-sm text-ink-muted tracking-widest uppercase font-semibold">
-                TELEMETRY &amp; GLOBALS
-              </span>
-            </div>
-          )}
           {globalItems.map(renderLink)}
 
           <div className="my-2.5 border-t border-hairline-rule" />
 
-          {!collapsed && (
-            <div className="px-space-sm pt-0.5 pb-1">
-              <span className="text-[10px] font-label-sm text-ink-muted tracking-widest uppercase font-semibold">
-                SYSTEM
-              </span>
-            </div>
-          )}
           {systemItems.map(renderLink)}
         </nav>
       </div>

@@ -150,47 +150,39 @@ export function PostsTableClient({
   return (
     <div className="flex flex-col w-full pb-12 space-y-8">
       {/* Page Header */}
-      <header className="flex flex-col space-y-4 pt-4">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center space-x-2 font-label-sm text-label-sm text-ink-muted">
-            <Link href="/admin" className="hover:text-primary transition-colors">OBSERVATORY</Link>
+      <header className="flex flex-col space-y-3 pt-2">
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center gap-1.5 font-label-sm text-xs text-ink-muted">
+            <Link href="/admin" className="hover:text-primary transition-colors flex items-center" title="Dashboard">
+              <span className="material-symbols-outlined text-[16px]">home</span>
+            </Link>
             <span>/</span>
-            <span>COLLECTIONS</span>
-            <span>/</span>
-            <span className="text-ink-primary font-medium tracking-wide">ESSAYS &amp; TREATISES</span>
+            <span className="text-on-surface font-medium">Posts</span>
           </div>
-          <div className="flex items-center space-x-2">
-            <span className="font-label-sm text-label-sm px-2 py-0.5 bg-surface-container-high text-ink-secondary rounded">
-              SYS: 0x892A
-            </span>
-            <span className="font-label-sm text-label-sm px-2 py-0.5 bg-amber-wash text-primary font-medium rounded">
-              {allCount} INDEXED
-            </span>
-          </div>
+          <span className="font-label-sm text-[11px] px-2 py-0.5 bg-amber-wash text-primary font-medium rounded">
+            {allCount} total
+          </span>
         </div>
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
-          <div className="max-w-2xl space-y-1">
-            <h1 id="posts-table-title" className="font-headline-xl text-headline-xl text-on-surface tracking-tight leading-none">
-              Posts &amp; Treatises
-            </h1>
-            <p className="font-body-md text-body-md text-ink-secondary leading-normal">
-              Peer-reviewed astronomical treatises and observational reports.
-            </p>
-          </div>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <h1 id="posts-table-title" className="font-headline-xl text-3xl text-on-surface tracking-tight leading-none">
+            Posts &amp; Treatises
+          </h1>
           <div className="flex items-center gap-2 shrink-0">
             <button
               type="button"
               onClick={() => downloadManifest()}
-              className="flex items-center gap-1.5 px-3 py-2 bg-surface-container-low border border-hairline-rule text-ink-secondary font-label-md text-label-md uppercase tracking-wider hover:bg-surface-container-high hover:text-on-surface transition-colors shadow-sm rounded"
+              title="Export JSON Manifest"
+              aria-label="Export JSON Manifest"
+              className="flex items-center gap-1.5 px-3 py-2 bg-surface-container-low border border-hairline-rule text-ink-secondary font-label-md text-xs hover:bg-surface-container-high hover:text-on-surface transition-colors shadow-sm rounded"
             >
-              <span className="material-symbols-outlined text-[16px]">file_download</span>
-              <span>Manifest</span>
+              <span className="material-symbols-outlined text-[17px]">file_download</span>
+              <span className="hidden sm:inline">Export</span>
             </button>
             <Link
               href="/admin/collections/posts/new"
-              className="flex items-center gap-1.5 px-4 py-2 bg-primary hover:bg-accent-ochre text-on-primary font-label-md text-label-md uppercase tracking-wider shadow-sm transition-colors rounded"
+              className="flex items-center gap-1.5 px-4 py-2 bg-primary hover:bg-accent-ochre text-on-primary font-label-md text-xs shadow-sm transition-colors rounded font-medium"
             >
-              <span className="material-symbols-outlined text-[16px]">add</span>
+              <span className="material-symbols-outlined text-[17px]">add</span>
               <span>New Post</span>
             </Link>
           </div>

@@ -34,26 +34,28 @@ export function AdminFooter() {
           <span
             className={`w-1.5 h-1.5 rounded-full ${online ? 'bg-emerald-500' : 'bg-rose-500'}`}
           />
-          <span className="text-ink-secondary font-label-sm truncate">
-            ZEROABSTRACTION CMS // PAYLOAD v3.28.0 // {online ? 'NODE ONLINE' : 'OFFLINE'}
+          <span className="text-ink-secondary font-label-sm">
+            {online ? 'Online' : 'Offline'}
+          </span>
+          <span className="hidden sm:inline text-ink-muted">·</span>
+          <span className="hidden sm:inline-flex items-center gap-1 text-ink-muted">
+            <span className="material-symbols-outlined text-[13px] text-emerald-500">database</span>
+            PG
           </span>
         </div>
-        {/* Center: Operational Telemetry */}
-        <div className="hidden md:flex items-center gap-2 text-ink-muted">
-          <span>POSTGRESQL CONNECTED</span>
-          <span>•</span>
+
+        {/* Right: Shortcuts & Live UTC */}
+        <div className="flex items-center gap-3 shrink-0">
           <button
             type="button"
             onClick={() => window.dispatchEvent(new CustomEvent('atelier:open-shortcuts'))}
-            className="hover:text-primary transition-colors"
+            className="hidden sm:inline-flex items-center gap-1 hover:text-primary transition-colors"
+            title="Keyboard shortcuts (?)"
           >
-            PRESS ? FOR SHORTCUTS
+            <span className="material-symbols-outlined text-[13px]">keyboard</span>
+            <span>?</span>
           </button>
-        </div>
-        {/* Right: Active Session & Live UTC */}
-        <div className="flex items-center gap-2 text-primary font-label-sm font-medium shrink-0">
-          <span className="hidden sm:inline text-ink-muted font-normal">UTC {utcTime} •</span>
-          <span>ADMIN</span>
+          <span className="text-primary font-medium">{utcTime} UTC</span>
         </div>
       </div>
     </footer>
