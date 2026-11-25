@@ -22,3 +22,27 @@ Tracking all presentation and functional improvements to the Payload Atelier Adm
 14. **Live UTC Clock & Online Status in `AdminFooter`**: Upgraded `AdminFooter` with a live ticking UTC clock, `navigator.onLine` status dot, and clickable `?` shortcuts trigger.
 15. **Accessible Toast Notification System**: Created `AdminToastProvider` (`aria-live="polite"`) for non-blocking feedback across admin actions.
 16. **Native Dialog & Table CSS Foundations**: Added `dialog:modal` / `dialog::backdrop` `overscroll-behavior: contain`, `AdminDialog` light-dismiss fallback, and sticky `.admin-table-region` rules in `admin-atelier.css`.
+
+---
+
+## Milestone 2: Observatory Overview Dashboard (`/admin`) Presentation & Data Viz (#17 – #34)
+
+17. **Time-of-Day Dynamic Greeting**: Replaced static greeting with live morning/afternoon/evening greeting personalized from the authenticated user's session.
+18. **Live Astronomical Epoch & Julian Date Chip**: Upgraded the epoch chip with an animated status pulse, calculated Julian Date (`JD`), and journey milestone count.
+19. **Quick Actions Dock**: Added a 4-button quick-launch bar (`Write Treatise`, `Log Engineering Rig`, `Upload Plate`, `Update Telemetry`) at the top of the overview.
+20. **Accurate 5-Card KPI Metric Strip**: Fixed draft/published counts using real `payload.count` queries and added a 5th Taxonomy card.
+21. **Inline SVG Micro-Sparklines**: Added crisp SVG trend sparklines and draft percentage badges to KPI cards.
+22. **Clickable KPI Cards**: Wired every KPI card to navigate directly to its collection or filtered view.
+23. **Unified Multi-Collection Activity Feed**: Merged real recent updates across Posts, Projects, and Media sorted by `updatedAt` descending (replacing static cycling placeholder labels).
+24. **Interactive Activity Filter Tabs**: Added `All`, `Posts`, `Projects`, and `Media` filter tabs on the Recent Activity feed.
+25. **Archive Composition Stacked Bar**: Added a live Published / Drafts / Archived stacked progress bar visualization.
+26. **Taxonomy Distribution Bar Chart**: Added horizontal topic-by-treatise-count bars driven by live post-topic relationships.
+27. **Recent Media Plates Strip**: Added a 4-column visual thumbnail strip of the latest uploaded media assets with file size metadata.
+28. **Archive Readiness SVG Progress Ring**: Added an SVG circular progress ring scoring excerpt, SEO description, and cover image completeness.
+29. **Actionable Metadata Health Audit**: Listed specific counts of posts missing excerpts, SEO descriptions, or cover plates with direct links to fix.
+30. **Enhanced Latest Manuscript Card**: Surfaced real post status badge, reading time, updated date, and Editor/Preview actions.
+31. **Field Telemetry JSON Copy & Visibility Badge**: Added one-click `JSON` copy (with toast feedback) and `LIVE`/`HIDDEN` visibility indicator to Field Telemetry.
+32. **Observatory Field Scratchpad Widget**: Added a `localStorage`-persisted scratchpad card with character counter, clear action, and "Start Draft Post" link.
+33. **API & DB Diagnostics Ping**: Added an interactive `Run Ping` button calling `/api/health` with live round-trip latency readout.
+34. **Dark Mode Badge Contrast Fix**: Replaced harsh light-mode `bg-emerald-50` / `bg-white` classes on dashboard cards and badges with theme-aware semantic tokens.
+
