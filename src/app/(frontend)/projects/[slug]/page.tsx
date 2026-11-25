@@ -171,26 +171,27 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           </div>
         )}
 
-        {/* Table of Contents */}
-        <TableOfContents />
+        {/* Content - Reading Width + Sticky Side-Rail TOC */}
+        <div className="container-wide grid grid-cols-1 lg:grid-cols-[minmax(0,var(--measure-reading))_15rem] justify-center gap-10 lg:gap-12">
+          <div className="min-w-0 flex flex-col" style={{ gap: 'var(--space-5)' }}>
+            <TableOfContents variant="inline" />
+            {project.summary && (
+              <section className="flex flex-col border-l-2 border-[color:var(--accent)] bg-[color:var(--bg-subtle)]/60 p-6 rounded-r-[var(--radius-s)]" style={{ gap: 'var(--space-3)' }}>
+                <Title as="h2">Summary</Title>
+                <Body className="text-[color:var(--text)] leading-relaxed" style={{ fontSize: '1.125rem', lineHeight: '1.8' }}>
+                  {project.summary}
+                </Body>
+              </section>
+            )}
 
-        {/* Content - Reading Width */}
-        <div className="container-reading flex flex-col" style={{ gap: 'var(--space-5)' }}>
-          {project.summary && (
-            <section className="flex flex-col border-l-2 border-[color:var(--accent)] bg-[color:var(--bg-subtle)]/60 p-6 rounded-r-[var(--radius-s)]" style={{ gap: 'var(--space-3)' }}>
-              <Title as="h2">Summary</Title>
-              <Body className="text-[color:var(--text)] leading-relaxed" style={{ fontSize: '1.125rem', lineHeight: '1.8' }}>
-                {project.summary}
-              </Body>
-            </section>
-          )}
-
-          {project.description && (
-            <section className="flex flex-col" style={{ gap: 'var(--space-3)' }}>
-              <Title as="h2">Description</Title>
-              <RichTextRenderer data={project.description} />
-            </section>
-          )}
+            {project.description && (
+              <section className="flex flex-col" style={{ gap: 'var(--space-3)' }}>
+                <Title as="h2">Description</Title>
+                <RichTextRenderer data={project.description} />
+              </section>
+            )}
+          </div>
+          <TableOfContents variant="sidebar" />
         </div>
 
         {/* Image Gallery - Content Width with Native Dialog Lightbox */}

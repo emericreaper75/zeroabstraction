@@ -199,14 +199,15 @@ export default async function WritingPage({ params }: { params: Promise<{ slug: 
           </div>
         )}
 
-        {/* Table of Contents (auto-extracted when >= 2 headings) */}
-        <TableOfContents />
-
-        {/* Body Content */}
-        <div className="container-reading flex flex-col" style={{ gap: 'var(--space-5)' }}>
-          {post.content && (
-            <RichTextRenderer data={post.content} />
-          )}
+        {/* Body Content + Sticky Side-Rail TOC */}
+        <div className="container-wide grid grid-cols-1 lg:grid-cols-[minmax(0,var(--measure-reading))_15rem] justify-center gap-10 lg:gap-12">
+          <div className="min-w-0 flex flex-col" style={{ gap: 'var(--space-5)' }}>
+            <TableOfContents variant="inline" />
+            {post.content && (
+              <RichTextRenderer data={post.content} />
+            )}
+          </div>
+          <TableOfContents variant="sidebar" />
         </div>
         <ArticleEnhancer totalMinutes={readingTime} />
 
