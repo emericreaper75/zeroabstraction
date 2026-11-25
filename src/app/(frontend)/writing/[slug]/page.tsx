@@ -4,6 +4,9 @@ import Link from 'next/link';
 import { ProjectImage } from '@/components/ProjectImage';
 import { RichTextRenderer } from '@/components/RichTextRenderer';
 import { SampleContentBadge } from '@/components/SampleContentBadge';
+import { ArticleEnhancer } from '@/components/ArticleEnhancer';
+import { TableOfContents } from '@/components/TableOfContents';
+import { CopyPermalinkButton } from '@/components/CopyPermalinkButton';
 import { getAllSlugs, getPostBySlug } from '@/lib/content';
 import { getRelated } from '@/lib/related';
 import { RelatedContent } from '@/components/RelatedContent';
@@ -82,14 +85,15 @@ export default async function WritingPage({ params }: { params: Promise<{ slug: 
         {/* Header Block */}
         <header className="container-reading" style={{ paddingTop: 'var(--space-6)' }}>
           <div className="flex w-full flex-col">
-            {/* Back Navigation */}
-            <div className="mb-4">
+            {/* Back Navigation + Copy Link */}
+            <div className="mb-4 flex items-center justify-between gap-4 flex-wrap">
               <Link
                 href="/writing"
                 className="inline-flex items-center gap-1.5 font-mono text-[var(--text-label)] uppercase tracking-[var(--tracking-label)] text-[color:var(--text-muted)] hover:text-[color:var(--accent-text)] transition-colors"
               >
                 <span aria-hidden="true">&larr;</span> Back to Writing
               </Link>
+              <CopyPermalinkButton />
             </div>
 
             {/* Meta row */}
@@ -195,12 +199,16 @@ export default async function WritingPage({ params }: { params: Promise<{ slug: 
           </div>
         )}
 
+        {/* Table of Contents (auto-extracted when >= 2 headings) */}
+        <TableOfContents />
+
         {/* Body Content */}
         <div className="container-reading flex flex-col" style={{ gap: 'var(--space-5)' }}>
           {post.content && (
             <RichTextRenderer data={post.content} />
           )}
         </div>
+        <ArticleEnhancer totalMinutes={readingTime} />
 
         {/* End Matter: Topic Chips */}
         {post.topics && post.topics.length > 0 && (

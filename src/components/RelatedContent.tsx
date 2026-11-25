@@ -18,13 +18,14 @@ export function RelatedContent({ items, className = '' }: { items: RelatedItem[]
             <Link
               key={`${item.type}-${item.id}`}
               href={item.url}
-              className="group grid grid-cols-[9rem_1fr_auto] items-center gap-6 border-b border-[color:var(--border)] py-6 max-md:grid-cols-1 max-md:gap-3"
+              style={{ textDecoration: 'none' }}
+              className="group grid grid-cols-[9rem_1fr_auto] items-center gap-6 border-b border-[color:var(--border)] py-6 px-3 -mx-3 rounded-[var(--radius-s)] transition-colors hover:bg-[color:var(--surface)]/60 max-md:grid-cols-1 max-md:gap-3"
             >
               <span className="font-mono text-[var(--text-label)] text-[color:var(--text-muted)]">
                 {item.type === 'post' ? `POST · ${date}` : `PROJECT · ${item.year ?? ''}`}
               </span>
               <span className="min-w-0">
-                <span className="block font-[family-name:var(--font-display)] text-[var(--text-h3)] group-hover:underline">{item.title}</span>
+                <span className="block font-[family-name:var(--font-display)] text-[var(--text-h3)] text-balance text-[color:var(--text)] group-hover:text-[color:var(--accent-text)] transition-colors">{item.title}</span>
                 {(item.excerpt || item.summary) && (
                   <span className="mt-1 line-clamp-2 block text-[var(--text-small)] text-[color:var(--text-muted)]">{item.excerpt || item.summary}</span>
                 )}

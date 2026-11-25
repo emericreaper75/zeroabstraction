@@ -360,3 +360,42 @@ html[data-theme='dark'] .shiki span {
 .rich-text em {
   font-style: italic;
 }
+
+/* --------------------------------------------------------------------------
+   Code Copy Button & Responsive Table Wrapper (Milestone 4)
+   -------------------------------------------------------------------------- */
+.code-copy-btn {
+  position: absolute;
+  top: 0.65rem;
+  right: 0.65rem;
+  padding: 0.25rem 0.55rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-s);
+  cursor: pointer;
+  transition: color 150ms ease, border-color 150ms ease;
+}
+.code-copy-btn:hover {
+  color: var(--accent-text);
+  border-color: var(--accent);
+}
+
+.rich-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  margin-block: var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-s);
+}
+.rich-table-wrap table {
+  margin-block: 0;
+}
+
+.rich-text :is(h1, h2, h3, h4, h5, h6):target {
+  color: var(--accent-text);
+}

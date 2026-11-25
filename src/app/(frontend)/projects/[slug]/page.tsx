@@ -6,6 +6,10 @@ import { ProjectImage } from '@/components/ProjectImage';
 import { EditorialLink } from '@/components/EditorialLink';
 import { RichTextRenderer } from '@/components/RichTextRenderer';
 import { SampleContentBadge } from '@/components/SampleContentBadge';
+import { ArticleEnhancer } from '@/components/ArticleEnhancer';
+import { TableOfContents } from '@/components/TableOfContents';
+import { CopyPermalinkButton } from '@/components/CopyPermalinkButton';
+import { ProjectGallery } from '@/components/ProjectGallery';
 import { getAllSlugs, getProjectBySlug } from '@/lib/content';
 import { getRelated } from '@/lib/related';
 import { RelatedContent } from '@/components/RelatedContent';
@@ -62,14 +66,15 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
         {/* Header - Reading Width */}
         <header className="container-reading" style={{ paddingTop: 'var(--space-6)' }}>
           <div className="flex w-full flex-col">
-            {/* Back Navigation */}
-            <div className="mb-4">
+            {/* Back Navigation + Copy Link */}
+            <div className="mb-4 flex items-center justify-between gap-4 flex-wrap">
               <Link
                 href="/projects"
                 className="inline-flex items-center gap-1.5 font-mono text-[var(--text-label)] uppercase tracking-[var(--tracking-label)] text-[color:var(--text-muted)] hover:text-[color:var(--accent-text)] transition-colors"
               >
                 <span aria-hidden="true">&larr;</span> Back to Projects
               </Link>
+              <CopyPermalinkButton />
             </div>
 
             {/* Meta row */}
@@ -125,6 +130,26 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
             {/* Divider: 1px --border hairline */}
             <div className="my-5 border-t border-[color:var(--border)]" />
+
+            {/* Scientific Spec Strip */}
+            <dl className="grid grid-cols-2 sm:grid-cols-4 gap-4 py-3 px-4 mb-6 border border-[color:var(--border)] bg-[color:var(--surface)]/50 rounded-[var(--radius-s)] font-mono">
+              <div>
+                <dt className="text-[10px] uppercase tracking-widest text-[color:var(--text-muted)]">YEAR</dt>
+                <dd className="text-sm text-[color:var(--text)] mt-0.5">{project.year || new Date().getFullYear()}</dd>
+              </div>
+              <div>
+                <dt className="text-[10px] uppercase tracking-widest text-[color:var(--text-muted)]">STATUS</dt>
+                <dd className="text-sm text-[color:var(--accent-text)] uppercase mt-0.5">{project.status?.replace('_', ' ') || 'ACTIVE'}</dd>
+              </div>
+              <div>
+                <dt className="text-[10px] uppercase tracking-widest text-[color:var(--text-muted)]">TOPICS</dt>
+                <dd className="text-sm text-[color:var(--text)] mt-0.5">{project.topics?.length ?? 0}</dd>
+              </div>
+              <div>
+                <dt className="text-[10px] uppercase tracking-widest text-[color:var(--text-muted)]">STACK</dt>
+                <dd className="text-sm text-[color:var(--text)] mt-0.5">{project.technologies?.length ?? 0} TOOLS</dd>
+              </div>
+            </dl>
           </div>
         </header>
 
@@ -146,6 +171,9 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           </div>
         )}
 
+        {/* Table of Contents */}
+        <TableOfContents />
+
         {/* Content - Reading Width */}
         <div className="container-reading flex flex-col" style={{ gap: 'var(--space-5)' }}>
           {project.summary && (
@@ -165,20 +193,15 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           )}
         </div>
 
-        {/* Image Gallery - Content Width */}
+        {/* Image Gallery - Content Width with Native Dialog Lightbox */}
         {project.gallery && project.gallery.length > 0 && (
           <div className="container-wide" style={{ marginBlock: 'var(--space-6)' }}>
-            <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: 'var(--space-5)' }}>
-              {project.gallery.map((item: any, i: number) => {
-                const imgUrl = typeof item.image === 'object' && item.image?.url ? item.image.url : '/placeholder.svg';
-                const imgAlt = typeof item.image === 'object' && item.image?.alt_text ? item.image.alt_text : `Gallery ${i+1}`;
-                return (
-                  <figure key={i} className="overflow-hidden rounded-[var(--radius-s)] border border-[color:var(--border)] shadow-sm hover:border-[color:var(--accent-border)] transition-colors">
-                    <ProjectImage src={imgUrl} alt={imgAlt} width={800} height={600} className="w-full h-auto aspect-video object-cover" />
-                  </figure>
-                );
-              })}
-            </div>
+            <ProjectGallery
+              items={project.gallery.map((item: any, i: number) => ({
+                url: typeof item.image === 'object' && item.image?.url ? item.image.url : '/placeholder.svg',
+                alt: typeof item.image === 'object' && item.image?.alt_text ? item.image.alt_text : `Gallery ${i + 1}`,
+              }))}
+            />
           </div>
         )}
 
@@ -257,6 +280,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
         {relatedItems.length > 0 && (
           <RelatedContent items={relatedItems} />
         )}
+        <ArticleEnhancer />
       </article>
     </>
   );
