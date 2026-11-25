@@ -99,20 +99,34 @@ export function HeroNebula({ className = '' }: HeroNebulaProps) {
     }
 
     let time = 0;
+    let pointerX = 0.5;
+    let pointerY = 0.5;
+
+    const handlePointerMove = (e: PointerEvent) => {
+      if (prefersReducedMotion) return;
+      const rect = canvas.getBoundingClientRect();
+      if (rect.width > 0 && rect.height > 0) {
+        pointerX = (e.clientX - rect.left) / rect.width;
+        pointerY = (e.clientY - rect.top) / rect.height;
+      }
+    };
+    window.addEventListener('pointermove', handlePointerMove, { passive: true });
 
     const render = () => {
       ctx.clearRect(0, 0, width, height);
 
       const colors = isDark ? darkColors : lightColors;
+      const parallaxX = prefersReducedMotion ? 0 : (pointerX - 0.5) * 18;
+      const parallaxY = prefersReducedMotion ? 0 : (pointerY - 0.5) * 14;
 
       // 1. Draw Organic Nebula Soft Cloud Patches
       // Cloud 1: Soft Cyan / Azure in upper-right center
       const g1 = ctx.createRadialGradient(
-        width * 0.68 + Math.sin(time * 0.0006) * 25,
-        height * 0.38 + Math.cos(time * 0.0007) * 20,
+        width * 0.68 + Math.sin(time * 0.0006) * 25 + parallaxX * 0.6,
+        height * 0.38 + Math.cos(time * 0.0007) * 20 + parallaxY * 0.6,
         10,
-        width * 0.68,
-        height * 0.38,
+        width * 0.68 + parallaxX * 0.6,
+        height * 0.38 + parallaxY * 0.6,
         width * 0.38
       );
       if (isDark) {
@@ -202,6 +216,30 @@ export function HeroNebula({ className = '' }: HeroNebulaProps) {
         }
       }
 
+      // 3. Subtle Constellation Links between nearby bright particles
+      ctx.lineWidth = 0.6;
+      for (let i = 0; i < particles.length; i += 2) {
+        const a = particles[i];
+        if (a.radius < 1.2) continue;
+        for (let j = i + 2; j < particles.length; j += 2) {
+          const b = particles[j];
+          if (b.radius < 1.2) continue;
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
+          const distSq = dx * dx + dy * dy;
+          if (distSq < 6400) {
+            const lineAlpha = (1 - distSq / 6400) * (isDark ? 0.14 : 0.10);
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.strokeStyle = isDark
+              ? `rgba(130, 135, 255, ${lineAlpha})`
+              : `rgba(68, 98, 139, ${lineAlpha})`;
+            ctx.stroke();
+          }
+        }
+      }
+
       time++;
       if (!prefersReducedMotion) {
         animationFrameId = requestAnimationFrame(render);
@@ -212,6 +250,7 @@ export function HeroNebula({ className = '' }: HeroNebulaProps) {
 
     return () => {
       window.removeEventListener('resize', resize);
+      window.removeEventListener('pointermove', handlePointerMove);
       observer.disconnect();
       if (animationFrameId) cancelAnimationFrame(animationFrameId);
     };

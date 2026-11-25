@@ -26,7 +26,8 @@ export function FeaturedProjectCard({ project }: FeaturedProjectCardProps) {
   }
 
   // Technologies / Metadata formatting
-  let techString = 'WRITING • BIOGRAPHY';
+  const statusLabel = project?.status ? project.status.replace('_', ' ').toUpperCase() : 'ACTIVE';
+  let techString = 'EMBEDDED • ASTROPHYSICS';
   if (project?.technologies && project.technologies.length > 0) {
     const list = project.technologies
       .slice(0, 2)
@@ -43,6 +44,11 @@ export function FeaturedProjectCard({ project }: FeaturedProjectCardProps) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
         {/* Left Column: Larger framed galaxy image overlaid on architectural background grid */}
         <div className="relative p-6 sm:p-10 lg:p-12 architectural-grid border border-[color:var(--border)]/40 rounded-[var(--radius-s)] flex items-center justify-center">
+          {/* Corner registration marks */}
+          <span aria-hidden="true" className="absolute top-2 left-2 font-mono text-[10px] leading-none text-[color:var(--text-muted)]/60 select-none">+</span>
+          <span aria-hidden="true" className="absolute top-2 right-2 font-mono text-[10px] leading-none text-[color:var(--text-muted)]/60 select-none">+</span>
+          <span aria-hidden="true" className="absolute bottom-2 left-2 font-mono text-[10px] leading-none text-[color:var(--text-muted)]/60 select-none">+</span>
+          <span aria-hidden="true" className="absolute bottom-2 right-2 font-mono text-[10px] leading-none text-[color:var(--text-muted)]/60 select-none">+</span>
           <Link href={`/projects/${slug}`} className="w-full block group" tabIndex={-1} aria-hidden="true">
             <figure className="relative w-full overflow-hidden rounded-[var(--radius-s)] border border-[color:var(--border)] shadow-md bg-black">
               <Image
@@ -60,13 +66,16 @@ export function FeaturedProjectCard({ project }: FeaturedProjectCardProps) {
         {/* Right Column: Editorial Serif Heading, Metadata Row, Description & Slate-Blue CTA Button */}
         <div className="flex flex-col items-start gap-5 max-w-xl">
           <Link href={`/projects/${slug}`} className="hover:opacity-85 transition-opacity" style={{ textDecoration: 'none' }}>
-            <h3 className="font-[family-name:var(--font-display)] text-3xl sm:text-4xl lg:text-[2.65rem] font-light leading-[1.15] text-[color:var(--text)]">
+            <h3 className="font-[family-name:var(--font-display)] text-3xl sm:text-4xl lg:text-[2.65rem] font-light leading-[1.15] text-balance text-[color:var(--text)]">
               {title}
             </h3>
           </Link>
 
           {/* Metadata Row */}
-          <div className="flex items-center gap-2 font-mono text-xs tracking-wider text-[color:var(--text-muted)] uppercase">
+          <div className="flex items-center flex-wrap gap-2.5 font-mono text-xs tracking-wider text-[color:var(--text-muted)] uppercase">
+            <span className="px-2 py-0.5 rounded-[var(--radius-s)] bg-[color:var(--accent-subtle)] text-[color:var(--accent-text)] border border-[color:var(--accent-border)]/40 text-[11px] font-medium">
+              {statusLabel}
+            </span>
             <span>{year}</span>
             <span>•</span>
             <span>{techString}</span>
