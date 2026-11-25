@@ -38,6 +38,7 @@ export function ProjectEditor({
   const toast = useAdminToast()
   const isNew = !project
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false)
+  const [platePickerMode, setPlatePickerMode] = useState<'cover' | 'gallery' | null>(null)
 
   const [title, setTitle] = useState(project?.title || '')
   const [slug, setSlug] = useState(project?.slug || '')
@@ -47,7 +48,9 @@ export function ProjectEditor({
   const [lessonsMarkdown, setLessonsMarkdown] = useState(initialLessonsMarkdown || '')
   const [activeTab, setActiveTab] = useState<'description' | 'lessons'>('description')
 
-  const [year, setYear] = useState<string>(project?.year ? String(project.year) : new Date().getFullYear().toString())
+  const [year, setYear] = useState<string>(
+    project?.year ? String(project.year) : new Date().getFullYear().toString()
+  )
   const [status, setStatus] = useState<'in_progress' | 'completed' | 'archived'>(
     project?.status || 'in_progress'
   )
@@ -55,10 +58,13 @@ export function ProjectEditor({
     if (!project?.topics) return []
     return project.topics.map((t: any) => (typeof t === 'object' ? t.id : t))
   })
-  const [technologiesText, setTechnologiesText] = useState(() => {
-    if (!project?.technologies || !Array.isArray(project.technologies)) return ''
-    return project.technologies.map((t: any) => (typeof t === 'object' ? t.name : t)).join(', ')
+  const [technologies, setTechnologies] = useState<string[]>(() => {
+    if (!project?.technologies || !Array.isArray(project.technologies)) return []
+    return project.technologies
+      .map((t: any) => (typeof t === 'object' ? t.name : t))
+      .filter(Boolean)
   })
+  const [techInput, setTechInput] = useState('')
   const [coverImage, setCoverImage] = useState<string | number | ''>(() => {
     if (!project?.cover_image) return ''
     return typeof project.cover_image === 'object' ? project.cover_image.id : project.cover_image
@@ -91,9 +97,34 @@ export function ProjectEditor({
     }
   }
 
-  const handleSave = () => {
+  const addTechChip = (raw: string) => {
+    const items = raw
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean)
+    if (!items.length) return
+    setTechnologies((prev) => {
+      const next = [...prev]
+      for (const item of items) {
+        if (!next.includes(item)) next.push(item)
+      }
+      return next
+    })
+    setTechInput('')
+  }
+
+  const handleTechKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' || e.key === ',') {
+      e.preventDefault()
+      addTechChip(techInput)
+    } else if (e.key === 'Backspace' && !techInput && technologies.length > 0) {
+      setTechnologies((prev) => prev.slice(0, -1))
+    }
+  }
+
+  const handleSave = (overrideStatus?: 'in_progress' | 'completed' | 'archived') => {
     if (!title.trim()) {
-      setFeedback({ type: 'error', message: 'Please provide a project title.' })
+      setFeedback({ type: 'error', message: 'Please provide a rig title.' })
       return
     }
     if (!slug.trim()) {
@@ -101,12 +132,9 @@ export function ProjectEditor({
       return
     }
 
+    const effectiveStatus = overrideStatus || status
+    if (overrideStatus) setStatus(overrideStatus)
     setFeedback(null)
-
-    const techArray = technologiesText
-      .split(',')
-      .map((t: string) => t.trim())
-      .filter(Boolean)
 
     startTransition(async () => {
       const res = await saveProjectAction({
@@ -117,9 +145,9 @@ export function ProjectEditor({
         descriptionMarkdown,
         lessonsMarkdown: lessonsMarkdown || undefined,
         year: year ? parseInt(year, 10) : null,
-        status,
+        status: effectiveStatus,
         topics: selectedTopics,
-        technologies: techArray,
+        technologies,
         featured,
         cover_image: coverImage || null,
         gallery,
@@ -128,10 +156,10 @@ export function ProjectEditor({
       })
 
       if (res.success && res.doc) {
-        toast.success(isNew ? 'Project created.' : 'Project saved.')
+        toast.success(isNew ? 'Rig created.' : 'Rig saved.')
         setFeedback({
           type: 'success',
-          message: isNew ? 'Project created successfully.' : 'Project updated successfully.',
+          message: isNew ? 'Rig created successfully.' : 'Rig updated successfully.',
         })
         if (isNew) {
           router.push(`/admin/collections/projects/${res.doc.id}`)
@@ -140,10 +168,10 @@ export function ProjectEditor({
           router.refresh()
         }
       } else {
-        toast.error(res.error || 'Failed to save project.')
+        toast.error(res.error || 'Failed to save rig.')
         setFeedback({
           type: 'error',
-          message: res.error || 'An error occurred while saving the project.',
+          message: res.error || 'An error occurred while saving the rig.',
         })
       }
     })
@@ -160,11 +188,6 @@ export function ProjectEditor({
     return () => window.removeEventListener('keydown', onKeyDown)
   })
 
-  const handleDelete = () => {
-    if (!project?.id) return
-    setConfirmDeleteOpen(true)
-  }
-
   const executeDelete = async () => {
     if (!project?.id) return
     setConfirmDeleteOpen(false)
@@ -173,39 +196,41 @@ export function ProjectEditor({
     setIsDeleting(false)
 
     if (res.success) {
-      toast.success('Project deleted.')
+      toast.success('Rig deleted.')
       router.push('/admin/collections/projects')
       router.refresh()
     } else {
-      toast.error(res.error || 'Failed to delete project.')
-      setFeedback({ type: 'error', message: res.error || 'Failed to delete project.' })
+      toast.error(res.error || 'Failed to delete rig.')
+      setFeedback({ type: 'error', message: res.error || 'Failed to delete rig.' })
     }
   }
 
+  const coverMediaObj = allMedia.find((m: any) => String(m.id) === String(coverImage))
+
   return (
-    <div className="flex flex-col w-full pb-16 space-y-6">
+    <div className="flex flex-col w-full pb-12 space-y-5">
       {/* Breadcrumb */}
-      <div className="flex items-center space-x-2 font-label-sm text-label-sm text-ink-muted pt-2">
-        <Link href="/admin" className="hover:text-primary transition-colors">
+      <div className="flex items-center gap-2 font-mono-telemetry text-[11px] text-ink-muted uppercase tracking-[0.06em]">
+        <Link href="/admin" className="hover:text-on-surface transition-colors">
           OBSERVATORY
         </Link>
         <span>/</span>
-        <Link href="/admin/collections/projects" className="hover:text-primary transition-colors">
-          PROJECTS
+        <Link href="/admin/collections/projects" className="hover:text-on-surface transition-colors">
+          RIGS
         </Link>
         <span>/</span>
-        <span className="text-on-surface font-medium tracking-wide">
-          {isNew ? 'NEW RIG' : 'EDIT PROJECT'}
+        <span className="text-on-surface font-semibold">
+          {isNew ? 'NEW RIG' : 'EDIT RIG'}
         </span>
       </div>
 
       {/* Feedback Banner */}
       {feedback && (
         <div
-          className={`px-4 py-3 border flex items-center justify-between text-body-sm transition-all ${
+          className={`px-4 py-3 rounded-[14px] flex items-center justify-between text-[13px] ${
             feedback.type === 'success'
-              ? 'bg-emerald-50 border-emerald-300 text-emerald-800'
-              : 'bg-rose-50 border-rose-300 text-rose-800'
+              ? 'bg-[#ECFDF5] text-[#059669] dark:bg-emerald-950/50 dark:text-emerald-300'
+              : 'bg-[#FEF2F2] text-[#DC2626] dark:bg-rose-950/50 dark:text-rose-300'
           }`}
         >
           <div className="flex items-center gap-2">
@@ -214,486 +239,577 @@ export function ProjectEditor({
             </span>
             <span>{feedback.message}</span>
           </div>
-          <button
-            type="button"
-            onClick={() => setFeedback(null)}
-            className="text-ink-muted hover:text-on-surface"
-          >
+          <button type="button" onClick={() => setFeedback(null)} aria-label="Dismiss">
             <span className="material-symbols-outlined text-[16px]">close</span>
           </button>
         </div>
       )}
 
-      {/* Title Bar */}
-      <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 border-b border-hairline-rule pb-6">
-        <div className="space-y-1">
-          <h1 className="font-headline-xl text-headline-lg text-on-surface tracking-tight leading-none">
-            {isNew ? 'New Project' : title || 'Untitled Project'}
+      {/* Header Row */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="font-studio-display text-[28px] font-semibold text-on-surface tracking-[-0.02em] leading-tight">
+            {isNew ? 'New Rig' : title || 'Untitled Rig'}
           </h1>
-          {!isNew && (
-            <div className="flex items-center gap-3 font-label-sm text-label-sm text-ink-muted mt-2">
-              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-surface-container-high text-ink-secondary">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                {status.replace('_', ' ').toUpperCase()}
-              </span>
-              <span>Year: {year}</span>
-              <span>ID: {project.id}</span>
-            </div>
-          )}
+          <p className="text-[13px] text-ink-secondary mt-0.5">
+            {isNew ? 'Configure instrumentation rig or software platform' : `Updated · /projects/${slug}`}
+          </p>
         </div>
 
-        <div className="flex items-center gap-2 shrink-0">
-          {!isNew && slug && (
-            <Link
-              href={`/projects/${slug}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 px-3 py-2 bg-surface-container-low text-ink-secondary font-label-md text-label-md uppercase tracking-wider hover:bg-surface-container-high transition-colors shadow-xs"
-            >
-              <span className="material-symbols-outlined text-[16px]">visibility</span>
-              View Live
-            </Link>
-          )}
-
+        {/* Sticky Pill Action Controls */}
+        <div className="flex flex-wrap items-center gap-2 shrink-0">
           {!isNew && (
-            <button
-              type="button"
-              onClick={handleDelete}
-              disabled={isDeleting}
-              className="flex items-center gap-1.5 px-3 py-2 bg-rose-50 text-rose-700 hover:bg-rose-100 font-label-md text-label-md uppercase tracking-wider transition-colors shadow-xs disabled:opacity-50"
-            >
-              <span className="material-symbols-outlined text-[16px]">delete</span>
-              {isDeleting ? 'Deleting...' : 'Delete'}
-            </button>
+            <>
+              <button
+                type="button"
+                onClick={() => setConfirmDeleteOpen(true)}
+                disabled={isDeleting}
+                className="px-3.5 py-2 rounded-full bg-paper-surface text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 text-[13px] font-medium transition-colors"
+              >
+                Delete
+              </button>
+              <Link
+                href={`/projects/${slug}`}
+                target="_blank"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-paper-surface text-ink-secondary hover:text-on-surface text-[13px] font-medium transition-colors"
+              >
+                <span className="material-symbols-outlined text-[16px]">visibility</span>
+                <span>Preview</span>
+              </Link>
+            </>
           )}
-
           <button
             type="button"
-            onClick={handleSave}
+            onClick={() => handleSave('in_progress')}
             disabled={isPending}
-            className="flex items-center gap-1.5 px-5 py-2 bg-primary hover:bg-accent-ochre text-on-primary font-label-md text-label-md uppercase tracking-wider shadow-sm transition-colors disabled:opacity-50"
+            className="px-4 py-2 rounded-full bg-paper-surface text-on-surface hover:bg-surface-container-low text-[13px] font-medium transition-colors disabled:opacity-50"
+          >
+            Save Draft
+          </button>
+          <button
+            type="button"
+            onClick={() => handleSave()}
+            disabled={isPending}
+            className="inline-flex items-center gap-1.5 px-5 py-2 rounded-full bg-[#0F172A] text-white dark:bg-slate-100 dark:text-slate-900 text-[13px] font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
           >
             <span className="material-symbols-outlined text-[16px]">
-              {isPending ? 'sync' : 'save'}
+              {isPending ? 'sync' : 'check'}
             </span>
-            {isPending ? 'Saving...' : isNew ? 'Create Project' : 'Save Changes'}
+            <span>{isPending ? 'Saving...' : isNew ? 'Create Rig' : 'Save Rig'}</span>
           </button>
         </div>
       </div>
 
-      {/* Main Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Editor (8 cols) */}
-        <div className="lg:col-span-8 space-y-6">
-          {/* Title */}
-          <div className="space-y-1.5">
-            <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase">
-              Project Title <span className="text-accent-ochre">*</span>
+      {/* 2-Column Studio Grid: 70% Left Editor Card / 30% Right Unified Inspector Card */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+        {/* LEFT CARD (8 cols — ~70%) */}
+        <div className="lg:col-span-8 bg-paper-surface rounded-[20px] p-6 space-y-5">
+          {/* Compact Title Input + Inline Slug Row */}
+          <div className="space-y-2">
+            <label htmlFor="rig-title" className="block text-[13px] font-medium text-ink-secondary">
+              Project / Rig Title
             </label>
             <input
+              id="rig-title"
               type="text"
               value={title}
               onChange={handleTitleChange}
-              placeholder="e.g., FPGA High-Speed Signal Processor..."
-              className="w-full bg-white border border-hairline-rule text-on-surface font-headline-md text-headline-md px-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-colors rounded-none italic"
+              placeholder="e.g. Cryogenic Focal Plane Array for Submillimeter Polarimetry"
+              className="w-full h-12 bg-[#F8FAFC] dark:bg-zinc-900 px-3.5 text-[20px] font-studio-display font-medium text-on-surface placeholder:text-ink-muted focus:outline-none"
             />
-          </div>
-
-          {/* Canonical Slug */}
-          <div className="space-y-1.5">
-            <div className="flex items-center justify-between">
-              <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase">
-                Canonical Slug <span className="text-accent-ochre">*</span>
-              </label>
-              <button
-                type="button"
-                onClick={() => {
-                  setSlug(slugify(title))
-                  setSlugManuallyEdited(false)
-                }}
-                className="text-[11px] font-label-sm text-ink-muted hover:text-primary transition-colors underline"
-              >
-                Regenerate from title
-              </button>
-            </div>
-            <div className="flex items-center bg-white border border-hairline-rule">
-              <span className="px-3 py-2.5 text-ink-muted font-label-sm text-label-sm bg-surface-container-low border-r border-hairline-rule select-none">
-                /projects/
-              </span>
+            <div className="flex items-center gap-2 px-1 text-[12px] font-mono-telemetry text-ink-muted">
+              <span>/rigs/</span>
               <input
                 type="text"
                 value={slug}
                 onChange={(e) => {
-                  setSlug(slugify(e.target.value))
                   setSlugManuallyEdited(true)
+                  setSlug(e.target.value)
                 }}
+                aria-label="Canonical slug"
                 placeholder="project-slug"
-                className="flex-1 bg-transparent text-on-surface font-body-md text-body-md px-3 py-2.5 focus:outline-none"
+                className="flex-1 bg-transparent text-on-surface focus:outline-none py-0.5"
               />
+              {slugManuallyEdited && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSlugManuallyEdited(false)
+                    setSlug(slugify(title))
+                  }}
+                  className="text-[11px] text-[#2563EB] hover:underline"
+                >
+                  Reset
+                </button>
+              )}
             </div>
           </div>
 
-          {/* Summary */}
-          <div className="space-y-1.5">
-            <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase">
+          {/* Executive Summary */}
+          <div className="space-y-2">
+            <label htmlFor="rig-summary" className="block text-[13px] font-medium text-ink-secondary">
               Executive Summary
             </label>
             <textarea
+              id="rig-summary"
               value={summary}
               onChange={(e) => setSummary(e.target.value)}
-              placeholder="A brief overview of the project engineering goals and apparatus..."
-              rows={3}
-              className="w-full bg-white border border-hairline-rule text-on-surface font-body-md text-body-md px-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-colors rounded-none resize-y min-h-[100px]"
+              placeholder="Concise technical abstract for the rig index..."
+              rows={2}
+              className="w-full bg-[#F8FAFC] dark:bg-zinc-900 px-3.5 py-3 text-[14px] text-on-surface placeholder:text-ink-muted focus:outline-none resize-none"
             />
           </div>
 
-          {/* Content Tabs: Description vs Lessons Learned */}
-          <div className="space-y-3">
-            <div className="flex border-b border-hairline-rule">
-              <button
-                type="button"
-                onClick={() => setActiveTab('description')}
-                className={`px-4 py-2 font-label-md text-label-md uppercase tracking-wider transition-colors border-b-2 -mb-px ${
-                  activeTab === 'description'
-                    ? 'border-primary text-primary font-semibold'
-                    : 'border-transparent text-ink-muted hover:text-on-surface'
-                }`}
-              >
-                Project Description (Manuscript)
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveTab('lessons')}
-                className={`px-4 py-2 font-label-md text-label-md uppercase tracking-wider transition-colors border-b-2 -mb-px ${
-                  activeTab === 'lessons'
-                    ? 'border-primary text-primary font-semibold'
-                    : 'border-transparent text-ink-muted hover:text-on-surface'
-                }`}
-              >
-                Lessons Learned &amp; Observations
-              </button>
-            </div>
-
-            {activeTab === 'description' ? (
-              <RichContentEditor
-                value={descriptionMarkdown}
-                onChange={setDescriptionMarkdown}
-                label="Full Project Technical Documentation"
-                minHeight="400px"
-              />
-            ) : (
-              <RichContentEditor
-                value={lessonsMarkdown}
-                onChange={setLessonsMarkdown}
-                label="Engineering Insights &amp; Post-Mortem"
-                minHeight="300px"
-              />
-            )}
+          {/* Underline Tab Switcher */}
+          <div className="border-b border-[#F1F5F9] dark:border-zinc-800 flex items-center gap-6">
+            <button
+              type="button"
+              onClick={() => setActiveTab('description')}
+              className={`pb-3 text-[14px] font-medium border-b-2 transition-colors ${
+                activeTab === 'description'
+                  ? 'border-[#0F172A] text-on-surface dark:border-slate-100'
+                  : 'border-transparent text-ink-muted hover:text-on-surface'
+              }`}
+            >
+              Rig Description (Manuscript)
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab('lessons')}
+              className={`pb-3 text-[14px] font-medium border-b-2 transition-colors ${
+                activeTab === 'lessons'
+                  ? 'border-[#0F172A] text-on-surface dark:border-slate-100'
+                  : 'border-transparent text-ink-muted hover:text-on-surface'
+              }`}
+            >
+              Lessons Learned &amp; Observations
+            </button>
           </div>
+
+          {activeTab === 'description' ? (
+            <RichContentEditor
+              value={descriptionMarkdown}
+              onChange={setDescriptionMarkdown}
+              label="Technical Manuscript & Architecture"
+              minHeight="380px"
+            />
+          ) : (
+            <RichContentEditor
+              value={lessonsMarkdown}
+              onChange={setLessonsMarkdown}
+              label="Lessons Learned & Calibration Notes"
+              minHeight="380px"
+            />
+          )}
         </div>
 
-        {/* Sidebar Metadata (4 cols) */}
-        <div className="lg:col-span-4 space-y-6">
-          {/* Metadata */}
-          <div className="border border-hairline-rule bg-white p-5 shadow-xs">
-            <h3 className="font-label-sm text-label-sm text-ink-muted uppercase tracking-widest font-semibold mb-4 pb-2 border-b border-hairline-rule">
-              Project Specification
-            </h3>
-            <div className="space-y-4">
+        {/* RIGHT COLUMN (4 cols — ~30%): ONE Unified White Inspector Card */}
+        <div className="lg:col-span-4 bg-paper-surface rounded-[20px] p-6 divide-y divide-[#F1F5F9] dark:divide-zinc-800">
+          {/* Section 1: Specification */}
+          <div className="pb-5 space-y-4">
+            <h2 className="font-studio-display text-[16px] font-semibold text-on-surface">
+              Specification
+            </h2>
+
+            <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1.5">
-                <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase">
-                  Execution Status
-                </label>
+                <label className="block text-[12px] text-ink-secondary">Status</label>
                 <select
                   value={status}
                   onChange={(e) => setStatus(e.target.value as any)}
-                  className="w-full bg-white border border-hairline-rule text-on-surface font-body-sm text-body-sm px-3 py-2 focus:border-primary focus:outline-none rounded-none"
+                  className="w-full bg-[#F8FAFC] dark:bg-zinc-900 px-3 py-2.5 text-[13px] text-on-surface focus:outline-none"
                 >
                   <option value="in_progress">In Progress</option>
                   <option value="completed">Completed</option>
                   <option value="archived">Archived</option>
                 </select>
               </div>
-
               <div className="space-y-1.5">
-                <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase">
-                  Year
-                </label>
+                <label className="block text-[12px] text-ink-secondary">Year</label>
                 <input
                   type="number"
                   value={year}
                   onChange={(e) => setYear(e.target.value)}
                   placeholder="2026"
-                  className="w-full bg-white border border-hairline-rule text-on-surface font-body-sm text-body-sm px-3 py-2 focus:border-primary focus:outline-none rounded-none"
+                  className="w-full bg-[#F8FAFC] dark:bg-zinc-900 px-3 py-2.5 text-[13px] font-mono-telemetry text-on-surface focus:outline-none"
                 />
               </div>
+            </div>
 
-              <div className="space-y-1.5">
-                <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase">
-                  Technologies (comma separated)
-                </label>
+            {/* Interactive JetBrains Mono Tech Chips */}
+            <div className="space-y-1.5">
+              <label className="block text-[12px] text-ink-secondary">
+                Technologies <span className="text-ink-muted">(Enter to add)</span>
+              </label>
+              <div className="bg-[#F8FAFC] dark:bg-zinc-900 rounded-[12px] p-2.5 flex flex-wrap gap-1.5 items-center">
+                {technologies.map((tech) => (
+                  <span
+                    key={tech}
+                    className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-paper-surface font-mono-telemetry text-[11px] text-on-surface"
+                  >
+                    <span>{tech}</span>
+                    <button
+                      type="button"
+                      onClick={() => setTechnologies((prev) => prev.filter((t) => t !== tech))}
+                      aria-label={`Remove ${tech}`}
+                      className="text-ink-muted hover:text-rose-500"
+                    >
+                      ×
+                    </button>
+                  </span>
+                ))}
                 <input
                   type="text"
-                  value={technologiesText}
-                  onChange={(e) => setTechnologiesText(e.target.value)}
-                  placeholder="e.g., C++, VHDL, Xilinx, Python"
-                  className="w-full bg-white border border-hairline-rule text-on-surface font-body-sm text-body-sm px-3 py-2 focus:border-primary focus:outline-none rounded-none"
-                />
-              </div>
-
-              <div className="pt-2 border-t border-hairline-subtle flex items-center justify-between">
-                <label
-                  htmlFor="featured-project"
-                  className="text-label-sm font-label-sm text-on-surface font-medium uppercase tracking-wider cursor-pointer"
-                >
-                  Featured Project
-                </label>
-                <input
-                  id="featured-project"
-                  type="checkbox"
-                  checked={featured}
-                  onChange={(e) => setFeatured(e.target.checked)}
-                  className="w-4 h-4 accent-primary cursor-pointer"
+                  value={techInput}
+                  onChange={(e) => setTechInput(e.target.value)}
+                  onKeyDown={handleTechKeyDown}
+                  onBlur={() => addTechChip(techInput)}
+                  placeholder={technologies.length === 0 ? 'C++, VHDL, Xilinx, Python...' : 'Add...'}
+                  className="flex-1 min-w-[90px] bg-transparent text-[13px] text-on-surface placeholder:text-ink-muted focus:outline-none py-0.5"
                 />
               </div>
             </div>
-          </div>
 
-          {/* Topics */}
-          <div className="border border-hairline-rule bg-white p-5 shadow-xs">
-            <h3 className="font-label-sm text-label-sm text-ink-muted uppercase tracking-widest font-semibold mb-4 pb-2 border-b border-hairline-rule">
-              Taxonomy Classification
-            </h3>
-            <div className="space-y-3">
-              <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase">
-                Assigned Topics ({selectedTopics.length})
-              </label>
-              <div className="max-h-48 overflow-y-auto space-y-1.5 border border-hairline-rule p-2 bg-paper-base/30">
-                {topics.map((t: any) => {
-                  const isChecked = selectedTopics.includes(t.id)
-                  return (
-                    <label
-                      key={t.id}
-                      className="flex items-center gap-2 p-1.5 hover:bg-white cursor-pointer transition-colors text-body-sm text-on-surface"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={isChecked}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setSelectedTopics([...selectedTopics, t.id])
-                          } else {
-                            setSelectedTopics(selectedTopics.filter((id) => id !== t.id))
-                          }
-                        }}
-                        className="w-3.5 h-3.5 accent-primary"
-                      />
-                      <span className="flex-1">{t.name}</span>
-                    </label>
-                  )
-                })}
-              </div>
-            </div>
-          </div>
-
-          {/* Cover Image */}
-          <div className="border border-hairline-rule bg-white p-5 shadow-xs">
-            <h3 className="font-label-sm text-label-sm text-ink-muted uppercase tracking-widest font-semibold mb-4 pb-2 border-b border-hairline-rule">
-              Cover Image
-            </h3>
-            <div className="space-y-3">
-              <select
-                value={coverImage}
-                onChange={(e) => setCoverImage(e.target.value ? (isNaN(Number(e.target.value)) ? e.target.value : Number(e.target.value)) : '')}
-                className="w-full bg-white border border-hairline-rule text-on-surface font-body-sm text-body-sm px-3 py-2 focus:border-primary focus:outline-none rounded-none"
-              >
-                <option value="">No cover image</option>
-                {allMedia.map((m: any) => (
-                  <option key={m.id} value={m.id}>
-                    {m.alt_text || m.filename || `Media #${m.id}`}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          {/* Image Gallery */}
-          <div className="border border-hairline-rule bg-white p-5 shadow-xs">
-            <div className="flex items-center justify-between mb-4 pb-2 border-b border-hairline-rule">
-              <h3 className="font-label-sm text-label-sm text-ink-muted uppercase tracking-widest font-semibold">
-                Gallery Images ({gallery.length})
-              </h3>
+            {/* Pill Toggle Switch for Featured */}
+            <div className="flex items-center justify-between pt-1">
+              <span className="text-[13px] font-medium text-on-surface">Featured Rig</span>
               <button
                 type="button"
-                onClick={() => {
-                  if (allMedia.length > 0) {
-                    setGallery([...gallery, { image: allMedia[0].id }])
-                  }
-                }}
-                disabled={allMedia.length === 0}
-                className="text-[11px] font-label-sm text-primary hover:underline uppercase disabled:opacity-50"
+                role="switch"
+                aria-checked={featured}
+                onClick={() => setFeatured((f) => !f)}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                  featured ? 'bg-[#0F172A] dark:bg-slate-100' : 'bg-[#E2E8F0] dark:bg-zinc-700'
+                }`}
               >
-                + Add Image
+                <span
+                  className={`inline-block h-4 w-4 transform rounded-full bg-white dark:bg-slate-900 transition-transform ${
+                    featured ? 'translate-x-6' : 'translate-x-1'
+                  }`}
+                />
               </button>
             </div>
-            <div className="space-y-2">
-              {gallery.map((item, idx) => (
-                <div key={idx} className="flex items-center gap-2">
-                  <select
-                    value={item.image}
-                    onChange={(e) => {
-                      const val = isNaN(Number(e.target.value)) ? e.target.value : Number(e.target.value)
-                      const updated = [...gallery]
-                      updated[idx] = { image: val }
-                      setGallery(updated)
-                    }}
-                    className="flex-1 bg-white border border-hairline-rule text-body-sm px-2 py-1.5 focus:border-primary rounded-none"
-                  >
-                    {allMedia.map((m: any) => (
-                      <option key={m.id} value={m.id}>
-                        {m.alt_text || m.filename || `Media #${m.id}`}
-                      </option>
-                    ))}
-                  </select>
+          </div>
+
+          {/* Section 2: Taxonomy */}
+          <div className="py-5 space-y-3">
+            <h2 className="font-studio-display text-[16px] font-semibold text-on-surface">
+              Taxonomy
+            </h2>
+            <div className="flex flex-wrap gap-1.5">
+              {topics.map((topic: any) => {
+                const isSelected = selectedTopics.includes(topic.id)
+                return (
                   <button
+                    key={topic.id}
                     type="button"
-                    onClick={() => setGallery(gallery.filter((_, i) => i !== idx))}
-                    className="text-ink-muted hover:text-rose-600 px-1"
+                    onClick={() =>
+                      setSelectedTopics((prev) =>
+                        prev.includes(topic.id)
+                          ? prev.filter((id) => id !== topic.id)
+                          : [...prev, topic.id]
+                      )
+                    }
+                    className={`px-3 py-1 rounded-full text-[12px] font-medium transition-colors ${
+                      isSelected
+                        ? 'bg-[#0F172A] text-white dark:bg-slate-100 dark:text-slate-900'
+                        : 'bg-[#F8FAFC] dark:bg-zinc-900 text-ink-secondary hover:text-on-surface'
+                    }`}
                   >
-                    <span className="material-symbols-outlined text-[16px]">close</span>
+                    #{topic.name}
                   </button>
-                </div>
-              ))}
-              {gallery.length === 0 && (
-                <p className="text-ink-muted text-body-sm py-1 italic">No gallery images added.</p>
+                )
+              })}
+              {topics.length === 0 && (
+                <p className="text-[12px] text-ink-muted">No topics indexed.</p>
               )}
             </div>
           </div>
 
-          {/* External Links */}
-          <div className="border border-hairline-rule bg-white p-5 shadow-xs">
-            <div className="flex items-center justify-between mb-4 pb-2 border-b border-hairline-rule">
-              <h3 className="font-label-sm text-label-sm text-ink-muted uppercase tracking-widest font-semibold">
-                External Links ({links.length})
-              </h3>
+          {/* Section 3: Media & Plates (Visual Tile Picker) */}
+          <div className="py-5 space-y-3">
+            <div className="flex items-center justify-between">
+              <h2 className="font-studio-display text-[16px] font-semibold text-on-surface">
+                Media &amp; Plates
+              </h2>
+              <Link
+                href="/admin/collections/media"
+                className="text-[12px] text-[#2563EB] hover:underline"
+              >
+                Upload ›
+              </Link>
+            </div>
+
+            {/* Cover Plate Tile */}
+            <div className="space-y-1.5">
+              <span className="block text-[12px] text-ink-secondary">Cover Plate</span>
+              {coverMediaObj ? (
+                <div className="flex items-center justify-between gap-3 p-2.5 rounded-[12px] bg-[#F8FAFC] dark:bg-zinc-900">
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    {coverMediaObj.url && (
+                      <img
+                        src={coverMediaObj.url}
+                        alt={coverMediaObj.filename || ''}
+                        className="w-10 h-10 rounded-lg object-cover shrink-0"
+                      />
+                    )}
+                    <span className="text-[12px] font-medium text-on-surface truncate">
+                      {coverMediaObj.filename}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1 shrink-0">
+                    <button
+                      type="button"
+                      onClick={() => setPlatePickerMode('cover')}
+                      className="text-[11px] text-[#2563EB] px-2 py-1"
+                    >
+                      Change
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setCoverImage('')}
+                      aria-label="Remove cover plate"
+                      className="text-ink-muted hover:text-rose-500 p-1"
+                    >
+                      ×
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setPlatePickerMode('cover')}
+                  className="w-full p-3.5 rounded-[12px] bg-[#F8FAFC] hover:bg-[#F1F5F9] dark:bg-zinc-900 dark:hover:bg-zinc-800 flex items-center justify-center gap-2 text-[13px] text-ink-secondary transition-colors"
+                >
+                  <span className="material-symbols-outlined text-[18px]">add_photo_alternate</span>
+                  <span>Select Cover Plate</span>
+                </button>
+              )}
+            </div>
+
+            {/* Gallery Plates */}
+            <div className="space-y-1.5 pt-1">
+              <div className="flex items-center justify-between">
+                <span className="text-[12px] text-ink-secondary">
+                  Gallery ({gallery.length})
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setPlatePickerMode('gallery')}
+                  className="text-[12px] text-[#2563EB] hover:underline"
+                >
+                  + Add Plate
+                </button>
+              </div>
+              {gallery.length > 0 && (
+                <div className="grid grid-cols-3 gap-2">
+                  {gallery.map((g, idx) => {
+                    const m = allMedia.find((item: any) => String(item.id) === String(g.image))
+                    return (
+                      <div key={`${g.image}-${idx}`} className="relative group aspect-square rounded-[10px] overflow-hidden bg-[#F8FAFC] dark:bg-zinc-900">
+                        {m?.url ? (
+                          <img src={m.url} alt={m.filename || ''} className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-[10px] text-ink-muted">
+                            #{g.image}
+                          </div>
+                        )}
+                        <button
+                          type="button"
+                          onClick={() => setGallery((prev) => prev.filter((_, i) => i !== idx))}
+                          aria-label="Remove gallery plate"
+                          className="absolute top-1 right-1 w-5 h-5 rounded-full bg-black/70 text-white text-[11px] opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Section 4: External Links */}
+          <div className="py-5 space-y-3">
+            <div className="flex items-center justify-between">
+              <h2 className="font-studio-display text-[16px] font-semibold text-on-surface">
+                External Links
+              </h2>
               <button
                 type="button"
-                onClick={() => setLinks([...links, { label: '', url: '' }])}
-                className="text-[11px] font-label-sm text-primary hover:underline uppercase"
+                onClick={() => setLinks((prev) => [...prev, { label: '', url: '' }])}
+                className="text-[12px] text-[#2563EB] hover:underline"
               >
                 + Add Link
               </button>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-2">
               {links.map((link, idx) => (
-                <div key={idx} className="p-2 border border-hairline-subtle bg-paper-base/30 space-y-1.5">
-                  <div className="flex justify-between items-center">
-                    <span className="text-[11px] font-label-sm text-ink-muted">LINK #{idx + 1}</span>
-                    <button
-                      type="button"
-                      onClick={() => setLinks(links.filter((_, i) => i !== idx))}
-                      className="text-ink-muted hover:text-rose-600 text-xs"
-                    >
-                      Remove
-                    </button>
-                  </div>
+                <div key={idx} className="flex items-center gap-1.5">
                   <input
                     type="text"
                     value={link.label}
                     onChange={(e) => {
-                      const updated = [...links]
-                      updated[idx] = { ...updated[idx], label: e.target.value }
-                      setLinks(updated)
+                      const next = [...links]
+                      next[idx] = { ...next[idx], label: e.target.value }
+                      setLinks(next)
                     }}
-                    placeholder="Label (e.g. GitHub Repository)"
-                    className="w-full bg-white border border-hairline-rule text-body-sm px-2 py-1 focus:border-primary rounded-none"
+                    placeholder="GitHub"
+                    className="w-24 bg-[#F8FAFC] dark:bg-zinc-900 px-2.5 py-2 text-[12px] text-on-surface focus:outline-none"
                   />
                   <input
-                    type="text"
+                    type="url"
                     value={link.url}
                     onChange={(e) => {
-                      const updated = [...links]
-                      updated[idx] = { ...updated[idx], url: e.target.value }
-                      setLinks(updated)
+                      const next = [...links]
+                      next[idx] = { ...next[idx], url: e.target.value }
+                      setLinks(next)
                     }}
                     placeholder="https://..."
-                    className="w-full bg-white border border-hairline-rule text-body-sm px-2 py-1 focus:border-primary rounded-none font-mono text-[12px]"
+                    className="flex-1 bg-[#F8FAFC] dark:bg-zinc-900 px-2.5 py-2 text-[12px] text-on-surface focus:outline-none"
                   />
+                  <button
+                    type="button"
+                    onClick={() => setLinks((prev) => prev.filter((_, i) => i !== idx))}
+                    aria-label="Remove link"
+                    className="p-1 text-ink-muted hover:text-rose-500"
+                  >
+                    ×
+                  </button>
                 </div>
               ))}
               {links.length === 0 && (
-                <p className="text-ink-muted text-body-sm py-1 italic">No links added.</p>
+                <p className="text-[12px] text-ink-muted">No external links added.</p>
               )}
             </div>
           </div>
 
-          {/* Connected Universe */}
-          <div className="border border-hairline-rule bg-white p-5 shadow-xs">
-            <h3 className="font-label-sm text-label-sm text-ink-muted uppercase tracking-widest font-semibold mb-4 pb-2 border-b border-hairline-rule">
+          {/* Section 5: Connected Universe */}
+          <div className="pt-5 space-y-3">
+            <h2 className="font-studio-display text-[16px] font-semibold text-on-surface">
               Connected Universe
-            </h3>
-            <div className="space-y-3">
-              <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase">
-                Related Posts ({relatedPosts.length})
-              </label>
-              <div className="max-h-40 overflow-y-auto space-y-1.5 border border-hairline-rule p-2 bg-paper-base/30">
-                {allPosts.map((p: any) => {
-                  const isChecked = relatedPosts.includes(p.id)
-                  return (
-                    <label key={p.id} className="flex items-center gap-2 p-1 text-body-sm cursor-pointer hover:bg-white">
-                      <input
-                        type="checkbox"
-                        checked={isChecked}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setRelatedPosts([...relatedPosts, p.id])
-                          } else {
-                            setRelatedPosts(relatedPosts.filter((id) => id !== p.id))
-                          }
-                        }}
-                        className="w-3.5 h-3.5 accent-primary"
-                      />
-                      <span className="truncate">{p.title}</span>
-                    </label>
-                  )
-                })}
-                {allPosts.length === 0 && (
-                  <p className="text-ink-muted text-xs py-1">No posts available.</p>
-                )}
-              </div>
+            </h2>
+            <div className="max-h-36 overflow-y-auto space-y-1.5">
+              {allPosts.map((p: any) => {
+                const checked = relatedPosts.includes(p.id)
+                return (
+                  <label
+                    key={p.id}
+                    className="flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg hover:bg-[#F8FAFC] dark:hover:bg-zinc-900 cursor-pointer text-[13px] text-on-surface"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={checked}
+                      onChange={(e) => {
+                        if (e.target.checked) setRelatedPosts((prev) => [...prev, p.id])
+                        else setRelatedPosts((prev) => prev.filter((id) => id !== p.id))
+                      }}
+                      className="w-4 h-4 rounded accent-[#0F172A]"
+                    />
+                    <span className="truncate">{p.title}</span>
+                  </label>
+                )
+              })}
+              {allPosts.length === 0 && (
+                <p className="text-[12px] text-ink-muted">No posts available to link.</p>
+              )}
             </div>
           </div>
         </div>
       </div>
 
+      {/* Visual Plate Picker Dialog */}
+      <AdminDialog
+        open={Boolean(platePickerMode)}
+        onClose={() => setPlatePickerMode(null)}
+        labelledBy="plate-picker-title"
+        className="w-[min(640px,94vw)] rounded-[20px]"
+      >
+        <div className="p-6 bg-paper-surface space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-[#F1F5F9] dark:border-zinc-800">
+            <h1 id="plate-picker-title" className="font-studio-display text-[16px] font-semibold text-on-surface">
+              {platePickerMode === 'cover' ? 'Select Cover Plate' : 'Add Gallery Plate'}
+            </h1>
+            <button
+              type="button"
+              autoFocus
+              onClick={() => setPlatePickerMode(null)}
+              aria-label="Close plate picker"
+              className="p-1 text-ink-muted hover:text-on-surface"
+            >
+              <span className="material-symbols-outlined text-[18px]">close</span>
+            </button>
+          </div>
+          <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 max-h-[50vh] overflow-y-auto">
+            {allMedia.map((m: any) => (
+              <button
+                key={m.id}
+                type="button"
+                onClick={() => {
+                  if (platePickerMode === 'cover') {
+                    setCoverImage(m.id)
+                  } else {
+                    setGallery((prev) =>
+                      prev.some((g) => String(g.image) === String(m.id))
+                        ? prev
+                        : [...prev, { image: m.id }]
+                    )
+                  }
+                  setPlatePickerMode(null)
+                }}
+                className="group text-left space-y-1.5"
+              >
+                <div className="aspect-square rounded-[12px] overflow-hidden bg-[#F8FAFC] dark:bg-zinc-900 group-hover:ring-2 group-hover:ring-[#0F172A]">
+                  {m.url ? (
+                    <img src={m.url} alt={m.filename || ''} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-ink-muted">
+                      <span className="material-symbols-outlined">image</span>
+                    </div>
+                  )}
+                </div>
+                <p className="text-[11px] text-ink-secondary truncate">{m.filename}</p>
+              </button>
+            ))}
+            {allMedia.length === 0 && (
+              <div className="col-span-full py-10 text-center text-[13px] text-ink-muted">
+                No ingested plates available. Upload one in Media &amp; Plates.
+              </div>
+            )}
+          </div>
+        </div>
+      </AdminDialog>
+
+      {/* Delete Confirmation Dialog */}
       <AdminDialog
         open={confirmDeleteOpen}
         onClose={() => setConfirmDeleteOpen(false)}
         labelledBy="delete-project-title"
-        className="w-[min(420px,92vw)]"
+        className="w-[min(420px,92vw)] rounded-[20px]"
       >
-        <div className="p-5 bg-paper-surface space-y-4">
-          <h1 id="delete-project-title" className="font-headline-sm text-lg text-on-surface">
-            Delete Project Rig?
+        <div className="p-6 bg-paper-surface space-y-4">
+          <h1 id="delete-project-title" className="font-studio-display text-[16px] font-semibold text-on-surface">
+            Delete Rig?
           </h1>
-          <p className="text-xs text-ink-secondary leading-relaxed">
-            Permanently delete <strong className="text-on-surface">{title || 'this project'}</strong>? This action cannot be undone.
+          <p className="text-[13px] text-ink-secondary leading-relaxed">
+            Permanently delete <strong className="text-on-surface">{title || 'this rig'}</strong>? This action cannot be undone.
           </p>
           <div className="flex justify-end gap-2 pt-2">
             <button
               type="button"
               autoFocus
               onClick={() => setConfirmDeleteOpen(false)}
-              className="px-3.5 py-1.5 rounded border border-hairline-rule text-xs font-label-sm text-on-surface hover:bg-surface-container-low"
+              className="px-4 py-1.5 rounded-full bg-[#F1F5F9] dark:bg-zinc-800 text-[13px] font-medium text-on-surface"
             >
               Cancel
             </button>
             <button
               type="button"
               onClick={executeDelete}
-              className="px-3.5 py-1.5 rounded bg-rose-600 text-white text-xs font-label-sm hover:bg-rose-700"
+              className="px-4 py-1.5 rounded-full bg-rose-600 text-white text-[13px] font-medium hover:bg-rose-700"
             >
-              Delete Project
+              Delete Rig
             </button>
           </div>
         </div>

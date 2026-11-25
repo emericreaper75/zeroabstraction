@@ -230,35 +230,25 @@ export function PostEditor({
       )}
 
       {/* Title Bar */}
-      <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 border-b border-hairline-rule pb-6">
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 pb-2">
         <div className="space-y-1">
-          <h1 className="font-headline-xl text-headline-lg text-on-surface tracking-tight leading-none">
+          <h1 className="font-studio-display text-[28px] font-semibold text-on-surface tracking-[-0.02em] leading-tight">
             {isNew ? 'New Post' : title || 'Untitled Post'}
           </h1>
           {!isNew && (
-            <div className="flex items-center gap-3 font-label-sm text-label-sm text-ink-muted mt-2">
+            <div className="flex items-center gap-3 font-mono-telemetry text-[11px] text-ink-muted mt-1">
               <span
-                className={`inline-flex items-center gap-1.5 px-2 py-0.5 ${
+                className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-semibold uppercase tracking-[0.06em] text-[10px] ${
                   status === 'published'
-                    ? 'bg-emerald-50 text-emerald-700'
+                    ? 'bg-[#ECFDF5] text-[#059669] dark:bg-emerald-950/50 dark:text-emerald-300'
                     : status === 'archived'
-                    ? 'bg-stone-100 text-stone-600'
-                    : 'bg-surface-container-high text-ink-secondary'
+                    ? 'bg-[#F1F5F9] text-[#475569] dark:bg-zinc-800 dark:text-zinc-300'
+                    : 'bg-[#EFF6FF] text-[#2563EB] dark:bg-blue-950/50 dark:text-blue-300'
                 }`}
               >
-                <span
-                  className={`w-1.5 h-1.5 rounded-full ${
-                    status === 'published'
-                      ? 'bg-emerald-600'
-                      : status === 'archived'
-                      ? 'bg-stone-400'
-                      : 'bg-tertiary'
-                  }`}
-                />
-                {status.toUpperCase()}
+                {status}
               </span>
               {updatedDateStr && <span>Last saved: {updatedDateStr}</span>}
-              <span>ID: {post.id}</span>
             </div>
           )}
         </div>
@@ -269,7 +259,7 @@ export function PostEditor({
               href={`/writing/${slug}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 px-3 py-2 bg-surface-container-low text-ink-secondary font-label-md text-label-md uppercase tracking-wider hover:bg-surface-container-high transition-colors shadow-xs"
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-paper-surface text-ink-secondary text-[13px] font-medium hover:text-on-surface transition-colors"
             >
               <span className="material-symbols-outlined text-[16px]">visibility</span>
               View Live
@@ -281,7 +271,7 @@ export function PostEditor({
               type="button"
               onClick={handleDelete}
               disabled={isDeleting}
-              className="flex items-center gap-1.5 px-3 py-2 bg-rose-50 text-rose-700 hover:bg-rose-100 font-label-md text-label-md uppercase tracking-wider transition-colors shadow-xs disabled:opacity-50"
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-paper-surface text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 text-[13px] font-medium transition-colors disabled:opacity-50"
             >
               <span className="material-symbols-outlined text-[16px]">delete</span>
               {isDeleting ? 'Deleting...' : 'Delete'}
@@ -292,39 +282,39 @@ export function PostEditor({
             type="button"
             onClick={handleSave}
             disabled={isPending}
-            className="flex items-center gap-1.5 px-5 py-2 bg-primary hover:bg-accent-ochre text-on-primary font-label-md text-label-md uppercase tracking-wider shadow-sm transition-colors disabled:opacity-50"
+            className="flex items-center gap-1.5 px-5 py-2 rounded-full bg-[#0F172A] text-white dark:bg-slate-100 dark:text-slate-900 text-[13px] font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
           >
             <span className="material-symbols-outlined text-[16px]">
-              {isPending ? 'sync' : 'save'}
+              {isPending ? 'sync' : 'check'}
             </span>
             {isPending ? 'Saving...' : isNew ? 'Create Post' : 'Save Changes'}
           </button>
         </div>
       </div>
 
-      {/* Main Form Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Main Editor Column (8 cols) */}
-        <div className="lg:col-span-8 space-y-6">
+      {/* Main Form Grid (70% / 30%) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+        {/* Main Editor Card (8 cols) */}
+        <div className="lg:col-span-8 bg-paper-surface rounded-[20px] p-6 space-y-5">
           {/* Title */}
           <div className="space-y-1.5">
-            <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase">
-              Title <span className="text-accent-ochre">*</span>
+            <label className="block text-[13px] font-medium text-ink-secondary">
+              Title <span className="text-rose-500">*</span>
             </label>
             <input
               type="text"
               value={title}
               onChange={handleTitleChange}
               placeholder="Enter manuscript title..."
-              className="w-full bg-white border border-hairline-rule text-on-surface font-headline-md text-headline-md px-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-colors rounded-none italic"
+              className="w-full h-12 bg-[#F8FAFC] dark:bg-zinc-900 text-on-surface font-studio-display text-[20px] font-medium px-3.5 focus:outline-none transition-colors"
             />
           </div>
 
           {/* Canonical Slug */}
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase">
-                Canonical Slug <span className="text-accent-ochre">*</span>
+              <label className="block text-[13px] font-medium text-ink-secondary">
+                Canonical Slug <span className="text-rose-500">*</span>
               </label>
               <button
                 type="button"
@@ -332,12 +322,12 @@ export function PostEditor({
                   setSlug(slugify(title))
                   setSlugManuallyEdited(false)
                 }}
-                className="text-[11px] font-label-sm text-ink-muted hover:text-primary transition-colors underline"
+                className="text-[11px] font-mono-telemetry text-[#2563EB] hover:underline"
               >
-                Regenerate from title
+                Reset
               </button>
             </div>
-            <div className="flex items-center bg-white border border-hairline-rule">
+            <div className="flex items-center bg-[#F8FAFC] dark:bg-zinc-900 rounded-[12px]">
               <span className="px-3 py-2.5 text-ink-muted font-label-sm text-label-sm bg-surface-container-low border-r border-hairline-rule select-none">
                 /writing/
               </span>
@@ -382,16 +372,16 @@ export function PostEditor({
           />
         </div>
 
-        {/* Sidebar Metadata Column (4 cols) */}
-        <div className="lg:col-span-4 space-y-6">
+        {/* Sidebar Metadata Column (4 cols) — Unified White Card */}
+        <div className="lg:col-span-4 bg-paper-surface rounded-[20px] p-6 divide-y divide-[#F1F5F9] dark:divide-zinc-800">
           {/* Publication Control */}
-          <div className="border border-hairline-rule bg-white p-5 shadow-xs">
-            <h3 className="font-label-sm text-label-sm text-ink-muted uppercase tracking-widest font-semibold mb-4 pb-2 border-b border-hairline-rule">
+          <div className="pb-5">
+            <h3 className="font-studio-display text-[16px] font-semibold text-on-surface mb-4">
               Publication Control
             </h3>
-            <div className="space-y-4">
+            <div className="space-y-3.5">
               <div className="space-y-1.5">
-                <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase">
+                <label className="block text-[12px] text-ink-secondary">
                   Status
                 </label>
                 <select
@@ -403,7 +393,7 @@ export function PostEditor({
                       setPublishedAt(new Date().toISOString().slice(0, 16))
                     }
                   }}
-                  className="w-full bg-white border border-hairline-rule text-on-surface font-body-sm text-body-sm px-3 py-2 focus:border-primary focus:outline-none rounded-none"
+                  className="w-full bg-[#F8FAFC] dark:bg-zinc-900 text-on-surface text-[13px] px-3 py-2.5 focus:outline-none"
                 >
                   <option value="draft">Draft</option>
                   <option value="published">Published</option>
@@ -412,101 +402,92 @@ export function PostEditor({
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase">
+                <label className="block text-[12px] text-ink-secondary">
                   Publish Date
                 </label>
                 <input
                   type="datetime-local"
                   value={publishedAt}
                   onChange={(e) => setPublishedAt(e.target.value)}
-                  className="w-full bg-white border border-hairline-rule text-on-surface font-label-sm text-label-sm px-3 py-2 focus:border-primary focus:outline-none rounded-none"
+                  className="w-full bg-[#F8FAFC] dark:bg-zinc-900 text-on-surface font-mono-telemetry text-[12px] px-3 py-2.5 focus:outline-none"
                 />
               </div>
 
-              <div className="pt-2 border-t border-hairline-subtle flex items-center justify-between">
-                <label
-                  htmlFor="featured-post"
-                  className="text-label-sm font-label-sm text-on-surface font-medium uppercase tracking-wider cursor-pointer"
-                >
+              <div className="pt-1 flex items-center justify-between">
+                <span className="text-[13px] font-medium text-on-surface">
                   Featured Post
-                </label>
-                <input
-                  id="featured-post"
-                  type="checkbox"
-                  checked={featured}
-                  onChange={(e) => setFeatured(e.target.checked)}
-                  className="w-4 h-4 accent-primary cursor-pointer"
-                />
+                </span>
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={featured}
+                  onClick={() => setFeatured(!featured)}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                    featured ? 'bg-[#0F172A] dark:bg-slate-100' : 'bg-[#E2E8F0] dark:bg-zinc-700'
+                  }`}
+                >
+                  <span
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white dark:bg-slate-900 transition-transform ${
+                      featured ? 'translate-x-6' : 'translate-x-1'
+                    }`}
+                  />
+                </button>
               </div>
             </div>
           </div>
 
           {/* Topic Classification */}
-          <div className="border border-hairline-rule bg-white p-5 shadow-xs">
-            <h3 className="font-label-sm text-label-sm text-ink-muted uppercase tracking-widest font-semibold mb-4 pb-2 border-b border-hairline-rule">
-              Topic Classification
+          <div className="py-5">
+            <h3 className="font-studio-display text-[16px] font-semibold text-on-surface mb-3">
+              Taxonomy
             </h3>
-            <div className="space-y-3">
-              <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase">
-                Select Topics ({selectedTopics.length})
-              </label>
-              <div className="max-h-48 overflow-y-auto space-y-1.5 border border-hairline-rule p-2 bg-paper-base/30">
-                {topics.map((t: any) => {
-                  const isChecked = selectedTopics.includes(t.id)
-                  return (
-                    <label
-                      key={t.id}
-                      className="flex items-center gap-2 p-1.5 hover:bg-white cursor-pointer transition-colors text-body-sm text-on-surface"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={isChecked}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setSelectedTopics([...selectedTopics, t.id])
-                          } else {
-                            setSelectedTopics(selectedTopics.filter((id) => id !== t.id))
-                          }
-                        }}
-                        className="w-3.5 h-3.5 accent-primary"
-                      />
-                      <span className="flex-1">{t.name}</span>
-                      {t.slug && (
-                        <span className="text-label-sm font-mono text-ink-muted text-[11px]">
-                          /{t.slug}
-                        </span>
-                      )}
-                    </label>
-                  )
-                })}
-                {topics.length === 0 && (
-                  <p className="text-ink-muted text-body-sm py-2 text-center italic">
-                    No topics created yet.
-                  </p>
-                )}
-              </div>
+            <div className="flex flex-wrap gap-1.5">
+              {topics.map((t: any) => {
+                const isChecked = selectedTopics.includes(t.id)
+                return (
+                  <button
+                    key={t.id}
+                    type="button"
+                    onClick={() => {
+                      if (isChecked) {
+                        setSelectedTopics(selectedTopics.filter((id) => id !== t.id))
+                      } else {
+                        setSelectedTopics([...selectedTopics, t.id])
+                      }
+                    }}
+                    className={`px-3 py-1 rounded-full text-[12px] font-medium transition-colors ${
+                      isChecked
+                        ? 'bg-[#0F172A] text-white dark:bg-slate-100 dark:text-slate-900'
+                        : 'bg-[#F8FAFC] dark:bg-zinc-900 text-ink-secondary hover:text-on-surface'
+                    }`}
+                  >
+                    #{t.name}
+                  </button>
+                )
+              })}
+              {topics.length === 0 && (
+                <p className="text-ink-muted text-[12px]">No topics created yet.</p>
+              )}
             </div>
           </div>
 
           {/* Cover Image */}
-          <div className="border border-hairline-rule bg-white p-5 shadow-xs">
-            <h3 className="font-label-sm text-label-sm text-ink-muted uppercase tracking-widest font-semibold mb-4 pb-2 border-b border-hairline-rule">
-              Cover Image
+          <div className="py-5">
+            <h3 className="font-studio-display text-[16px] font-semibold text-on-surface mb-3">
+              Cover Plate
             </h3>
-            <div className="space-y-3">
-              <select
-                value={coverImage}
-                onChange={(e) => setCoverImage(e.target.value ? (isNaN(Number(e.target.value)) ? e.target.value : Number(e.target.value)) : '')}
-                className="w-full bg-white border border-hairline-rule text-on-surface font-body-sm text-body-sm px-3 py-2 focus:border-primary focus:outline-none rounded-none"
-              >
-                <option value="">No cover image</option>
-                {allMedia.map((m: any) => (
-                  <option key={m.id} value={m.id}>
-                    {m.alt_text || m.filename || `Media #${m.id}`}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <select
+              value={coverImage}
+              onChange={(e) => setCoverImage(e.target.value ? (isNaN(Number(e.target.value)) ? e.target.value : Number(e.target.value)) : '')}
+              className="w-full bg-[#F8FAFC] dark:bg-zinc-900 text-on-surface text-[13px] px-3 py-2.5 focus:outline-none"
+            >
+              <option value="">No cover plate</option>
+              {allMedia.map((m: any) => (
+                <option key={m.id} value={m.id}>
+                  {m.alt_text || m.filename || `Media #${m.id}`}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* Connected Universe */}

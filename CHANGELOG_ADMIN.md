@@ -123,6 +123,17 @@ Tracking all presentation and functional improvements to the Payload Atelier Adm
 80. **Purpose-Built Logos & Semantic Icons**: Replaced generic square/QR/hub icons with a custom SVG ZeroAbstraction Observatory orbital brand mark, observatory-radar greeting emblem, `rocket_launch` for Projects & Rigs, `article` for Posts, `sell` for Topics, `add_photo_alternate` for Plate uploads, and `admin_panel_settings` for Users & Access.
 81. **Media File Renaming (Upload & Existing)**: Added custom filename input during upload in `MediaManager.tsx` and `renameMediaAction` in `media/actions.ts` with a Rename `<AdminDialog>` accessible from Grid cards, List rows, and the Plate Inspector.
 
+---
+
+## Milestone 9: Global Admin Panel Panze Studio Unification (#82 – #87)
+
+82. **Global Form & Card Primitives**: Added `.panze-card` (`#FFFFFF`, `20px` radius, `24px` padding, zero border/shadow) and borderless `#F8FAFC` `12px`-radius input focus rules in `admin-atelier.css`.
+83. **Streamlined RichContentEditor Toolbar**: Collapsed `H1`–`H6` buttons into a single `Heading ▾` dropdown, converted `Write | Preview | Split` to a pill toggle, and styled the editor frame with borderless `#F8FAFC` elevation.
+84. **New Rig / Project Editor (`70% / 30%`)**: Refactored `ProjectEditor.tsx` with `OBSERVATORY / RIGS / NEW RIG` naming, sticky `Create Rig` + `Save Draft` pills, compact title + inline `/rigs/...` slug row, unified right inspector card with `1px solid #F1F5F9` dividers, interactive `JetBrains Mono` tech chips, `Featured` pill switch, and visual **Plate Picker** dialog.
+85. **Unified Post Editor (`70% / 30%`)**: Refactored `PostEditor.tsx` into a `rounded-[20px]` left editor card and a unified right inspector card with pill taxonomy chips, `Featured` switch, and live SERP preview.
+86. **Unified Global Editors (`CurrentState`, `Profile`, `SiteSettings`)**: Updated all global configuration screens to borderless `#FFFFFF` `rounded-[20px]` cards, `#F8FAFC` inputs, and `rounded-full` action pills.
+87. **Unified Users & Access Page**: Updated `users/page.tsx` to borderless `#FFFFFF` `rounded-[20px]` cards with `#F1F5F9` row hairlines and pill status badges.
+
 
 
 

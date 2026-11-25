@@ -25,41 +25,41 @@ export default async function UsersCollectionPage() {
       </header>
 
       {/* Users Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {result.docs.map((user: any) => (
-          <div key={user.id} className="border border-hairline-rule bg-paper-surface shadow-xs rounded overflow-hidden">
+          <div key={user.id} className="bg-paper-surface rounded-[20px] p-6 space-y-5">
             {/* User Card Header */}
-            <div className="bg-surface-container-low px-5 py-4 border-b border-hairline-rule flex items-center gap-4">
-              <div className="w-14 h-14 bg-amber-wash border border-primary/30 rounded flex items-center justify-center text-primary font-headline-md text-headline-md font-normal">
+            <div className="pb-4 border-b border-[#F1F5F9] dark:border-zinc-800 flex items-center gap-4">
+              <div className="w-12 h-12 bg-[#EFF6FF] dark:bg-blue-950/50 rounded-full flex items-center justify-center text-[#2563EB] dark:text-blue-300 font-studio-display text-[18px] font-semibold">
                 {user.email?.charAt(0).toUpperCase() || 'U'}
               </div>
               <div>
-                <h3 className="font-headline-sm text-headline-sm text-on-surface font-medium">{user.email?.split('@')[0] || 'User'}</h3>
-                <span className="font-label-sm text-label-sm text-accent-ochre uppercase tracking-widest">SUPERADMIN // CHIEF OBSERVER</span>
+                <h3 className="font-studio-display text-[16px] text-on-surface font-semibold">{user.email?.split('@')[0] || 'User'}</h3>
+                <span className="font-mono-telemetry text-[10px] font-semibold text-[#2563EB] dark:text-blue-300 uppercase tracking-[0.06em]">SUPERADMIN // CHIEF OBSERVER</span>
               </div>
             </div>
             {/* User Details */}
-            <div className="p-5 space-y-4">
-              <div className="space-y-2 text-label-sm font-label-sm text-ink-muted">
-                <div className="flex justify-between py-1 border-b border-hairline-subtle">
+            <div className="space-y-3">
+              <div className="space-y-2 text-[13px] text-ink-secondary">
+                <div className="flex justify-between py-1.5 border-b border-[#F1F5F9] dark:border-zinc-800">
                   <span>Email</span>
-                  <span className="text-on-surface font-medium font-mono">{user.email}</span>
+                  <span className="text-on-surface font-medium font-mono-telemetry">{user.email}</span>
                 </div>
-                <div className="flex justify-between py-1 border-b border-hairline-subtle">
+                <div className="flex justify-between py-1.5 border-b border-[#F1F5F9] dark:border-zinc-800">
                   <span>Role</span>
-                  <span className="text-primary font-medium">Administrator</span>
+                  <span className="text-on-surface font-medium">Administrator</span>
                 </div>
-                <div className="flex justify-between py-1 border-b border-hairline-subtle">
+                <div className="flex justify-between py-1.5 border-b border-[#F1F5F9] dark:border-zinc-800">
                   <span>Created</span>
-                  <span className="text-on-surface">{new Date(user.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                  <span className="text-on-surface font-mono-telemetry text-[12px]">{new Date(user.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                 </div>
-                <div className="flex justify-between py-1 border-b border-hairline-subtle">
+                <div className="flex justify-between py-1.5 border-b border-[#F1F5F9] dark:border-zinc-800">
                   <span>Last Login</span>
-                  <span className="text-on-surface">{user.updatedAt ? new Date(user.updatedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—'}</span>
+                  <span className="text-on-surface font-mono-telemetry text-[12px]">{user.updatedAt ? new Date(user.updatedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—'}</span>
                 </div>
-                <div className="flex justify-between py-1">
+                <div className="flex justify-between py-1.5">
                   <span>PG Connection</span>
-                  <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-medium">
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#ECFDF5] text-[#059669] dark:bg-emerald-950/50 dark:text-emerald-300 text-[11px] font-medium">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                     Active
                   </span>
@@ -67,12 +67,12 @@ export default async function UsersCollectionPage() {
               </div>
 
               {/* Single-Owner Security Policy */}
-              <div className="pt-3 border-t border-hairline-rule flex items-center justify-between text-ink-muted">
-                <span className="font-label-sm text-label-sm uppercase tracking-wider flex items-center gap-1.5">
-                  <span className="material-symbols-outlined text-[15px] text-primary">lock</span>
+              <div className="pt-3 border-t border-[#F1F5F9] dark:border-zinc-800 flex items-center justify-between text-ink-muted">
+                <span className="font-mono-telemetry text-[10px] uppercase tracking-[0.06em] flex items-center gap-1.5">
+                  <span className="material-symbols-outlined text-[15px] text-ink-secondary">lock</span>
                   Single-Owner Enforced
                 </span>
-                <span className="font-mono text-xs text-ink-secondary bg-surface-container-low px-2 py-0.5 rounded">
+                <span className="font-mono-telemetry text-[11px] text-ink-secondary bg-[#F8FAFC] dark:bg-zinc-900 px-2.5 py-1 rounded-full">
                   V1 Single Principal
                 </span>
               </div>

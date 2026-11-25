@@ -78,7 +78,7 @@ export function ProfileEditor({ profile }: ProfileEditorProps) {
             type="button"
             onClick={handleSave}
             disabled={isPending}
-            className="flex items-center gap-1.5 px-4 py-2 bg-primary hover:bg-accent-ochre text-on-primary font-label-md text-label-md uppercase tracking-wider shadow-sm transition-colors disabled:opacity-50"
+            className="flex items-center gap-1.5 px-5 py-2 rounded-full bg-[#0F172A] text-white dark:bg-slate-100 dark:text-slate-900 text-[13px] font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
           >
             <span className="material-symbols-outlined text-[16px]">
               {isPending ? 'sync' : 'save'}
@@ -88,47 +88,42 @@ export function ProfileEditor({ profile }: ProfileEditorProps) {
         </div>
       </header>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
         {/* Main Form (8 cols) */}
-        <div className="lg:col-span-8 space-y-6">
+        <div className="lg:col-span-8 bg-paper-surface rounded-[20px] p-6 space-y-5">
           {/* Portrait Plate */}
-          <div className="border border-hairline-rule bg-white shadow-xs rounded overflow-hidden">
-            <div className="bg-paper-surface px-4 py-3 border-b border-hairline-rule">
-              <span className="font-label-sm text-label-sm text-ink-muted uppercase tracking-widest font-semibold">LEAD OBSERVER PORTRAIT PLATE</span>
+          <div className="pb-5 border-b border-[#F1F5F9] dark:border-zinc-800 flex items-center gap-5">
+            <div className="w-20 h-20 bg-[#F8FAFC] dark:bg-zinc-900 rounded-2xl flex items-center justify-center shrink-0 overflow-hidden">
+              {profile?.photograph?.url ? (
+                <img src={profile.photograph.url} alt="Portrait" className="w-full h-full object-cover" />
+              ) : (
+                <span className="material-symbols-outlined text-[36px] text-ink-muted/40">person</span>
+              )}
             </div>
-            <div className="p-5 flex items-center gap-6">
-              <div className="w-24 h-24 bg-surface-container-high border border-hairline-rule rounded flex items-center justify-center shrink-0 overflow-hidden">
-                {profile?.photograph?.url ? (
-                  <img src={profile.photograph.url} alt="Portrait" className="w-full h-full object-cover rounded" />
-                ) : (
-                  <span className="material-symbols-outlined text-[40px] text-ink-muted/30">person</span>
-                )}
-              </div>
-              <div className="space-y-2">
-                <p className="font-body-sm text-body-sm text-ink-secondary">Manage portrait plates in the Media archive.</p>
-                <Link
-                  href="/admin/collections/media"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-surface-container-low text-ink-secondary font-label-sm text-label-sm uppercase tracking-wider hover:bg-surface-container-high transition-colors"
-                >
-                  <span className="material-symbols-outlined text-[14px]">perm_media</span>
-                  Open Media Archive
-                </Link>
-              </div>
+            <div className="space-y-2">
+              <h2 className="font-studio-display text-[15px] font-semibold text-on-surface">Lead Observer Portrait</h2>
+              <Link
+                href="/admin/collections/media"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#F8FAFC] dark:bg-zinc-900 text-ink-secondary text-[12px] font-medium hover:text-on-surface transition-colors"
+              >
+                <span className="material-symbols-outlined text-[15px]">photo_library</span>
+                Open Media Plates
+              </Link>
             </div>
           </div>
 
           {/* Introduction */}
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase">
+              <label className="block text-[13px] font-medium text-ink-secondary">
                 Introduction
               </label>
-              <span className="text-label-sm font-mono text-ink-muted text-[11px]">
-                {introduction.length} characters
+              <span className="font-mono-telemetry text-[11px] text-ink-muted">
+                {introduction.length} chars
               </span>
             </div>
             <textarea
-              className="w-full bg-white border border-hairline-rule text-on-surface font-body-md text-body-md px-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none rounded-none resize-y min-h-[150px]"
+              className="w-full bg-[#F8FAFC] dark:bg-zinc-900 border-0 text-on-surface text-[14px] px-3.5 py-3 focus:outline-none rounded-[12px] resize-y min-h-[150px]"
               value={introduction}
               onChange={(e) => setIntroduction(e.target.value)}
               placeholder="A brief introduction about yourself..."
@@ -139,15 +134,15 @@ export function ProfileEditor({ profile }: ProfileEditorProps) {
           {/* Current Focus */}
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase">
+              <label className="block text-[13px] font-medium text-ink-secondary">
                 Current Focus
               </label>
-              <span className="text-label-sm font-mono text-ink-muted text-[11px]">
-                {currentFocus.length} characters
+              <span className="font-mono-telemetry text-[11px] text-ink-muted">
+                {currentFocus.length} chars
               </span>
             </div>
             <textarea
-              className="w-full bg-white border border-hairline-rule text-on-surface font-body-md text-body-md px-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none rounded-none resize-y min-h-[120px]"
+              className="w-full bg-[#F8FAFC] dark:bg-zinc-900 border-0 text-on-surface text-[14px] px-3.5 py-3 focus:outline-none rounded-[12px] resize-y min-h-[120px]"
               value={currentFocus}
               onChange={(e) => setCurrentFocus(e.target.value)}
               placeholder="What are you currently focused on in your research and engineering?"
@@ -157,17 +152,17 @@ export function ProfileEditor({ profile }: ProfileEditorProps) {
         </div>
 
         {/* Sidebar (4 cols) */}
-        <div className="lg:col-span-4 space-y-6">
-          <div className="border border-hairline-rule bg-white p-5 shadow-xs rounded">
-            <h3 className="font-label-sm text-label-sm text-ink-muted uppercase tracking-widest font-semibold mb-4 pb-2 border-b border-hairline-rule">PROFILE TELEMETRY</h3>
-            <div className="space-y-3 text-label-sm font-label-sm text-ink-muted">
-              <div className="flex justify-between py-1 border-b border-hairline-subtle">
+        <div className="lg:col-span-4 bg-paper-surface rounded-[20px] p-6 divide-y divide-[#F1F5F9] dark:divide-zinc-800">
+          <div className="pb-5">
+            <h3 className="font-studio-display text-[16px] font-semibold text-on-surface mb-3">Profile Telemetry</h3>
+            <div className="space-y-2.5 text-[13px] text-ink-secondary">
+              <div className="flex justify-between py-1">
                 <span>Global Slug</span>
-                <span className="text-accent-ochre font-mono">profile</span>
+                <span className="text-on-surface font-mono-telemetry">profile</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-hairline-subtle">
+              <div className="flex justify-between py-1">
                 <span>Last Updated</span>
-                <span className="text-on-surface">
+                <span className="text-on-surface font-mono-telemetry text-[12px]">
                   {profile?.updatedAt
                     ? new Date(profile.updatedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
                     : 'Never'}
@@ -175,21 +170,20 @@ export function ProfileEditor({ profile }: ProfileEditorProps) {
               </div>
               <div className="flex justify-between py-1">
                 <span>Public Visibility</span>
-                <span className="text-emerald-700 font-medium flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#ECFDF5] text-[#059669] dark:bg-emerald-950/50 dark:text-emerald-300 text-[11px] font-medium">
                   Active
                 </span>
               </div>
             </div>
           </div>
 
-          <div className="border border-hairline-rule bg-white p-5 shadow-xs rounded">
-            <h3 className="font-label-sm text-label-sm text-ink-muted uppercase tracking-widest font-semibold mb-4 pb-2 border-b border-hairline-rule">PUBLIC PAGE</h3>
+          <div className="pt-5">
+            <h3 className="font-studio-display text-[16px] font-semibold text-on-surface mb-3">Public Page</h3>
             <Link
               href="/about"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-primary hover:text-accent-ochre transition-colors font-label-sm text-label-sm font-medium"
+              className="inline-flex items-center gap-2 text-[#2563EB] hover:underline text-[13px] font-medium"
             >
               <span className="material-symbols-outlined text-[16px]">open_in_new</span>
               View /about page →

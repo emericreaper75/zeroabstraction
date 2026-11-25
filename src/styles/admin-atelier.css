@@ -328,6 +328,34 @@ dialog::backdrop {
   font-style: normal !important;
 }
 
+/* ── Global Panze Studio Form & Card Primitives ─────────────── */
+.panze-card {
+  background-color: var(--admin-paper-surface);
+  border-radius: 20px;
+  padding: 24px;
+}
+
+.admin-simple-text input[type="text"],
+.admin-simple-text input[type="email"],
+.admin-simple-text input[type="url"],
+.admin-simple-text input[type="number"],
+.admin-simple-text input[type="datetime-local"],
+.admin-simple-text select,
+.admin-simple-text textarea {
+  border-radius: 12px;
+}
+
+.admin-simple-text input[type="text"]:focus,
+.admin-simple-text input[type="email"]:focus,
+.admin-simple-text input[type="url"]:focus,
+.admin-simple-text input[type="number"]:focus,
+.admin-simple-text input[type="datetime-local"]:focus,
+.admin-simple-text select:focus,
+.admin-simple-text textarea:focus {
+  outline: 2px solid var(--admin-primary);
+  outline-offset: -1px;
+}
+
 /* ── Reduced Motion ─────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

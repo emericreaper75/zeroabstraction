@@ -161,7 +161,7 @@ export function CurrentStateEditor({ currentState }: CurrentStateEditorProps) {
               type="button"
               onClick={handleSave}
               disabled={isPending}
-              className="flex items-center gap-1.5 px-4 py-2 bg-primary hover:bg-accent-ochre text-on-primary font-label-md text-label-md uppercase tracking-wider shadow-sm transition-colors disabled:opacity-50"
+              className="flex items-center gap-1.5 px-5 py-2 rounded-full bg-[#0F172A] text-white dark:bg-slate-100 dark:text-slate-900 text-[13px] font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
             >
               <span className="material-symbols-outlined text-[16px]">
                 {isPending ? 'sync' : 'save'}
@@ -173,54 +173,54 @@ export function CurrentStateEditor({ currentState }: CurrentStateEditorProps) {
       </header>
 
       {/* UTC Synchronization */}
-      <div className="border border-hairline-rule bg-white p-4 shadow-xs rounded flex items-center justify-between">
+      <div className="bg-paper-surface rounded-[20px] p-5 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <span className="material-symbols-outlined text-[20px] text-primary">schedule</span>
+          <span className="material-symbols-outlined text-[20px] text-ink-secondary">schedule</span>
           <div>
-            <span className="font-label-sm text-label-sm text-ink-muted uppercase tracking-widest">UTC SYNCHRONIZATION</span>
-            <p className="font-label-md text-label-md text-on-surface mt-0.5 font-mono">
+            <span className="font-mono-telemetry text-[10px] text-ink-muted uppercase tracking-[0.06em]">UTC SYNCHRONIZATION</span>
+            <p className="font-mono-telemetry text-[13px] text-on-surface mt-0.5">
               {currentState?.updatedAt
                 ? `Last updated: ${new Date(currentState.updatedAt).toISOString().replace('T', ' ').slice(0, 19)} UTC`
                 : 'Not yet synchronized'}
             </p>
           </div>
         </div>
-        <span className="font-label-sm text-label-sm text-primary bg-amber-wash px-2 py-0.5 border border-primary/20 rounded font-medium">EPOCH 2025.2</span>
+        <span className="font-mono-telemetry text-[10px] font-semibold uppercase tracking-[0.06em] text-[#2563EB] bg-[#EFF6FF] dark:bg-blue-950/50 dark:text-blue-300 px-2.5 py-1 rounded-full">
+          EPOCH 2025.2
+        </span>
       </div>
 
       {/* Telemetry Input Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {fields.map((field) => {
           const charCount = field.value.length
 
           return (
-            <div key={field.key} className="border border-hairline-rule bg-white shadow-xs rounded overflow-hidden">
-              <div className="bg-paper-surface px-4 py-3 border-b border-hairline-rule flex items-center justify-between">
+            <div key={field.key} className="bg-paper-surface rounded-[20px] p-6 space-y-3">
+              <div className="pb-3 border-b border-[#F1F5F9] dark:border-zinc-800 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[18px] text-primary">{field.icon}</span>
-                  <span className="font-label-sm text-label-sm text-on-surface uppercase tracking-widest font-semibold">{field.label}</span>
+                  <span className="material-symbols-outlined text-[18px] text-ink-secondary">{field.icon}</span>
+                  <span className="font-studio-display text-[15px] font-semibold text-on-surface">{field.label}</span>
                 </div>
-                <span className="font-label-sm text-label-sm text-ink-muted">{charCount} / {field.maxChars} chars</span>
+                <span className="font-mono-telemetry text-[11px] text-ink-muted">{charCount} / {field.maxChars}</span>
               </div>
-              <div className="p-4 space-y-2">
-                <p className="font-body-sm text-body-sm text-ink-muted">{field.description}</p>
-                <textarea
-                  className="w-full bg-surface-container-lowest border border-hairline-rule text-on-surface font-body-md text-body-md px-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none rounded-none resize-y min-h-[100px]"
-                  value={field.value}
-                  onChange={(e) => field.setter(e.target.value)}
-                  placeholder={`What are you ${field.label.toLowerCase()}?`}
-                  maxLength={field.maxChars}
-                  rows={3}
-                />
-              </div>
+              <p className="text-[13px] text-ink-secondary">{field.description}</p>
+              <textarea
+                className="w-full bg-[#F8FAFC] dark:bg-zinc-900 border-0 text-on-surface text-[14px] px-3.5 py-3 focus:outline-none rounded-[12px] resize-y min-h-[100px]"
+                value={field.value}
+                onChange={(e) => field.setter(e.target.value)}
+                placeholder={`What are you ${field.label.toLowerCase()}?`}
+                maxLength={field.maxChars}
+                rows={3}
+              />
             </div>
           )
         })}
       </div>
 
       {/* Live Public Preview Strip */}
-      <section className="border border-hairline-rule bg-paper-surface p-5 rounded shadow-xs">
-        <div className="flex items-center justify-between pb-3 border-b border-hairline-rule mb-4">
+      <section className="bg-paper-surface p-6 rounded-[20px]">
+        <div className="flex items-center justify-between pb-3 border-b border-[#F1F5F9] dark:border-zinc-800 mb-4">
           <span className="font-label-sm text-xs text-ink-secondary uppercase tracking-widest font-semibold flex items-center gap-2">
             <span className="material-symbols-outlined text-[16px] text-primary">preview</span>
             Live Homepage &ldquo;Right Now&rdquo; Preview

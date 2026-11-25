@@ -100,110 +100,80 @@ export function RichContentEditor({
   }
 
   return (
-    <div className="space-y-1.5 w-full">
-      {/* Header bar: Label & View Mode Toggles */}
-      <div className="flex flex-wrap items-center justify-between gap-2 pb-1">
-        <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase">
+    <div className="space-y-2.5 w-full">
+      {/* Header bar: Label & Compact Pill View Mode Toggles */}
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <label className="block text-[13px] font-medium text-ink-secondary">
           {label}
         </label>
-        <div className="flex items-center space-x-1 bg-surface-container-low p-0.5 border border-hairline-rule text-label-sm font-label-sm">
+        <div className="inline-flex items-center gap-1 bg-[#F1F5F9] dark:bg-zinc-900 p-1 rounded-full text-[12px]">
           <button
             type="button"
             onClick={() => setMode('write')}
-            className={`px-2.5 py-1 transition-colors flex items-center gap-1 ${
+            className={`px-3 py-1 rounded-full transition-colors flex items-center gap-1 font-medium ${
               mode === 'write'
-                ? 'bg-white text-on-surface shadow-xs font-medium'
+                ? 'bg-[#0F172A] text-white dark:bg-slate-100 dark:text-slate-900'
                 : 'text-ink-muted hover:text-on-surface'
             }`}
           >
-            <span className="material-symbols-outlined text-[15px]">edit</span>
+            <span className="material-symbols-outlined text-[14px]">edit</span>
             <span>Write</span>
           </button>
           <button
             type="button"
             onClick={() => setMode('preview')}
-            className={`px-2.5 py-1 transition-colors flex items-center gap-1 ${
+            className={`px-3 py-1 rounded-full transition-colors flex items-center gap-1 font-medium ${
               mode === 'preview'
-                ? 'bg-white text-on-surface shadow-xs font-medium'
+                ? 'bg-[#0F172A] text-white dark:bg-slate-100 dark:text-slate-900'
                 : 'text-ink-muted hover:text-on-surface'
             }`}
           >
-            <span className="material-symbols-outlined text-[15px]">visibility</span>
+            <span className="material-symbols-outlined text-[14px]">visibility</span>
             <span>Preview</span>
           </button>
           <button
             type="button"
             onClick={() => setMode('split')}
-            className={`px-2.5 py-1 transition-colors hidden sm:flex items-center gap-1 ${
+            className={`px-3 py-1 rounded-full transition-colors hidden sm:flex items-center gap-1 font-medium ${
               mode === 'split'
-                ? 'bg-white text-on-surface shadow-xs font-medium'
+                ? 'bg-[#0F172A] text-white dark:bg-slate-100 dark:text-slate-900'
                 : 'text-ink-muted hover:text-on-surface'
             }`}
           >
-            <span className="material-symbols-outlined text-[15px]">vertical_split</span>
+            <span className="material-symbols-outlined text-[14px]">vertical_split</span>
             <span>Split</span>
           </button>
         </div>
       </div>
 
-      {/* Editor Frame */}
-      <div className="border border-hairline-rule bg-white shadow-xs flex flex-col">
-        {/* Formatting Toolbar (shown in write and split modes) */}
+      {/* Editor Frame (borderless soft surface) */}
+      <div className="rounded-[14px] bg-[#F8FAFC] dark:bg-zinc-900 overflow-hidden flex flex-col">
+        {/* Streamlined Formatting Toolbar */}
         {mode !== 'preview' && (
-          <div className="bg-paper-surface border-b border-hairline-rule px-3 py-1.5 flex flex-wrap items-center gap-1 text-ink-secondary">
-            {/* Headings */}
-            <div className="flex items-center gap-0.5">
-              <button
-                type="button"
-                onClick={() => prefixLine('#')}
-                title="Heading 1 (#)"
-                className="px-1.5 py-1 hover:bg-surface-container hover:text-on-surface font-headline-sm text-label-sm font-semibold rounded"
-              >
-                H1
-              </button>
-              <button
-                type="button"
-                onClick={() => prefixLine('##')}
-                title="Heading 2 (##)"
-                className="px-1.5 py-1 hover:bg-surface-container hover:text-on-surface font-headline-sm text-label-sm font-semibold rounded"
-              >
-                H2
-              </button>
-              <button
-                type="button"
-                onClick={() => prefixLine('###')}
-                title="Heading 3 (###)"
-                className="px-1.5 py-1 hover:bg-surface-container hover:text-on-surface font-headline-sm text-label-sm font-semibold rounded"
-              >
-                H3
-              </button>
-              <button
-                type="button"
-                onClick={() => prefixLine('####')}
-                title="Heading 4 (####)"
-                className="px-1.5 py-1 hover:bg-surface-container hover:text-on-surface font-headline-sm text-label-sm font-semibold rounded"
-              >
-                H4
-              </button>
-              <button
-                type="button"
-                onClick={() => prefixLine('#####')}
-                title="Heading 5 (#####)"
-                className="px-1.5 py-1 hover:bg-surface-container hover:text-on-surface font-headline-sm text-label-sm font-semibold rounded"
-              >
-                H5
-              </button>
-              <button
-                type="button"
-                onClick={() => prefixLine('######')}
-                title="Heading 6 (######)"
-                className="px-1.5 py-1 hover:bg-surface-container hover:text-on-surface font-headline-sm text-label-sm font-semibold rounded"
-              >
-                H6
-              </button>
-            </div>
+          <div className="border-b border-[#E2E8F0]/70 dark:border-zinc-800 px-3 py-2 flex flex-wrap items-center gap-1 text-ink-secondary">
+            {/* Collapsed Heading Dropdown */}
+            <select
+              aria-label="Insert heading level"
+              value=""
+              onChange={(e) => {
+                if (e.target.value) {
+                  prefixLine(e.target.value)
+                }
+              }}
+              className="bg-paper-surface text-on-surface text-[12px] font-medium px-2.5 py-1 rounded-lg cursor-pointer focus:outline-none mr-1"
+            >
+              <option value="" disabled>
+                Heading ▾
+              </option>
+              <option value="#">H1 — Title</option>
+              <option value="##">H2 — Section</option>
+              <option value="###">H3 — Subsection</option>
+              <option value="####">H4 — Minor</option>
+              <option value="#####">H5 — Note</option>
+              <option value="######">H6 — Micro</option>
+            </select>
 
-            <span className="h-4 w-px bg-hairline-rule mx-1" />
+            <span className="h-4 w-px bg-[#E2E8F0] dark:bg-zinc-800 mx-1" />
 
             {/* Inline Formatting */}
             <button
@@ -354,7 +324,7 @@ export function RichContentEditor({
         </div>
 
         {/* Telemetry Footer */}
-        <div className="bg-paper-surface border-t border-hairline-rule px-4 py-2 flex flex-wrap items-center justify-between gap-3 font-label-sm text-label-sm text-ink-muted">
+        <div className="border-t border-[#E2E8F0]/70 dark:border-zinc-800 px-4 py-2 flex flex-wrap items-center justify-between gap-3 font-mono-telemetry text-[11px] text-ink-muted">
           <div className="flex items-center space-x-4">
             <span>
               <strong className="text-on-surface font-medium font-mono">{telemetry.words}</strong> words

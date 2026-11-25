@@ -113,7 +113,7 @@ export function SiteSettingsEditor({ settings }: SiteSettingsEditorProps) {
             type="button"
             onClick={handleSave}
             disabled={isPending}
-            className="flex items-center gap-1.5 px-4 py-2 bg-primary hover:bg-accent-ochre text-on-primary font-label-md text-label-md uppercase tracking-wider shadow-sm transition-colors disabled:opacity-50"
+            className="flex items-center gap-1.5 px-5 py-2 rounded-full bg-[#0F172A] text-white dark:bg-slate-100 dark:text-slate-900 text-[13px] font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
           >
             <span className="material-symbols-outlined text-[16px]">
               {isPending ? 'sync' : 'save'}
@@ -124,35 +124,32 @@ export function SiteSettingsEditor({ settings }: SiteSettingsEditorProps) {
       </header>
 
       {/* Sections */}
-      <div className="space-y-6">
+      <div className="space-y-5">
         {/* Identity & Frontispiece */}
-        <div className="border border-hairline-rule bg-white shadow-xs rounded overflow-hidden">
-          <div className="bg-paper-surface px-5 py-4 border-b border-hairline-rule flex items-center gap-4">
-            <span className="font-headline-md text-headline-md text-primary font-normal w-10">01</span>
-            <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-[20px] text-ink-muted">badge</span>
-              <h2 className="font-headline-sm text-headline-sm text-on-surface font-medium">Frontispiece &amp; Identity</h2>
-            </div>
+        <div className="bg-paper-surface rounded-[20px] p-6 space-y-5">
+          <div className="pb-3 border-b border-[#F1F5F9] dark:border-zinc-800 flex items-center gap-3">
+            <span className="font-mono-telemetry text-[13px] text-ink-muted">01</span>
+            <h2 className="font-studio-display text-[16px] font-semibold text-on-surface">Frontispiece &amp; Identity</h2>
           </div>
-          <div className="p-5 space-y-5">
+          <div className="space-y-4">
             <div className="space-y-1.5">
-              <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase">
+              <label className="block text-[13px] font-medium text-ink-secondary">
                 Site Name / Title
               </label>
               <input
                 type="text"
-                className="w-full bg-surface-container-lowest border border-hairline-rule text-on-surface font-body-md text-body-md px-4 py-2.5 focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none rounded-none"
+                className="w-full bg-[#F8FAFC] dark:bg-zinc-900 border-0 text-on-surface text-[14px] px-3.5 py-2.5 focus:outline-none"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="ZeroAbstraction"
               />
             </div>
             <div className="space-y-1.5">
-              <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase">
+              <label className="block text-[13px] font-medium text-ink-secondary">
                 Short Biography / Tagline
               </label>
               <textarea
-                className="w-full bg-surface-container-lowest border border-hairline-rule text-on-surface font-body-md text-body-md px-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none rounded-none resize-y min-h-[80px]"
+                className="w-full bg-[#F8FAFC] dark:bg-zinc-900 border-0 text-on-surface text-[14px] px-3.5 py-3 focus:outline-none resize-y min-h-[80px]"
                 value={shortBio}
                 onChange={(e) => setShortBio(e.target.value)}
                 placeholder="Astrophysics, engineering, and personal research archive."
