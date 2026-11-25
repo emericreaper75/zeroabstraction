@@ -289,30 +289,29 @@ export function TopicsManager({ initialTopics, totalDocs: _totalDocs }: TopicsMa
           </div>
         </AdminDialog>
 
-        {/* Right: Quick Create Form & Telemetry (5 cols) */}
-        <div className="lg:col-span-5 space-y-6">
-          {/* Quick Create Card */}
-          <div className="border border-hairline-rule bg-white p-5 shadow-xs">
-            <h3 className="font-label-sm text-label-sm text-ink-muted uppercase tracking-widest font-semibold mb-4 pb-2 border-b border-hairline-rule">
-              CREATE NEW TOPIC
+        {/* Right: Quick Create Form (5 cols) */}
+        <div className="lg:col-span-5">
+          <div className="bg-paper-surface rounded-[20px] p-6 space-y-4">
+            <h3 className="font-studio-display text-[16px] font-semibold text-on-surface pb-3 border-b border-[#F1F5F9] dark:border-zinc-800">
+              New Topic
             </h3>
             <form onSubmit={handleCreateTopic} className="space-y-4">
               <div className="space-y-1.5">
-                <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase">
-                  Topic Name <span className="text-accent-ochre">*</span>
+                <label className="block text-[13px] text-ink-secondary">
+                  Name <span className="text-rose-500">*</span>
                 </label>
                 <input
                   type="text"
                   value={name}
                   onChange={handleNameChange}
                   placeholder="e.g., Gravitational Waves"
-                  className="w-full bg-white border border-hairline-rule text-on-surface font-body-md text-body-md px-3 py-2.5 focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none rounded-none"
+                  className="w-full bg-[#F8FAFC] dark:bg-zinc-900 border-0 text-on-surface text-[14px] px-3.5 py-2.5 focus:outline-none"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase">
-                  Slug <span className="text-accent-ochre">*</span>
+                <label className="block text-[13px] text-ink-secondary">
+                  Slug <span className="text-rose-500">*</span>
                 </label>
                 <input
                   type="text"
@@ -322,18 +321,18 @@ export function TopicsManager({ initialTopics, totalDocs: _totalDocs }: TopicsMa
                     setSlugManuallyEdited(true)
                   }}
                   placeholder="gravitational-waves"
-                  className="w-full bg-white border border-hairline-rule text-on-surface font-body-sm text-body-sm px-3 py-2 focus:border-primary focus:outline-none rounded-none"
+                  className="w-full bg-[#F8FAFC] dark:bg-zinc-900 border-0 text-on-surface font-mono-telemetry text-[13px] px-3.5 py-2.5 focus:outline-none"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase">
-                  Discipline / Category
+                <label className="block text-[13px] text-ink-secondary">
+                  Discipline
                 </label>
                 <select
                   value={type}
                   onChange={(e) => setType(e.target.value)}
-                  className="w-full bg-white border border-hairline-rule text-on-surface font-body-sm text-body-sm px-3 py-2 focus:border-primary focus:outline-none rounded-none"
+                  className="w-full bg-[#F8FAFC] dark:bg-zinc-900 border-0 text-on-surface text-[14px] px-3.5 py-2.5 focus:outline-none"
                 >
                   <option value="astrophysics">Astrophysics</option>
                   <option value="physics">Physics</option>
@@ -347,52 +346,31 @@ export function TopicsManager({ initialTopics, totalDocs: _totalDocs }: TopicsMa
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-label-sm font-label-sm text-ink-secondary font-medium tracking-wider uppercase">
+                <label className="block text-[13px] text-ink-secondary">
                   Description
                 </label>
                 <textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Brief description of this domain or field..."
+                  placeholder="Brief description..."
                   rows={2}
-                  className="w-full bg-white border border-hairline-rule text-on-surface font-body-sm text-body-sm px-3 py-2 focus:border-primary focus:outline-none rounded-none resize-none"
+                  className="w-full bg-[#F8FAFC] dark:bg-zinc-900 border-0 text-on-surface text-[14px] px-3.5 py-2.5 focus:outline-none resize-none"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={isPending}
-                className="w-full bg-primary text-on-primary font-label-md text-label-md uppercase tracking-wider py-2.5 hover:bg-accent-ochre transition-colors shadow-sm disabled:opacity-50"
+                className="w-full bg-[#0F172A] text-white dark:bg-slate-100 dark:text-slate-900 rounded-full text-[13px] font-medium py-2.5 hover:opacity-90 transition-opacity disabled:opacity-50"
               >
                 <span className="flex items-center justify-center gap-1.5">
                   <span className="material-symbols-outlined text-[16px]">
                     {isPending ? 'sync' : 'add'}
                   </span>
-                  {isPending ? 'Creating Topic...' : 'Create Topic'}
+                  {isPending ? 'Creating...' : 'Create Topic'}
                 </span>
               </button>
             </form>
-          </div>
-
-          {/* Taxonomy Stats Card */}
-          <div className="border border-hairline-rule bg-white p-5 shadow-xs">
-            <h3 className="font-label-sm text-label-sm text-ink-muted uppercase tracking-widest font-semibold mb-4 pb-2 border-b border-hairline-rule">
-              TAXONOMY TELEMETRY
-            </h3>
-            <div className="space-y-3 text-label-sm font-label-sm text-ink-muted">
-              <div className="flex justify-between">
-                <span>Total Topics</span>
-                <span className="text-on-surface font-medium">{topics.length}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Most Active</span>
-                <span className="text-primary font-medium">{topics[0]?.name || '—'}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Schema Health</span>
-                <span className="text-emerald-700 font-medium">OPTIMAL</span>
-              </div>
-            </div>
           </div>
         </div>
       </div>

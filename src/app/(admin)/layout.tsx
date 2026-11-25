@@ -5,7 +5,6 @@ import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { AdminHeader, type AdminNotificationItem } from '@/components/admin/AdminHeader'
 import { AdminSidebar, getAdminSidebarCounts } from '@/components/admin/AdminSidebar'
-import { AdminFooter } from '@/components/admin/AdminFooter'
 import { AdminToastProvider } from '@/components/admin/AdminToastProvider'
 import type { CommandSearchItem } from '@/components/admin/AdminCommandPalette'
 import '@/styles/admin-atelier.css'
@@ -109,11 +108,10 @@ export default async function AdminLayout({
           />
           <div className="max-w-[1440px] mx-auto flex w-full min-h-[calc(100vh-4rem)] px-3 sm:px-6 gap-2 sm:gap-4">
             <AdminSidebar />
-            <main className="flex-1 py-5 sm:py-6 overflow-y-auto max-w-full pb-14 bg-transparent">
+            <main className="flex-1 py-5 sm:py-6 overflow-y-auto max-w-full pb-10 bg-transparent">
               {children}
             </main>
           </div>
-          <AdminFooter />
         </AdminToastProvider>
       </body>
     </html>

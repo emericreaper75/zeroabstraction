@@ -142,6 +142,17 @@ Tracking all presentation and functional improvements to the Payload Atelier Adm
 89. **Single-Card Global Settings & Timeline**: Consolidated `SiteSettingsEditor` into one clean `#FFFFFF` `rounded-[20px]` card with `1px solid #F1F5F9` dividers, and streamlined `JourneyEditor` into minimal timeline rows.
 90. **Single-Card Projects & Posts Index**: Merged search and status filter pills directly into the `ProjectsTableClient` table card for a lighter, uncluttered index view.
 
+---
+
+## Milestone 11: Final UI Polish & Observatory Bug Fixes (#91 – #96)
+
+91. **Clean Bottom Canvas Edge**: Removed the fixed `AdminFooter` status bar from `(admin)/layout.tsx` and removed duplicate `@import url(...)` font imports in `admin-atelier.css`.
+92. **Composition Donut Segments & Item Counts**: Updated the `Overview & Content Composition` SVG donut with distinct `#0F172A` / `#2563EB` / `#CBD5E1` segments separated by `3px` gaps, and replaced dual `100%` labels with actual item counts (`1 post`, `1 rig`).
+93. **Emerald Readiness Ring & Crisp Checklist**: Changed the `100%` Readiness progress ring stroke to `#059669` and darkened checklist labels to `#475569`.
+94. **Clean Plate Captions**: Stripped `.png`/image extensions and formatted Plate captions into readable Title Case with `truncate`.
+95. **On Going Tasks Typo & Zero-Draft Guard**: Fixed `Verify N ingested plates` wording and hid `Finalize 0 drafts` when `draftPostsCount === 0`.
+96. **Unified Rig Naming & Topics Card**: Standardized `Rigs` / `New Rig` across `AdminHeader`, `AdminSidebarClient`, and `DashboardOverviewClient`, and converted `TopicsManager`'s create card to borderless `#FFFFFF` `rounded-[20px]` styling.
+
 
 
 

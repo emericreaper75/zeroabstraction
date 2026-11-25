@@ -30,7 +30,7 @@ export function AdminSidebarClient({ counts: _counts }: { counts: AdminSidebarCo
   const navItems: NavItem[] = [
     { href: '/admin', icon: 'space_dashboard', label: 'Observatory Overview' },
     { href: '/admin/collections/posts', icon: 'article', label: 'Posts & Treatises' },
-    { href: '/admin/collections/projects', icon: 'rocket_launch', label: 'Projects & Rigs' },
+    { href: '/admin/collections/projects', icon: 'rocket_launch', label: 'Rigs' },
     { href: '/admin/collections/topics', icon: 'sell', label: 'Topics & Taxonomy' },
     { href: '/admin/collections/media', icon: 'photo_library', label: 'Media & Plates' },
     { href: '/admin/globals/profile', icon: 'person', label: 'Observer Profile' },

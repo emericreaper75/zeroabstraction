@@ -80,6 +80,12 @@ interface OngoingTask {
   done: boolean
 }
 
+function formatPlateTitle(filename: string): string {
+  const stem = filename.replace(/\.[^/.]+$/, '').replace(/[_-]+/g, ' ').trim()
+  if (!stem) return 'Plate'
+  return stem.replace(/\b\w/g, (c) => c.toUpperCase())
+}
+
 function getGreeting(): string {
   const hour = new Date().getHours()
   if (hour < 12) return 'Good morning'
@@ -116,16 +122,21 @@ export function DashboardOverviewClient({
   const [pinging, setPinging] = useState(false)
   const [newTaskText, setNewTaskText] = useState('')
 
-  const [tasks, setTasks] = useState<OngoingTask[]>([
-    { id: 't1', label: 'Verify rig calibration', done: true },
-    {
-      id: 't2',
-      label: latestPost ? `Review draft of ${latestPost.title}` : 'Review latest manuscript',
-      done: false,
-    },
-    { id: 't3', label: `Verify ${metrics.mediaCount} ingest plates`, done: true },
-    { id: 't4', label: `Finalize ${metrics.draftPostsCount} drafts`, done: false },
-  ])
+  const [tasks, setTasks] = useState<OngoingTask[]>(() => {
+    const base: OngoingTask[] = [
+      { id: 't1', label: 'Verify rig calibration', done: true },
+      {
+        id: 't2',
+        label: latestPost ? `Review draft of ${latestPost.title}` : 'Review latest manuscript',
+        done: false,
+      },
+      { id: 't3', label: `Verify ${metrics.mediaCount} ingested plates`, done: true },
+    ]
+    if (metrics.draftPostsCount > 0) {
+      base.push({ id: 't4', label: `Finalize ${metrics.draftPostsCount} drafts`, done: false })
+    }
+    return base
+  })
 
   useEffect(() => {
     setGreeting(getGreeting())
@@ -232,11 +243,14 @@ export function DashboardOverviewClient({
   const ringC = 2 * Math.PI * ringR
   const ringOffset = ringC - (readinessScore / 100) * ringC
 
-  // Thick-Stroke Donut Chart (128x128)
+  // Thick-Stroke Donut Chart (132x132) with 3px white gap between segments
   const donutR = 46
   const donutC = 2 * Math.PI * donutR
-  const seg1 = Math.max(0.15, pubPct / 100) * donutC
-  const seg2 = Math.max(0.2, draftPct / 100) * donutC
+  const gap = 3
+  const topicTotal = Math.max(1, topicStats.slice(0, 2).reduce((acc, t) => acc + t.count, 0))
+  const t1Len = Math.max(24, ((topicStats[0]?.count || 1) / topicTotal) * (donutC * 0.72) - gap)
+  const t2Len = Math.max(24, ((topicStats[1]?.count || 1) / topicTotal) * (donutC * 0.72) - gap)
+  const t3Len = Math.max(16, donutC - t1Len - t2Len - gap * 3)
 
   const topTopics = topicStats.slice(0, 2)
 
@@ -404,7 +418,7 @@ export function DashboardOverviewClient({
                     strokeDasharray={ringC}
                     strokeDashoffset={ringOffset}
                     strokeLinecap="round"
-                    className="text-[#475569] dark:text-slate-300 transition-all duration-500"
+                    className={`${readinessScore >= 100 ? 'text-[#059669]' : 'text-[#2563EB]'} transition-all duration-500`}
                   />
                 </svg>
 
@@ -413,7 +427,7 @@ export function DashboardOverviewClient({
                     <li key={issue.id}>
                       <Link
                         href={issue.href}
-                        className="flex items-center justify-between gap-2 text-ink-secondary hover:text-on-surface transition-colors"
+                        className="flex items-center justify-between gap-2 text-[#475569] dark:text-slate-300 hover:text-on-surface transition-colors"
                       >
                         <span className="truncate">{issue.label}</span>
                         <span
@@ -514,7 +528,9 @@ export function DashboardOverviewClient({
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="22"
-                    className="text-[#E2E8F0] dark:text-zinc-800"
+                    strokeDasharray={`${t3Len} ${donutC}`}
+                    strokeDashoffset={-(t1Len + gap + t2Len + gap)}
+                    className="text-[#CBD5E1] dark:text-zinc-700"
                   />
                   <circle
                     cx="66"
@@ -523,9 +539,9 @@ export function DashboardOverviewClient({
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="22"
-                    strokeDasharray={`${seg2} ${donutC}`}
-                    strokeDashoffset={-seg1}
-                    className="text-[#64748B] dark:text-slate-500"
+                    strokeDasharray={`${t2Len} ${donutC}`}
+                    strokeDashoffset={-(t1Len + gap)}
+                    className="text-[#2563EB]"
                   />
                   <circle
                     cx="66"
@@ -534,31 +550,27 @@ export function DashboardOverviewClient({
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="22"
-                    strokeDasharray={`${seg1} ${donutC}`}
+                    strokeDasharray={`${t1Len} ${donutC}`}
                     className="text-[#0F172A] dark:text-slate-100"
                   />
                 </svg>
 
                 <div className="w-full space-y-2 pt-1">
-                  {topTopics.map((topic, idx) => {
-                    const maxT = Math.max(1, ...topicStats.map((t) => t.count))
-                    const pct = Math.round((topic.count / maxT) * 100)
-                    return (
-                      <div key={topic.id} className="flex items-center justify-between text-[13px]">
-                        <span className="flex items-center gap-2 text-on-surface truncate pr-2">
-                          <span
-                            className={`w-2 h-2 rounded-full shrink-0 ${
-                              idx === 0 ? 'bg-[#0F172A] dark:bg-slate-100' : 'bg-[#94A3B8]'
-                            }`}
-                          />
-                          <span className="truncate">#{topic.name}</span>
-                        </span>
-                        <span className="font-mono-telemetry text-[12px] text-ink-secondary">
-                          {pct}%
-                        </span>
-                      </div>
-                    )
-                  })}
+                  {topTopics.map((topic, idx) => (
+                    <div key={topic.id} className="flex items-center justify-between text-[13px]">
+                      <span className="flex items-center gap-2 text-on-surface truncate pr-2">
+                        <span
+                          className={`w-2 h-2 rounded-full shrink-0 ${
+                            idx === 0 ? 'bg-[#0F172A] dark:bg-slate-100' : 'bg-[#2563EB]'
+                          }`}
+                        />
+                        <span className="truncate">#{topic.name}</span>
+                      </span>
+                      <span className="font-mono-telemetry text-[12px] text-[#475569] dark:text-slate-300 shrink-0">
+                        {topic.count} {topic.count === 1 ? 'post' : 'posts'}
+                      </span>
+                    </div>
+                  ))}
                   {topTopics.length === 0 && (
                     <div className="text-center text-[12px] text-ink-muted">No topics indexed</div>
                   )}
@@ -596,7 +608,7 @@ export function DashboardOverviewClient({
                   <div className="font-mono-telemetry text-[24px] font-semibold text-on-surface leading-none">
                     {pad(metrics.projectsCount)}
                   </div>
-                  <div className="text-[13px] text-ink-secondary mt-1.5">Projects</div>
+                  <div className="text-[13px] text-ink-secondary mt-1.5">Rigs</div>
                 </Link>
 
                 <Link
@@ -726,8 +738,8 @@ export function DashboardOverviewClient({
                       </div>
                     )}
                   </div>
-                  <p className="text-[11px] text-ink-secondary truncate text-center">
-                    {m.filename.replace(/\.[^/.]+$/, '')}
+                  <p className="text-[11px] text-[#475569] dark:text-slate-300 truncate text-center">
+                    {formatPlateTitle(m.filename)}
                   </p>
                 </Link>
               ))}
