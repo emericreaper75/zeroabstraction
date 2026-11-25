@@ -3,9 +3,11 @@ import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
-import { AdminHeader } from '@/components/admin/AdminHeader'
-import { AdminSidebar } from '@/components/admin/AdminSidebar'
+import { AdminHeader, type AdminNotificationItem } from '@/components/admin/AdminHeader'
+import { AdminSidebar, getAdminSidebarCounts } from '@/components/admin/AdminSidebar'
 import { AdminFooter } from '@/components/admin/AdminFooter'
+import { AdminToastProvider } from '@/components/admin/AdminToastProvider'
+import type { CommandSearchItem } from '@/components/admin/AdminCommandPalette'
 import '@/styles/admin-atelier.css'
 
 export const dynamic = 'force-dynamic'
@@ -27,13 +29,63 @@ export default async function AdminLayout({
     redirect('/login')
   }
 
+  // Hydrate command palette & notification center with live records
+  const [counts, postsRes, projectsRes, topicsRes] = await Promise.all([
+    getAdminSidebarCounts(),
+    payload.find({ collection: 'posts', limit: 30, sort: '-updatedAt', overrideAccess: true }),
+    payload.find({ collection: 'projects', limit: 30, sort: '-updatedAt', overrideAccess: true }),
+    payload.find({ collection: 'topics', limit: 40, sort: 'name', overrideAccess: true }),
+  ])
+
+  const searchItems: CommandSearchItem[] = [
+    ...postsRes.docs.map((p: any) => ({
+      id: `post-${p.id}`,
+      title: p.title || 'Untitled Post',
+      subtitle: `/writing/${p.slug || ''}`,
+      category: 'post' as const,
+      href: `/admin/collections/posts/${p.id}`,
+      icon: 'article',
+      badge: p.status === 'published' ? 'PUB' : 'DRAFT',
+    })),
+    ...projectsRes.docs.map((pr: any) => ({
+      id: `project-${pr.id}`,
+      title: pr.title || 'Untitled Project',
+      subtitle: `/projects/${pr.slug || ''}`,
+      category: 'project' as const,
+      href: `/admin/collections/projects/${pr.id}`,
+      icon: 'qr_code_2',
+      badge: pr.year ? String(pr.year) : undefined,
+    })),
+    ...topicsRes.docs.map((t: any) => ({
+      id: `topic-${t.id}`,
+      title: t.name || 'Topic',
+      subtitle: `#${t.slug || ''}`,
+      category: 'topic' as const,
+      href: '/admin/collections/topics',
+      icon: 'label',
+      badge: t.type || undefined,
+    })),
+  ]
+
+  const draftNotifications: AdminNotificationItem[] = postsRes.docs
+    .filter((p: any) => p.status !== 'published')
+    .slice(0, 4)
+    .map((p: any) => ({
+      id: `draft-${p.id}`,
+      title: p.title || 'Untitled Draft',
+      meta: `Draft awaiting review · /writing/${p.slug || ''}`,
+      href: `/admin/collections/posts/${p.id}`,
+      kind: 'draft',
+    }))
+
   return (
     <html lang="en" className="dark" data-theme="dark" suppressHydrationWarning>
       <head>
+        <meta name="color-scheme" content="light dark" />
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "(function(){try{var s=localStorage.getItem('payload-admin-theme');var t=s==='light'||s==='dark'?s:'dark';document.documentElement.setAttribute('data-theme',t);document.documentElement.className=t;document.documentElement.style.colorScheme=t;}catch(e){}})();",
+              "(function(){try{var s=localStorage.getItem('payload-admin-theme');var t=s==='light'||s==='dark'?s:'dark';document.documentElement.setAttribute('data-theme',t);document.documentElement.className=t;document.documentElement.style.colorScheme=t;var m=document.querySelector('meta[name=\"color-scheme\"]');if(m)m.setAttribute('content',t);}catch(e){}})();",
           }}
         />
         <link href="https://fonts.googleapis.com" rel="preconnect" />
@@ -48,14 +100,21 @@ export default async function AdminLayout({
         />
       </head>
       <body className="bg-paper-base text-ink-primary antialiased font-body-sm min-h-screen selection:bg-amber-wash selection:text-on-primary">
-        <AdminHeader user={user as any} />
-        <div className="max-w-[1440px] mx-auto flex w-full min-h-[calc(100vh-5rem)]">
-          <AdminSidebar />
-          <main className="flex-1 px-5 sm:px-8 py-8 overflow-y-auto max-w-full pb-16 bg-paper-base">
-            {children}
-          </main>
-        </div>
-        <AdminFooter />
+        <AdminToastProvider>
+          <AdminHeader
+            user={user as any}
+            searchItems={searchItems}
+            counts={counts}
+            notifications={draftNotifications}
+          />
+          <div className="max-w-[1440px] mx-auto flex w-full min-h-[calc(100vh-5rem)]">
+            <AdminSidebar />
+            <main className="flex-1 px-5 sm:px-8 py-8 overflow-y-auto max-w-full pb-16 bg-paper-base">
+              {children}
+            </main>
+          </div>
+          <AdminFooter />
+        </AdminToastProvider>
       </body>
     </html>
   )

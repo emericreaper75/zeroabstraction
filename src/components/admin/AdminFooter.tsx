@@ -1,27 +1,58 @@
-import React from 'react'
+'use client'
+
+import React, { useEffect, useState } from 'react'
 
 export function AdminFooter() {
+  const [utcTime, setUtcTime] = useState<string>('--:--:--')
+  const [online, setOnline] = useState<boolean>(true)
+
+  useEffect(() => {
+    const updateClock = () => {
+      setUtcTime(new Date().toISOString().slice(11, 19))
+    }
+    updateClock()
+    const timer = setInterval(updateClock, 1000)
+
+    setOnline(navigator.onLine)
+    const onOnline = () => setOnline(true)
+    const onOffline = () => setOnline(false)
+    window.addEventListener('online', onOnline)
+    window.addEventListener('offline', onOffline)
+
+    return () => {
+      clearInterval(timer)
+      window.removeEventListener('online', onOnline)
+      window.removeEventListener('offline', onOffline)
+    }
+  }, [])
+
   return (
     <footer className="fixed bottom-0 left-0 w-full z-30 bg-surface-container-low border-t border-hairline-rule h-7 flex items-center">
       <div className="flex justify-between items-center w-full px-space-md max-w-[1440px] mx-auto text-[11px] font-label-sm text-ink-muted">
         {/* Left: Node Status */}
         <div className="flex items-center gap-2 truncate">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
-          <span className="text-ink-secondary font-label-sm">
-            ZEROABSTRACTION CMS // PAYLOAD v3.28.0 // NODE: OBSERVATORY-NORTH-ALPHA
+          <span
+            className={`w-1.5 h-1.5 rounded-full ${online ? 'bg-emerald-500' : 'bg-rose-500'}`}
+          />
+          <span className="text-ink-secondary font-label-sm truncate">
+            ZEROABSTRACTION CMS // PAYLOAD v3.28.0 // {online ? 'NODE ONLINE' : 'OFFLINE'}
           </span>
         </div>
         {/* Center: Operational Telemetry */}
         <div className="hidden md:flex items-center gap-2 text-ink-muted">
           <span>POSTGRESQL CONNECTED</span>
           <span>•</span>
-          <span>LATENCY 18MS</span>
-          <span>•</span>
-          <span>REPLICATION IN SYNC</span>
+          <button
+            type="button"
+            onClick={() => window.dispatchEvent(new CustomEvent('atelier:open-shortcuts'))}
+            className="hover:text-primary transition-colors"
+          >
+            PRESS ? FOR SHORTCUTS
+          </button>
         </div>
-        {/* Right: Active Session */}
-        <div className="flex items-center gap-2 text-primary font-label-sm font-medium">
-          <span className="hidden sm:inline text-ink-muted font-normal">LAST SYNC: {new Date().toISOString().slice(11, 16)} UTC •</span>
+        {/* Right: Active Session & Live UTC */}
+        <div className="flex items-center gap-2 text-primary font-label-sm font-medium shrink-0">
+          <span className="hidden sm:inline text-ink-muted font-normal">UTC {utcTime} •</span>
           <span>ADMIN</span>
         </div>
       </div>

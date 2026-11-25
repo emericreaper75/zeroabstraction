@@ -269,6 +269,42 @@ input[type="checkbox"].table-checkbox:checked::after {
   outline-offset: 2px;
 }
 
+/* ── Native Dialog & Top-Layer Scroll Containment ─────────────── */
+dialog:modal {
+  overscroll-behavior: contain;
+  color: var(--admin-on-surface);
+  background: var(--admin-paper-surface);
+}
+dialog::backdrop {
+  background: rgba(9, 11, 16, 0.72);
+  backdrop-filter: blur(4px);
+  overflow: hidden;
+  overscroll-behavior: contain;
+}
+
+/* ── Color Scheme Meta Sync ─────────────────────────────────── */
+:root {
+  color-scheme: light dark;
+}
+:root:has(> head > meta[name="color-scheme"][content="dark"]) {
+  color-scheme: dark;
+}
+:root:has(> head > meta[name="color-scheme"][content="light"]) {
+  color-scheme: light;
+}
+
+/* ── Responsive Table Container & Sticky Headers ────────────── */
+.admin-table-region {
+  overflow-x: auto;
+  max-inline-size: 100%;
+  container-type: inline-size;
+}
+.admin-table-region thead th {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 1;
+}
+
 /* ── Reduced Motion ─────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
