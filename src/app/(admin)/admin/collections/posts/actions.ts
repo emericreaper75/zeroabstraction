@@ -122,3 +122,46 @@ export async function deletePostAction(id: string | number) {
     return { success: false, error: err.message || 'Failed to delete post.' }
   }
 }
+
+export async function bulkUpdatePostStatusAction(
+  ids: (string | number)[],
+  status: 'draft' | 'published' | 'archived'
+) {
+  try {
+    const payload = await getPayload({ config: configPromise })
+    const reqHeaders = await headers()
+    const { user } = await payload.auth({ headers: reqHeaders })
+
+    if (!user) {
+      return { success: false, error: 'Unauthorized: Admin session required.' }
+    }
+
+    if (!ids.length) {
+      return { success: false, error: 'No posts selected.' }
+    }
+
+    await Promise.all(
+      ids.map((id) =>
+        payload.update({
+          collection: 'posts',
+          id,
+          data: {
+            status,
+            ...(status === 'published' ? { published_at: new Date().toISOString() } : {}),
+          },
+          overrideAccess: true,
+        })
+      )
+    )
+
+    revalidatePath('/admin/collections/posts')
+    revalidatePath('/admin')
+    revalidatePath('/writing')
+    revalidateTag('public-search-index', 'max')
+
+    return { success: true, count: ids.length }
+  } catch (err: any) {
+    console.error('Error in bulkUpdatePostStatusAction:', err)
+    return { success: false, error: err.message || 'Failed to update posts.' }
+  }
+}

@@ -27,9 +27,9 @@ export default async function UsersCollectionPage() {
       {/* Users Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {result.docs.map((user: any) => (
-          <div key={user.id} className="border border-hairline-rule bg-white shadow-xs rounded overflow-hidden">
+          <div key={user.id} className="border border-hairline-rule bg-paper-surface shadow-xs rounded overflow-hidden">
             {/* User Card Header */}
-            <div className="bg-paper-surface px-5 py-4 border-b border-hairline-rule flex items-center gap-4">
+            <div className="bg-surface-container-low px-5 py-4 border-b border-hairline-rule flex items-center gap-4">
               <div className="w-14 h-14 bg-amber-wash border border-primary/30 rounded flex items-center justify-center text-primary font-headline-md text-headline-md font-normal">
                 {user.email?.charAt(0).toUpperCase() || 'U'}
               </div>
@@ -59,8 +59,8 @@ export default async function UsersCollectionPage() {
                 </div>
                 <div className="flex justify-between py-1">
                   <span>PG Connection</span>
-                  <span className="flex items-center gap-1 text-emerald-700 font-medium">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
+                  <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-medium">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                     Active
                   </span>
                 </div>
@@ -69,7 +69,7 @@ export default async function UsersCollectionPage() {
               {/* Single-Owner Security Policy */}
               <div className="pt-3 border-t border-hairline-rule flex items-center justify-between text-ink-muted">
                 <span className="font-label-sm text-label-sm uppercase tracking-wider flex items-center gap-1.5">
-                  <span className="material-symbols-outlined text-[15px] text-amber-700">lock</span>
+                  <span className="material-symbols-outlined text-[15px] text-primary">lock</span>
                   Single-Owner Enforced
                 </span>
                 <span className="font-mono text-xs text-ink-secondary bg-surface-container-low px-2 py-0.5 rounded">

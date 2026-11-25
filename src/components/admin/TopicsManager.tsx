@@ -1,8 +1,10 @@
 'use client'
 
-import React, { useState, useTransition } from 'react'
+import React, { useMemo, useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { createTopicAction, deleteTopicAction } from '@/app/(admin)/admin/collections/topics/actions'
+import { AdminDialog } from './AdminDialog'
+import { useAdminToast } from './AdminToastProvider'
 
 interface TopicItem {
   id: string | number
@@ -29,7 +31,11 @@ function slugify(text: string): string {
 
 export function TopicsManager({ initialTopics, totalDocs: _totalDocs }: TopicsManagerProps) {
   const router = useRouter()
+  const toast = useAdminToast()
   const [topics, setTopics] = useState<TopicItem[]>(initialTopics)
+  const [search, setSearch] = useState('')
+  const [typeFilter, setTypeFilter] = useState<string>('all')
+  const [confirmDelete, setConfirmDelete] = useState<{ id: string | number; name: string } | null>(null)
   const [name, setName] = useState('')
   const [slug, setSlug] = useState('')
   const [slugManuallyEdited, setSlugManuallyEdited] = useState(false)
@@ -39,6 +45,27 @@ export function TopicsManager({ initialTopics, totalDocs: _totalDocs }: TopicsMa
   const [isPending, startTransition] = useTransition()
   const [deletingId, setDeletingId] = useState<string | number | null>(null)
   const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
+
+  const topicTypes = useMemo(() => {
+    const set = new Set<string>()
+    topics.forEach((t) => {
+      if (t.type) set.add(t.type)
+    })
+    return ['all', ...Array.from(set)]
+  }, [topics])
+
+  const filteredTopics = useMemo(() => {
+    const q = search.trim().toLowerCase()
+    return topics.filter((t) => {
+      if (typeFilter !== 'all' && t.type !== typeFilter) return false
+      if (!q) return true
+      return (
+        t.name.toLowerCase().includes(q) ||
+        t.slug.toLowerCase().includes(q) ||
+        (t.type || '').toLowerCase().includes(q)
+      )
+    })
+  }, [topics, search, typeFilter])
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value
@@ -84,19 +111,26 @@ export function TopicsManager({ initialTopics, totalDocs: _totalDocs }: TopicsMa
     })
   }
 
-  const handleDelete = async (topicId: string | number, topicName: string) => {
-    const confirmed = window.confirm(`Are you sure you want to delete topic "${topicName}"?`)
-    if (!confirmed) return
+  const handleDelete = (topicId: string | number, topicName: string) => {
+    setConfirmDelete({ id: topicId, name: topicName })
+  }
+
+  const executeDelete = async () => {
+    if (!confirmDelete) return
+    const { id: topicId, name: topicName } = confirmDelete
+    setConfirmDelete(null)
 
     setDeletingId(topicId)
     const res = await deleteTopicAction(topicId)
     setDeletingId(null)
 
     if (res.success) {
+      toast.success(`Topic "${topicName}" deleted.`)
       setFeedback({ type: 'success', message: `Topic "${topicName}" deleted.` })
       setTopics((prev) => prev.filter((t) => t.id !== topicId))
       router.refresh()
     } else {
+      toast.error(res.error || 'Failed to delete topic.')
       setFeedback({ type: 'error', message: res.error || 'Failed to delete topic.' })
     }
   }
@@ -132,17 +166,43 @@ export function TopicsManager({ initialTopics, totalDocs: _totalDocs }: TopicsMa
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left: Topic List (7 cols) */}
         <div className="lg:col-span-7">
-          <div className="bg-surface-container-lowest shadow-sm border border-hairline-rule overflow-hidden">
-            <div className="bg-paper-surface px-4 py-3 border-b border-hairline-rule flex items-center justify-between">
+          <div className="bg-surface-container-lowest shadow-sm border border-hairline-rule rounded overflow-hidden">
+            <div className="bg-paper-surface px-4 py-3 border-b border-hairline-rule flex flex-wrap items-center justify-between gap-3">
               <span className="font-label-sm text-label-sm text-ink-muted uppercase tracking-widest font-semibold">
                 TOPIC INDEX
               </span>
               <span className="font-label-sm text-label-sm text-ink-muted">
-                {topics.length} entries
+                {filteredTopics.length} of {topics.length} entries
               </span>
             </div>
+            <div className="px-4 py-2.5 border-b border-hairline-subtle bg-paper-surface/60 flex flex-wrap items-center gap-2">
+              <input
+                type="search"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Filter topics..."
+                aria-label="Filter topics"
+                className="flex-1 min-w-[160px] bg-surface-container-low border border-hairline-rule rounded px-2.5 py-1 text-xs text-on-surface placeholder:text-ink-muted focus:outline-none focus:border-primary"
+              />
+              <div className="flex items-center gap-1 overflow-x-auto">
+                {topicTypes.map((tp) => (
+                  <button
+                    key={tp}
+                    type="button"
+                    onClick={() => setTypeFilter(tp)}
+                    className={`px-2 py-1 rounded text-[11px] font-label-sm uppercase transition-colors ${
+                      typeFilter === tp
+                        ? 'bg-amber-wash text-primary font-medium'
+                        : 'text-ink-muted hover:text-on-surface'
+                    }`}
+                  >
+                    {tp}
+                  </button>
+                ))}
+              </div>
+            </div>
             <div className="divide-y divide-hairline-rule">
-              {topics.map((topic) => (
+              {filteredTopics.map((topic) => (
                 <div
                   key={topic.id}
                   className="px-4 py-3.5 flex items-center justify-between hover:bg-paper-surface transition-colors group"
@@ -187,14 +247,47 @@ export function TopicsManager({ initialTopics, totalDocs: _totalDocs }: TopicsMa
                   </div>
                 </div>
               ))}
-              {topics.length === 0 && (
+              {filteredTopics.length === 0 && (
                 <div className="px-4 py-12 text-center text-ink-muted font-body-sm">
-                  No topics found. Create your first taxonomy entry on the right.
+                  No matching topics found.
                 </div>
               )}
             </div>
           </div>
         </div>
+
+        <AdminDialog
+          open={Boolean(confirmDelete)}
+          onClose={() => setConfirmDelete(null)}
+          labelledBy="delete-topic-title"
+          className="w-[min(420px,92vw)]"
+        >
+          <div className="p-5 bg-paper-surface space-y-4">
+            <h1 id="delete-topic-title" className="font-headline-sm text-lg text-on-surface">
+              Delete Topic?
+            </h1>
+            <p className="text-xs text-ink-secondary leading-relaxed">
+              Remove <strong className="text-on-surface">{confirmDelete?.name}</strong> from the taxonomy index? Posts referencing this topic will be unlinked.
+            </p>
+            <div className="flex justify-end gap-2 pt-2">
+              <button
+                type="button"
+                autoFocus
+                onClick={() => setConfirmDelete(null)}
+                className="px-3.5 py-1.5 rounded border border-hairline-rule text-xs font-label-sm text-on-surface hover:bg-surface-container-low"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={executeDelete}
+                className="px-3.5 py-1.5 rounded bg-rose-600 text-white text-xs font-label-sm hover:bg-rose-700"
+              >
+                Delete Topic
+              </button>
+            </div>
+          </div>
+        </AdminDialog>
 
         {/* Right: Quick Create Form & Telemetry (5 cols) */}
         <div className="lg:col-span-5 space-y-6">

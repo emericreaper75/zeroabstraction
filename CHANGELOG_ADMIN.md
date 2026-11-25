@@ -46,3 +46,25 @@ Tracking all presentation and functional improvements to the Payload Atelier Adm
 33. **API & DB Diagnostics Ping**: Added an interactive `Run Ping` button calling `/api/health` with live round-trip latency readout.
 34. **Dark Mode Badge Contrast Fix**: Replaced harsh light-mode `bg-emerald-50` / `bg-white` classes on dashboard cards and badges with theme-aware semantic tokens.
 
+---
+
+## Milestone 3: Collection Views & Data Tables Polish (#35 – #50)
+
+35. **Posts Table — Server-Side Status Filtering**: Fixed `posts/page.tsx` so `?status=published`, `?status=draft`, and `?status=archived` filter the Payload query (`where: { status: { equals } }`).
+36. **Posts Table — Live Search & Sortable Columns**: Added real-time client search (title, slug, topic) and `aria-sort` sortable headers (`Title`, `Status`, `Updated`).
+37. **Posts Table — Status-Preserving Pagination**: Updated pagination links to preserve active `?status=` filters.
+38. **Posts Table — Bulk Selection & Floating Action Bar**: Wired row checkboxes and Select All to a floating Bulk Action Bar (`Publish Selected`, `Move to Draft`, `Export Selected`, `Clear`) backed by `bulkUpdatePostStatusAction`.
+39. **Posts Table — JSON Manifest Export**: Wired the `Manifest` button to download `zeroabstraction-posts-YYYY-MM-DD.json`.
+40. **Posts Table — One-Click Copy Slug & Topic Array Fix**: Added copy `/writing/<slug>` button with toast feedback and fixed topic chip rendering for `post.topics`.
+41. **Posts Table — Accessible Scroll Region & Sticky Header**: Applied `tabIndex={0}`, `role="region"`, `aria-labelledby`, and sticky `thead` via `.admin-table-region`.
+42. **Projects Table — Live Search, Status Tabs & Sortable Columns**: Upgraded `projects/page.tsx` with `ProjectsTableClient` supporting search, status filtering (`All`, `In Progress`, `Completed`, `Archived`), and sorting (`Title`, `Status`, `Year`).
+43. **Projects Table — Manifest Export, Copy Slug & Link Count**: Added JSON manifest export, copy `/projects/<slug>`, featured star badge, and external link count.
+44. **Topics Manager — Instant Filter & Type Tabs**: Added real-time topic search and dynamic type filter pills (`All`, `Astrophysics`, etc.).
+45. **Topics Manager — Accessible Delete `<dialog>`**: Replaced `window.confirm` with `AdminDialog` (`autoFocus` on Cancel) and toast notifications.
+46. **Media Manager — Grid / List View Toggle & Search**: Added Grid vs. List view switcher and live filtering by filename, alt text, or MIME type.
+47. **Media Manager — Lightbox Plate Inspector & Copy URL**: Added an interactive `<dialog>` plate inspector showing full preview, alt text, MIME/size metadata, and one-click URL copy.
+48. **Media Manager — Native `<dialog>` Upload & Delete Modals**: Converted upload and delete flows to `AdminDialog` with dark-mode-safe feedback banners.
+49. **Users & Access Page — Dark Mode Contrast Polish**: Replaced `bg-white` and light-mode-only emerald/amber text classes with theme-aware surface and semantic colors.
+50. **Styled Empty States**: Added consistent Observatory empty states with clear-filter actions across collection tables.
+
+
