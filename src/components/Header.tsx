@@ -196,43 +196,48 @@ export function Header({ navLinks = [] }: HeaderProps) {
         </Link>
 
         {/* Desktop Nav */}
-        <div className="hidden md:flex items-center" style={{ gap: 'var(--space-6)' }}>
-          {(navLinks?.length ? navLinks : [
-            { label: 'ME', url: '/' },
-            { label: 'PROJECTS', url: '/projects' },
-            { label: 'WRITING', url: '/writing' },
-            { label: 'BIOGRAPHY', url: '/about' },
-          ]).map(link => {
-            const isActive = pathname === link.url;
-            return (
-              <Link
-                key={link.url || '#'}
-                href={link.url || '#'}
-                aria-current={isActive ? 'page' : undefined}
-                className="min-h-[44px] min-w-[44px] flex items-center justify-center transition-colors"
-                style={{ textDecoration: 'none' }}
-              >
-                <Label
-                  className={
+        <div className="hidden md:flex items-center gap-4 lg:gap-6">
+          <nav
+            aria-label="Primary"
+            className="flex items-center gap-1 p-1 rounded-full border border-[color:var(--border)] bg-[color:var(--surface)]/55 [backdrop-filter:blur(10px)]"
+          >
+            {(navLinks?.length ? navLinks : [
+              { label: 'ME', url: '/' },
+              { label: 'PROJECTS', url: '/projects' },
+              { label: 'WRITING', url: '/writing' },
+              { label: 'BIOGRAPHY', url: '/about' },
+            ]).map(link => {
+              const isActive = pathname === link.url;
+              return (
+                <Link
+                  key={link.url || '#'}
+                  href={link.url || '#'}
+                  aria-current={isActive ? 'page' : undefined}
+                  className={`min-h-[36px] px-3.5 rounded-full flex items-center gap-2 transition-all duration-150 ${
                     isActive
-                      ? isHeroGlass
-                        ? 'text-[color:var(--hero-fg)] border-b-2 border-[color:var(--hero-accent)] pb-0.5'
-                        : 'text-[color:var(--text)] border-b-2 border-[color:var(--accent)] pb-0.5'
-                      : isHeroGlass
-                        ? 'text-[color:var(--hero-fg-muted)] hover:text-[color:var(--hero-fg)]'
-                        : 'text-[color:var(--text-muted)] hover:text-[color:var(--text)]'
-                  }
+                      ? 'bg-[color:var(--accent-subtle)] text-[color:var(--accent-text)] border border-[color:var(--accent-border)]/60 shadow-sm'
+                      : 'text-[color:var(--text-muted)] hover:text-[color:var(--text)] hover:bg-[color:var(--surface-hover)]/60 border border-transparent'
+                  }`}
+                  style={{ textDecoration: 'none' }}
                 >
-                  {link.label?.toUpperCase()}
-                </Label>
-              </Link>
-            );
-          })}
+                  {isActive && (
+                    <span
+                      className="w-1.5 h-1.5 rounded-full bg-[color:var(--accent)]"
+                      aria-hidden="true"
+                    />
+                  )}
+                  <Label className="tracking-[0.11em] font-medium text-[11px] cursor-pointer">
+                    {link.label?.toUpperCase()}
+                  </Label>
+                </Link>
+              );
+            })}
+          </nav>
           <div
             className={`h-4 w-px ${isHeroGlass ? 'bg-[color:var(--hero-glass-border)]' : 'bg-[color:var(--border)]'}`}
             aria-hidden="true"
           />
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1.5">
             {searchButton}
             <ThemeToggle
               className={

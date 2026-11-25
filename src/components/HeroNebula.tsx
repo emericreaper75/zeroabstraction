@@ -62,21 +62,21 @@ export function HeroNebula({ className = '' }: HeroNebulaProps) {
     const particles: Particle[] = [];
     const particleCount = 140;
 
-    // Palette colors for nebula clouds and particles
+    // Palette colors for nebula clouds and particles (harmonized with Light Parchment/Cobalt & Dark Obsidian/Celestial)
     const lightColors = [
-      'rgba(235, 145, 115, ', // peach / warm amber
-      'rgba(85, 175, 215, ',  // soft cyan / azure
-      'rgba(165, 135, 210, ', // lavender / lilac
-      'rgba(230, 185, 110, ', // golden stardust
-      'rgba(70, 190, 180, ',  // mint / teal
+      'rgba(30, 78, 140, ',   // observatory cobalt
+      'rgba(15, 107, 94, ',   // scientific verdigris
+      'rgba(158, 91, 30, ',   // archival amber
+      'rgba(93, 75, 140, ',   // muted indigo
+      'rgba(45, 125, 165, ',  // cerulean
     ];
 
     const darkColors = [
-      'rgba(110, 180, 255, ', // cyan / electric blue
-      'rgba(245, 150, 90, ',  // cosmic amber
-      'rgba(215, 105, 240, ', // magenta / violet
-      'rgba(65, 220, 225, ',  // aqua
-      'rgba(255, 210, 140, ', // stellar gold
+      'rgba(124, 168, 255, ', // celestial blue
+      'rgba(79, 209, 197, ',  // aurora cyan
+      'rgba(242, 183, 107, ', // stellar amber
+      'rgba(196, 155, 255, ', // nebula violet
+      'rgba(148, 185, 255, ', // starlight blue
     ];
 
     for (let i = 0; i < particleCount; i++) {
@@ -217,28 +217,42 @@ export function HeroNebula({ className = '' }: HeroNebulaProps) {
       }
 
       // 3. Subtle Constellation Links between nearby bright particles
-      ctx.lineWidth = 0.6;
+      ctx.lineWidth = 0.7;
       for (let i = 0; i < particles.length; i += 2) {
         const a = particles[i];
-        if (a.radius < 1.2) continue;
+        if (a.radius < 1.15) continue;
         for (let j = i + 2; j < particles.length; j += 2) {
           const b = particles[j];
-          if (b.radius < 1.2) continue;
+          if (b.radius < 1.15) continue;
           const dx = a.x - b.x;
           const dy = a.y - b.y;
           const distSq = dx * dx + dy * dy;
-          if (distSq < 6400) {
-            const lineAlpha = (1 - distSq / 6400) * (isDark ? 0.14 : 0.10);
+          if (distSq < 7200) {
+            const lineAlpha = (1 - distSq / 7200) * (isDark ? 0.18 : 0.13);
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
             ctx.strokeStyle = isDark
-              ? `rgba(130, 135, 255, ${lineAlpha})`
-              : `rgba(68, 98, 139, ${lineAlpha})`;
+              ? `rgba(124, 168, 255, ${lineAlpha})`
+              : `rgba(30, 78, 140, ${lineAlpha})`;
             ctx.stroke();
           }
         }
       }
+
+      // 4. Subtle Observatory Coordinate Arcs
+      const cx = width * 0.62 + parallaxX * 0.35;
+      const cy = height * 0.48 + parallaxY * 0.35;
+      ctx.save();
+      ctx.strokeStyle = isDark ? 'rgba(124, 168, 255, 0.08)' : 'rgba(30, 78, 140, 0.07)';
+      ctx.lineWidth = 1;
+      [0.22, 0.36, 0.50].forEach((rFactor, idx) => {
+        ctx.beginPath();
+        ctx.setLineDash(idx === 1 ? [4, 6] : []);
+        ctx.arc(cx, cy, Math.min(width, height) * rFactor, 0, Math.PI * 2);
+        ctx.stroke();
+      });
+      ctx.restore();
 
       time++;
       if (!prefersReducedMotion) {
