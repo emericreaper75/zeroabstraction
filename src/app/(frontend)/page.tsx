@@ -71,7 +71,7 @@ export default async function Home() {
         </div>
 
         {/* Hero Content Grid: Left Editorial + Right Blended Technical Specimen */}
-        <div className="container-wide relative z-10 w-full grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+        <div className="container-wide relative z-10 w-full grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-start">
           <div className="lg:col-span-5 max-w-2xl flex flex-col items-start gap-4">
             {/* Live Research Status Pill */}
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[color:var(--border)] bg-[color:var(--surface)]/70 [backdrop-filter:blur(8px)] font-mono text-[11px] tracking-widest uppercase text-[color:var(--text-muted)]">
