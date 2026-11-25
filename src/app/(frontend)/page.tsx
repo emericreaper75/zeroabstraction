@@ -64,9 +64,9 @@ export default async function Home() {
 
       {/* 2. FEATURED PROJECT SECTION */}
       <Reveal>
-        <section id="featured-project" className="container-wide py-16 lg:py-24 border-b border-[color:var(--border)] scroll-mt-20" aria-labelledby="featured-project-heading">
+        <section id="featured-project" className="container-wide py-12 lg:py-16 border-b border-[color:var(--border)] scroll-mt-20" aria-labelledby="featured-project-heading">
           {/* Section Label */}
-          <div className="mb-8">
+          <div className="mb-6">
             <span id="featured-project-heading" className="font-mono text-xs uppercase tracking-widest text-[color:var(--text-muted)]">
               FEATURED PROJECT
             </span>
@@ -140,78 +140,148 @@ export default async function Home() {
       {/* 3.85 RECENT DISPATCHES — LATEST WRITING */}
       {recentPosts.length > 0 && (
         <Reveal>
-          <section className="container-wide py-16 lg:py-20 border-b border-[color:var(--border)]" aria-labelledby="recent-writing-heading">
-            <div className="flex items-center justify-between mb-8">
+          <section className="container-wide py-12 lg:py-16 border-b border-[color:var(--border)]" aria-labelledby="recent-writing-heading">
+            <div className="flex items-center justify-between mb-6">
               <span id="recent-writing-heading" className="font-mono text-xs uppercase tracking-widest text-[color:var(--text-muted)]">
                 RECENT DISPATCHES
               </span>
-              <Link href="/writing" className="font-mono text-xs uppercase tracking-wider text-[color:var(--accent-text)] hover:underline">
+              <Link href="/writing" className="font-mono text-xs uppercase tracking-wider text-[color:var(--accent-text)] hover:underline" style={{ textDecoration: 'none' }}>
                 VIEW ALL WRITING →
               </Link>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {recentPosts.map((post) => {
-                const dateLabel = post.published_at
-                  ? new Date(post.published_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase()
-                  : 'ESSAY';
-                return (
-                  <article
-                    key={post.id}
-                    className="group flex flex-col justify-between p-6 border border-[color:var(--border)] hover:border-[color:var(--accent-border)] bg-[color:var(--surface)] rounded-[var(--radius-s)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-sm"
-                  >
-                    <div>
-                      <div className="flex items-center justify-between font-mono text-[11px] text-[color:var(--text-muted)] tracking-wider mb-3">
-                        <span>{dateLabel}</span>
-                        <span>{post.reading_time ?? 1} MIN READ</span>
-                      </div>
-                      <h3 className="font-[family-name:var(--font-display)] text-2xl leading-snug text-[color:var(--text)] group-hover:text-[color:var(--accent-text)] transition-colors">
-                        <Link href={`/writing/${post.slug}`} style={{ textDecoration: 'none' }}>
-                          {post.title}
-                        </Link>
-                      </h3>
-                      {post.excerpt && (
-                        <p className="mt-3 text-sm text-[color:var(--text-muted)] line-clamp-3 leading-relaxed">
-                          {post.excerpt}
-                        </p>
-                      )}
-                    </div>
-                    <Link
-                      href={`/writing/${post.slug}`}
-                      className="mt-5 inline-flex items-center gap-1.5 font-mono text-xs tracking-wider text-[color:var(--accent-text)]"
-                      style={{ textDecoration: 'none' }}
+
+            {recentPosts.length < 3 ? (
+              <div className="flex flex-col gap-5">
+                {recentPosts.map((post) => {
+                  const dateLabel = post.published_at
+                    ? new Date(post.published_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase()
+                    : 'ESSAY';
+                  const postTopics = ((post.topics as unknown[]) ?? [])
+                    .map((t) => (typeof t === 'object' && t !== null && 'name' in t ? String((t as { name: string }).name).toUpperCase() : ''))
+                    .filter(Boolean)
+                    .slice(0, 3);
+
+                  return (
+                    <article
+                      key={post.id}
+                      className="group grid grid-cols-1 lg:grid-cols-[65fr_35fr] border border-[color:var(--border)] hover:border-[color:var(--accent-border)] bg-[color:var(--surface)] rounded-[var(--radius-s)] overflow-hidden transition-colors"
                     >
-                      <span>READ ESSAY</span>
-                      <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">→</span>
-                    </Link>
-                  </article>
-                );
-              })}
-            </div>
+                      <div className="p-6 sm:p-8 flex flex-col justify-between gap-4">
+                        <div>
+                          <h3 className="font-[family-name:var(--font-display)] text-2xl sm:text-3xl leading-snug text-[color:var(--text)] group-hover:text-[color:var(--accent-text)] transition-colors">
+                            <Link href={`/writing/${post.slug}`} style={{ textDecoration: 'none' }}>
+                              {post.title}
+                            </Link>
+                          </h3>
+                          {post.excerpt && (
+                            <p className="mt-3 text-sm sm:text-base text-[color:var(--text-muted)] leading-relaxed">
+                              {post.excerpt}
+                            </p>
+                          )}
+                        </div>
+                        <div>
+                          <Link
+                            href={`/writing/${post.slug}`}
+                            className="inline-flex items-center gap-1.5 font-mono text-xs tracking-wider text-[color:var(--accent-text)]"
+                            style={{ textDecoration: 'none' }}
+                          >
+                            <span>READ ESSAY</span>
+                            <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">→</span>
+                          </Link>
+                        </div>
+                      </div>
+
+                      <div className="p-6 sm:p-8 bg-[color:var(--bg-subtle)] border-t lg:border-t-0 lg:border-l border-[color:var(--border)] flex flex-col justify-between gap-4 font-mono">
+                        <div className="flex items-center justify-between gap-4 text-[11px] tracking-wider text-[color:var(--text-muted)]">
+                          <span>{dateLabel}</span>
+                          <span className="text-[color:var(--text)] font-medium">{post.reading_time ?? 1} MIN READ</span>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {postTopics.length > 0 ? (
+                            postTopics.map((topic) => (
+                              <span
+                                key={topic}
+                                className="px-2.5 py-0.5 rounded-full border border-[color:var(--border)] bg-[color:var(--surface)] text-[10px] tracking-wider text-[color:var(--accent-text)]"
+                              >
+                                {topic}
+                              </span>
+                            ))
+                          ) : (
+                            <span className="px-2.5 py-0.5 rounded-full border border-[color:var(--border)] bg-[color:var(--surface)] text-[10px] tracking-wider text-[color:var(--accent-text)]">
+                              MONOGRAPH
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {recentPosts.map((post) => {
+                  const dateLabel = post.published_at
+                    ? new Date(post.published_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase()
+                    : 'ESSAY';
+                  return (
+                    <article
+                      key={post.id}
+                      className="group flex flex-col justify-between p-6 border border-[color:var(--border)] hover:border-[color:var(--accent-border)] bg-[color:var(--surface)] rounded-[var(--radius-s)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-sm"
+                    >
+                      <div>
+                        <div className="flex items-center justify-between font-mono text-[11px] text-[color:var(--text-muted)] tracking-wider mb-3">
+                          <span>{dateLabel}</span>
+                          <span>{post.reading_time ?? 1} MIN READ</span>
+                        </div>
+                        <h3 className="font-[family-name:var(--font-display)] text-2xl leading-snug text-[color:var(--text)] group-hover:text-[color:var(--accent-text)] transition-colors">
+                          <Link href={`/writing/${post.slug}`} style={{ textDecoration: 'none' }}>
+                            {post.title}
+                          </Link>
+                        </h3>
+                        {post.excerpt && (
+                          <p className="mt-3 text-sm text-[color:var(--text-muted)] line-clamp-3 leading-relaxed">
+                            {post.excerpt}
+                          </p>
+                        )}
+                      </div>
+                      <Link
+                        href={`/writing/${post.slug}`}
+                        className="mt-5 inline-flex items-center gap-1.5 font-mono text-xs tracking-wider text-[color:var(--accent-text)]"
+                        style={{ textDecoration: 'none' }}
+                      >
+                        <span>READ ESSAY</span>
+                        <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">→</span>
+                      </Link>
+                    </article>
+                  );
+                })}
+              </div>
+            )}
           </section>
         </Reveal>
       )}
 
       {/* 4. BIOGRAPHY SECTION */}
       <Reveal>
-        <section className="container-wide py-16 lg:py-24 border-b border-[color:var(--border)]" aria-labelledby="biography-heading">
+        <section className="container-wide py-12 lg:py-16 border-b border-[color:var(--border)]" aria-labelledby="biography-heading">
           {/* Section Label */}
-          <div className="mb-8">
+          <div className="mb-6">
             <span id="biography-heading" className="font-mono text-xs uppercase tracking-widest text-[color:var(--text-muted)]">
               BIOGRAPHY
             </span>
           </div>
 
-          {/* 2-Column Split: Left portrait with architectural grid, Right editorial serif statement */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
-            {/* Left Column: Portrait with Architectural Grid */}
-            <div className="lg:col-span-5 relative p-6 sm:p-10 lg:p-12 architectural-grid border border-[color:var(--border)]/40 rounded-[var(--radius-s)] flex items-center justify-center">
-              <figure className="relative w-full max-w-sm overflow-hidden rounded-[var(--radius-s)] border border-[color:var(--border)] shadow-md bg-stone-900">
+          {/* 2-Column Split: Left portrait with architectural grid & warm tonal framing, Right editorial serif statement */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
+            {/* Left Column: Portrait with crisp 1px hairline border & tonal framing */}
+            <div className="lg:col-span-5 relative p-5 sm:p-8 architectural-grid bg-[color:var(--bg-subtle)] border border-[color:var(--border)] rounded-[var(--radius-s)] flex items-center justify-center">
+              <figure className="relative w-full max-w-sm overflow-hidden rounded-[var(--radius-s)] border border-[color:var(--border-strong)] bg-[color:var(--surface)] p-1.5 shadow-sm">
                 <Image
                   src={bioPortraitUrl}
                   alt={bioPortraitAlt}
                   width={650}
                   height={650}
-                  className="w-full h-auto object-cover transform hover:scale-[1.02] transition-transform duration-500 ease-out"
+                  className="w-full h-auto object-cover rounded-[var(--radius-s)] transform hover:scale-[1.02] transition-transform duration-500 ease-out"
                 />
               </figure>
             </div>
