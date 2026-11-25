@@ -65,32 +65,45 @@ export function FeaturedProjectCard({ project }: FeaturedProjectCardProps) {
 
         {/* Right Column: Editorial Serif Heading, Metadata Row, Description & Slate-Blue CTA Button */}
         <div className="flex flex-col items-start gap-5 max-w-xl">
+          <div className="w-full flex items-center justify-between gap-3 flex-wrap pb-3 border-b border-[color:var(--border)]">
+            <span className="font-mono text-[11px] tracking-widest uppercase text-[color:var(--text-muted)]">
+              FEATURED SYSTEM · {year}
+            </span>
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border border-[color:var(--border)] bg-[color:var(--bg-subtle)] font-mono text-[10px] tracking-widest uppercase text-[color:var(--accent-text)]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[color:var(--secondary)]" aria-hidden="true" />
+              <span>{statusLabel}</span>
+            </span>
+          </div>
+
           <Link href={`/projects/${slug}`} className="hover:opacity-85 transition-opacity" style={{ textDecoration: 'none' }}>
             <h3 className="font-[family-name:var(--font-display)] text-3xl sm:text-4xl lg:text-[2.65rem] font-light leading-[1.15] text-balance text-[color:var(--text)]">
               {title}
             </h3>
           </Link>
 
-          {/* Metadata Row */}
-          <div className="flex items-center flex-wrap gap-2.5 font-mono text-xs tracking-wider text-[color:var(--text-muted)] uppercase">
-            <span className="px-2 py-0.5 rounded-[var(--radius-s)] bg-[color:var(--accent-subtle)] text-[color:var(--accent-text)] border border-[color:var(--accent-border)]/40 text-[11px] font-medium">
-              {statusLabel}
-            </span>
-            <span>{year}</span>
-            <span>•</span>
-            <span>{techString}</span>
-          </div>
-
           {/* Short Description */}
           <p className="text-[color:var(--text-muted)] text-sm sm:text-base leading-relaxed font-sans">
             {summary}
           </p>
 
+          {/* Recessed Tech Spec Strip */}
+          <div className="w-full px-3.5 py-2 rounded-[var(--radius-s)] border border-[color:var(--border)] bg-[color:var(--bg-subtle)]/70 font-mono text-[11px] tracking-wider uppercase text-[color:var(--text-muted)]">
+            {techString}
+          </div>
+
           {/* Solid Slate-Blue CTA Button */}
-          <div className="pt-2">
+          <div className="pt-1 flex flex-wrap items-center gap-4">
             <Link href={`/projects/${slug}`} className="btn-cta-solid">
               <span>VIEW PROJECT</span>
               <span>→</span>
+            </Link>
+            <Link
+              href="/projects"
+              className="min-h-[44px] inline-flex items-center gap-1.5 font-mono text-xs tracking-wider uppercase text-[color:var(--text-muted)] hover:text-[color:var(--accent-text)] transition-colors"
+              style={{ textDecoration: 'none' }}
+            >
+              <span>ALL SYSTEMS</span>
+              <span aria-hidden="true">→</span>
             </Link>
           </div>
         </div>
