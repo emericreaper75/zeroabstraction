@@ -15,69 +15,69 @@
 :root,
 html.light,
 [data-theme="light"] {
-  /* ChromaForge Palette 03 — Light Theme */
-  --harmony-base: #5636F7;
-  --harmony-comp: #D7F736;
-  --harmony-tri-cw: #F75636;
-  --harmony-tri-ccw: #36F756;
+  /* Calm Neutral Light Theme */
+  --harmony-base: #3B82F6;
+  --harmony-comp: #10B981;
+  --harmony-tri-cw: #EF4444;
+  --harmony-tri-ccw: #10B981;
 
   /* Admin Semantic UI Tokens (Light Theme) */
-  --admin-paper-base: #F5F6F6;
+  --admin-paper-base: #FAFAFA;
   --admin-paper-surface: #FFFFFF;
   --admin-paper-sidebar: #FFFFFF;
-  --admin-paper-container: #E9E9EB;
+  --admin-paper-container: #F4F4F5;
   --admin-surface-container-lowest: #FFFFFF;
-  --admin-surface-container-low: #F5F6F6;
-  --admin-surface-container: #E9E9EB;
-  --admin-surface-container-high: #D3D3D5;
-  --admin-surface-container-highest: #E4E8FF;
-  --admin-hairline-rule: #D3D3D5;
-  --admin-hairline-subtle: #E9E9EB;
-  --admin-ink-primary: #121314;
-  --admin-ink-secondary: #494A4C;
-  --admin-ink-muted: #78787C;
-  --admin-on-surface: #121314;
-  --admin-primary: #5132E9;
-  --admin-primary-container: #E4E8FF;
+  --admin-surface-container-low: #F4F4F5;
+  --admin-surface-container: #E4E4E7;
+  --admin-surface-container-high: #E4E4E7;
+  --admin-surface-container-highest: #EFF6FF;
+  --admin-hairline-rule: #E4E4E7;
+  --admin-hairline-subtle: #F4F4F5;
+  --admin-ink-primary: #18181B;
+  --admin-ink-secondary: #52525B;
+  --admin-ink-muted: #71717A;
+  --admin-on-surface: #18181B;
+  --admin-primary: #2563EB;
+  --admin-primary-container: #EFF6FF;
   --admin-on-primary: #FFFFFF;
-  --admin-on-primary-container: #0E023F;
-  --admin-amber-wash: #E4E8FF;
-  --admin-accent-amber: #5132E9;
-  --admin-accent-ochre: #AF2200;
-  --admin-secondary: #5A6900;
-  --admin-secondary-container: #E4F0C0;
-  --admin-on-secondary-container: #111500;
-  --admin-tertiary: #AF2200;
-  --admin-tertiary-container: #FFE2DB;
-  --admin-on-tertiary-container: #2A0200;
+  --admin-on-primary-container: #1E3A8A;
+  --admin-amber-wash: #EFF6FF;
+  --admin-accent-amber: #2563EB;
+  --admin-accent-ochre: #1D4ED8;
+  --admin-secondary: #52525B;
+  --admin-secondary-container: #F4F4F5;
+  --admin-on-secondary-container: #18181B;
+  --admin-tertiary: #DC2626;
+  --admin-tertiary-container: #FEF2F2;
+  --admin-on-tertiary-container: #7F1D1D;
   --admin-error: #DC2626;
-  --admin-error-container: #FFE2DB;
-  --admin-on-error-container: #2A0200;
+  --admin-error-container: #FEF2F2;
+  --admin-on-error-container: #7F1D1D;
 
   /* Standard CSS UI Roles */
-  --bg: #F5F6F6;
-  --bg-subtle: #E9E9EB;
+  --bg: #FAFAFA;
+  --bg-subtle: #F4F4F5;
   --surface: #FFFFFF;
-  --surface-hover: #E9E9EB;
-  --border: #D3D3D5;
-  --border-strong: #96969A;
-  --text: #121314;
-  --text-muted: #494A4C;
-  --accent: #5132E9;
-  --accent-hover: #3E1BBF;
-  --accent-text: #5132E9;
-  --accent-subtle: #E4E8FF;
-  --accent-border: #A7AFFF;
+  --surface-hover: #F4F4F5;
+  --border: #E4E4E7;
+  --border-strong: #D4D4D8;
+  --text: #18181B;
+  --text-muted: #52525B;
+  --accent: #2563EB;
+  --accent-hover: #1D4ED8;
+  --accent-text: #2563EB;
+  --accent-subtle: #EFF6FF;
+  --accent-border: #BFDBFE;
   --on-accent: #FFFFFF;
-  --focus-ring: #5132E9;
+  --focus-ring: #2563EB;
   --sidebar-bg: #FFFFFF;
-  --sidebar-fg: #121314;
-  --sidebar-fg-muted: #78787C;
-  --sidebar-border: #D3D3D5;
-  --sidebar-active-bg: #E4E8FF;
-  --sidebar-accent: #5132E9;
-  --success: #15803D;
-  --warning: #B45309;
+  --sidebar-fg: #18181B;
+  --sidebar-fg-muted: #71717A;
+  --sidebar-border: #E4E4E7;
+  --sidebar-active-bg: #EFF6FF;
+  --sidebar-accent: #2563EB;
+  --success: #16A34A;
+  --warning: #D97706;
   --danger: #DC2626;
 }
 
@@ -85,67 +85,67 @@ html.light,
 :root[data-theme="dark"],
 html.dark,
 .dark {
-  /* ChromaForge Palette 03 — Dark Theme (Signature Cyber Observatory Workbench) */
-  --harmony-base: #5636F7;
-  --harmony-comp: #D7F736;
-  --harmony-tri-cw: #F75636;
-  --harmony-tri-ccw: #36F756;
+  /* Calm Neutral Zinc Dark Theme */
+  --harmony-base: #60A5FA;
+  --harmony-comp: #34D399;
+  --harmony-tri-cw: #F87171;
+  --harmony-tri-ccw: #34D399;
 
   /* Admin Semantic UI Tokens (Dark Theme) */
-  --admin-paper-base: #0F1117;
-  --admin-paper-surface: #161922;
-  --admin-paper-sidebar: #161922;
-  --admin-paper-container: #202534;
-  --admin-surface-container-lowest: #161922;
-  --admin-surface-container-low: #1A1E29;
-  --admin-surface-container: #202534;
-  --admin-surface-container-high: #262C3D;
-  --admin-surface-container-highest: #2D0D93;
-  --admin-hairline-rule: #353638;
-  --admin-hairline-subtle: #262C3D;
-  --admin-ink-primary: #F5F6F6;
-  --admin-ink-secondary: #CAD0FF;
-  --admin-ink-muted: #96969A;
-  --admin-on-surface: #F5F6F6;
-  --admin-primary: #8287FF;
-  --admin-primary-container: #2D0D93;
-  --admin-on-primary: #0E023F;
-  --admin-on-primary-container: #F4F5FF;
-  --admin-amber-wash: #2D0D93;
-  --admin-accent-amber: #8287FF;
-  --admin-accent-ochre: #F65E40;
-  --admin-secondary: #8DA300;
-  --admin-secondary-container: #323B00;
-  --admin-on-secondary-container: #F3F9E1;
-  --admin-tertiary: #F65E40;
-  --admin-tertiary-container: #661000;
-  --admin-on-tertiary-container: #FFF3F0;
+  --admin-paper-base: #09090B;
+  --admin-paper-surface: #111113;
+  --admin-paper-sidebar: #111113;
+  --admin-paper-container: #18181B;
+  --admin-surface-container-lowest: #111113;
+  --admin-surface-container-low: #18181B;
+  --admin-surface-container: #27272A;
+  --admin-surface-container-high: #27272A;
+  --admin-surface-container-highest: #1E293B;
+  --admin-hairline-rule: #27272A;
+  --admin-hairline-subtle: #18181B;
+  --admin-ink-primary: #F4F4F5;
+  --admin-ink-secondary: #A1A1AA;
+  --admin-ink-muted: #71717A;
+  --admin-on-surface: #F4F4F5;
+  --admin-primary: #60A5FA;
+  --admin-primary-container: #1E293B;
+  --admin-on-primary: #09090B;
+  --admin-on-primary-container: #EFF6FF;
+  --admin-amber-wash: #1E293B;
+  --admin-accent-amber: #60A5FA;
+  --admin-accent-ochre: #3B82F6;
+  --admin-secondary: #A1A1AA;
+  --admin-secondary-container: #27272A;
+  --admin-on-secondary-container: #F4F4F5;
+  --admin-tertiary: #F87171;
+  --admin-tertiary-container: #450A0A;
+  --admin-on-tertiary-container: #FEF2F2;
   --admin-error: #F87171;
-  --admin-error-container: #661000;
-  --admin-on-error-container: #FFF3F0;
+  --admin-error-container: #450A0A;
+  --admin-on-error-container: #FEF2F2;
 
   /* Standard CSS UI Roles */
-  --bg: #0F1117;
-  --bg-subtle: #161922;
-  --surface: #161922;
-  --surface-hover: #202534;
-  --border: #353638;
-  --border-strong: #606063;
-  --text: #F5F6F6;
-  --text-muted: #B6B6B9;
-  --accent: #8287FF;
-  --accent-hover: #A7AFFF;
-  --accent-text: #8287FF;
-  --accent-subtle: #2D0D93;
-  --accent-border: #3E1BBF;
-  --on-accent: #0E023F;
-  --focus-ring: #8287FF;
-  --sidebar-bg: #161922;
-  --sidebar-fg: #F5F6F6;
-  --sidebar-fg-muted: #B6B6B9;
-  --sidebar-border: #353638;
-  --sidebar-active-bg: #202534;
-  --sidebar-accent: #8287FF;
+  --bg: #09090B;
+  --bg-subtle: #111113;
+  --surface: #111113;
+  --surface-hover: #18181B;
+  --border: #27272A;
+  --border-strong: #3F3F46;
+  --text: #F4F4F5;
+  --text-muted: #A1A1AA;
+  --accent: #60A5FA;
+  --accent-hover: #93C5FD;
+  --accent-text: #60A5FA;
+  --accent-subtle: #1E293B;
+  --accent-border: #334155;
+  --on-accent: #09090B;
+  --focus-ring: #60A5FA;
+  --sidebar-bg: #111113;
+  --sidebar-fg: #F4F4F5;
+  --sidebar-fg-muted: #A1A1AA;
+  --sidebar-border: #27272A;
+  --sidebar-active-bg: #18181B;
+  --sidebar-accent: #60A5FA;
   --success: #4ADE80;
   --warning: #FBBF24;
   --danger: #F87171;
@@ -303,6 +303,33 @@ dialog::backdrop {
   position: sticky;
   inset-block-start: 0;
   z-index: 1;
+}
+
+/* ── Simple Clean Sans Typography Override (keeps sizes intact) ── */
+.admin-simple-text,
+.admin-simple-text .font-headline-xl,
+.admin-simple-text .font-headline-lg,
+.admin-simple-text .font-headline-md,
+.admin-simple-text .font-headline-sm,
+.admin-simple-text .font-label-lg,
+.admin-simple-text .font-label-md,
+.admin-simple-text .font-label-sm,
+.admin-simple-text .font-body-lg,
+.admin-simple-text .font-body-md,
+.admin-simple-text .font-body-sm {
+  font-family: 'IBM Plex Sans', system-ui, -apple-system, sans-serif !important;
+  font-style: normal !important;
+}
+.admin-simple-text .italic {
+  font-style: normal !important;
+}
+.admin-simple-text .tracking-widest,
+.admin-simple-text .tracking-wider {
+  letter-spacing: 0.01em !important;
+}
+.admin-simple-text .font-semibold,
+.admin-simple-text .font-bold {
+  font-weight: 500 !important;
 }
 
 /* ── Reduced Motion ─────────────────────────────────────────── */

@@ -229,18 +229,18 @@ export function DashboardOverviewClient({
         {/* Highlighted KPI 1: Draft Queue (Most Actionable) */}
         <Link
           href="/admin/collections/posts?status=draft"
-          className="p-4 rounded border-2 border-primary/40 bg-amber-wash/30 hover:border-primary transition-colors group shadow-xs"
+          className="p-4 rounded border border-primary/50 bg-paper-surface hover:border-primary transition-colors group shadow-xs"
         >
           <div className="flex items-center justify-between text-primary">
             <span className="material-symbols-outlined text-[20px]">draw</span>
-            <span className="text-[10px] font-label-sm px-1.5 py-0.5 rounded bg-primary text-on-primary font-semibold">
-              PRIORITY
+            <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-wash text-primary font-medium">
+              Priority
             </span>
           </div>
-          <div className="font-headline-md text-3xl text-on-surface mt-2 leading-none">
+          <div className="text-3xl text-on-surface mt-2 leading-none font-normal">
             {pad(metrics.draftPostsCount)}
           </div>
-          <div className="text-xs font-label-sm text-ink-secondary mt-1.5">Drafts</div>
+          <div className="text-xs text-ink-secondary mt-1.5">Drafts</div>
         </Link>
 
         {/* Highlighted KPI 2: Posts */}
@@ -318,7 +318,7 @@ export function DashboardOverviewClient({
         <div className="lg:col-span-8 space-y-6">
           {/* Highlighted Card: Latest Manuscript / Resume Work */}
           {latestPost && (
-            <div className="border-2 border-primary/35 bg-paper-surface p-5 rounded-lg shadow-sm relative overflow-hidden">
+            <div className="border border-primary/40 bg-paper-surface p-5 rounded-lg shadow-xs relative overflow-hidden">
               <div className="flex flex-wrap items-center justify-between gap-2 mb-2.5">
                 <span className="inline-flex items-center gap-1.5 text-[11px] font-label-sm text-primary bg-amber-wash px-2 py-0.5 rounded font-medium">
                   <span className="material-symbols-outlined text-[14px]">bookmark</span>

@@ -99,7 +99,7 @@ export default async function AdminLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="bg-paper-base text-ink-primary antialiased font-body-sm min-h-screen selection:bg-amber-wash selection:text-on-primary">
+      <body className="admin-simple-text bg-paper-base text-ink-primary antialiased font-sans min-h-screen selection:bg-amber-wash selection:text-on-surface">
         <AdminToastProvider>
           <AdminHeader
             user={user as any}

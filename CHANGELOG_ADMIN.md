@@ -95,6 +95,14 @@ Tracking all presentation and functional improvements to the Payload Atelier Adm
 67. **Compact Readiness, Notes & Health Widgets**: Reduced explanatory prose to scannable icons, ring progress, and compact action pills.
 68. **Clean Collection Headers**: Replaced verbose `OBSERVATORY / COLLECTIONS / ...` text breadcrumbs with a home-icon breadcrumb and concise total pills across Posts, Projects, and Media.
 
+---
+
+## Milestone 6: Calm Neutral Palette & Simple Sans Typography (#69 – #70)
+
+69. **Neutral Zinc/Slate Palette**: Replaced heavy electric-indigo/violet/vermillion tokens in `admin-atelier.css` with a calm neutral Zinc palette (`#FAFAFA`/`#FFFFFF` light, `#09090B`/`#111113` dark) and understated blue accent (`#2563EB`/`#60A5FA`).
+70. **Simple Sans Text Style (Same Sizes)**: Applied `.admin-simple-text` in `admin-atelier.css` and `(admin)/layout.tsx` to normalize all serif/monospace/italic/heavy-tracked headings and labels to clean `IBM Plex Sans` (`font-weight <= 500`, `font-style: normal`) while keeping all font sizes unchanged.
+
+
 
 
 
