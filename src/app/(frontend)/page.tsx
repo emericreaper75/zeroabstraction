@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { Link } from 'next-view-transitions';
-import { HeroNebula } from '@/components/HeroNebula';
+import { HeroMasthead } from '@/components/HeroMasthead';
 import { FeaturedProjectCard } from '@/components/FeaturedProjectCard';
 import { TimelineStrip } from '@/components/TimelineStrip';
 import { Reveal } from '@/components/Reveal';
@@ -56,129 +56,11 @@ export default async function Home() {
 
   return (
     <div className="w-full bg-[color:var(--bg)] text-[color:var(--text)] overflow-hidden">
-      {/* 1. HERO SECTION — Centered Scientific Editorial Layout */}
-      <section 
-        className="relative w-full min-h-[78vh] lg:min-h-[84vh] flex items-center justify-center overflow-hidden pt-28 pb-16 lg:pt-32 lg:pb-20 border-b border-[color:var(--border)]"
-        aria-labelledby="hero-title"
-      >
-        {/* Full-Width Cosmic Particle Canvas fading smoothly at the bottom */}
-        <div 
-          className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden"
-          style={{
-            maskImage: 'linear-gradient(to bottom, black 68%, transparent 100%)',
-            WebkitMaskImage: 'linear-gradient(to bottom, black 68%, transparent 100%)',
-          }}
-          aria-hidden="true"
-        >
-          <HeroNebula className="w-full h-full" />
-        </div>
-
-        {/* Centered Editorial Stack */}
-        <div className="container-wide relative z-10 w-full">
-          <div className="mx-auto max-w-[860px] flex flex-col items-center text-center gap-6">
-            {/* Eyebrow Pill */}
-            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-[color:var(--border)] bg-[color:var(--surface)]/75 [backdrop-filter:blur(8px)] font-mono text-[12.5px] tracking-widest uppercase text-[color:var(--text-muted)]">
-              <span className="w-1.5 h-1.5 rounded-full bg-[color:var(--accent)] animate-pulse" aria-hidden="true" />
-              <span>ECE × PHYSICS × ASTROPHYSICS</span>
-            </div>
-
-            {/* Display Title */}
-            <h1 
-              id="hero-title"
-              className="font-[family-name:var(--font-display)] font-light tracking-[-0.03em] leading-[1.05] text-[color:var(--text)]"
-              style={{ fontSize: 'clamp(3.75rem, 6.5vw, 5.75rem)' }}
-            >
-              ZeroAbstraction
-            </h1>
-
-            {/* Subtitle */}
-            <p className="text-[19px] sm:text-[20px] text-[color:var(--text-muted)] font-normal leading-[1.6] max-w-[60ch] font-sans">
-              First-principles digital garden &amp; engineering archive bridging low-level hardware, scientific computing, and observational astrophysics.
-            </p>
-
-            {/* Primary CTA Row */}
-            <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
-              <Link
-                href="/projects"
-                style={{ textDecoration: 'none' }}
-                className="min-h-[44px] px-6 py-2.5 rounded-full inline-flex items-center gap-2 bg-[color:var(--btn-cta-bg)] hover:bg-[color:var(--btn-cta-hover)] text-[color:var(--btn-cta-fg)] font-mono text-xs tracking-[0.11em] uppercase font-medium transition-all duration-150 active:scale-[0.97] shadow-sm"
-              >
-                <span>EXPLORE SYSTEMS</span>
-                <span aria-hidden="true">→</span>
-              </Link>
-              <Link
-                href="/writing"
-                style={{ textDecoration: 'none' }}
-                className="min-h-[44px] px-6 py-2.5 rounded-full inline-flex items-center gap-2 border border-[color:var(--border-strong)] bg-[color:var(--surface)]/70 hover:border-[color:var(--accent)] hover:text-[color:var(--accent-text)] text-[color:var(--text)] font-mono text-xs tracking-[0.11em] uppercase font-medium transition-all duration-150 active:scale-[0.97]"
-              >
-                <span>READ FIELD NOTES</span>
-              </Link>
-            </div>
-
-            {/* 3-Column Research Pillars Strip */}
-            <div className="w-full mt-2 py-5 px-4 sm:px-6 rounded-[var(--radius-s)] border border-[color:var(--border)] bg-[color:var(--surface)]/60 [backdrop-filter:blur(8px)] grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-0 md:divide-x md:divide-[color:var(--border)] text-left">
-              <div className="md:pr-6 flex flex-col gap-1.5">
-                <span className="font-mono text-[11px] tracking-widest uppercase text-[color:var(--accent-text)] font-medium">
-                  01 // EMBEDDED &amp; FPGA
-                </span>
-                <p className="text-xs sm:text-sm text-[color:var(--text-muted)] leading-relaxed">
-                  Cryogenic readout electronics, RTL pipelines &amp; sensor firmware.
-                </p>
-              </div>
-              <div className="md:px-6 flex flex-col gap-1.5">
-                <span className="font-mono text-[11px] tracking-widest uppercase text-[color:var(--accent-text)] font-medium">
-                  02 // SCIENTIFIC COMPUTING
-                </span>
-                <p className="text-xs sm:text-sm text-[color:var(--text-muted)] leading-relaxed">
-                  Gravitational lensing ray-tracing, DSP &amp; numerical solvers.
-                </p>
-              </div>
-              <div className="md:pl-6 flex flex-col gap-1.5">
-                <span className="font-mono text-[11px] tracking-widest uppercase text-[color:var(--accent-text)] font-medium">
-                  03 // ASTROPHYSICS
-                </span>
-                <p className="text-xs sm:text-sm text-[color:var(--text-muted)] leading-relaxed">
-                  Submillimeter polarimetry, CMB instrumentation &amp; transit analysis.
-                </p>
-              </div>
-            </div>
-
-            {/* Single Horizontal Navigation / Index Strip */}
-            <nav
-              aria-label="Hero quick index"
-              className="pt-2 flex items-center justify-center flex-wrap gap-x-3 gap-y-2 font-mono text-xs text-[color:var(--text-muted)] tracking-wider uppercase"
-            >
-              <Link href="/projects" className="hover:text-[color:var(--accent-text)] transition-colors" style={{ textDecoration: 'none' }}>
-                PROJECTS · <span className="font-semibold text-[color:var(--text)]">{totalProjectsCount || 1}</span>
-              </Link>
-              <span aria-hidden="true">·</span>
-              <Link href="/writing" className="hover:text-[color:var(--accent-text)] transition-colors" style={{ textDecoration: 'none' }}>
-                WRITING · <span className="font-semibold text-[color:var(--text)]">{totalPostsCount || 1}</span>
-              </Link>
-              <span aria-hidden="true">·</span>
-              <Link href="/about" className="hover:text-[color:var(--accent-text)] transition-colors" style={{ textDecoration: 'none' }}>
-                BIOGRAPHY
-              </Link>
-              <span aria-hidden="true">·</span>
-              <Link href="/search" className="hover:text-[color:var(--accent-text)] transition-colors" style={{ textDecoration: 'none' }}>
-                SEARCH ARCHIVE
-              </Link>
-            </nav>
-
-            {/* Centered Scroll Cue */}
-            <div className="pt-2">
-              <a
-                href="#featured-project"
-                className="group inline-flex items-center gap-2 min-h-[44px] font-mono text-xs tracking-widest text-[color:var(--text-muted)] hover:text-[color:var(--accent-text)] transition-colors"
-                style={{ textDecoration: 'none' }}
-              >
-                <span>SCROLL TO DISCOVER</span>
-                <span aria-hidden="true" className="inline-block animate-gentle-bob transition-transform duration-200 group-hover:translate-y-1">↓</span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* 1. HERO SECTION — Centered Masthead with Orbiting Telemetry Satellites */}
+      <HeroMasthead
+        totalProjectsCount={totalProjectsCount}
+        totalPostsCount={totalPostsCount}
+      />
 
       {/* 2. FEATURED PROJECT SECTION */}
       <Reveal>
