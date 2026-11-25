@@ -1,168 +1,113 @@
 :root {
   color-scheme: light;
 
-  /* ChromaForge Palette 01: Warm Sand & Triadic System (Light Theme) */
-  --harmony-base: #BE9D6F;
-  --harmony-comp: #6F90BE;
-  --harmony-tri-cw: #6FBE9D;
-  --harmony-tri-ccw: #9D6FBE;
+  /* Public Palette — Observatory Parchment & Cobalt (Light Theme) */
+  --harmony-base: #1E4E8C;
+  --harmony-comp: #B07834;
+  --harmony-tri-cw: #0F6B5E;
+  --harmony-tri-ccw: #5D4B8C;
 
   /* Semantic UI Roles */
-  --color-primary: #785B30;
+  --color-primary: #1E4E8C;
   --color-on-primary: #FFFFFF;
-  --color-primary-container: #F3E8D9;
-  --color-on-primary-container: #1A1104;
-  --color-secondary: #44628B;
+  --color-primary-container: #E4EDF8;
+  --color-on-primary-container: #0B1E38;
+  --color-secondary: #0F6B5E;
   --color-on-secondary: #FFFFFF;
-  --color-secondary-container: #DFEBFB;
-  --color-on-secondary-container: #091321;
-  --color-tertiary: #217054;
+  --color-secondary-container: #DFF2EE;
+  --color-on-secondary-container: #04241F;
+  --color-tertiary: #9E5B1E;
   --color-on-tertiary: #FFFFFF;
-  --color-tertiary-container: #D8F0E5;
-  --color-on-tertiary-container: #01180F;
-  --color-background: #F6F6F5;
-  --color-on-background: #131312;
+  --color-tertiary-container: #F7EBDD;
+  --color-on-tertiary-container: #2B1604;
+  --color-background: #F8F7F4;
+  --color-on-background: #13161C;
   --color-surface: #FFFFFF;
-  --color-on-surface: #131312;
-  --color-surface-variant: #EAE9E8;
-  --color-on-surface-variant: #4B4947;
+  --color-on-surface: #13161C;
+  --color-surface-variant: #EFECE6;
+  --color-on-surface-variant: #4B5260;
   --color-surface-elevated: #FFFFFF;
-  --color-outline: #999693;
-  --color-divider: #D5D3D1;
-  --color-success: #15803D;
-  --color-warning: #B45309;
-  --color-error: #DC2626;
-  --color-info: #1D4ED8;
+  --color-outline: #8A919E;
+  --color-divider: #DBD7CE;
+  --color-success: #137347;
+  --color-warning: #A65A0A;
+  --color-error: #C22525;
+  --color-info: #1E4E8C;
 
-  /* OKLCH Tonal Scales — Palette 01 */
-  --palette-primary-50: #FBF5ED;
-  --palette-primary-100: #F3E8D9;
-  --palette-primary-200: #E4D0B6;
-  --palette-primary-300: #CDB28D;
-  --palette-primary-400: #B09166;
-  --palette-primary-500: #927346;
-  --palette-primary-600: #785B30;
-  --palette-primary-700: #5E4520;
-  --palette-primary-800: #463214;
-  --palette-primary-900: #2F210B;
-  --palette-primary-950: #1A1104;
-
-  --palette-secondary-50: #F0F6FE;
-  --palette-secondary-100: #DFEBFB;
-  --palette-secondary-200: #C2D5F1;
-  --palette-secondary-300: #9DB9DF;
-  --palette-secondary-400: #7999C5;
-  --palette-secondary-500: #5A7AA7;
-  --palette-secondary-600: #44628B;
-  --palette-secondary-700: #314B6E;
-  --palette-secondary-800: #223753;
-  --palette-secondary-900: #152439;
-  --palette-secondary-950: #091321;
-
-  --palette-tertiary-50: #EDF9F3;
-  --palette-tertiary-100: #D8F0E5;
-  --palette-tertiary-200: #B5DFCB;
-  --palette-tertiary-300: #89C6AB;
-  --palette-tertiary-400: #5EA88A;
-  --palette-tertiary-500: #3A8A6B;
-  --palette-tertiary-600: #217054;
-  --palette-tertiary-700: #0E573F;
-  --palette-tertiary-800: #05402D;
-  --palette-tertiary-900: #022B1D;
-  --palette-tertiary-950: #01180F;
-
-  --palette-neutral-50: #F6F6F5;
-  --palette-neutral-100: #EAE9E8;
-  --palette-neutral-200: #D5D3D1;
-  --palette-neutral-300: #B8B6B4;
-  --palette-neutral-400: #999693;
-  --palette-neutral-500: #7B7875;
-  --palette-neutral-600: #62605D;
-  --palette-neutral-700: #4B4947;
-  --palette-neutral-800: #373634;
-  --palette-neutral-900: #242322;
-  --palette-neutral-950: #131312;
-
-  --palette-quaternary-50: #F9F3FF;
-  --palette-quaternary-100: #F2E3FE;
-  --palette-quaternary-200: #E2C7F7;
-  --palette-quaternary-300: #CAA5E7;
-  --palette-quaternary-400: #AD81CD;
-  --palette-quaternary-500: #8F62B0;
-  --palette-quaternary-600: #754A93;
-  --palette-quaternary-700: #5C3675;
-  --palette-quaternary-800: #442658;
-  --palette-quaternary-900: #2E183C;
-  --palette-quaternary-950: #190B23;
-
-  /* ZeroAbstraction Design Tokens — Light (Palette 01) */
-  --bg: #F7F7F5;
-  --bg-subtle: #EFEFEA;
+  /* ZeroAbstraction Public Design Tokens — Light */
+  --bg: #F8F7F4;
+  --bg-subtle: #EFECE6;
   --surface: #FFFFFF;
-  --surface-hover: #EAE9E8;
-  --border: rgba(20, 22, 25, 0.12);
-  --border-strong: rgba(20, 22, 25, 0.25);
-  --grid-line: rgba(20, 22, 25, 0.06);
-  --text: #141619;
-  --text-muted: #52565B;
+  --surface-hover: #E9E5DC;
+  --border: rgba(19, 22, 28, 0.14);
+  --border-strong: rgba(19, 22, 28, 0.28);
+  --grid-line: rgba(19, 22, 28, 0.055);
+  --text: #13161C;
+  --text-muted: #4B5260;
   --muted: var(--text-muted);
-  --btn-cta-bg: #2F455C;
+  --btn-cta-bg: #13294B;
   --btn-cta-fg: #FFFFFF;
-  --btn-cta-hover: #223447;
-  --accent: #785B30;
-  --accent-hover: #5E4520;
-  --accent-text: #5E4520;
-  --accent-subtle: #F3E8D9;
-  --accent-border: #CDB28D;
+  --btn-cta-hover: #1E4E8C;
+  --accent: #1E4E8C;
+  --accent-hover: #163B6B;
+  --accent-text: #19437A;
+  --accent-subtle: #E4EDF8;
+  --accent-border: #94B4DC;
   --on-accent: #FFFFFF;
-  --focus-ring: #2F455C;
+  --focus-ring: #1E4E8C;
 
-  --secondary: #44628B;
-  --secondary-hover: #314B6E;
-  --success: #15803D;
-  --warning: #B45309;
-  --danger: #C5221F;
+  --secondary: #0F6B5E;
+  --secondary-hover: #0A5248;
+  --secondary-subtle: #DFF2EE;
+  --success: #137347;
+  --warning: #A65A0A;
+  --danger: #C22525;
 
-  /* Code Syntax */
-  --code-bg: #EAE9E8;
-  --code-keyword: #785B30;
-  --code-string: #217054;
-  --code-number: #44628B;
-  --code-comment: #999693;
+  /* Code Syntax & Formula Surfaces */
+  --code-bg: #F1EFEA;
+  --code-keyword: #1E4E8C;
+  --code-string: #0F6B5E;
+  --code-number: #9E5B1E;
+  --code-comment: #6D7482;
+  --math-bg: #F2F0EA;
+  --math-border: #0F6B5E;
+  --table-head-bg: #E8EEF6;
+  --table-stripe-bg: #F3F1EC;
+  --table-hover-bg: #E9F0FA;
 
-  /* Shelf / library spine tints (Palette 01 Tonal Scale) */
-  --spine-1: #E4D0B6;
-  --spine-2: #D5D3D1;
-  --spine-3: #C2D5F1;
-  --spine-4: #B5DFCB;
-  --spine-5: #E2C7F7;
-  --spine-fg: #131312;
-  --shade: rgba(19,19,18,.22);
+  /* Shelf / library spine tints (Light Archival Scale) */
+  --spine-1: #DCE6F2;
+  --spine-2: #E6DFD3;
+  --spine-3: #D8ECE8;
+  --spine-4: #EAE0EC;
+  --spine-5: #F2E5D5;
+  --spine-fg: #13161C;
+  --shade: rgba(19, 22, 28, 0.20);
 
   /* Glass Effects */
-  --glass-bg: rgba(246,246,245,.82);
-  --glass-border: rgba(19,19,18,.10);
+  --glass-bg: rgba(248, 247, 244, 0.84);
+  --glass-border: rgba(19, 22, 28, 0.11);
   --glass-blur: 14px;
 
   /* Hero Surface Tokens */
-  --hero-scrim: linear-gradient(180deg,rgba(234,233,232,.35) 0%,rgba(246,246,245,.75) 45%,rgba(246,246,245,1) 100%);
-  --hero-fg: #131312;
-  --hero-fg-muted: #4B4947;
-  --hero-accent: #785B30;
-  --hero-glass-bg: rgba(246,246,245,.82);
-  --hero-glass-border: rgba(19,19,18,.10);
+  --hero-scrim: linear-gradient(180deg, rgba(239, 236, 230, 0.35) 0%, rgba(248, 247, 244, 0.78) 45%, rgba(248, 247, 244, 1) 100%);
+  --hero-fg: #13161C;
+  --hero-fg-muted: #4B5260;
+  --hero-accent: #1E4E8C;
+  --hero-glass-bg: rgba(248, 247, 244, 0.84);
+  --hero-glass-border: rgba(19, 22, 28, 0.11);
   --hero-glass-blur: 14px;
 
   /* Sidebar & Inverse Surfaces */
-  --sidebar-bg: #131312;
-  --sidebar-fg: #F6F6F5;
-  --sidebar-fg-muted: #B8B6B4;
-  --sidebar-border: #373634;
-  --sidebar-active-bg: #242322;
-  --sidebar-accent: #B09166;
-  --inverse-bg: #131312;
-  --inverse-fg: #F6F6F5;
-  --inverse-border: #373634;
+  --sidebar-bg: #13161C;
+  --sidebar-fg: #F8F7F4;
+  --sidebar-fg-muted: #A4AEBF;
+  --sidebar-border: #2C323F;
+  --sidebar-active-bg: #1E2430;
+  --sidebar-accent: #7CA8FF;
+  --inverse-bg: #13161C;
+  --inverse-fg: #F8F7F4;
+  --inverse-border: #2C323F;
 
   /* Typography */
   --font-display: "Cormorant Garamond","Instrument Serif",Georgia,serif;
@@ -220,167 +165,127 @@ html.dark,
 .dark {
   color-scheme: dark;
 
-  /* ChromaForge Palette 03: Electric Indigo & Cyber Triadic System (Dark Theme) */
-  --harmony-base: #5636F7;
-  --harmony-comp: #D7F736;
-  --harmony-tri-cw: #F75636;
-  --harmony-tri-ccw: #36F756;
+  /* Public Palette — Deep Space Obsidian & Celestial Blue (Dark Theme) */
+  --harmony-base: #7CA8FF;
+  --harmony-comp: #F2B76B;
+  --harmony-tri-cw: #4FD1C5;
+  --harmony-tri-ccw: #C49BFF;
 
   /* Semantic UI Roles */
-  --color-primary: #8287FF;
-  --color-on-primary: #0E023F;
-  --color-primary-container: #2D0D93;
-  --color-on-primary-container: #F4F5FF;
-  --color-secondary: #8DA300;
-  --color-on-secondary: #111500;
-  --color-secondary-container: #323B00;
-  --color-on-secondary-container: #F3F9E1;
-  --color-tertiary: #F65E40;
-  --color-on-tertiary: #2A0200;
-  --color-tertiary-container: #661000;
-  --color-on-tertiary-container: #FFF3F0;
-  --color-background: #0F1117;
-  --color-on-background: #F5F6F6;
-  --color-surface: #161922;
-  --color-on-surface: #F5F6F6;
-  --color-surface-variant: #202534;
-  --color-on-surface-variant: #B6B6B9;
-  --color-surface-elevated: #262C3D;
-  --color-outline: #606063;
-  --color-divider: #353638;
+  --color-primary: #7CA8FF;
+  --color-on-primary: #081121;
+  --color-primary-container: #1B2A4A;
+  --color-on-primary-container: #EBF2FF;
+  --color-secondary: #4FD1C5;
+  --color-on-secondary: #042220;
+  --color-secondary-container: #123538;
+  --color-on-secondary-container: #D9FAF6;
+  --color-tertiary: #F2B76B;
+  --color-on-tertiary: #291702;
+  --color-tertiary-container: #42290A;
+  --color-on-tertiary-container: #FFF3E0;
+  --color-background: #0B0E14;
+  --color-on-background: #F1F4F9;
+  --color-surface: #151B28;
+  --color-on-surface: #F1F4F9;
+  --color-surface-variant: #1D2536;
+  --color-on-surface-variant: #A4AEBF;
+  --color-surface-elevated: #222B3F;
+  --color-outline: #5E687B;
+  --color-divider: #272F40;
   --color-success: #4ADE80;
   --color-warning: #FBBF24;
   --color-error: #F87171;
-  --color-info: #60A5FA;
+  --color-info: #7CA8FF;
 
-  /* OKLCH Tonal Scales — Palette 03 */
-  --palette-primary-50: #F4F5FF;
-  --palette-primary-100: #E4E8FF;
-  --palette-primary-200: #CAD0FF;
-  --palette-primary-300: #A7AFFF;
-  --palette-primary-400: #8287FF;
-  --palette-primary-500: #6458FF;
-  --palette-primary-600: #5132E9;
-  --palette-primary-700: #3E1BBF;
-  --palette-primary-800: #2D0D93;
-  --palette-primary-900: #1D0667;
-  --palette-primary-950: #0E023F;
-
-  --palette-secondary-50: #F3F9E1;
-  --palette-secondary-100: #E4F0C0;
-  --palette-secondary-200: #CBDF87;
-  --palette-secondary-300: #ACC538;
-  --palette-secondary-400: #8DA300;
-  --palette-secondary-500: #718300;
-  --palette-secondary-600: #5A6900;
-  --palette-secondary-700: #445100;
-  --palette-secondary-800: #323B00;
-  --palette-secondary-900: #202700;
-  --palette-secondary-950: #111500;
-
-  --palette-tertiary-50: #FFF3F0;
-  --palette-tertiary-100: #FFE2DB;
-  --palette-tertiary-200: #FFC3B6;
-  --palette-tertiary-300: #FF967F;
-  --palette-tertiary-400: #F65E40;
-  --palette-tertiary-500: #D63410;
-  --palette-tertiary-600: #AF2200;
-  --palette-tertiary-700: #891800;
-  --palette-tertiary-800: #661000;
-  --palette-tertiary-900: #470700;
-  --palette-tertiary-950: #2A0200;
-
-  --palette-neutral-50: #F5F6F6;
-  --palette-neutral-100: #E9E9EB;
-  --palette-neutral-200: #D3D3D5;
-  --palette-neutral-300: #B6B6B9;
-  --palette-neutral-400: #96969A;
-  --palette-neutral-500: #78787C;
-  --palette-neutral-600: #606063;
-  --palette-neutral-700: #494A4C;
-  --palette-neutral-800: #353638;
-  --palette-neutral-900: #232325;
-  --palette-neutral-950: #121314;
-
-  --palette-quaternary-50: #E6FEE6;
-  --palette-quaternary-100: #C9F9C9;
-  --palette-quaternary-200: #96EC99;
-  --palette-quaternary-300: #4FD75D;
-  --palette-quaternary-400: #00B632;
-  --palette-quaternary-500: #009226;
-  --palette-quaternary-600: #00751D;
-  --palette-quaternary-700: #005B14;
-  --palette-quaternary-800: #00430C;
-  --palette-quaternary-900: #002D06;
-  --palette-quaternary-950: #001902;
-
-  /* ZeroAbstraction Design Tokens — Dark (Palette 03) */
-  --bg: #0F1117;
-  --bg-subtle: #161922;
-  --surface: #161922;
-  --surface-hover: #202534;
-  --border: #353638;
-  --border-strong: #606063;
-  --grid-line: rgba(255, 255, 255, 0.06);
-  --btn-cta-bg: #2F455C;
+  /* ZeroAbstraction Public Design Tokens — Dark */
+  --bg: #0B0E14;
+  --bg-subtle: #121722;
+  --surface: #151B28;
+  --surface-hover: #1D2536;
+  --border: rgba(226, 232, 244, 0.14);
+  --border-strong: rgba(226, 232, 244, 0.28);
+  --grid-line: rgba(226, 232, 244, 0.055);
+  --btn-cta-bg: #25467A;
   --btn-cta-fg: #FFFFFF;
-  --btn-cta-hover: #3C5773;
-  --text: #F5F6F6;
-  --text-muted: #B6B6B9;
+  --btn-cta-hover: #315B9E;
+  --text: #F1F4F9;
+  --text-muted: #A4AEBF;
   --muted: var(--text-muted);
-  --accent: #8287FF;
-  --accent-hover: #A7AFFF;
-  --accent-text: #A7AFFF;
-  --accent-subtle: #2D0D93;
-  --accent-border: #3E1BBF;
-  --on-accent: #0E023F;
-  --focus-ring: #8287FF;
+  --accent: #7CA8FF;
+  --accent-hover: #A3C2FF;
+  --accent-text: #94B9FF;
+  --accent-subtle: #1B2A4A;
+  --accent-border: #3D5B99;
+  --on-accent: #081121;
+  --focus-ring: #7CA8FF;
 
-  --secondary: #8DA300;
-  --secondary-hover: #ACC538;
+  --secondary: #4FD1C5;
+  --secondary-hover: #7AE3D9;
+  --secondary-subtle: #123538;
   --success: #4ADE80;
   --warning: #FBBF24;
   --danger: #F87171;
 
-  /* Code Syntax */
-  --code-bg: #202534;
-  --code-keyword: #8287FF;
-  --code-string: #4ADE80;
-  --code-number: #8DA300;
-  --code-comment: #606063;
+  /* Code Syntax & Formula Surfaces */
+  --code-bg: #111622;
+  --code-keyword: #7CA8FF;
+  --code-string: #4FD1C5;
+  --code-number: #F2B76B;
+  --code-comment: #6D778B;
+  --math-bg: #111622;
+  --math-border: #4FD1C5;
+  --table-head-bg: #172136;
+  --table-stripe-bg: rgba(255, 255, 255, 0.025);
+  --table-hover-bg: rgba(124, 168, 255, 0.10);
 
-  /* Shelf / library spine tints (Palette 03 Tonal Scale) */
-  --spine-1: #2D0D93;
-  --spine-2: #353638;
-  --spine-3: #323B00;
-  --spine-4: #661000;
-  --spine-5: #00430C;
-  --spine-fg: #F5F6F6;
-  --shade: rgba(0,0,0,.50);
+  /* Shelf / library spine tints (Dark Observatory Scale) */
+  --spine-1: #1D2942;
+  --spine-2: #252A36;
+  --spine-3: #143133;
+  --spine-4: #2C1F38;
+  --spine-5: #33291E;
+  --spine-fg: #F1F4F9;
+  --shade: rgba(0, 0, 0, 0.55);
 
   /* Glass Effects */
-  --glass-bg: rgba(15,17,23,.78);
-  --glass-border: rgba(245,246,246,.10);
+  --glass-bg: rgba(11, 14, 20, 0.80);
+  --glass-border: rgba(226, 232, 244, 0.12);
 
   /* Hero Surface Tokens */
-  --hero-scrim: linear-gradient(180deg,rgba(22,25,34,.45) 0%,rgba(15,17,23,.75) 45%,rgba(15,17,23,1) 100%);
-  --hero-fg: #F5F6F6;
-  --hero-fg-muted: #B6B6B9;
-  --hero-accent: #8287FF;
-  --hero-glass-bg: rgba(15,17,23,.78);
-  --hero-glass-border: rgba(245,246,246,.10);
+  --hero-scrim: linear-gradient(180deg, rgba(18, 23, 34, 0.45) 0%, rgba(11, 14, 20, 0.78) 45%, rgba(11, 14, 20, 1) 100%);
+  --hero-fg: #F1F4F9;
+  --hero-fg-muted: #A4AEBF;
+  --hero-accent: #7CA8FF;
+  --hero-glass-bg: rgba(11, 14, 20, 0.80);
+  --hero-glass-border: rgba(226, 232, 244, 0.12);
   --hero-glass-blur: 16px;
 
   /* Sidebar & Inverse Surfaces */
-  --sidebar-bg: #0F1117;
-  --sidebar-fg: #F5F6F6;
-  --sidebar-fg-muted: #B6B6B9;
-  --sidebar-border: #353638;
-  --sidebar-active-bg: #202534;
-  --sidebar-accent: #8287FF;
-  --inverse-bg: #0F1117;
-  --inverse-fg: #F5F6F6;
-  --inverse-border: #353638;
+  --sidebar-bg: #0B0E14;
+  --sidebar-fg: #F1F4F9;
+  --sidebar-fg-muted: #A4AEBF;
+  --sidebar-border: #272F40;
+  --sidebar-active-bg: #151B28;
+  --sidebar-accent: #7CA8FF;
+  --inverse-bg: #0B0E14;
+  --inverse-fg: #F1F4F9;
+  --inverse-border: #272F40;
+}
+
+@media (forced-colors: active) {
+  :root {
+    --bg: Canvas;
+    --bg-subtle: Canvas;
+    --surface: Canvas;
+    --text: CanvasText;
+    --text-muted: GrayText;
+    --accent: LinkText;
+    --accent-text: LinkText;
+    --border: CanvasText;
+    --border-strong: CanvasText;
+    --focus-ring: Highlight;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
