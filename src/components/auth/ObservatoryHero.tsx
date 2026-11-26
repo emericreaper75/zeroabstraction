@@ -118,28 +118,28 @@ export function ObservatoryHero({ theme, onToggleTheme, onNotify }: ObservatoryH
         </div>
       </div>
 
-      {/* Center Minimal Editorial Identity */}
-      <div className="relative z-10 my-auto py-8 lg:py-12 max-w-md">
-        <span className="typo-mono-data text-[11px] uppercase tracking-[0.12em] text-[var(--admin-primary)] block mb-3">
+      {/* Center Balanced Editorial Identity */}
+      <div className="relative z-10 my-auto py-8 lg:py-12 max-w-xl">
+        <span className="typo-mono-data text-[12px] uppercase tracking-[0.14em] text-[var(--admin-primary)] block mb-3.5">
           Observatory Console
         </span>
 
         <h1
-          className="text-[var(--admin-ink-primary)] !text-[32px] sm:!text-[40px] !leading-[1.12] !tracking-[-0.025em] !font-semibold"
+          className="text-[var(--admin-ink-primary)] !text-[38px] sm:!text-[48px] lg:!text-[54px] !leading-[1.08] !tracking-[-0.03em] !font-semibold"
           style={{ fontFamily: "'Plus Jakarta Sans', 'Inter', sans-serif" }}
         >
           Manoj Amavasya
         </h1>
 
-        <p className="text-[var(--admin-ink-secondary)] text-[15px] font-medium mt-2 tracking-[-0.01em]">
+        <p className="text-[var(--admin-ink-secondary)] text-[17px] sm:text-[19px] font-medium mt-3 tracking-[-0.01em]">
           Astronomical Atelier &amp; Research Archive
         </p>
 
-        <p className="text-[var(--admin-ink-muted)] text-[13.5px] leading-relaxed mt-3 max-w-sm">
+        <p className="text-[var(--admin-ink-muted)] text-[15px] sm:text-[15.5px] leading-relaxed mt-3.5 max-w-md">
           Observational telemetry, deep-field surveys, and digital manuscript curation.
         </p>
 
-        <div className="hidden sm:flex items-center gap-4 mt-6 typo-mono-data text-[11px] text-[var(--admin-ink-muted)]">
+        <div className="hidden sm:flex items-center gap-4 mt-7 typo-mono-data text-[12px] text-[var(--admin-ink-muted)]">
           <span>TLS 1.3</span>
           <span>·</span>
           <span>Payload v3.88</span>
