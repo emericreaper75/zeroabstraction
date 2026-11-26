@@ -248,37 +248,19 @@ UserAgent: ${typeof navigator !== 'undefined' ? navigator.userAgent : 'N/A'}`
           onNotify={notify}
         />
 
-        {/* RIGHT AUTH PANE (~44%) — Panze Studio Card */}
+        {/* RIGHT AUTH PANE (~45%) — Clean Minimalistic Panze Card */}
         <section
           aria-label="Sign in"
-          className="w-full lg:w-[44%] flex items-center justify-center p-5 sm:p-8 lg:p-12 relative z-10"
+          className="w-full lg:w-[45%] flex items-center justify-center p-6 sm:p-8 lg:p-12 relative z-10"
         >
           {/* Credential Card */}
           <div
-            className={`w-full max-w-md bg-[var(--admin-paper-surface)]/92 backdrop-blur-md text-[var(--admin-ink-primary)] border border-[var(--admin-hairline-rule)] p-6 sm:p-8 relative rounded-[20px] transition-shadow ${
+            className={`w-full max-w-md bg-[var(--admin-paper-surface)] text-[var(--admin-ink-primary)] border border-[var(--admin-hairline-rule)] p-6 sm:p-8 relative rounded-[20px] ${
               theme === 'dark'
-                ? 'shadow-[0_24px_60px_-15px_rgba(0,0,0,0.65)]'
-                : 'shadow-[0_20px_50px_-15px_rgba(15,23,42,0.10)]'
+                ? 'shadow-[0_12px_36px_-12px_rgba(0,0,0,0.55)]'
+                : 'shadow-[0_12px_32px_-12px_rgba(15,23,42,0.08)]'
             } ${shakeCard ? 'auth-shake' : ''}`}
           >
-            {/* Precision Registration Ticks */}
-            <div aria-hidden="true" className="absolute top-3 left-3 w-2 h-2 border-t border-l border-[var(--admin-primary)] opacity-50 rounded-tl-[2px]" />
-            <div aria-hidden="true" className="absolute top-3 right-3 w-2 h-2 border-t border-r border-[var(--admin-primary)] opacity-50 rounded-tr-[2px]" />
-            <div aria-hidden="true" className="absolute bottom-3 left-3 w-2 h-2 border-b border-l border-[var(--admin-primary)] opacity-50 rounded-bl-[2px]" />
-            <div aria-hidden="true" className="absolute bottom-3 right-3 w-2 h-2 border-b border-r border-[var(--admin-primary)] opacity-50 rounded-br-[2px]" />
-
-            {/* Card Header */}
-            <div className="mb-5 flex items-center justify-between border-b border-[var(--admin-hairline-rule)] pb-3.5">
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[var(--admin-primary)] inline-block" />
-                <span className="typo-mono-data text-[11px] uppercase tracking-[0.12em] !text-[var(--admin-ink-secondary)]">
-                  Observatory Access
-                </span>
-              </div>
-              <span className="typo-pill text-[10px] px-2.5 py-0.5 rounded-full bg-[var(--admin-amber-wash)] border border-[var(--admin-hairline-rule)] text-[var(--admin-primary)]">
-                SECURE_NODE
-              </span>
-            </div>
 
             {/* Active Session Banner */}
             {activeUserEmail && (
@@ -591,7 +573,7 @@ UserAgent: ${typeof navigator !== 'undefined' ? navigator.userAgent : 'N/A'}`
       </main>
 
       {/* Status Bar Footer */}
-      <footer className="relative z-30 bg-[var(--admin-paper-surface)]/85 backdrop-blur-sm border-t border-[var(--admin-hairline-rule)] flex justify-between items-center w-full px-4 sm:px-6 h-8 text-[var(--admin-ink-muted)] select-none">
+      <footer className="relative z-30 bg-[var(--admin-paper-surface)] border-t border-[var(--admin-hairline-rule)] flex justify-between items-center w-full px-4 sm:px-6 h-8 text-[var(--admin-ink-muted)] select-none">
         <div className="flex items-center gap-2">
           <span className={`w-1.5 h-1.5 rounded-full inline-block ${isOnline ? 'bg-emerald-500' : 'bg-amber-500'}`} />
           <span className="typo-mono-data text-[11px] tracking-wider">
