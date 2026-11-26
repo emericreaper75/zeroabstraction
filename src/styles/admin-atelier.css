@@ -196,15 +196,15 @@ html.dark .divide-hairline-rule,
 .cosmic-grid {
   background-size: 40px 40px;
   background-image:
-    linear-gradient(to right, rgba(15, 23, 42, 0.045) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(15, 23, 42, 0.045) 1px, transparent 1px);
+    linear-gradient(to right, rgba(37, 99, 235, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(37, 99, 235, 0.06) 1px, transparent 1px);
 }
 
 html.dark .cosmic-grid,
 [data-theme="dark"] .cosmic-grid {
   background-image:
-    linear-gradient(to right, rgba(96, 165, 250, 0.06) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(96, 165, 250, 0.06) 1px, transparent 1px);
+    linear-gradient(to right, rgba(96, 165, 250, 0.085) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(96, 165, 250, 0.085) 1px, transparent 1px);
 }
 
 /* ── Login Observatory Animations ───────────────────────────── */

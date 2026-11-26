@@ -7,64 +7,74 @@ interface ObservatoryBackdropProps {
 }
 
 const STARS = [
-  { cx: 8, cy: 14, r: 0.24, delay: '0s' },
-  { cx: 16, cy: 32, r: 0.18, delay: '1.2s' },
-  { cx: 25, cy: 19, r: 0.28, delay: '2.1s' },
-  { cx: 34, cy: 68, r: 0.2, delay: '0.7s' },
-  { cx: 42, cy: 26, r: 0.25, delay: '3.0s' },
-  { cx: 51, cy: 82, r: 0.22, delay: '1.8s' },
-  { cx: 59, cy: 12, r: 0.26, delay: '2.6s' },
-  { cx: 67, cy: 44, r: 0.19, delay: '0.4s' },
-  { cx: 74, cy: 76, r: 0.27, delay: '3.5s' },
-  { cx: 83, cy: 22, r: 0.22, delay: '1.5s' },
-  { cx: 91, cy: 58, r: 0.25, delay: '2.9s' },
-  { cx: 19, cy: 86, r: 0.21, delay: '4.1s' },
-  { cx: 48, cy: 52, r: 0.18, delay: '0.9s' },
-  { cx: 88, cy: 88, r: 0.23, delay: '2.2s' },
+  { cx: 7, cy: 14, r: 0.28, delay: '0s', accent: false },
+  { cx: 15, cy: 31, r: 0.22, delay: '1.1s', accent: true },
+  { cx: 24, cy: 18, r: 0.34, delay: '2.0s', accent: false },
+  { cx: 33, cy: 67, r: 0.24, delay: '0.6s', accent: false },
+  { cx: 41, cy: 25, r: 0.3, delay: '2.8s', accent: true },
+  { cx: 50, cy: 82, r: 0.25, delay: '1.7s', accent: false },
+  { cx: 58, cy: 12, r: 0.32, delay: '2.5s', accent: false },
+  { cx: 66, cy: 43, r: 0.22, delay: '0.4s', accent: true },
+  { cx: 74, cy: 76, r: 0.32, delay: '3.2s', accent: false },
+  { cx: 83, cy: 22, r: 0.26, delay: '1.4s', accent: false },
+  { cx: 91, cy: 57, r: 0.3, delay: '2.9s', accent: true },
+  { cx: 18, cy: 86, r: 0.24, delay: '3.8s', accent: false },
+  { cx: 47, cy: 51, r: 0.22, delay: '0.9s', accent: false },
+  { cx: 88, cy: 87, r: 0.28, delay: '2.2s', accent: true },
 ]
 
 export function ObservatoryBackdrop({ theme }: ObservatoryBackdropProps) {
+  const isDark = theme === 'dark'
+
   return (
     <div
       aria-hidden="true"
       className="fixed inset-0 pointer-events-none overflow-hidden z-0"
     >
-      {/* Unified Cosmic Grid across entire page */}
-      <div className="absolute inset-0 cosmic-grid opacity-75" />
+      {/* Unified Dual-Theme Cosmic Grid */}
+      <div className="absolute inset-0 cosmic-grid opacity-90" />
 
-      {/* Drifting Ambient Celestial Aurora Orbs */}
+      {/* Drifting Ambient Celestial Aurora Orbs — calibrated per theme */}
       <div
-        className="auth-drift-a absolute -top-[18%] -left-[10%] w-[55vw] h-[55vw] max-w-[680px] max-h-[680px] rounded-full blur-3xl opacity-30"
+        className="auth-drift-a absolute -top-[16%] -left-[8%] w-[56vw] h-[56vw] max-w-[700px] max-h-[700px] rounded-full blur-3xl"
         style={{
-          background:
-            theme === 'dark'
-              ? 'radial-gradient(circle, rgba(96,165,250,0.34) 0%, transparent 70%)'
-              : 'radial-gradient(circle, rgba(37,99,235,0.12) 0%, transparent 70%)',
+          background: isDark
+            ? 'radial-gradient(circle, rgba(59,130,246,0.28) 0%, rgba(99,102,241,0.10) 45%, transparent 72%)'
+            : 'radial-gradient(circle, rgba(37,99,235,0.16) 0%, rgba(99,102,241,0.08) 45%, transparent 72%)',
         }}
       />
       <div
-        className="auth-drift-b absolute -bottom-[22%] -right-[10%] w-[52vw] h-[52vw] max-w-[640px] max-h-[640px] rounded-full blur-3xl opacity-25"
+        className="auth-drift-b absolute -bottom-[18%] -right-[8%] w-[54vw] h-[54vw] max-w-[660px] max-h-[660px] rounded-full blur-3xl"
         style={{
-          background:
-            theme === 'dark'
-              ? 'radial-gradient(circle, rgba(52,211,153,0.24) 0%, transparent 70%)'
-              : 'radial-gradient(circle, rgba(16,185,129,0.12) 0%, transparent 70%)',
+          background: isDark
+            ? 'radial-gradient(circle, rgba(52,211,153,0.22) 0%, rgba(59,130,246,0.08) 45%, transparent 72%)'
+            : 'radial-gradient(circle, rgba(16,185,129,0.15) 0%, rgba(37,99,235,0.07) 45%, transparent 72%)',
+        }}
+      />
+      <div
+        className="auth-drift-a absolute top-[32%] left-[38%] w-[36vw] h-[36vw] max-w-[440px] max-h-[440px] rounded-full blur-3xl"
+        style={{
+          animationDelay: '-9s',
+          background: isDark
+            ? 'radial-gradient(circle, rgba(129,140,248,0.14) 0%, transparent 70%)'
+            : 'radial-gradient(circle, rgba(14,165,233,0.11) 0%, transparent 70%)',
         }}
       />
 
-      {/* Full-Viewport Subtle Constellation & Twinkling Stars */}
+      {/* Full-Viewport Constellation & Twinkling Starfield */}
       <svg
         className="absolute inset-0 w-full h-full"
         viewBox="0 0 100 100"
         preserveAspectRatio="none"
       >
         <g
-          stroke={theme === 'dark' ? 'rgba(96,165,250,0.12)' : 'rgba(15,23,42,0.06)'}
-          strokeWidth="0.1"
+          stroke={isDark ? 'rgba(147,197,253,0.20)' : 'rgba(37,99,235,0.16)'}
+          strokeWidth="0.11"
           fill="none"
         >
-          <polyline points="8,14 25,19 42,26 59,12 83,22" />
-          <polyline points="16,32 34,68 51,82 74,76 91,58" />
+          <polyline points="7,14 24,18 41,25 58,12 83,22" />
+          <polyline points="15,31 33,67 50,82 74,76 91,57" />
+          <polyline points="41,25 47,51 66,43 83,22" />
         </g>
         {STARS.map((star, idx) => (
           <circle
@@ -72,40 +82,82 @@ export function ObservatoryBackdrop({ theme }: ObservatoryBackdropProps) {
             cx={star.cx}
             cy={star.cy}
             r={star.r}
-            fill={theme === 'dark' ? '#93C5FD' : '#0F172A'}
+            fill={
+              isDark
+                ? star.accent
+                  ? '#34D399'
+                  : '#93C5FD'
+                : star.accent
+                  ? '#059669'
+                  : '#2563EB'
+            }
             className="auth-twinkle"
             style={{ animationDelay: star.delay }}
           />
         ))}
       </svg>
 
-      {/* Centered Full-Page Orbital Rings */}
-      <div className="absolute inset-0 flex items-center justify-center opacity-20">
-        <svg viewBox="0 0 400 400" className="w-[min(92vw,760px)] h-[min(92vw,760px)] auth-orbit-slow">
+      {/* Centered Multi-Ring Orbital Astrolabe */}
+      <div
+        className={`absolute inset-0 flex items-center justify-center ${
+          isDark ? 'opacity-40' : 'opacity-45'
+        }`}
+      >
+        {/* Outer Dashed Ring */}
+        <svg viewBox="0 0 400 400" className="w-[min(94vw,800px)] h-[min(94vw,800px)] auth-orbit-slow">
           <circle
             cx="200"
             cy="200"
-            r="190"
+            r="192"
             fill="none"
-            stroke="currentColor"
-            strokeWidth="0.6"
-            strokeDasharray="4 8"
-            className="text-[var(--admin-ink-muted)]"
+            stroke={isDark ? 'rgba(148,163,184,0.35)' : 'rgba(71,85,105,0.28)'}
+            strokeWidth="0.75"
+            strokeDasharray="4 7"
           />
-          <circle cx="200" cy="10" r="2.5" className="fill-[var(--admin-primary)]" />
+          <circle
+            cx="200"
+            cy="8"
+            r="3"
+            fill={isDark ? '#60A5FA' : '#2563EB'}
+          />
         </svg>
-        <svg viewBox="0 0 400 400" className="w-[min(66vw,540px)] h-[min(66vw,540px)] absolute auth-orbit-reverse">
+
+        {/* Middle Precision Ring */}
+        <svg viewBox="0 0 400 400" className="w-[min(70vw,580px)] h-[min(70vw,580px)] absolute auth-orbit-reverse">
           <circle
             cx="200"
             cy="200"
-            r="185"
+            r="186"
             fill="none"
-            stroke="currentColor"
-            strokeWidth="0.6"
-            strokeDasharray="1.5 6"
-            className="text-[var(--admin-primary)]"
+            stroke={isDark ? 'rgba(96,165,250,0.42)' : 'rgba(37,99,235,0.30)'}
+            strokeWidth="0.85"
+            strokeDasharray="2 6"
           />
-          <circle cx="385" cy="200" r="2" className="fill-emerald-500" />
+          <circle
+            cx="386"
+            cy="200"
+            r="2.6"
+            fill={isDark ? '#34D399' : '#059669'}
+          />
+        </svg>
+
+        {/* Inner Subtle Pulse Ring */}
+        <svg viewBox="0 0 400 400" className="w-[min(46vw,380px)] h-[min(46vw,380px)] absolute auth-orbit-slow" style={{ animationDuration: '48s' }}>
+          <circle
+            cx="200"
+            cy="200"
+            r="180"
+            fill="none"
+            stroke={isDark ? 'rgba(52,211,153,0.28)' : 'rgba(16,185,129,0.22)'}
+            strokeWidth="0.75"
+            strokeDasharray="1 9"
+          />
+          <circle
+            cx="20"
+            cy="200"
+            r="2.2"
+            fill={isDark ? '#A5B4FC' : '#4F46E5'}
+          />
         </svg>
       </div>
     </div>
