@@ -91,4 +91,5 @@ Tracking all 60 presentation, typography, and interactive UX improvements to the
 63. **Translucent Glassmorphic Auth Card & Footer**: Updated the right credential card and bottom status bar to use translucent surfaces (`backdrop-blur-md` / `backdrop-blur-sm`) so the full-page animation flows cleanly behind every element.
 64. **Balanced Left Hero Copy & Highlight Strip**: Restored a concise 1-sentence editorial lead and a compact 3-pill highlight strip (`TLS 1.3 Encrypted`, `Payload v3.88`, `Epoch 2026.3`) for balanced visual weight without clutter.
 65. **Dual-Theme Backdrop Color Calibration**: Tuned grid lines, multi-stop aurora orbs, constellation strokes, star accents, and 3-ring orbital astrolabe colors separately for Light Canvas (`#2563EB` / `#059669` / slate) and Zinc Dark (`#60A5FA` / `#34D399` / indigo) so the animation stands out crisply in both modes.
+66. **Right-to-Left Directional Gradient Sweep**: Added an animated right-to-left gradient (`.auth-gradient-sweep`) anchored behind the login window (indigo-ice in Light Canvas, deep midnight-cobalt in Zinc Dark) fading smoothly toward the left hero pane for clear visual separation.
 

@@ -249,6 +249,17 @@ html.dark .cosmic-grid,
   50% { opacity: 0.85; }
 }
 
+@keyframes auth-gradient-sweep {
+  0%, 100% {
+    opacity: 0.75;
+    transform: translateX(0%);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(-3%);
+  }
+}
+
 .auth-orbit-slow {
   animation: auth-orbit-slow 90s linear infinite;
 }
@@ -271,6 +282,10 @@ html.dark .cosmic-grid,
 
 .auth-twinkle {
   animation: auth-twinkle 6s ease-in-out infinite;
+}
+
+.auth-gradient-sweep {
+  animation: auth-gradient-sweep 14s ease-in-out infinite;
 }
 
 /* ── Atelier Checkbox: Palette 03 Square ─────────────────────── */

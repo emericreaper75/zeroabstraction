@@ -34,6 +34,16 @@ export function ObservatoryBackdrop({ theme }: ObservatoryBackdropProps) {
       {/* Unified Dual-Theme Cosmic Grid */}
       <div className="absolute inset-0 cosmic-grid opacity-90" />
 
+      {/* Right-to-Left Directional Gradient — distinguishes the Login Window from the Hero */}
+      <div
+        className="auth-gradient-sweep absolute inset-y-0 right-0 w-full"
+        style={{
+          background: isDark
+            ? 'linear-gradient(to left, rgba(30, 58, 138, 0.44) 0%, rgba(49, 46, 129, 0.24) 36%, rgba(15, 23, 42, 0.08) 62%, transparent 86%)'
+            : 'linear-gradient(to left, rgba(191, 219, 254, 0.72) 0%, rgba(224, 231, 255, 0.42) 36%, rgba(241, 245, 249, 0.12) 62%, transparent 86%)',
+        }}
+      />
+
       {/* Drifting Ambient Celestial Aurora Orbs — calibrated per theme */}
       <div
         className="auth-drift-a absolute -top-[16%] -left-[8%] w-[56vw] h-[56vw] max-w-[700px] max-h-[700px] rounded-full blur-3xl"
