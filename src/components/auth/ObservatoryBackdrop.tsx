@@ -1,151 +1,199 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 
 interface ObservatoryBackdropProps {
   theme: 'light' | 'dark'
 }
 
-const STARS = [
-  { cx: 7, cy: 14, r: 0.34, delay: '0s', accent: false },
-  { cx: 15, cy: 31, r: 0.28, delay: '1.1s', accent: true },
-  { cx: 24, cy: 18, r: 0.4, delay: '2.0s', accent: false },
-  { cx: 33, cy: 67, r: 0.3, delay: '0.6s', accent: false },
-  { cx: 41, cy: 25, r: 0.36, delay: '2.8s', accent: true },
-  { cx: 50, cy: 82, r: 0.3, delay: '1.7s', accent: false },
-  { cx: 58, cy: 12, r: 0.38, delay: '2.5s', accent: false },
-  { cx: 66, cy: 43, r: 0.28, delay: '0.4s', accent: true },
-  { cx: 74, cy: 76, r: 0.36, delay: '3.2s', accent: false },
-  { cx: 83, cy: 22, r: 0.3, delay: '1.4s', accent: false },
-  { cx: 91, cy: 57, r: 0.34, delay: '2.9s', accent: true },
-  { cx: 18, cy: 86, r: 0.3, delay: '3.8s', accent: false },
-  { cx: 47, cy: 51, r: 0.26, delay: '0.9s', accent: false },
-  { cx: 88, cy: 87, r: 0.32, delay: '2.2s', accent: true },
-]
+interface StarNode {
+  x: number
+  y: number
+  vx: number
+  vy: number
+  r: number
+  isAccent: boolean
+}
 
 export function ObservatoryBackdrop({ theme }: ObservatoryBackdropProps) {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
   const isDark = theme === 'dark'
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    const prefersReducedMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    let width = (canvas.width = window.innerWidth)
+    let height = (canvas.height = window.innerHeight)
+    const dpr = Math.min(window.devicePixelRatio || 1, 2)
+    canvas.width = width * dpr
+    canvas.height = height * dpr
+    canvas.style.width = `${width}px`
+    canvas.style.height = `${height}px`
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+
+    const nodeCount = Math.min(64, Math.max(32, Math.floor((width * height) / 26000)))
+    const nodes: StarNode[] = Array.from({ length: nodeCount }, (_, i) => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: (Math.random() - 0.5) * 0.22,
+      vy: (Math.random() - 0.5) * 0.22,
+      r: i % 4 === 0 ? 2.1 : 1.4,
+      isAccent: i % 3 === 0,
+    }))
+
+    const pointer = { x: -9999, y: -9999, active: false }
+
+    const handlePointerMove = (e: PointerEvent) => {
+      pointer.x = e.clientX
+      pointer.y = e.clientY
+      pointer.active = true
+    }
+
+    const handlePointerLeave = () => {
+      pointer.active = false
+    }
+
+    const handleResize = () => {
+      width = window.innerWidth
+      height = window.innerHeight
+      canvas.width = width * dpr
+      canvas.height = height * dpr
+      canvas.style.width = `${width}px`
+      canvas.style.height = `${height}px`
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+    }
+
+    window.addEventListener('pointermove', handlePointerMove, { passive: true })
+    window.addEventListener('pointerleave', handlePointerLeave)
+    window.addEventListener('resize', handleResize)
+
+    let rafId = 0
+
+    const draw = () => {
+      ctx.clearRect(0, 0, width, height)
+
+      // Update positions gently
+      if (!prefersReducedMotion) {
+        for (const node of nodes) {
+          node.x += node.vx
+          node.y += node.vy
+          if (node.x < 0 || node.x > width) node.vx *= -1
+          if (node.y < 0 || node.y > height) node.vy *= -1
+        }
+      }
+
+      const maxDist = 165
+      const cursorRadius = 190
+
+      // Draw constellation connections
+      for (let i = 0; i < nodes.length; i++) {
+        const a = nodes[i]
+        for (let j = i + 1; j < nodes.length; j++) {
+          const b = nodes[j]
+          const dx = a.x - b.x
+          const dy = a.y - b.y
+          const dist = Math.hypot(dx, dy)
+          if (dist > maxDist) continue
+
+          const baseFactor = 1 - dist / maxDist
+          let alpha = isDark ? 0.34 * baseFactor : 0.28 * baseFactor
+
+          // Subtle cursor-proximity line highlighting
+          if (pointer.active && !prefersReducedMotion) {
+            const midX = (a.x + b.x) * 0.5
+            const midY = (a.y + b.y) * 0.5
+            const cursorDist = Math.hypot(midX - pointer.x, midY - pointer.y)
+            if (cursorDist < cursorRadius) {
+              const boost = (1 - cursorDist / cursorRadius) * 0.28
+              alpha = Math.min(0.65, alpha + boost)
+            }
+          }
+
+          ctx.beginPath()
+          ctx.moveTo(a.x, a.y)
+          ctx.lineTo(b.x, b.y)
+          ctx.strokeStyle = isDark
+            ? a.isAccent || b.isAccent
+              ? `rgba(56, 189, 248, ${alpha.toFixed(3)})`
+              : `rgba(148, 163, 184, ${(alpha * 0.85).toFixed(3)})`
+            : a.isAccent || b.isAccent
+              ? `rgba(37, 99, 235, ${alpha.toFixed(3)})`
+              : `rgba(30, 41, 59, ${(alpha * 0.85).toFixed(3)})`
+          ctx.lineWidth = 1
+          ctx.stroke()
+        }
+
+        // Subtle cursor-to-node tethers
+        if (pointer.active && !prefersReducedMotion) {
+          const cDist = Math.hypot(a.x - pointer.x, a.y - pointer.y)
+          if (cDist < cursorRadius * 0.85) {
+            const cAlpha = (1 - cDist / (cursorRadius * 0.85)) * (isDark ? 0.36 : 0.28)
+            ctx.beginPath()
+            ctx.moveTo(a.x, a.y)
+            ctx.lineTo(pointer.x, pointer.y)
+            ctx.strokeStyle = isDark
+              ? `rgba(56, 189, 248, ${cAlpha.toFixed(3)})`
+              : `rgba(37, 99, 235, ${cAlpha.toFixed(3)})`
+            ctx.lineWidth = 0.9
+            ctx.stroke()
+          }
+        }
+      }
+
+      // Draw constellation nodes
+      for (const node of nodes) {
+        ctx.beginPath()
+        ctx.arc(node.x, node.y, node.r, 0, Math.PI * 2)
+        ctx.fillStyle = isDark
+          ? node.isAccent
+            ? 'rgba(56, 189, 248, 0.42)'
+            : 'rgba(148, 163, 184, 0.36)'
+          : node.isAccent
+            ? 'rgba(37, 99, 235, 0.35)'
+            : 'rgba(30, 41, 59, 0.28)'
+        ctx.fill()
+      }
+
+      if (!prefersReducedMotion) {
+        rafId = requestAnimationFrame(draw)
+      }
+    }
+
+    draw()
+
+    return () => {
+      cancelAnimationFrame(rafId)
+      window.removeEventListener('pointermove', handlePointerMove)
+      window.removeEventListener('pointerleave', handlePointerLeave)
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [isDark])
 
   return (
     <div
       aria-hidden="true"
       className="fixed inset-0 pointer-events-none overflow-hidden z-0"
+      style={{
+        backgroundColor: isDark ? '#0B1120' : '#F8FAFC',
+      }}
     >
-      {/* Layer 1: Full-Viewport Cosmic Grid */}
-      <div className="absolute inset-0 cosmic-grid opacity-95" />
+      {/* Full-Bleed Animated Constellation Canvas */}
+      <canvas ref={canvasRef} className="absolute inset-0 block w-full h-full" />
 
-      {/* Layer 2: Drifting Ambient Celestial Aurora Orbs */}
+      {/* Right-to-Left Gradient Cover: solid behind right login card, fades out toward left */}
       <div
-        className="auth-drift-a absolute -top-[14%] -left-[6%] w-[58vw] h-[58vw] max-w-[720px] max-h-[720px] rounded-full blur-3xl"
+        className="absolute inset-0"
         style={{
           background: isDark
-            ? 'radial-gradient(circle, rgba(59,130,246,0.34) 0%, rgba(99,102,241,0.14) 48%, transparent 72%)'
-            : 'radial-gradient(circle, rgba(37,99,235,0.22) 0%, rgba(99,102,241,0.11) 48%, transparent 72%)',
-        }}
-      />
-      <div
-        className="auth-drift-b absolute -bottom-[16%] left-[12%] w-[50vw] h-[50vw] max-w-[620px] max-h-[620px] rounded-full blur-3xl"
-        style={{
-          background: isDark
-            ? 'radial-gradient(circle, rgba(52,211,153,0.24) 0%, rgba(59,130,246,0.10) 48%, transparent 72%)'
-            : 'radial-gradient(circle, rgba(16,185,129,0.20) 0%, rgba(37,99,235,0.09) 48%, transparent 72%)',
-        }}
-      />
-
-      {/* Layer 3: Full-Viewport Constellation & Twinkling Starfield */}
-      <svg
-        className="absolute inset-0 w-full h-full"
-        viewBox="0 0 100 100"
-        preserveAspectRatio="none"
-      >
-        <g
-          stroke={isDark ? 'rgba(147,197,253,0.26)' : 'rgba(37,99,235,0.22)'}
-          strokeWidth="0.13"
-          fill="none"
-        >
-          <polyline points="7,14 24,18 41,25 58,12 83,22" />
-          <polyline points="15,31 33,67 50,82 74,76 91,57" />
-          <polyline points="41,25 47,51 66,43 83,22" />
-        </g>
-        {STARS.map((star, idx) => (
-          <circle
-            key={idx}
-            cx={star.cx}
-            cy={star.cy}
-            r={star.r}
-            fill={
-              isDark
-                ? star.accent
-                  ? '#34D399'
-                  : '#93C5FD'
-                : star.accent
-                  ? '#059669'
-                  : '#2563EB'
-            }
-            className="auth-twinkle"
-            style={{ animationDelay: star.delay }}
-          />
-        ))}
-      </svg>
-
-      {/* Layer 4: Multi-Ring Orbital Astrolabe */}
-      <div
-        className={`absolute inset-0 flex items-center justify-center lg:justify-start lg:pl-[8%] ${
-          isDark ? 'opacity-55' : 'opacity-60'
-        }`}
-      >
-        <svg viewBox="0 0 400 400" className="w-[min(92vw,760px)] h-[min(92vw,760px)] auth-orbit-slow">
-          <circle
-            cx="200"
-            cy="200"
-            r="192"
-            fill="none"
-            stroke={isDark ? 'rgba(148,163,184,0.42)' : 'rgba(71,85,105,0.34)'}
-            strokeWidth="0.85"
-            strokeDasharray="4 7"
-          />
-          <circle cx="200" cy="8" r="3.4" fill={isDark ? '#60A5FA' : '#2563EB'} />
-        </svg>
-
-        <svg viewBox="0 0 400 400" className="w-[min(68vw,560px)] h-[min(68vw,560px)] absolute lg:left-[calc(8%+100px)] auth-orbit-reverse">
-          <circle
-            cx="200"
-            cy="200"
-            r="186"
-            fill="none"
-            stroke={isDark ? 'rgba(96,165,250,0.50)' : 'rgba(37,99,235,0.36)'}
-            strokeWidth="0.95"
-            strokeDasharray="2 6"
-          />
-          <circle cx="386" cy="200" r="3" fill={isDark ? '#34D399' : '#059669'} />
-        </svg>
-
-        <svg
-          viewBox="0 0 400 400"
-          className="w-[min(44vw,360px)] h-[min(44vw,360px)] absolute lg:left-[calc(8%+200px)] auth-orbit-slow"
-          style={{ animationDuration: '48s' }}
-        >
-          <circle
-            cx="200"
-            cy="200"
-            r="180"
-            fill="none"
-            stroke={isDark ? 'rgba(52,211,153,0.35)' : 'rgba(16,185,129,0.28)'}
-            strokeWidth="0.85"
-            strokeDasharray="1 9"
-          />
-          <circle cx="20" cy="200" r="2.6" fill={isDark ? '#A5B4FC' : '#4F46E5'} />
-        </svg>
-      </div>
-
-      {/* Layer 5: Right-to-Left Gradient Cover — denser on the right behind the login card,
-          progressively fading to transparent on the left so the animation highlights more */}
-      <div
-        className="auth-gradient-sweep absolute inset-0"
-        style={{
-          background: isDark
-            ? 'linear-gradient(to left, rgba(9, 9, 11, 0.90) 0%, rgba(15, 23, 42, 0.72) 38%, rgba(9, 9, 11, 0.28) 64%, rgba(9, 9, 11, 0) 88%)'
-            : 'linear-gradient(to left, rgba(226, 236, 249, 0.92) 0%, rgba(235, 241, 250, 0.74) 38%, rgba(241, 245, 249, 0.26) 64%, rgba(241, 245, 249, 0) 88%)',
+            ? 'linear-gradient(to left, #090D16 0%, rgba(9, 13, 22, 0.92) 38%, rgba(11, 17, 32, 0.42) 66%, rgba(11, 17, 32, 0) 92%)'
+            : 'linear-gradient(to left, #F1F5F9 0%, rgba(241, 245, 249, 0.92) 38%, rgba(248, 250, 252, 0.42) 66%, rgba(248, 250, 252, 0) 92%)',
         }}
       />
     </div>

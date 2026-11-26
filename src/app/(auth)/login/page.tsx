@@ -11,6 +11,13 @@ import { LoginToast, type LoginToastMessage } from '@/components/auth/LoginToast
 const THEME_KEY = 'payload-admin-theme'
 const REMEMBERED_EMAIL_KEY = 'za_remembered_email'
 
+type ClockMode = 'UTC' | 'LOCAL' | 'JD'
+
+function computeJulianDate(date: Date): string {
+  const jd = date.getTime() / 86400000 + 2440587.5
+  return jd.toFixed(4)
+}
+
 function getPasswordStrength(pw: string): { score: number; label: string } {
   if (!pw) return { score: 0, label: '' }
   let score = 0
@@ -44,6 +51,14 @@ export default function LoginPage() {
   const [isOnline, setIsOnline] = useState(true)
   const [activeUserEmail, setActiveUserEmail] = useState<string | null>(null)
 
+  // Consolidated footer telemetry state
+  const [clockMode, setClockMode] = useState<ClockMode>('UTC')
+  const [clockText, setClockText] = useState('----.--.-- --:--:--')
+  const [healthState, setHealthState] = useState<{
+    status: 'checking' | 'ok' | 'degraded'
+    latencyMs: number | null
+  }>({ status: 'checking', latencyMs: null })
+
   // Dialogs & toasts
   const [openDialog, setOpenDialog] = useState<AuthDialogKind>(null)
   const [toasts, setToasts] = useState<LoginToastMessage[]>([])
@@ -64,14 +79,37 @@ export default function LoginPage() {
     setTheme(next)
     if (typeof document !== 'undefined') {
       document.documentElement.setAttribute('data-theme', next)
-      document.documentElement.className = next
+      document.documentElement.classList.remove('light', 'dark')
+      document.documentElement.classList.add(next)
       document.documentElement.style.colorScheme = next
       const meta = document.querySelector('meta[name="color-scheme"]')
       if (meta) meta.setAttribute('content', next)
     }
   }, [])
 
-  // Initialize theme, remembered email, online listener & active session check
+  const pingHealth = useCallback(
+    async (manual = false) => {
+      setHealthState((prev) => ({ ...prev, status: 'checking' }))
+      const start = performance.now()
+      try {
+        const res = await fetch('/api/health', { cache: 'no-store' })
+        const elapsed = Math.round(performance.now() - start)
+        if (res.ok) {
+          setHealthState({ status: 'ok', latencyMs: elapsed })
+          if (manual) notify(`Node α operational (${elapsed} ms)`, 'success')
+        } else {
+          setHealthState({ status: 'degraded', latencyMs: elapsed })
+          if (manual) notify(`Node α returned HTTP ${res.status}`, 'warning')
+        }
+      } catch {
+        setHealthState({ status: 'degraded', latencyMs: null })
+        if (manual) notify('Health check unreachable', 'warning')
+      }
+    },
+    [notify],
+  )
+
+  // Initialize theme, remembered email, focus, online listener & active session check
   useEffect(() => {
     try {
       const savedTheme = localStorage.getItem(THEME_KEY)
@@ -87,7 +125,7 @@ export default function LoginPage() {
         setTimeout(() => emailInputRef.current?.focus(), 60)
       }
     } catch {
-      // Ignore storage errors in restricted environments
+      setTimeout(() => emailInputRef.current?.focus(), 60)
     }
 
     setIsOnline(typeof navigator !== 'undefined' ? navigator.onLine : true)
@@ -103,7 +141,8 @@ export default function LoginPage() {
     window.addEventListener('offline', handleOffline)
     window.addEventListener('storage', handleStorage)
 
-    // Non-blocking check if an observer session is already active
+    pingHealth(false)
+
     fetch('/api/users/me', { credentials: 'include' })
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
@@ -118,7 +157,30 @@ export default function LoginPage() {
       window.removeEventListener('offline', handleOffline)
       window.removeEventListener('storage', handleStorage)
     }
-  }, [applyTheme])
+  }, [applyTheme, pingHealth])
+
+  // Live footer clock
+  useEffect(() => {
+    function updateClock() {
+      const now = new Date()
+      if (clockMode === 'JD') {
+        setClockText(`JD ${computeJulianDate(now)}`)
+        return
+      }
+      const useUtc = clockMode === 'UTC'
+      const year = useUtc ? now.getUTCFullYear() : now.getFullYear()
+      const month = String((useUtc ? now.getUTCMonth() : now.getMonth()) + 1).padStart(2, '0')
+      const day = String(useUtc ? now.getUTCDate() : now.getDate()).padStart(2, '0')
+      const hours = String(useUtc ? now.getUTCHours() : now.getHours()).padStart(2, '0')
+      const mins = String(useUtc ? now.getUTCMinutes() : now.getMinutes()).padStart(2, '0')
+      const secs = String(useUtc ? now.getUTCSeconds() : now.getSeconds()).padStart(2, '0')
+      setClockText(`${year}.${month}.${day} ${hours}:${mins}:${secs}`)
+    }
+
+    updateClock()
+    const interval = setInterval(updateClock, 1000)
+    return () => clearInterval(interval)
+  }, [clockMode])
 
   // Global keyboard shortcuts (? for help, Esc to clear error)
   useEffect(() => {
@@ -146,6 +208,12 @@ export default function LoginPage() {
     } catch {
       // Ignore storage errors
     }
+  }
+
+  const cycleClockMode = () => {
+    const order: ClockMode[] = ['UTC', 'LOCAL', 'JD']
+    const next = order[(order.indexOf(clockMode) + 1) % order.length]
+    setClockMode(next)
   }
 
   const handleCopy = async (value: string, label: string) => {
@@ -225,11 +293,10 @@ export default function LoginPage() {
   const diagnosticsText = `ZeroAbstraction Observatory Node
 Theme: ${theme}
 Online: ${isOnline}
-Timestamp: ${new Date().toISOString()}
-UserAgent: ${typeof navigator !== 'undefined' ? navigator.userAgent : 'N/A'}`
+Timestamp: ${new Date().toISOString()}`
 
   return (
-    <>
+    <div className="min-h-dvh flex flex-col justify-between relative z-10">
       <a
         href="#login-form"
         className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:px-3 focus:py-2 focus:rounded-[10px] focus:bg-[var(--admin-primary)] focus:text-[var(--admin-on-primary)] focus:text-xs focus:font-medium"
@@ -237,23 +304,53 @@ UserAgent: ${typeof navigator !== 'undefined' ? navigator.userAgent : 'N/A'}`
         Skip to sign in form
       </a>
 
-      {/* Full-Page Unified Animated Backdrop */}
+      {/* Full-Bleed Animated Constellation & Right-to-Left Gradient Cover */}
       <ObservatoryBackdrop theme={theme} />
 
-      {/* Main Split-Pane Login Workspace */}
-      <main className="w-full flex-grow flex flex-col lg:flex-row min-h-[calc(100dvh-2rem)] relative z-10">
-        <ObservatoryHero
-          theme={theme}
-          onToggleTheme={handleToggleTheme}
-          onNotify={notify}
-        />
+      {/* Top Header Bar: Brand on Top-Left, Public Site & Theme Toggle pinned to Top-Right */}
+      <header className="relative z-20 w-full px-6 sm:px-8 pt-6 flex items-center justify-between">
+        <div className="flex items-center gap-2.5 min-w-0">
+          <span className="w-2 h-2 rounded-full bg-[var(--admin-primary)] shrink-0" />
+          <span
+            className="font-semibold tracking-tight text-[15px] text-[var(--admin-ink-primary)]"
+            style={{ fontFamily: "'Plus Jakarta Sans', 'Inter', sans-serif" }}
+          >
+            ZeroAbstraction
+          </span>
+        </div>
 
-        {/* RIGHT AUTH PANE (~45%) — Clean Minimalistic Panze Card */}
+        <div className="flex items-center gap-2 sm:mr-0">
+          <Link
+            href="/"
+            className="typo-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[10px] border border-[var(--admin-hairline-rule)] bg-[var(--admin-paper-surface)] text-[var(--admin-ink-secondary)] hover:text-[var(--admin-ink-primary)] hover:border-[var(--admin-primary)] transition-colors text-[12px]"
+          >
+            <span className="material-symbols-outlined text-[15px]">arrow_back</span>
+            <span>Public Site</span>
+          </Link>
+
+          <button
+            type="button"
+            onClick={handleToggleTheme}
+            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
+            title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
+            className="inline-flex items-center justify-center w-8 h-8 rounded-[10px] border border-[var(--admin-hairline-rule)] bg-[var(--admin-paper-surface)] text-[var(--admin-ink-secondary)] hover:text-[var(--admin-ink-primary)] hover:border-[var(--admin-primary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--admin-primary)]"
+          >
+            <span className="material-symbols-outlined text-[17px]">
+              {theme === 'dark' ? 'light_mode' : 'dark_mode'}
+            </span>
+          </button>
+        </div>
+      </header>
+
+      {/* Main Split-Pane Login Workspace */}
+      <main className="w-full flex-grow flex flex-col lg:flex-row relative z-10">
+        <ObservatoryHero />
+
+        {/* RIGHT AUTH PANE (~45%) — Flat Non-Glassmorphic Panze Card */}
         <section
           aria-label="Sign in"
-          className="w-full lg:w-[45%] flex items-center justify-center p-6 sm:p-8 lg:p-12 relative z-10"
+          className="w-full lg:w-[45%] flex items-center justify-center px-6 sm:px-8 lg:px-12 py-8"
         >
-          {/* Credential Card */}
           <div
             className={`w-full max-w-md bg-[var(--admin-paper-surface)] text-[var(--admin-ink-primary)] border border-[var(--admin-hairline-rule)] p-6 sm:p-8 relative rounded-[20px] ${
               theme === 'dark'
@@ -261,7 +358,6 @@ UserAgent: ${typeof navigator !== 'undefined' ? navigator.userAgent : 'N/A'}`
                 : 'shadow-[0_12px_32px_-12px_rgba(15,23,42,0.08)]'
             } ${shakeCard ? 'auth-shake' : ''}`}
           >
-
             {/* Active Session Banner */}
             {activeUserEmail && (
               <div className="mb-5 p-3 rounded-[12px] border border-emerald-500/30 bg-emerald-500/10 flex items-center justify-between gap-3">
@@ -306,7 +402,7 @@ UserAgent: ${typeof navigator !== 'undefined' ? navigator.userAgent : 'N/A'}`
               </p>
             </div>
 
-            {/* Error Alert */}
+            {/* Inline Error Alert */}
             {error && (
               <div
                 role="alert"
@@ -426,7 +522,7 @@ UserAgent: ${typeof navigator !== 'undefined' ? navigator.userAgent : 'N/A'}`
                   </button>
                 </div>
 
-                {/* Subtle Key Entropy Indicator */}
+                {/* Key Entropy Indicator */}
                 {password.length > 0 && (
                   <div className="flex items-center justify-between gap-2 pt-1">
                     <div className="grid grid-cols-4 gap-1 flex-1" aria-hidden="true">
@@ -480,13 +576,13 @@ UserAgent: ${typeof navigator !== 'undefined' ? navigator.userAgent : 'N/A'}`
                 </button>
               </div>
 
-              {/* Submit Button */}
+              {/* Submit Button — Fixed Height */}
               <div className="pt-2">
                 <button
                   type="submit"
                   disabled={isLoading || isSuccess || !isOnline}
                   aria-busy={isLoading}
-                  className={`w-full font-medium text-[13.5px] py-3 px-4 rounded-[12px] transition-all flex items-center justify-center gap-2 shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--admin-primary)] disabled:opacity-60 ${
+                  className={`w-full h-11 font-medium text-[13.5px] px-4 rounded-[12px] transition-all flex items-center justify-center gap-2 shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--admin-primary)] disabled:opacity-60 ${
                     isSuccess
                       ? 'bg-emerald-600 text-white'
                       : 'bg-[var(--admin-primary)] text-[var(--admin-on-primary)] hover:opacity-92 active:translate-y-px'
@@ -500,7 +596,7 @@ UserAgent: ${typeof navigator !== 'undefined' ? navigator.userAgent : 'N/A'}`
                   ) : isLoading ? (
                     <>
                       <svg
-                        className="animate-spin h-4 w-4"
+                        className="animate-spin h-4 w-4 shrink-0"
                         viewBox="0 0 24 24"
                         fill="none"
                         aria-hidden="true"
@@ -572,28 +668,40 @@ UserAgent: ${typeof navigator !== 'undefined' ? navigator.userAgent : 'N/A'}`
         </section>
       </main>
 
-      {/* Status Bar Footer */}
-      <footer className="relative z-30 bg-[var(--admin-paper-surface)] border-t border-[var(--admin-hairline-rule)] flex justify-between items-center w-full px-4 sm:px-6 h-8 text-[var(--admin-ink-muted)] select-none">
-        <div className="flex items-center gap-2">
-          <span className={`w-1.5 h-1.5 rounded-full inline-block ${isOnline ? 'bg-emerald-500' : 'bg-amber-500'}`} />
-          <span className="typo-mono-data text-[11px] tracking-wider">
-            ZEROABSTRACTION // OBSERVATORY NODE
+      {/* Consolidated Single-Row Edge-Aligned Footer */}
+      <footer className="relative z-20 w-full px-6 sm:px-8 pb-5 pt-2 flex items-center justify-between text-[11px] select-none">
+        <button
+          type="button"
+          onClick={() => pingHealth(true)}
+          title="Click to ping /api/health"
+          className="inline-flex items-center gap-2 text-left group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--admin-primary)] rounded px-1 -ml-1"
+        >
+          <span
+            className={`w-1.5 h-1.5 rounded-full inline-block ${
+              healthState.status === 'ok'
+                ? 'bg-emerald-500'
+                : healthState.status === 'checking'
+                  ? 'bg-amber-400'
+                  : 'bg-rose-500'
+            }`}
+          />
+          <span className="typo-mono-data text-[11px] uppercase tracking-wider !text-[var(--admin-ink-secondary)] group-hover:underline">
+            {healthState.status === 'ok'
+              ? `NODE A · ${healthState.latencyMs ?? 0}MS`
+              : healthState.status === 'checking'
+                ? 'NODE A · PROBING'
+                : 'NODE A · DEGRADED'}
           </span>
-        </div>
-        <div className="flex items-center gap-3">
-          <span className="typo-mono-data text-[11px] hidden sm:inline">
-            {isOnline ? 'LINK: ONLINE' : 'LINK: OFFLINE'}
-          </span>
-          <button
-            type="button"
-            onClick={() => setOpenDialog('shortcuts')}
-            aria-label="Keyboard shortcuts and node diagnostics"
-            title="Keyboard shortcuts & diagnostics (?)"
-            className="typo-mono-data text-[11px] px-2 py-0.5 rounded-[6px] border border-[var(--admin-hairline-rule)] bg-[var(--admin-paper-base)] hover:border-[var(--admin-primary)] hover:text-[var(--admin-ink-primary)] transition-colors"
-          >
-            ?
-          </button>
-        </div>
+        </button>
+
+        <button
+          type="button"
+          onClick={cycleClockMode}
+          title="Click to cycle UTC / Local / Julian Date"
+          className="typo-mono-data text-[11px] tabular-nums hover:text-[var(--admin-ink-primary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--admin-primary)] rounded px-1 -mr-1"
+        >
+          {clockMode === 'JD' ? clockText : `${clockMode} ${clockText}`}
+        </button>
       </footer>
 
       <AuthDialogs
@@ -607,6 +715,6 @@ UserAgent: ${typeof navigator !== 'undefined' ? navigator.userAgent : 'N/A'}`
         toasts={toasts}
         onDismiss={(id) => setToasts((prev) => prev.filter((t) => t.id !== id))}
       />
-    </>
+    </div>
   )
 }
