@@ -67,6 +67,7 @@ export function AdminHeader({
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [notifOpen, setNotifOpen] = useState(false)
   const [unreadCleared, setUnreadCleared] = useState(false)
+  const [loggingOut, setLoggingOut] = useState(false)
 
   const notifRef = useRef<HTMLDivElement>(null)
 
@@ -125,6 +126,17 @@ export function AdminHeader({
     } catch {
       /* ignore */
     }
+  }
+
+  async function handleLogout() {
+    if (loggingOut) return
+    setLoggingOut(true)
+    try {
+      await fetch('/api/users/logout', { method: 'POST', credentials: 'include' })
+    } catch {
+      /* ignore and redirect */
+    }
+    window.location.assign('/login')
   }
 
   let initial = 'A'
@@ -297,14 +309,18 @@ export function AdminHeader({
                   {displayName}
                 </span>
               </Link>
-              <form action="/api/users/logout" method="POST">
+              <form action="/api/admin/logout" method="POST">
                 <button
-                  type="submit"
-                  className="p-1.5 rounded-full text-ink-muted hover:text-on-surface transition-colors flex items-center justify-center"
+                  type="button"
+                  onClick={handleLogout}
+                  disabled={loggingOut}
+                  className="p-1.5 rounded-full text-ink-muted hover:text-on-surface transition-colors flex items-center justify-center disabled:opacity-50"
                   title="Sign out"
                   aria-label="Disconnect and sign out"
                 >
-                  <span className="material-symbols-outlined text-[17px]">logout</span>
+                  <span className="material-symbols-outlined text-[17px]">
+                    {loggingOut ? 'sync' : 'logout'}
+                  </span>
                 </button>
               </form>
             </div>

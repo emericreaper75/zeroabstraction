@@ -161,6 +161,7 @@ Tracking all presentation and functional improvements to the Payload Atelier Adm
 98. **Normalized Page Title Sizes**: Unified `Topics`, `Users`, `Dashboard`, `Posts`, `Rigs`, `Media`, `Profile`, `Current State`, `Site Settings`, and `Journey` `h1` headings to `24px` SemiBold (`600`), eliminating oversized `36px+` and `700` Bold headings.
 99. **Sentence-Case Labels & Table Headers**: Converted `PostsTableClient`, `ProjectsTableClient`, `MediaManager`, and `TopicsManager` table headers, breadcrumbs, and buttons to Sentence case `Inter` (`500` Medium), removing `ALL CAPS` monospace noise.
 100. **High-Legibility Secondary Text**: Standardized secondary descriptions and checklist labels to `#475569` (`13px` Regular) and machine timestamps/slugs to `#64748B` (`12px` `JetBrains Mono`).
+101. **Logout Redirect to Login**: Added `/api/admin/logout` redirect handler and client `handleLogout` in `AdminHeader.tsx` so signing out of the admin dashboard cleanly terminates the Payload session and redirects to `/login` instead of rendering raw `/api/users/logout` JSON.
 
 
 
