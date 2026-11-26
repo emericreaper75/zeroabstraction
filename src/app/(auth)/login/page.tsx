@@ -18,24 +18,10 @@ function computeJulianDate(date: Date): string {
   return jd.toFixed(4)
 }
 
-function getPasswordStrength(pw: string): { score: number; label: string } {
-  if (!pw) return { score: 0, label: '' }
-  let score = 0
-  if (pw.length >= 6) score += 1
-  if (pw.length >= 10) score += 1
-  if (/[A-Z]/.test(pw) && /[a-z]/.test(pw)) score += 1
-  if (/\d/.test(pw) || /[^A-Za-z0-9]/.test(pw)) score += 1
-  const labels = ['Weak', 'Fair', 'Good', 'Strong']
-  return { score, label: labels[Math.max(0, score - 1)] || 'Weak' }
-}
-
 export default function LoginPage() {
   const router = useRouter()
 
-  // Theme state synced with Admin Atelier
   const [theme, setTheme] = useState<'light' | 'dark'>('light')
-
-  // Form state
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [rememberIdentity, setRememberIdentity] = useState(true)
@@ -43,7 +29,6 @@ export default function LoginPage() {
   const [capsLockOn, setCapsLockOn] = useState(false)
   const [emailTouched, setEmailTouched] = useState(false)
 
-  // Submission & status state
   const [isLoading, setIsLoading] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
   const [error, setError] = useState('')
@@ -51,7 +36,6 @@ export default function LoginPage() {
   const [isOnline, setIsOnline] = useState(true)
   const [activeUserEmail, setActiveUserEmail] = useState<string | null>(null)
 
-  // Consolidated footer telemetry state
   const [clockMode, setClockMode] = useState<ClockMode>('UTC')
   const [clockText, setClockText] = useState('----.--.-- --:--:--')
   const [healthState, setHealthState] = useState<{
@@ -59,13 +43,14 @@ export default function LoginPage() {
     latencyMs: number | null
   }>({ status: 'checking', latencyMs: null })
 
-  // Dialogs & toasts
   const [openDialog, setOpenDialog] = useState<AuthDialogKind>(null)
   const [toasts, setToasts] = useState<LoginToastMessage[]>([])
 
   const emailInputRef = useRef<HTMLInputElement>(null)
   const passwordInputRef = useRef<HTMLInputElement>(null)
   const toastIdRef = useRef(0)
+
+  const isDark = theme === 'dark'
 
   const notify = useCallback((text: string, tone: 'info' | 'success' | 'warning' = 'info') => {
     const id = ++toastIdRef.current
@@ -96,10 +81,10 @@ export default function LoginPage() {
         const elapsed = Math.round(performance.now() - start)
         if (res.ok) {
           setHealthState({ status: 'ok', latencyMs: elapsed })
-          if (manual) notify(`Node α operational (${elapsed} ms)`, 'success')
+          if (manual) notify(`Node A operational (${elapsed} ms)`, 'success')
         } else {
           setHealthState({ status: 'degraded', latencyMs: elapsed })
-          if (manual) notify(`Node α returned HTTP ${res.status}`, 'warning')
+          if (manual) notify(`Node A returned HTTP ${res.status}`, 'warning')
         }
       } catch {
         setHealthState({ status: 'degraded', latencyMs: null })
@@ -109,7 +94,6 @@ export default function LoginPage() {
     [notify],
   )
 
-  // Initialize theme, remembered email, focus, online listener & active session check
   useEffect(() => {
     try {
       const savedTheme = localStorage.getItem(THEME_KEY)
@@ -159,7 +143,6 @@ export default function LoginPage() {
     }
   }, [applyTheme, pingHealth])
 
-  // Live footer clock
   useEffect(() => {
     function updateClock() {
       const now = new Date()
@@ -182,7 +165,6 @@ export default function LoginPage() {
     return () => clearInterval(interval)
   }, [clockMode])
 
-  // Global keyboard shortcuts (? for help, Esc to clear error)
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement | null
@@ -205,9 +187,7 @@ export default function LoginPage() {
     applyTheme(next)
     try {
       localStorage.setItem(THEME_KEY, next)
-    } catch {
-      // Ignore storage errors
-    }
+    } catch {}
   }
 
   const cycleClockMode = () => {
@@ -226,7 +206,6 @@ export default function LoginPage() {
   }
 
   const emailInvalid = emailTouched && email.length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-  const strength = getPasswordStrength(password)
 
   const triggerShake = () => {
     setShakeCard(false)
@@ -269,9 +248,7 @@ export default function LoginPage() {
           } else {
             localStorage.removeItem(REMEMBERED_EMAIL_KEY)
           }
-        } catch {
-          // Ignore storage errors
-        }
+        } catch {}
         setIsSuccess(true)
         setTimeout(() => {
           router.push('/admin')
@@ -296,82 +273,100 @@ Online: ${isOnline}
 Timestamp: ${new Date().toISOString()}`
 
   return (
-    <div className="min-h-dvh flex flex-col justify-between relative z-10">
+    <div className="min-h-dvh flex flex-col justify-between relative">
       <a
         href="#login-form"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:px-3 focus:py-2 focus:rounded-[10px] focus:bg-[var(--admin-primary)] focus:text-[var(--admin-on-primary)] focus:text-xs focus:font-medium"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:px-3 focus:py-2 focus:rounded-[10px] focus:bg-[#2563EB] focus:text-white focus:text-xs focus:font-medium"
       >
         Skip to sign in form
       </a>
 
-      {/* Full-Bleed Animated Constellation & Right-to-Left Gradient Cover */}
+      {/* z-index 0 & 1: Polar Reticle + Constellation Canvas + Right-to-Left Gradient Cover */}
       <ObservatoryBackdrop theme={theme} />
 
-      {/* Top Header Bar: Brand on Top-Left, Public Site & Theme Toggle pinned to Top-Right */}
-      <header className="relative z-20 w-full px-6 sm:px-8 pt-6 flex items-center justify-between">
+      {/* z-index 3: Top Bar */}
+      <header className="relative z-[3] w-full px-6 sm:px-8 pt-6 flex items-center justify-between">
         <div className="flex items-center gap-2.5 min-w-0">
-          <span className="w-2 h-2 rounded-full bg-[var(--admin-primary)] shrink-0" />
+          <span className="w-2 h-2 rounded-full bg-[#2563EB] shrink-0" />
           <span
-            className="font-semibold tracking-tight text-[15px] text-[var(--admin-ink-primary)]"
-            style={{ fontFamily: "'Plus Jakarta Sans', 'Inter', sans-serif" }}
+            className="font-semibold tracking-tight text-[15px]"
+            style={{
+              fontFamily: "var(--font-jakarta), 'Plus Jakarta Sans', sans-serif",
+              color: isDark ? '#F8FAFC' : '#0F172A',
+            }}
           >
             ZeroAbstraction
           </span>
         </div>
 
-        <div className="flex items-center gap-2 sm:mr-0">
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={handleToggleTheme}
+            aria-label={`Switch to ${isDark ? 'light' : 'dark'} theme`}
+            title={`Switch to ${isDark ? 'light' : 'dark'} theme`}
+            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-[10px] border text-[12px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB]"
+            style={{
+              backgroundColor: isDark ? '#0D131F' : '#FFFFFF',
+              borderColor: isDark ? '#1E293B' : '#E2E8F0',
+              color: isDark ? '#CBD5E1' : '#334155',
+            }}
+          >
+            <span className="material-symbols-outlined text-[16px]">
+              {isDark ? 'light_mode' : 'dark_mode'}
+            </span>
+            <span className="hidden sm:inline">{isDark ? 'Light' : 'Dark'}</span>
+          </button>
+
           <Link
             href="/"
-            className="typo-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[10px] border border-[var(--admin-hairline-rule)] bg-[var(--admin-paper-surface)] text-[var(--admin-ink-secondary)] hover:text-[var(--admin-ink-primary)] hover:border-[var(--admin-primary)] transition-colors text-[12px]"
+            className="typo-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[10px] border text-[12px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB]"
+            style={{
+              backgroundColor: isDark ? '#0D131F' : '#FFFFFF',
+              borderColor: isDark ? '#1E293B' : '#E2E8F0',
+              color: isDark ? '#CBD5E1' : '#334155',
+            }}
           >
             <span className="material-symbols-outlined text-[15px]">arrow_back</span>
             <span>Public Site</span>
           </Link>
-
-          <button
-            type="button"
-            onClick={handleToggleTheme}
-            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
-            title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
-            className="inline-flex items-center justify-center w-8 h-8 rounded-[10px] border border-[var(--admin-hairline-rule)] bg-[var(--admin-paper-surface)] text-[var(--admin-ink-secondary)] hover:text-[var(--admin-ink-primary)] hover:border-[var(--admin-primary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--admin-primary)]"
-          >
-            <span className="material-symbols-outlined text-[17px]">
-              {theme === 'dark' ? 'light_mode' : 'dark_mode'}
-            </span>
-          </button>
         </div>
       </header>
 
-      {/* Main Split-Pane Login Workspace */}
-      <main className="w-full flex-grow flex flex-col lg:flex-row relative z-10">
-        <ObservatoryHero />
+      {/* z-index 2: Main Split-Pane Login Workspace */}
+      <main className="w-full flex-grow flex flex-col lg:flex-row relative z-[2]">
+        <ObservatoryHero theme={theme} latencyMs={healthState.latencyMs} />
 
-        {/* RIGHT AUTH PANE (~45%) — Flat Non-Glassmorphic Panze Card */}
+        {/* Right Sign-In Card */}
         <section
           aria-label="Sign in"
-          className="w-full lg:w-[45%] flex items-center justify-center px-6 sm:px-8 lg:px-12 py-8"
+          className="w-full lg:w-[44%] flex items-center justify-center px-6 sm:px-8 lg:px-12 py-8"
         >
           <div
-            className={`w-full max-w-md bg-[var(--admin-paper-surface)] text-[var(--admin-ink-primary)] border border-[var(--admin-hairline-rule)] p-6 sm:p-8 relative rounded-[20px] ${
-              theme === 'dark'
-                ? 'shadow-[0_12px_36px_-12px_rgba(0,0,0,0.55)]'
-                : 'shadow-[0_12px_32px_-12px_rgba(15,23,42,0.08)]'
-            } ${shakeCard ? 'auth-shake' : ''}`}
+            className={`w-full max-w-[380px] p-7 rounded-[18px] border ${shakeCard ? 'auth-shake' : ''}`}
+            style={{
+              backgroundColor: isDark ? '#0D131F' : '#FFFFFF',
+              borderColor: isDark ? '#1E293B' : '#E2E8F0',
+              color: isDark ? '#F8FAFC' : '#0F172A',
+              boxShadow: isDark
+                ? '0 18px 44px -14px rgba(0, 0, 0, 0.65)'
+                : '0 16px 40px -14px rgba(15, 23, 42, 0.10)',
+            }}
           >
             {/* Active Session Banner */}
             {activeUserEmail && (
-              <div className="mb-5 p-3 rounded-[12px] border border-emerald-500/30 bg-emerald-500/10 flex items-center justify-between gap-3">
+              <div className="mb-4 p-3 rounded-[10px] border border-emerald-500/30 bg-emerald-500/10 flex items-center justify-between gap-2.5">
                 <div className="min-w-0">
-                  <div className="text-[12px] font-semibold text-emerald-600 dark:text-emerald-400">
+                  <div className="text-[12px] font-semibold text-emerald-500">
                     Active session detected
                   </div>
-                  <div className="typo-mono-data text-[11px] truncate !text-[var(--admin-ink-secondary)]">
+                  <div className="typo-mono-data text-[11px] truncate opacity-80">
                     {activeUserEmail}
                   </div>
                 </div>
                 <Link
                   href="/admin"
-                  className="typo-btn shrink-0 px-3 py-1.5 rounded-[10px] bg-emerald-600 text-white hover:bg-emerald-700 transition-colors text-[12px]"
+                  className="typo-btn shrink-0 px-2.5 py-1 rounded-[8px] bg-emerald-600 text-white hover:bg-emerald-700 transition-colors text-[12px]"
                 >
                   Continue →
                 </Link>
@@ -382,23 +377,29 @@ Timestamp: ${new Date().toISOString()}`
             {!isOnline && (
               <div
                 role="status"
-                className="mb-4 p-3 rounded-[12px] border border-amber-500/40 bg-amber-500/10 text-amber-700 dark:text-amber-300 text-[12.5px] flex items-center gap-2"
+                className="mb-4 p-2.5 rounded-[10px] border border-amber-500/40 bg-amber-500/10 text-amber-500 text-[12px] flex items-center gap-2"
               >
-                <span className="material-symbols-outlined text-[17px]">wifi_off</span>
-                <span>Offline — network connection required to authenticate.</span>
+                <span className="material-symbols-outlined text-[16px]">wifi_off</span>
+                <span>Offline — network required to sign in.</span>
               </div>
             )}
 
             {/* Title */}
-            <div className="mb-6">
+            <div className="mb-5">
               <h2
-                className="text-[22px] leading-[28px] font-semibold tracking-[-0.02em] text-[var(--admin-ink-primary)]"
-                style={{ fontFamily: "'Plus Jakarta Sans', 'Inter', sans-serif" }}
+                className="text-[20px] leading-[26px] font-semibold tracking-[-0.02em]"
+                style={{
+                  fontFamily: "var(--font-jakarta), 'Plus Jakarta Sans', sans-serif",
+                  color: isDark ? '#F8FAFC' : '#0F172A',
+                }}
               >
                 Sign In
               </h2>
-              <p className="typo-subtitle mt-1 !text-[var(--admin-ink-muted)]">
-                Authenticate into the Atelier observational console
+              <p
+                className="text-[13px] mt-1"
+                style={{ color: isDark ? '#94A3B8' : '#64748B' }}
+              >
+                Authenticate to console.
               </p>
             </div>
 
@@ -407,39 +408,46 @@ Timestamp: ${new Date().toISOString()}`
               <div
                 role="alert"
                 aria-live="assertive"
-                className="mb-5 p-3 rounded-[12px] bg-[var(--admin-error-container)] border border-[var(--admin-error)]/40 text-[var(--admin-error)] text-[12.5px] flex items-start justify-between gap-2.5"
+                className="mb-4 p-2.5 rounded-[10px] bg-rose-500/10 border border-rose-500/35 text-rose-500 text-[12px] flex items-start justify-between gap-2"
               >
                 <div className="flex items-start gap-2">
-                  <span className="material-symbols-outlined text-[17px] shrink-0 mt-0.5">error</span>
+                  <span className="material-symbols-outlined text-[16px] shrink-0 mt-0.5">error</span>
                   <span>{error}</span>
                 </div>
                 <button
                   type="button"
                   onClick={() => setError('')}
                   aria-label="Dismiss error"
-                  className="shrink-0 opacity-75 hover:opacity-100 transition-opacity"
+                  className="shrink-0 opacity-75 hover:opacity-100"
                 >
-                  <span className="material-symbols-outlined text-[16px]">close</span>
+                  <span className="material-symbols-outlined text-[15px]">close</span>
                 </button>
               </div>
             )}
 
             {/* Form */}
             <form id="login-form" className="space-y-4" onSubmit={handleSubmit} noValidate>
-              {/* Email */}
+              {/* Observer Identity */}
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <label className="typo-label !text-[var(--admin-ink-secondary)]" htmlFor="identity-input">
+                  <label
+                    className="text-[12px] font-medium"
+                    style={{ color: isDark ? '#CBD5E1' : '#334155' }}
+                    htmlFor="identity-input"
+                  >
                     Observer Identity
                   </label>
                   {emailInvalid && (
-                    <span id="email-error" className="text-[11px] font-medium text-[var(--admin-error)]">
+                    <span id="email-error" className="text-[11px] font-medium text-rose-500">
                       Invalid email format
                     </span>
                   )}
                 </div>
                 <div className="relative">
-                  <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--admin-ink-muted)] text-[18px] pointer-events-none">
+                  <span
+                    className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[17px] pointer-events-none"
+                    style={{ color: isDark ? '#64748B' : '#94A3B8' }}
+                  >
                     alternate_email
                   </span>
                   <input
@@ -455,11 +463,16 @@ Timestamp: ${new Date().toISOString()}`
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     onBlur={() => setEmailTouched(true)}
-                    className={`w-full bg-[var(--admin-paper-base)] border text-[var(--admin-ink-primary)] text-[14px] pl-10 pr-9 py-2.5 rounded-[12px] transition-colors placeholder:text-[var(--admin-ink-muted)]/60 focus:outline-none focus:ring-2 ${
-                      emailInvalid
-                        ? 'border-[var(--admin-error)] focus:ring-[var(--admin-error)]/30'
-                        : 'border-[var(--admin-hairline-rule)] hover:border-[var(--admin-border-strong)] focus:border-[var(--admin-primary)] focus:ring-[var(--admin-primary)]/20'
-                    }`}
+                    className="w-full text-[13.5px] pl-9 pr-8 py-2.5 rounded-[10px] border transition-colors focus:outline-none focus:ring-2 focus:ring-[#2563EB]/30"
+                    style={{
+                      backgroundColor: isDark ? '#060A12' : '#F8FAFC',
+                      borderColor: emailInvalid
+                        ? '#EF4444'
+                        : isDark
+                          ? '#1E293B'
+                          : '#E2E8F0',
+                      color: isDark ? '#F8FAFC' : '#0F172A',
+                    }}
                   />
                   {email.length > 0 && (
                     <button
@@ -470,28 +483,35 @@ Timestamp: ${new Date().toISOString()}`
                         emailInputRef.current?.focus()
                       }}
                       aria-label="Clear email"
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--admin-ink-muted)] hover:text-[var(--admin-ink-primary)] transition-colors"
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 opacity-60 hover:opacity-100 transition-opacity"
                     >
-                      <span className="material-symbols-outlined text-[16px]">close</span>
+                      <span className="material-symbols-outlined text-[15px]">close</span>
                     </button>
                   )}
                 </div>
               </div>
 
-              {/* Password */}
+              {/* Access Key */}
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <label className="typo-label !text-[var(--admin-ink-secondary)]" htmlFor="token-input">
+                  <label
+                    className="text-[12px] font-medium"
+                    style={{ color: isDark ? '#CBD5E1' : '#334155' }}
+                    htmlFor="token-input"
+                  >
                     Access Key
                   </label>
                   {capsLockOn && (
-                    <span className="typo-mono-data text-[10px] px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-600 dark:text-amber-400">
+                    <span className="typo-mono-data text-[10px] px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-500">
                       CAPS LOCK ON
                     </span>
                   )}
                 </div>
                 <div className="relative">
-                  <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--admin-ink-muted)] text-[18px] pointer-events-none">
+                  <span
+                    className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[17px] pointer-events-none"
+                    style={{ color: isDark ? '#64748B' : '#94A3B8' }}
+                  >
                     key
                   </span>
                   <input
@@ -506,48 +526,29 @@ Timestamp: ${new Date().toISOString()}`
                     onChange={(e) => setPassword(e.target.value)}
                     onKeyUp={(e) => setCapsLockOn(e.getModifierState('CapsLock'))}
                     onKeyDown={(e) => setCapsLockOn(e.getModifierState('CapsLock'))}
-                    className="w-full bg-[var(--admin-paper-base)] border border-[var(--admin-hairline-rule)] hover:border-[var(--admin-border-strong)] text-[var(--admin-ink-primary)] text-[14px] pl-10 pr-10 py-2.5 rounded-[12px] transition-colors placeholder:text-[var(--admin-ink-muted)]/60 font-mono tracking-wider focus:outline-none focus:border-[var(--admin-primary)] focus:ring-2 focus:ring-[var(--admin-primary)]/20"
+                    className="w-full text-[13.5px] pl-9 pr-9 py-2.5 rounded-[10px] border font-mono tracking-wider transition-colors focus:outline-none focus:ring-2 focus:ring-[#2563EB]/30"
+                    style={{
+                      backgroundColor: isDark ? '#060A12' : '#F8FAFC',
+                      borderColor: isDark ? '#1E293B' : '#E2E8F0',
+                      color: isDark ? '#F8FAFC' : '#0F172A',
+                    }}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword((prev) => !prev)}
                     aria-label={showPassword ? 'Hide access key' : 'Show access key'}
                     aria-pressed={showPassword}
-                    title={showPassword ? 'Hide access key' : 'Show access key'}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--admin-ink-muted)] hover:text-[var(--admin-primary)] transition-colors focus-visible:outline-none"
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 opacity-60 hover:opacity-100 transition-opacity"
                   >
-                    <span className="material-symbols-outlined text-[18px]">
+                    <span className="material-symbols-outlined text-[17px]">
                       {showPassword ? 'visibility_off' : 'visibility'}
                     </span>
                   </button>
                 </div>
-
-                {/* Key Entropy Indicator */}
-                {password.length > 0 && (
-                  <div className="flex items-center justify-between gap-2 pt-1">
-                    <div className="grid grid-cols-4 gap-1 flex-1" aria-hidden="true">
-                      {[1, 2, 3, 4].map((seg) => (
-                        <div
-                          key={seg}
-                          className={`h-1 rounded-full transition-colors ${
-                            seg <= strength.score
-                              ? strength.score >= 3
-                                ? 'bg-emerald-500'
-                                : strength.score === 2
-                                  ? 'bg-amber-500'
-                                  : 'bg-rose-500'
-                              : 'bg-[var(--admin-hairline-rule)]'
-                          }`}
-                        />
-                      ))}
-                    </div>
-                    <span className="typo-mono-data text-[10px] tabular-nums">{strength.label}</span>
-                  </div>
-                )}
               </div>
 
-              {/* Remember & Forgot */}
-              <div className="flex items-center justify-between pt-1 text-[13px]">
+              {/* Remember Identity & Forgot Access */}
+              <div className="flex items-center justify-between pt-0.5 text-[12.5px]">
                 <label className="flex items-center gap-2 cursor-pointer select-none">
                   <input
                     type="checkbox"
@@ -564,34 +565,35 @@ Timestamp: ${new Date().toISOString()}`
                       }
                     }}
                   />
-                  <span className="text-[var(--admin-ink-secondary)]">Remember identity</span>
+                  <span style={{ color: isDark ? '#CBD5E1' : '#334155' }}>
+                    Remember Identity
+                  </span>
                 </label>
 
                 <button
                   type="button"
                   onClick={() => setOpenDialog('forgot')}
-                  className="text-[var(--admin-primary)] hover:underline underline-offset-4 font-medium text-[12.5px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--admin-primary)] rounded"
+                  className="text-[#2563EB] dark:text-[#60A5FA] hover:underline underline-offset-4 font-medium"
                 >
                   Forgot access?
                 </button>
               </div>
 
-              {/* Submit Button — Fixed Height */}
-              <div className="pt-2">
+              {/* Primary Submit Button — Fixed Height */}
+              <div className="pt-1">
                 <button
                   type="submit"
                   disabled={isLoading || isSuccess || !isOnline}
                   aria-busy={isLoading}
-                  className={`w-full h-11 font-medium text-[13.5px] px-4 rounded-[12px] transition-all flex items-center justify-center gap-2 shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--admin-primary)] disabled:opacity-60 ${
-                    isSuccess
-                      ? 'bg-emerald-600 text-white'
-                      : 'bg-[var(--admin-primary)] text-[var(--admin-on-primary)] hover:opacity-92 active:translate-y-px'
-                  }`}
+                  className="w-full h-11 font-medium text-[13.5px] px-4 rounded-[10px] text-white transition-colors flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB]/50 disabled:opacity-60"
+                  style={{
+                    backgroundColor: isSuccess ? '#059669' : '#2563EB',
+                  }}
                 >
                   {isSuccess ? (
                     <>
-                      <span className="material-symbols-outlined text-[18px]">check_circle</span>
-                      <span>Access Granted — Entering Atelier...</span>
+                      <span className="material-symbols-outlined text-[17px]">check_circle</span>
+                      <span>Access Granted...</span>
                     </>
                   ) : isLoading ? (
                     <>
@@ -615,51 +617,69 @@ Timestamp: ${new Date().toISOString()}`
                           d="M4 12a8 8 0 018-8v3a5 5 0 00-5 5H4z"
                         />
                       </svg>
-                      <span>Verifying Credentials...</span>
+                      <span>Authenticating...</span>
                     </>
                   ) : (
                     <>
                       <span>Authenticate</span>
-                      <span className="material-symbols-outlined text-[17px]">arrow_forward</span>
+                      <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
                     </>
                   )}
                 </button>
               </div>
 
-              {/* Alternative Auth Methods */}
-              <div className="pt-4 border-t border-[var(--admin-hairline-rule)]">
-                <div className="text-center mb-3">
-                  <span className="typo-mono-data text-[10.5px] uppercase tracking-wider">
-                    Alternative Authorization
+              {/* Alternative Authorization */}
+              <div
+                className="pt-4 border-t"
+                style={{ borderColor: isDark ? '#1E293B' : '#E2E8F0' }}
+              >
+                <div className="text-center mb-2.5">
+                  <span
+                    className="typo-mono-data text-[10px] uppercase tracking-[0.12em]"
+                    style={{ color: isDark ? '#64748B' : '#64748B' }}
+                  >
+                    ALTERNATIVE AUTHORIZATION
                   </span>
                 </div>
-                <div className="grid grid-cols-3 gap-2.5">
+                <div className="grid grid-cols-3 gap-2">
                   <button
                     type="button"
                     onClick={() => setOpenDialog('biometrics')}
-                    className="h-10 flex items-center justify-center gap-1.5 border border-[var(--admin-hairline-rule)] bg-[var(--admin-paper-base)] hover:border-[var(--admin-primary)] hover:text-[var(--admin-primary)] text-[var(--admin-ink-secondary)] transition-colors rounded-[10px] text-[12px] font-medium"
-                    title="Biometric Passkey"
+                    className="h-9 flex items-center justify-center gap-1.5 border rounded-[8px] text-[12px] font-medium transition-colors hover:border-[#2563EB]"
+                    style={{
+                      backgroundColor: isDark ? '#060A12' : '#F8FAFC',
+                      borderColor: isDark ? '#1E293B' : '#E2E8F0',
+                      color: isDark ? '#CBD5E1' : '#334155',
+                    }}
                   >
-                    <span className="material-symbols-outlined text-[17px]">fingerprint</span>
-                    <span className="hidden sm:inline">Passkey</span>
+                    <span className="material-symbols-outlined text-[15px]">fingerprint</span>
+                    <span>Passkey</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => setOpenDialog('hardware')}
-                    className="h-10 flex items-center justify-center gap-1.5 border border-[var(--admin-hairline-rule)] bg-[var(--admin-paper-base)] hover:border-[var(--admin-primary)] hover:text-[var(--admin-primary)] text-[var(--admin-ink-secondary)] transition-colors rounded-[10px] text-[12px] font-medium"
-                    title="Hardware Security Key"
+                    className="h-9 flex items-center justify-center gap-1.5 border rounded-[8px] text-[12px] font-medium transition-colors hover:border-[#2563EB]"
+                    style={{
+                      backgroundColor: isDark ? '#060A12' : '#F8FAFC',
+                      borderColor: isDark ? '#1E293B' : '#E2E8F0',
+                      color: isDark ? '#CBD5E1' : '#334155',
+                    }}
                   >
-                    <span className="material-symbols-outlined text-[17px]">vpn_key</span>
-                    <span className="hidden sm:inline">FIDO2</span>
+                    <span className="material-symbols-outlined text-[15px]">vpn_key</span>
+                    <span>FIDO2</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => setOpenDialog('cli')}
-                    className="h-10 flex items-center justify-center gap-1.5 border border-[var(--admin-hairline-rule)] bg-[var(--admin-paper-base)] hover:border-[var(--admin-primary)] hover:text-[var(--admin-primary)] text-[var(--admin-ink-secondary)] transition-colors rounded-[10px] text-[12px] font-medium"
-                    title="Terminal CLI"
+                    className="h-9 flex items-center justify-center gap-1.5 border rounded-[8px] text-[12px] font-medium transition-colors hover:border-[#2563EB]"
+                    style={{
+                      backgroundColor: isDark ? '#060A12' : '#F8FAFC',
+                      borderColor: isDark ? '#1E293B' : '#E2E8F0',
+                      color: isDark ? '#CBD5E1' : '#334155',
+                    }}
                   >
-                    <span className="material-symbols-outlined text-[17px]">terminal</span>
-                    <span className="hidden sm:inline">CLI</span>
+                    <span className="material-symbols-outlined text-[15px]">terminal</span>
+                    <span>CLI</span>
                   </button>
                 </div>
               </div>
@@ -668,13 +688,13 @@ Timestamp: ${new Date().toISOString()}`
         </section>
       </main>
 
-      {/* Consolidated Single-Row Edge-Aligned Footer */}
-      <footer className="relative z-20 w-full px-6 sm:px-8 pb-5 pt-2 flex items-center justify-between text-[11px] select-none">
+      {/* z-index 3: Single Clean Edge-Aligned Footer */}
+      <footer className="relative z-[3] w-full px-6 sm:px-8 pb-5 pt-2 flex items-center justify-between text-[11px] select-none">
         <button
           type="button"
           onClick={() => pingHealth(true)}
           title="Click to ping /api/health"
-          className="inline-flex items-center gap-2 text-left group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--admin-primary)] rounded px-1 -ml-1"
+          className="inline-flex items-center gap-2 text-left group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] rounded px-1 -ml-1"
         >
           <span
             className={`w-1.5 h-1.5 rounded-full inline-block ${
@@ -685,12 +705,15 @@ Timestamp: ${new Date().toISOString()}`
                   : 'bg-rose-500'
             }`}
           />
-          <span className="typo-mono-data text-[11px] uppercase tracking-wider !text-[var(--admin-ink-secondary)] group-hover:underline">
+          <span
+            className="typo-mono-data text-[11px] uppercase tracking-wider group-hover:underline"
+            style={{ color: isDark ? '#94A3B8' : '#475569' }}
+          >
             {healthState.status === 'ok'
-              ? `NODE A · ${healthState.latencyMs ?? 0}MS`
+              ? 'NODE A • STATUS_OK'
               : healthState.status === 'checking'
-                ? 'NODE A · PROBING'
-                : 'NODE A · DEGRADED'}
+                ? 'NODE A • PROBING'
+                : 'NODE A • DEGRADED'}
           </span>
         </button>
 
@@ -698,7 +721,8 @@ Timestamp: ${new Date().toISOString()}`
           type="button"
           onClick={cycleClockMode}
           title="Click to cycle UTC / Local / Julian Date"
-          className="typo-mono-data text-[11px] tabular-nums hover:text-[var(--admin-ink-primary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--admin-primary)] rounded px-1 -mr-1"
+          className="typo-mono-data text-[11px] tabular-nums transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] rounded px-1 -mr-1"
+          style={{ color: isDark ? '#94A3B8' : '#475569' }}
         >
           {clockMode === 'JD' ? clockText : `${clockMode} ${clockText}`}
         </button>

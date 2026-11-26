@@ -1,5 +1,5 @@
 import React from 'react'
-import { Inter, Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google'
+import { Inter, Plus_Jakarta_Sans, JetBrains_Mono, Newsreader } from 'next/font/google'
 import '@/styles/admin-atelier.css'
 
 const inter = Inter({
@@ -23,6 +23,14 @@ const jetbrainsMono = JetBrains_Mono({
   display: 'swap',
 })
 
+const newsreader = Newsreader({
+  subsets: ['latin'],
+  weight: ['400', '500'],
+  style: ['italic'],
+  variable: '--font-newsreader',
+  display: 'swap',
+})
+
 export const metadata = {
   title: 'Observatory Sign In // ZeroAbstraction',
   description: 'Authenticate into the ZeroAbstraction Observatory Editorial Console',
@@ -36,7 +44,7 @@ export default function AuthLayout({
   return (
     <html
       lang="en"
-      className={`light ${inter.variable} ${plusJakarta.variable} ${jetbrainsMono.variable}`}
+      className={`light ${inter.variable} ${plusJakarta.variable} ${jetbrainsMono.variable} ${newsreader.variable}`}
       data-theme="light"
       suppressHydrationWarning
     >
@@ -53,7 +61,10 @@ export default function AuthLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="admin-simple-text antialiased min-h-dvh flex flex-col justify-between overflow-x-hidden bg-[var(--admin-paper-base)] text-[var(--admin-ink-primary)] selection:bg-[var(--admin-amber-wash)] selection:text-[var(--admin-ink-primary)]">
+      <body
+        suppressHydrationWarning
+        className="admin-simple-text antialiased min-h-dvh flex flex-col justify-between overflow-x-hidden bg-[var(--admin-paper-base)] text-[var(--admin-ink-primary)] selection:bg-[var(--admin-amber-wash)] selection:text-[var(--admin-ink-primary)]"
+      >
         {children}
       </body>
     </html>
