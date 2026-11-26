@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { ObservatoryHero } from '@/components/auth/ObservatoryHero'
+import { ObservatoryBackdrop } from '@/components/auth/ObservatoryBackdrop'
 import { AuthDialogs, type AuthDialogKind } from '@/components/auth/AuthDialogs'
 import { LoginToast, type LoginToastMessage } from '@/components/auth/LoginToast'
 
@@ -236,34 +237,25 @@ UserAgent: ${typeof navigator !== 'undefined' ? navigator.userAgent : 'N/A'}`
         Skip to sign in form
       </a>
 
+      {/* Full-Page Unified Animated Backdrop */}
+      <ObservatoryBackdrop theme={theme} />
+
       {/* Main Split-Pane Login Workspace */}
-      <main className="w-full flex-grow flex flex-col lg:flex-row min-h-[calc(100dvh-2rem)] relative">
+      <main className="w-full flex-grow flex flex-col lg:flex-row min-h-[calc(100dvh-2rem)] relative z-10">
         <ObservatoryHero
           theme={theme}
           onToggleTheme={handleToggleTheme}
           onNotify={notify}
         />
 
-        {/* RIGHT AUTH PANE (~42%) — Panze Studio Card */}
+        {/* RIGHT AUTH PANE (~44%) — Panze Studio Card */}
         <section
           aria-label="Sign in"
-          className="w-full lg:w-[42%] flex items-center justify-center p-5 sm:p-8 lg:p-12 relative z-10 bg-[var(--admin-paper-container)]"
+          className="w-full lg:w-[44%] flex items-center justify-center p-5 sm:p-8 lg:p-12 relative z-10"
         >
-          {/* Subtle Ambient Glow */}
-          <div
-            aria-hidden="true"
-            className="absolute w-80 h-80 rounded-full blur-3xl pointer-events-none opacity-25"
-            style={{
-              background:
-                theme === 'dark'
-                  ? 'radial-gradient(circle, rgba(96,165,250,0.28) 0%, transparent 70%)'
-                  : 'radial-gradient(circle, rgba(15,23,42,0.08) 0%, transparent 70%)',
-            }}
-          />
-
           {/* Credential Card */}
           <div
-            className={`w-full max-w-md bg-[var(--admin-paper-surface)] text-[var(--admin-ink-primary)] border border-[var(--admin-hairline-rule)] p-6 sm:p-8 relative rounded-[20px] transition-shadow ${
+            className={`w-full max-w-md bg-[var(--admin-paper-surface)]/92 backdrop-blur-md text-[var(--admin-ink-primary)] border border-[var(--admin-hairline-rule)] p-6 sm:p-8 relative rounded-[20px] transition-shadow ${
               theme === 'dark'
                 ? 'shadow-[0_24px_60px_-15px_rgba(0,0,0,0.65)]'
                 : 'shadow-[0_20px_50px_-15px_rgba(15,23,42,0.10)]'
@@ -599,7 +591,7 @@ UserAgent: ${typeof navigator !== 'undefined' ? navigator.userAgent : 'N/A'}`
       </main>
 
       {/* Status Bar Footer */}
-      <footer className="bg-[var(--admin-paper-surface)] border-t border-[var(--admin-hairline-rule)] flex justify-between items-center w-full px-4 sm:px-6 h-8 text-[var(--admin-ink-muted)] z-30 select-none">
+      <footer className="relative z-30 bg-[var(--admin-paper-surface)]/85 backdrop-blur-sm border-t border-[var(--admin-hairline-rule)] flex justify-between items-center w-full px-4 sm:px-6 h-8 text-[var(--admin-ink-muted)] select-none">
         <div className="flex items-center gap-2">
           <span className={`w-1.5 h-1.5 rounded-full inline-block ${isOnline ? 'bg-emerald-500' : 'bg-amber-500'}`} />
           <span className="typo-mono-data text-[11px] tracking-wider">

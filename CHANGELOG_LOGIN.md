@@ -81,3 +81,12 @@ Tracking all 60 presentation, typography, and interactive UX improvements to the
 58. **ESLint Verification**: Verified lint cleanliness on all modified auth files.
 59. **Production Build Verification**: Verified `npm run build` compiles cleanly.
 60. **GitHub Milestone Sync**: Committed and pushed milestones to `origin/main`.
+
+---
+
+## Milestone 5: Minimalist Hero & Full-Page Unified Background Animation
+
+61. **Reduced Left Hero Copy**: Removed the paragraph description, 3-column spec strip, interactive subsystem tablist/panel, and field-note epigraph from `ObservatoryHero` for an airy, distraction-free left pane (`ZeroAbstraction`, `Observatory Console`, `Manoj Amavasya`, `Astronomical Atelier`).
+62. **Full-Page Unified Animated Backdrop (`ObservatoryBackdrop`)**: Moved the cosmic grid, twinkling starfield, constellation lines, drifting ambient aurora orbs (`.auth-drift-a`, `.auth-drift-b`), and centered concentric orbital rings (`auth-orbit-slow`, `auth-orbit-reverse`) into a fixed full-viewport layer spanning the entire webpage seamlessly.
+63. **Translucent Glassmorphic Auth Card & Footer**: Updated the right credential card and bottom status bar to use translucent surfaces (`backdrop-blur-md` / `backdrop-blur-sm`) so the full-page animation flows cleanly behind every element.
+
