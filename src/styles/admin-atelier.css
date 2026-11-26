@@ -196,8 +196,54 @@ html.dark .divide-hairline-rule,
 .cosmic-grid {
   background-size: 40px 40px;
   background-image:
-    linear-gradient(to right, rgba(130, 135, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(130, 135, 255, 0.05) 1px, transparent 1px);
+    linear-gradient(to right, rgba(15, 23, 42, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.045) 1px, transparent 1px);
+}
+
+html.dark .cosmic-grid,
+[data-theme="dark"] .cosmic-grid {
+  background-image:
+    linear-gradient(to right, rgba(96, 165, 250, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(96, 165, 250, 0.06) 1px, transparent 1px);
+}
+
+/* ── Login Observatory Animations ───────────────────────────── */
+@keyframes auth-orbit-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes auth-orbit-reverse {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes auth-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+.auth-orbit-slow {
+  animation: auth-orbit-slow 90s linear infinite;
+}
+
+.auth-orbit-reverse {
+  animation: auth-orbit-reverse 65s linear infinite;
+}
+
+.auth-shake {
+  animation: auth-shake 0.36s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 
 /* ── Atelier Checkbox: Palette 03 Square ─────────────────────── */

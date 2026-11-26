@@ -2,8 +2,8 @@ import React from 'react'
 import '@/styles/admin-atelier.css'
 
 export const metadata = {
-  title: 'Observatory Access // ZeroAbstraction',
-  description: 'Authenticate into the atelier observational console',
+  title: 'Observatory Sign In // ZeroAbstraction',
+  description: 'Authenticate into the ZeroAbstraction Observatory Editorial Console',
 }
 
 export default function AuthLayout({
@@ -12,12 +12,19 @@ export default function AuthLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="dark" data-theme="dark">
+    <html lang="en" className="light" data-theme="light" suppressHydrationWarning>
       <head>
+        <meta name="color-scheme" content="light dark" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(){try{var s=localStorage.getItem('payload-admin-theme');var t=s==='light'||s==='dark'?s:'light';document.documentElement.setAttribute('data-theme',t);document.documentElement.className=t;document.documentElement.style.colorScheme=t;var m=document.querySelector('meta[name=\"color-scheme\"]');if(m)m.setAttribute('content',t);}catch(e){}})();",
+          }}
+        />
         <link href="https://fonts.googleapis.com" rel="preconnect" />
         <link crossOrigin="" href="https://fonts.gstatic.com" rel="preconnect" />
         <link
-          href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400;1,6..72,500&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap"
           rel="stylesheet"
         />
         <link
@@ -25,7 +32,7 @@ export default function AuthLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="antialiased min-h-screen flex flex-col justify-between font-body-md overflow-x-hidden bg-gradient-to-br from-[#0F1117] via-[#161922] to-[#0A0D14] text-ink-primary selection:bg-amber-wash selection:text-on-primary">
+      <body className="admin-simple-text antialiased min-h-dvh flex flex-col justify-between overflow-x-hidden bg-[var(--admin-paper-base)] text-[var(--admin-ink-primary)] selection:bg-[var(--admin-amber-wash)] selection:text-[var(--admin-ink-primary)]">
         {children}
       </body>
     </html>
